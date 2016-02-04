@@ -3,6 +3,7 @@
 #include <QMainWindow>
 class QSerialPort;
 class QPushButton;
+class QComboBox;
 class QLineEdit;
 class QLabel;
 class TelemetryReporting;
@@ -17,6 +18,7 @@ public:
 private slots:
    void attemptConnection();
 
+   void differentModeSelected();
    void sendKeyDriverControl();
    void sendDriverControlDetails();
    void sendFaults();
@@ -24,6 +26,8 @@ private slots:
    void sendCmuData();
    void sendMpptData();
    void sendAll();
+   void keyDriverControlDetails();
+   void driverControlDetails();
 
 private:
    void setupUi();
@@ -35,6 +39,9 @@ private:
    QPushButton* connectButton_;
    QLineEdit* comPortLineEdit_;
    QLabel* connectionStatusLabel_;
+
+   QString* testingMode_;
+   QComboBox* modeSelectionComboBox_;
 
    QPushButton* sendKeyDriverControlButton_;
    QPushButton* sendDriverControlDetailsButton_;

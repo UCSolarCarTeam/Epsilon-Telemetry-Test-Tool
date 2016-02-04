@@ -7,14 +7,14 @@
 
 VehicleData::VehicleData()
 : reportedMotorCurrent(1.0f)
-, driverSetCurrent(2.0f)
+, driverSetCurrent(2.0f) // ---------
 , driverSetCurrentPercentage(3.0f)
-, driverSetSpeedRpm(4.0f)
+, driverSetSpeedRpm(3.0f) // --------
 , deadmanPressed(false)
 , carDirection(VehicleData::Forward)
-, busCurrent(5.0f)
-, busVoltage(6.0f)
-, vehicleVelocity(7.0f)
+, busCurrent(5.0f) // ------
+, busVoltage(6.0f) // ------
+, vehicleVelocity(7.0f) // -------
 , motorVelocityRpm(8.0f)
 , phaseCCurrent(9.0f)
 , phaseBCurrent(10.0f)
