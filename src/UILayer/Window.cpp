@@ -9,6 +9,7 @@
 #include <QComboBox>
 #include <QString>
 #include <iostream>
+#include "CommunicationServer.h"
 
 namespace
 {
@@ -32,15 +33,12 @@ Window::~Window()
 
 void Window::attemptConnection()
 {
-   serialPort_.setPortName(comPortLineEdit_->text());
-   serialPort_.setBaudRate(BAUDRATE);
+    CommunicationServer communicationServer(serialPort_,comPortLineEdit_->text());
 
-   if (serialPort_.open(QIODevice::ReadWrite))
-   {
+   if (communicationServer.attemptConnection() == true) {
       connectionStatusLabel_->setText("Connected");
    }
-   else
-   {
+   else {
       connectionStatusLabel_->setText("Connection Failed.");
    }
 }

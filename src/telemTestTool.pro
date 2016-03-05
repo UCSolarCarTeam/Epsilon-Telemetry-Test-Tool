@@ -19,7 +19,10 @@ HEADERS  += \
     DataLayer/CmuData.h \
     DataLayer/MpptData.h \
     DataLayer/VehicleData.h \
-    UILayer/Window.h
+    UILayer/Window.h \
+    BusinessLayer/CommunicationServer.h \
+    Peripherals/SerialPortPeripheral.h \
+    ViewLayer/View.h
 
 
 SOURCES += \
@@ -27,8 +30,10 @@ SOURCES += \
     TestApplication.cpp \
     BusinessLayer/CrcCalculator.cpp \
     BusinessLayer/TelemetryReporting.cpp \
-    DataLayer/CcsDefines.cpp \
     DataLayer/CmuData.cpp \
     DataLayer/MpptData.cpp \
     DataLayer/VehicleData.cpp \
-    UILayer/Window.cpp
+    UILayer/Window.cpp \
+    BusinessLayer/CommunicationServer.cpp \
+    Peripherals/SerialPortPeripheral.cpp \
+    ViewLayer/View.cpp
