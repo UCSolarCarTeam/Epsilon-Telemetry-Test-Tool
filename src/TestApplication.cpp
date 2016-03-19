@@ -5,7 +5,7 @@ TestApplication::TestApplication(int& argc, char** argv)
 , serialPort_(new QSerialPort())
 , vehicleData_(new VehicleData())
 , telemetryReporting_(new TelemetryReporting(*serialPort_, *vehicleData_))
-, window_(new Window(*serialPort_, *telemetryReporting_))
+, view_(new View(*serialPort_, *telemetryReporting_))
 {
 }
 

@@ -1,26 +1,17 @@
-#include "Window.h"
+#include <iostream>
+#include <QString>
+#include <QVBoxLayout>
+#include <QFormLayout>
 #include <QLabel>
 #include <QPushButton>
 #include <QSerialPort>
 #include <QLineEdit>
-#include <QVBoxLayout>
-#include "TelemetryReporting.h"
-#include <QFormLayout>
 #include <QComboBox>
-#include <QString>
-#include <iostream>
+#include "Window.h"
+#include "TelemetryReporting.h"
 #include "CommunicationServer.h"
 
-namespace
-{
-   const int BAUDRATE = 9600;
-   const int NUMBER_OF_CMUS = 4;
-   const int NUMBER_OF_MPPTS = 7;
-}
-
-Window::Window(QSerialPort& serialPort, TelemetryReporting& telemetryReporting)
-: serialPort_(serialPort)
-, telemetryReporting_(telemetryReporting)
+Window::Window()
 {
    setWindowTitle("Telem Test Program");
    setupUi();
@@ -31,68 +22,51 @@ Window::~Window()
 {
 }
 
-void Window::attemptConnection()
+void Window::setupUi()
 {
-    CommunicationServer communicationServer(serialPort_,comPortLineEdit_->text());
+   QWidget* mainWidget = new QWidget(this);
+   QFormLayout* layout = new QFormLayout;
 
-   if (communicationServer.attemptConnection() == true) {
-      connectionStatusLabel_->setText("Connected");
-   }
-   else {
-      connectionStatusLabel_->setText("Connection Failed.");
-   }
-}
+   connectButton_.reset(new QPushButton("&Connect", this));
+   comPortLineEdit_.reset(new QLineEdit("/dev/ttyUSB0", this));
+   connectionStatusLabel_.reset(new QLabel("Not connected", this));
 
-void Window::differentModeSelected()
-{
-    std::string testingMode = modeSelectionComboBox_->currentText().toStdString();
-    std::cout << testingMode;
-}
+   modeSelectionComboBox_.reset(new QComboBox());
+   modeSelectionComboBox_->addItem("Random");
+   modeSelectionComboBox_->addItem("Specified");
 
-void Window::sendKeyDriverControl()
-{
-   telemetryReporting_.sendKeyDriverControlTelemetry();
-}
+   sendKeyDriverControlButton_.reset(new QPushButton("Send Key Driver Control", this));
+   QPushButton* keyDriverControlDetailsButton = new QPushButton("Details", this);
 
-void Window::sendDriverControlDetails()
-{
-   telemetryReporting_.sendDriverControlDetails();
-}
+   sendDriverControlDetailsButton_.reset(new QPushButton("Send Driver Control Details", this));
+   QPushButton* driverControlDetailsButton = new QPushButton("Details", this);
 
-void Window::sendFaults()
-{
-   telemetryReporting_.sendFaults();
-}
+   sendFaultsButton_.reset(new QPushButton("Send Faults", this));
+   QPushButton* faultsDetailsButton = new QPushButton("Details", this);
 
-void Window::sendBatteryData()
-{
-   telemetryReporting_.sendBatteryData();
-}
+   sendBatteryDataButton_.reset(new QPushButton("Send Battery Data", this));
+   QPushButton* batteryDataDetailsButton = new QPushButton("Details", this);
 
-void Window::sendCmuData()
-{
-   for (int i = 0; i < NUMBER_OF_CMUS; ++i)
-   {
-      telemetryReporting_.sendCmuData(i);
-   }
-}
+   sendCmuDataButton_.reset(new QPushButton("Send Cmu Data", this));
+   QPushButton* cmuDataDetailsButton = new QPushButton("Details", this);
 
-void Window::sendMpptData()
-{
-   for (int i = 0; i < NUMBER_OF_MPPTS; ++i)
-   {
-      telemetryReporting_.sendMpptData(i);
-   }
-}
+   sendMpptDataButton_.reset(new QPushButton("Send Mppt Data", this));
+   QPushButton* mpptDataDetailsButton = new QPushButton("Details", this);
 
-void Window::sendAll()
-{
-   sendKeyDriverControl();
-   sendDriverControlDetails();
-   sendFaults();
-   sendBatteryData();
-   sendCmuData();
-   sendMpptData();
+   sendAllButton_.reset(new QPushButton("Send All", this));
+
+   layout->addRow(modeSelectionComboBox_.data(), connectButton_.data());
+   layout->addRow(comPortLineEdit_.data());
+   layout->addRow(connectionStatusLabel_.data());
+   layout->addRow(keyDriverControlDetailsButton, sendKeyDriverControlButton_.data());
+   layout->addRow(driverControlDetailsButton, sendDriverControlDetailsButton_.data());
+   layout->addRow(faultsDetailsButton, sendFaultsButton_.data());
+   layout->addRow(batteryDataDetailsButton, sendBatteryDataButton_.data());
+   layout->addRow(cmuDataDetailsButton, sendCmuDataButton_.data());
+   layout->addRow(mpptDataDetailsButton, sendMpptDataButton_.data());
+   layout->addRow(sendAllButton_.data());
+   mainWidget->setLayout(layout);
+   setCentralWidget(mainWidget);
 }
 
 void Window::keyDriverControlDetails()
@@ -133,7 +107,7 @@ void Window::keyDriverControlDetails()
 }
 
 void Window::driverControlDetails()
-{    
+{
     QWidget* driverControlDetailsWidget = new QWidget(this);
     QGridLayout* driverControlLayout = new QGridLayout;
 
@@ -176,62 +150,67 @@ void Window::driverControlDetails()
     driverControlDetailsWidget->show();
 }
 
-
-
-void Window::setupUi()
+QPushButton& Window::getConnectButton()
 {
-   QWidget* mainWidget = new QWidget(this);
-   QFormLayout* layout = new QFormLayout;
+    return *connectButton_;
+}
 
-   QPushButton* connectButton = new QPushButton("&Connect", this);
-   connect(connectButton, SIGNAL(clicked()), this, SLOT(attemptConnection()));
-   comPortLineEdit_ = new QLineEdit("/dev/ttyUSB0", this);
-   connectionStatusLabel_ = new QLabel("Not connected", this);
+QLineEdit& Window::getComPortLineEdit()
+{
+    return *comPortLineEdit_;
+}
 
-   QComboBox* modeSelectionComboBox = new QComboBox();
-   modeSelectionComboBox->addItem("Random");
-   modeSelectionComboBox->addItem("Specified");
-   connect(modeSelectionComboBox, SIGNAL(editTextChanged(QString)), this, SLOT(differentModeSelected()));
+QLabel& Window::getConnectionStatusLabel()
+{
+    return *connectionStatusLabel_;
+}
 
-   QPushButton* sendKeyDriverControlButton = new QPushButton("Send Key Driver Control", this);
-   connect(sendKeyDriverControlButton, SIGNAL(clicked()), this, SLOT(sendKeyDriverControl()));
-   QPushButton* keyDriverControlDetailsButton = new QPushButton("Details", this);
-   connect(keyDriverControlDetailsButton, SIGNAL(clicked()), this, SLOT(keyDriverControlDetails()));
+QString& Window::getTestingMode()
+{
+    return *testingMode_;
+}
 
-   QPushButton* sendDriverControlDetailsButton = new QPushButton("Send Driver Control Details", this);
-   connect(sendDriverControlDetailsButton, SIGNAL(clicked()), this, SLOT(sendDriverControlDetails()));
-   QPushButton* driverControlDetailsButton = new QPushButton("Details", this);
-   connect(driverControlDetailsButton, SIGNAL(clicked()), this, SLOT(driverControlDetails()));
+QComboBox& Window::getModeSelectionComboBox()
+{
+    return *modeSelectionComboBox_;
+}
 
-   QPushButton* sendFaultsButton = new QPushButton("Send Faults", this);
-   connect(sendFaultsButton, SIGNAL(clicked()), this, SLOT(sendFaults()));
-   QPushButton* faultsDetailsButton = new QPushButton("Details", this);
+QPushButton& Window::getSendKeyDriverControlButton()
+{
+    return *sendKeyDriverControlButton_;
+}
 
-   QPushButton* sendBatteryDataButton = new QPushButton("Send Battery Data", this);
-   connect(sendBatteryDataButton, SIGNAL(clicked()), this, SLOT(sendBatteryData()));
-   QPushButton* batteryDataDetailsButton = new QPushButton("Details", this);
+QPushButton& Window::getSendDriverControlDetailsButton()
+{
+    return *sendDriverControlDetailsButton_;
+}
 
-   QPushButton* sendCmuDataButton = new QPushButton("Send Cmu Data", this);
-   connect(sendCmuDataButton, SIGNAL(clicked()), this, SLOT(sendCmuData()));
-   QPushButton* cmuDataDetailsButton = new QPushButton("Details", this);
+QPushButton& Window::getSendFaultsButton()
+{
+    return *sendFaultsButton_;
+}
 
-   QPushButton* sendMpptDataButton = new QPushButton("Send Mppt Data", this);
-   connect(sendMpptDataButton, SIGNAL(clicked()), this, SLOT(sendMpptData()));
-   QPushButton* mpptDataDetailsButton = new QPushButton("Details", this);
+QPushButton& Window::getSendBatteryDataButton()
+{
+    return *sendBatteryDataButton_;
+}
 
-   QPushButton* sendAllButton = new QPushButton("Send All", this);
-   connect(sendAllButton, SIGNAL(clicked()), this, SLOT(sendAll()));
+QPushButton& Window::getSendCmuDataButton()
+{
+    return *sendCmuDataButton_;
+}
 
-   layout->addRow(modeSelectionComboBox, connectButton);
-   layout->addRow(comPortLineEdit_);
-   layout->addRow(connectionStatusLabel_);
-   layout->addRow(keyDriverControlDetailsButton, sendKeyDriverControlButton);
-   layout->addRow(driverControlDetailsButton, sendDriverControlDetailsButton);
-   layout->addRow(faultsDetailsButton, sendFaultsButton);
-   layout->addRow(batteryDataDetailsButton, sendBatteryDataButton);
-   layout->addRow(cmuDataDetailsButton, sendCmuDataButton);
-   layout->addRow(mpptDataDetailsButton, sendMpptDataButton);
-   layout->addRow(sendAllButton);
-   mainWidget->setLayout(layout);
-   setCentralWidget(mainWidget);
+QPushButton& Window::getSendMpptDataButton()
+{
+    return *sendMpptDataButton_;
+}
+
+QPushButton& Window::getSendAllButton()
+{
+    return *sendAllButton_;
+}
+
+void Window::setConnectionStatusText(QString p_String)
+{
+    connectionStatusLabel_->setText(p_String);
 }

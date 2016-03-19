@@ -1,53 +1,54 @@
 #pragma once
 
 #include <QMainWindow>
-class QSerialPort;
 class QPushButton;
 class QComboBox;
 class QLineEdit;
 class QLabel;
 class TelemetryReporting;
+class View;
 
 class Window : public QMainWindow
 {
    Q_OBJECT
 public:
-   Window(QSerialPort& serialPort, TelemetryReporting& telemetryReporting);
+   Window();
    virtual ~Window();
 
-private slots:
-   void attemptConnection();
+public:
+   QPushButton& getConnectButton();
+   QLineEdit& getComPortLineEdit();
+   QLabel& getConnectionStatusLabel();
+   QString& getTestingMode();
+   QComboBox& getModeSelectionComboBox();
+   QPushButton& getSendKeyDriverControlButton();
+   QPushButton& getSendDriverControlDetailsButton();
+   QPushButton& getSendFaultsButton();
+   QPushButton& getSendBatteryDataButton();
+   QPushButton& getSendCmuDataButton();
+   QPushButton& getSendMpptDataButton();
+   QPushButton& getSendAllButton();
+   void setConnectionStatusText(QString);
 
-   void differentModeSelected();
-   void sendKeyDriverControl();
-   void sendDriverControlDetails();
-   void sendFaults();
-   void sendBatteryData();
-   void sendCmuData();
-   void sendMpptData();
-   void sendAll();
+   //void getConnectionStatus
+
+private:
+   void setupUi();
+   void connectPointers();
    void keyDriverControlDetails();
    void driverControlDetails();
 
 private:
-   void setupUi();
-
-private:
-   QSerialPort& serialPort_;
-   TelemetryReporting& telemetryReporting_;
-
-   QPushButton* connectButton_;
-   QLineEdit* comPortLineEdit_;
-   QLabel* connectionStatusLabel_;
-
-   QString* testingMode_;
-   QComboBox* modeSelectionComboBox_;
-
-   QPushButton* sendKeyDriverControlButton_;
-   QPushButton* sendDriverControlDetailsButton_;
-   QPushButton* sendFaultsButton_;
-   QPushButton* sendBatteryDataButton_;
-   QPushButton* sendCmuDataButton_;
-   QPushButton* sendMpptDataButton_;
-   QPushButton* sendAllButton_;
+   QScopedPointer<QPushButton> connectButton_;
+   QScopedPointer<QLineEdit> comPortLineEdit_;
+   QScopedPointer<QLabel> connectionStatusLabel_;
+   QScopedPointer<QString> testingMode_;
+   QScopedPointer<QComboBox> modeSelectionComboBox_;
+   QScopedPointer<QPushButton> sendKeyDriverControlButton_;
+   QScopedPointer<QPushButton> sendDriverControlDetailsButton_;
+   QScopedPointer<QPushButton> sendFaultsButton_;
+   QScopedPointer<QPushButton> sendBatteryDataButton_;
+   QScopedPointer<QPushButton> sendCmuDataButton_;
+   QScopedPointer<QPushButton> sendMpptDataButton_;
+   QScopedPointer<QPushButton> sendAllButton_;
 };
