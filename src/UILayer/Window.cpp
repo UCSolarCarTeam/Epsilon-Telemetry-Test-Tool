@@ -209,8 +209,3 @@ QPushButton& Window::getSendAllButton()
 {
     return *sendAllButton_;
 }
-
-void Window::setConnectionStatusText(QString p_String)
-{
-    connectionStatusLabel_->setText(p_String);
-}

@@ -2,7 +2,7 @@
 #define VIEW_H
 
 #include <QObject>
-class TelemetryReporting;
+//class TelemetryReporting;
 class QSerialPort;
 class Window;
 class QPushButton;
@@ -14,26 +14,28 @@ class View : public QObject
 {
     Q_OBJECT
 public:
-    View(QSerialPort& serialPort, TelemetryReporting& telemetryReporting);
+    View(QSerialPort& serialPort);
+    void setConnectionStatus(bool connectionStatus);
+    QString getModeSelected();
+    QString getCommunicationPort();
 
 private:
     void connectToUi();
 
-private slots:
-    void attemptConnection();
-    void differentModeSelected();
-    void sendKeyDriverControl();
-    void sendDriverControlDetails();
-    void sendFaults();
-    void sendBatteryData();
-    void sendCmuData();
-    void sendMpptData();
-    void sendAll();
+signals:
+    void attemptConnectionSignal();
+    void differentModeSelectedSignal();
+    void sendKeyDriverControlSignal();
+    void sendDriverControlDetailsSignal();
+    void sendFaultsSignal();
+    void sendBatteryDataSignal();
+    void sendCmuDataSignal();
+    void sendMpptDataSignal();
+    void sendAllSignal();
 
 
 private:
     QSerialPort& serialPort_;
-    TelemetryReporting& telemetryReporting_;
     Window* window_;
 
 };

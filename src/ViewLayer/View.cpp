@@ -5,7 +5,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include "View.h"
-#include "TelemetryReporting.h"
+//#include "TelemetryReporting.h"
 #include "Window.h"
 
 namespace
@@ -15,9 +15,8 @@ namespace
    const int NUMBER_OF_MPPTS = 7;
 }
 
-View::View(QSerialPort& serialPort, TelemetryReporting& telemetryReporting)
+View::View(QSerialPort& serialPort)
 : serialPort_(serialPort)
-, telemetryReporting_(telemetryReporting)
 {
     window_ = new Window();
     connectToUi();
@@ -26,85 +25,43 @@ View::View(QSerialPort& serialPort, TelemetryReporting& telemetryReporting)
 void View::connectToUi()
 {
     window_->connect(&(window_->getConnectButton()), SIGNAL(clicked()),
-                     this, SLOT(attemptConnection()));
+                     this, SIGNAL(attemptConnectionSignal()));
     window_->connect(&(window_->getModeSelectionComboBox()), SIGNAL(editTextChanged(QString)),
-                     this, SLOT(differentModeSelected()));
+                     this, SIGNAL(differentModeSelectedSignal()));
     window_->connect(&(window_->getSendKeyDriverControlButton()), SIGNAL(clicked(bool)),
-                     this, SLOT(sendKeyDriverControl()));
+                     this, SIGNAL(sendKeyDriverControlSignal()));
     window_->connect(&(window_->getSendDriverControlDetailsButton()), SIGNAL(clicked()),
-                     this, SLOT(sendDriverControlDetails()));
+                     this, SIGNAL(sendDriverControlDetailsSignal()));
     window_->connect(&(window_->getSendFaultsButton()), SIGNAL(clicked()),
-                     this, SLOT(sendFaults()));
+                     this, SIGNAL(sendFaultsSignal()));
     window_->connect(&(window_->getSendBatteryDataButton()), SIGNAL(clicked()),
-                     this, SLOT(sendBatteryData()));
+                     this, SIGNAL(sendBatteryDataSignal()));
     window_->connect(&(window_->getSendCmuDataButton()), SIGNAL(clicked()),
-                     this, SLOT(sendCmuData()));
+                     this, SIGNAL(sendCmuDataSignal()));
     window_->connect(&(window_->getSendMpptDataButton()), SIGNAL(clicked()),
-                     this, SLOT(sendMpptData()));
+                     this, SIGNAL(sendMpptDataSignal()));
     window_->connect(&(window_->getSendAllButton()), SIGNAL(clicked()),
-                     this, SLOT(sendAll()));
+                     this, SIGNAL(sendAllSignal()));
 }
 
-void View::attemptConnection()
+void View::setConnectionStatus(bool connectionStatus)
 {
-    if (telemetryReporting_.attemptConnection(serialPort_,window_->getComPortLineEdit().text()) == true)
+    if(connectionStatus)
     {
-        window_->setConnectionStatusText("Connected");
+        window_->getConnectionStatusLabel().setText("Connected.");
     }
     else
     {
-        window_->setConnectionStatusText("Connection Failed.");
+        window_->getConnectionStatusLabel().setText("Connection Failed.");
     }
 }
 
-void View::differentModeSelected()
+QString View::getModeSelected()
 {
-    QString testingMode = window_->getModeSelectionComboBox().currentText();
-    qDebug() << testingMode;
+    return window_->getModeSelectionComboBox().currentText();
 }
 
-void View::sendKeyDriverControl()
+QString View::getCommunicationPort()
 {
-   telemetryReporting_.sendKeyDriverControlTelemetry();
-}
-
-void View::sendDriverControlDetails()
-{
-   telemetryReporting_.sendDriverControlDetails();
-}
-
-void View::sendFaults()
-{
-   telemetryReporting_.sendFaults();
-}
-
-void View::sendBatteryData()
-{
-   telemetryReporting_.sendBatteryData();
-}
-
-void View::sendCmuData()
-{
-   for (int i = 0; i < NUMBER_OF_CMUS; ++i)
-   {
-      telemetryReporting_.sendCmuData(i);
-   }
-}
-
-void View::sendMpptData()
-{
-   for (int i = 0; i < NUMBER_OF_MPPTS; ++i)
-   {
-      telemetryReporting_.sendMpptData(i);
-   }
-}
-
-void View::sendAll()
-{
-   sendKeyDriverControl();
-   sendDriverControlDetails();
-   sendFaults();
-   sendBatteryData();
-   sendCmuData();
-   sendMpptData();
+    return window_->getComPortLineEdit().text();
 }
