@@ -20,10 +20,10 @@ View::View(QSerialPort& serialPort, TelemetryReporting& telemetryReporting)
 , telemetryReporting_(telemetryReporting)
 {
     window_ = new Window();
-    connectSlots();
+    connectToUi();
 }
 
-void View::connectSlots()
+void View::connectToUi()
 {
     window_->connect(&(window_->getConnectButton()), SIGNAL(clicked()),
                      this, SLOT(attemptConnection()));

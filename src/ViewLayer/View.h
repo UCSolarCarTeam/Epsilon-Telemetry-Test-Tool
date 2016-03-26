@@ -17,7 +17,7 @@ public:
     View(QSerialPort& serialPort, TelemetryReporting& telemetryReporting);
 
 private:
-    void connectSlots();
+    void connectToUi();
 
 private slots:
     void attemptConnection();
