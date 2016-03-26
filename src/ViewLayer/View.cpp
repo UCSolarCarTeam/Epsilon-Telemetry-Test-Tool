@@ -6,7 +6,6 @@
 #include <QComboBox>
 #include "View.h"
 #include "TelemetryReporting.h"
-#include "CommunicationServer.h"
 #include "Window.h"
 
 namespace
@@ -48,16 +47,14 @@ void View::connectSlots()
 
 void View::attemptConnection()
 {
-    CommunicationServer communicationServer(serialPort_,window_->getComPortLineEdit().text());
-
-   if (communicationServer.attemptConnection() == true)
-   {
-      window_->setConnectionStatusText("Connected");
-   }
-   else
-   {
-      window_->setConnectionStatusText("Connection Failed.");
-   }
+    if (telemetryReporting_.attemptConnection(serialPort_,window_->getComPortLineEdit().text()) == true)
+    {
+        window_->setConnectionStatusText("Connected");
+    }
+    else
+    {
+        window_->setConnectionStatusText("Connection Failed.");
+    }
 }
 
 void View::differentModeSelected()

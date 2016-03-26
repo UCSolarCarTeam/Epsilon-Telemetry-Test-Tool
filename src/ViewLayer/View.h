@@ -3,7 +3,6 @@
 
 #include <QObject>
 class TelemetryReporting;
-class CommunicationServer;
 class QSerialPort;
 class Window;
 class QPushButton;

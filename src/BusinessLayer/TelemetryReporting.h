@@ -5,6 +5,8 @@
 -------------------------------------------------------*/
 class QIODevice;
 class VehicleData;
+class SerialPortPeripheral;
+class QSerialPort;
 
 class TelemetryReporting
 {
@@ -18,6 +20,7 @@ public:
    void sendBatteryData();
    void sendCmuData(unsigned char cmuDataIndex);
    void sendMpptData(unsigned char mpptDataIndex);
+   bool attemptConnection(QSerialPort& serialPort, QString communicationPort);
 
 private:
    // Will return length of framed data

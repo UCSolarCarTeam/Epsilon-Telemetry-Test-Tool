@@ -9,7 +9,7 @@
 #include <QComboBox>
 #include "Window.h"
 #include "TelemetryReporting.h"
-#include "CommunicationServer.h"
+#include "SerialPortPeripheral.h"
 
 Window::Window()
 {

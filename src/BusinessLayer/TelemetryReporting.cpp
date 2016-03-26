@@ -8,6 +8,7 @@
 #include <CrcCalculator.h>
 #include <TelemetryReporting.h>
 #include <VehicleData.h>
+#include <SerialPortPeripheral.h>
 
 union FloatDataUnion
 {
@@ -240,4 +241,10 @@ void TelemetryReporting::sendData(const unsigned char* data, int length)
    {
       outputDevice_.putChar(data[i]);
    }
+}
+
+bool TelemetryReporting::attemptConnection(QSerialPort& serialPort, QString communicationPort)
+{
+    SerialPortPeripheral SerialPortPeripheral(serialPort,communicationPort);
+    return SerialPortPeripheral.attemptConnection();
 }

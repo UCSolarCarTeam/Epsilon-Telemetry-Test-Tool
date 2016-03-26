@@ -20,9 +20,8 @@ HEADERS  += \
     DataLayer/MpptData.h \
     DataLayer/VehicleData.h \
     UILayer/Window.h \
-    BusinessLayer/CommunicationServer.h \
-    Peripherals/SerialPortPeripheral.h \
-    ViewLayer/View.h
+    ViewLayer/View.h \
+    Peripherals/SerialPortPeripheral.h
 
 
 SOURCES += \
@@ -34,6 +33,7 @@ SOURCES += \
     DataLayer/MpptData.cpp \
     DataLayer/VehicleData.cpp \
     UILayer/Window.cpp \
-    BusinessLayer/CommunicationServer.cpp \
-    Peripherals/SerialPortPeripheral.cpp \
-    ViewLayer/View.cpp
+    ViewLayer/View.cpp \
+    Peripherals/SerialPortPeripheral.cpp
+
+DISTFILES +=
