@@ -28,7 +28,6 @@ private slots:
    void sendBatteryData();
    void sendCmuData();
    void sendMpptData();
-   //temporary method, remove later.
    void sendAll();
 
 private:

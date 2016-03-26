@@ -2,7 +2,6 @@
 #define VIEW_H
 
 #include <QObject>
-//class TelemetryReporting;
 class QSerialPort;
 class Window;
 class QPushButton;

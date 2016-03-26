@@ -281,7 +281,6 @@ void TelemetryReporting::sendMpptData()
     }
 }
 
-//temporary method
 void TelemetryReporting::sendAll()
 {
     sendKeyDriverControlTelemetry();

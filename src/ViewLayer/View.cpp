@@ -5,7 +5,6 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include "View.h"
-//#include "TelemetryReporting.h"
 #include "Window.h"
 
 namespace
