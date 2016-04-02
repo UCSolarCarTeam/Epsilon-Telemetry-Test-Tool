@@ -8,8 +8,9 @@ class QSerialPort;
 class SerialPortPeripheral
 {
 public:
-    SerialPortPeripheral(QSerialPort& serialPort, QString portName);
+    SerialPortPeripheral(QSerialPort& serialPort);
     bool attemptConnection();
+    void setPortName(QString portName);
 private:
     QSerialPort& serialPort_;
 };

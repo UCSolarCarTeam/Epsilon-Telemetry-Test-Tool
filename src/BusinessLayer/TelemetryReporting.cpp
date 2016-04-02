@@ -46,12 +46,13 @@ namespace
 }
 
 TelemetryReporting::TelemetryReporting(QIODevice& device,
-                                       QSerialPort& serialPort,
-                                       VehicleData& vehicleData)
+                                       SerialPortPeripheral& peripheral,
+                                       VehicleData& vehicleData,
+                                       View& view)
 : outputDevice_(device)
+, serialPortPeripheral_(peripheral)
 , vehicleData_(vehicleData)
-, serialPort_(serialPort)
-, view_(new View(serialPort))
+, view_(view)
 {
     connectToView();
 }
@@ -255,13 +256,13 @@ void TelemetryReporting::sendData(const unsigned char* data, int length)
 
 void TelemetryReporting::attemptConnection()
 {
-    SerialPortPeripheral SerialPortPeripheral(serialPort_,view_->getCommunicationPort());
-    view_->setConnectionStatus(SerialPortPeripheral.attemptConnection());
+    serialPortPeripheral_.setPortName(view_.getCommunicationPort());
+    view_.setConnectionStatus(serialPortPeripheral_.attemptConnection());
 }
 
 void TelemetryReporting::differentModeSelected()
 {
-    QString testingMode = view_->getModeSelected();
+    QString testingMode = view_.getModeSelected();
     qDebug() << testingMode;
 }
 
@@ -293,12 +294,12 @@ void TelemetryReporting::sendAll()
 
 void TelemetryReporting::connectToView()
 {
-    connect(view_, SIGNAL(attemptConnectionSignal()), this, SLOT(attemptConnection()));
-    connect(view_, SIGNAL(differentModeSelectedSignal()), this, SLOT(differentModeSelected()));
-    connect(view_, SIGNAL(sendKeyDriverControlSignal()), this, SLOT(sendKeyDriverControlTelemetry()));
-    connect(view_, SIGNAL(sendDriverControlDetailsSignal()), this, SLOT(sendDriverControlDetails()));
-    connect(view_, SIGNAL(sendFaultsSignal()), this, SLOT(sendFaults()));
-    connect(view_, SIGNAL(sendCmuDataSignal()), this, SLOT(sendCmuData()));
-    connect(view_, SIGNAL(sendMpptDataSignal()), this, SLOT(sendMpptData()));
-    connect(view_, SIGNAL(sendAllSignal()), this, SLOT(sendAll()));
+    connect(&view_, SIGNAL(attemptConnectionSignal()), this, SLOT(attemptConnection()));
+    connect(&view_, SIGNAL(differentModeSelectedSignal()), this, SLOT(differentModeSelected()));
+    connect(&view_, SIGNAL(sendKeyDriverControlSignal()), this, SLOT(sendKeyDriverControlTelemetry()));
+    connect(&view_, SIGNAL(sendDriverControlDetailsSignal()), this, SLOT(sendDriverControlDetails()));
+    connect(&view_, SIGNAL(sendFaultsSignal()), this, SLOT(sendFaults()));
+    connect(&view_, SIGNAL(sendCmuDataSignal()), this, SLOT(sendCmuData()));
+    connect(&view_, SIGNAL(sendMpptDataSignal()), this, SLOT(sendMpptData()));
+    connect(&view_, SIGNAL(sendAllSignal()), this, SLOT(sendAll()));
 }

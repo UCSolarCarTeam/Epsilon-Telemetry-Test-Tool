@@ -11,11 +11,15 @@ namespace
     const int NUMBER_OF_CMUS = 4;
     const int NUMBER_OF_MPPTS = 7;
 }
-SerialPortPeripheral::SerialPortPeripheral(QSerialPort& serialPort, QString portName)
+SerialPortPeripheral::SerialPortPeripheral(QSerialPort& serialPort)
 : serialPort_(serialPort)
 {
-    serialPort_.setPortName(portName);
     serialPort_.setBaudRate(BAUDRATE);
+}
+
+void SerialPortPeripheral::setPortName(QString portName)
+{
+    serialPort_.setPortName(portName);
 }
 
 bool SerialPortPeripheral::attemptConnection()

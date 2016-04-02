@@ -13,7 +13,7 @@ class View : public QObject
 {
     Q_OBJECT
 public:
-    View(QSerialPort& serialPort);
+    View(Window& window);
     void setConnectionStatus(bool connectionStatus);
     QString getModeSelected();
     QString getCommunicationPort();
@@ -34,8 +34,7 @@ signals:
 
 
 private:
-    QSerialPort& serialPort_;
-    Window* window_;
+    Window& window_;
 
 };
 

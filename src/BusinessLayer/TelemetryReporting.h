@@ -10,14 +10,16 @@ class VehicleData;
 class SerialPortPeripheral;
 class QSerialPort;
 class View;
+class Window;
 
 class TelemetryReporting : public QObject
 {
     Q_OBJECT
 public:
    TelemetryReporting(QIODevice& device,
-                      QSerialPort& serialPort,
-                      VehicleData& vehicleData);
+                      SerialPortPeripheral& peripheral,
+                      VehicleData& vehicleData,
+                      View& view);
 
 private slots:
    void attemptConnection();
@@ -48,7 +50,7 @@ private:
 
 private:
    QIODevice& outputDevice_;
+   SerialPortPeripheral& serialPortPeripheral_;
    VehicleData& vehicleData_;
-   QSerialPort& serialPort_;
-   View* view_;
+   View& view_;
 };
