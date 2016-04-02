@@ -28,8 +28,8 @@ private slots:
    void sendDriverControlDetails();
    void sendFaults();
    void sendBatteryData();
-   void sendCmuData();
-   void sendMpptData();
+   void sendAllCmuData();
+   void sendAllMpptData();
    void sendAll();
 
 private:
@@ -45,8 +45,8 @@ private:
    void writeFloatIntoData(unsigned char* data, int index, const float& value);
    void sendData(const unsigned char* data, int length);
    void connectToView();
-   void sendCmu(unsigned char cmuDataIndex);
-   void sendMppt(unsigned char mpptDataIndex);
+   void sendCmuData(unsigned char cmuDataIndex);
+   void sendMpptData(unsigned char mpptDataIndex);
 
 private:
    QIODevice& outputDevice_;

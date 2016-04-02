@@ -131,7 +131,7 @@ void TelemetryReporting::sendBatteryData()
    sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendCmu(unsigned char cmuDataIndex)
+void TelemetryReporting::sendCmuData(unsigned char cmuDataIndex)
 {
    const unsigned int unframedPacketLength = CMU_DATA_LENGTH + CHECKSUM_LENGTH;
    unsigned char packetPayload[unframedPacketLength];
@@ -154,7 +154,7 @@ void TelemetryReporting::sendCmu(unsigned char cmuDataIndex)
    sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendMppt(unsigned char mpptDataIndex)
+void TelemetryReporting::sendMpptData(unsigned char mpptDataIndex)
 {
    const unsigned int unframedPacketLength = MPPT_DATA_LENGTH + CHECKSUM_LENGTH;
    unsigned char packetPayload[unframedPacketLength];
@@ -266,19 +266,19 @@ void TelemetryReporting::differentModeSelected()
     qDebug() << testingMode;
 }
 
-void TelemetryReporting::sendCmuData()
+void TelemetryReporting::sendAllCmuData()
 {
     for (int i = 0; i < NUMBER_OF_CMUS; ++i)
     {
-       sendCmu(i);
+       sendCmuData(i);
     }
 }
 
-void TelemetryReporting::sendMpptData()
+void TelemetryReporting::sendAllMpptData()
 {
     for (int i = 0; i < NUMBER_OF_MPPTS; ++i)
     {
-       sendMppt(i);
+       sendMpptData(i);
     }
 }
 
@@ -288,8 +288,8 @@ void TelemetryReporting::sendAll()
     sendDriverControlDetails();
     sendFaults();
     sendBatteryData();
-    sendCmuData();
-    sendMpptData();
+    sendAllCmuData();
+    sendAllMpptData();
 }
 
 void TelemetryReporting::connectToView()
@@ -299,7 +299,7 @@ void TelemetryReporting::connectToView()
     connect(&view_, SIGNAL(sendKeyDriverControlSignal()), this, SLOT(sendKeyDriverControlTelemetry()));
     connect(&view_, SIGNAL(sendDriverControlDetailsSignal()), this, SLOT(sendDriverControlDetails()));
     connect(&view_, SIGNAL(sendFaultsSignal()), this, SLOT(sendFaults()));
-    connect(&view_, SIGNAL(sendCmuDataSignal()), this, SLOT(sendCmuData()));
-    connect(&view_, SIGNAL(sendMpptDataSignal()), this, SLOT(sendMpptData()));
+    connect(&view_, SIGNAL(sendCmuDataSignal()), this, SLOT(sendAllCmuData()));
+    connect(&view_, SIGNAL(sendMpptDataSignal()), this, SLOT(sendAllMpptData()));
     connect(&view_, SIGNAL(sendAllSignal()), this, SLOT(sendAll()));
 }
