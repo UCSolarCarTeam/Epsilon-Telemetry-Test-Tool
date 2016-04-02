@@ -72,7 +72,7 @@ void TelemetryReporting::sendKeyDriverControlTelemetry()
    addChecksum(packetPayload, KEY_DRIVER_CONTROL_LENGTH);
    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   sendData(packet, packetLength);
+   serialPortPeripheral_.sendData(packet, packetLength);
 }
 
 void TelemetryReporting::sendDriverControlDetails()
@@ -91,7 +91,7 @@ void TelemetryReporting::sendDriverControlDetails()
    addChecksum(packetPayload, DRIVER_CONTROL_DETAILS_LENGTH);
    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   sendData(packet, packetLength);
+   serialPortPeripheral_.sendData(packet, packetLength);
 }
 
 void TelemetryReporting::sendFaults()
@@ -111,7 +111,7 @@ void TelemetryReporting::sendFaults()
    addChecksum(packetPayload, FAULT_LENGTH);
    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   sendData(packet, packetLength);
+   serialPortPeripheral_.sendData(packet, packetLength);
 }
 
 void TelemetryReporting::sendBatteryData()
@@ -128,7 +128,7 @@ void TelemetryReporting::sendBatteryData()
    addChecksum(packetPayload, BATTERY_DATA_LENGTH);
    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   sendData(packet, packetLength);
+   serialPortPeripheral_.sendData(packet, packetLength);
 }
 
 void TelemetryReporting::sendCmuData(unsigned char cmuDataIndex)
@@ -151,7 +151,7 @@ void TelemetryReporting::sendCmuData(unsigned char cmuDataIndex)
    addChecksum(packetPayload, CMU_DATA_LENGTH);
    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   sendData(packet, packetLength);
+   serialPortPeripheral_.sendData(packet, packetLength);
 }
 
 void TelemetryReporting::sendMpptData(unsigned char mpptDataIndex)
@@ -179,7 +179,7 @@ void TelemetryReporting::sendMpptData(unsigned char mpptDataIndex)
    addChecksum(packetPayload, MPPT_DATA_LENGTH);
    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   sendData(packet, packetLength);
+   serialPortPeripheral_.sendData(packet, packetLength);
 }
 
 unsigned int TelemetryReporting::frameData(const unsigned char* dataToEncode,
@@ -246,14 +246,6 @@ void TelemetryReporting::writeFloatIntoData(unsigned char* data, int index, cons
    data[index] = floatDataUnion.charData[3];
 }
 
-void TelemetryReporting::sendData(const unsigned char* data, int length)
-{
-   for (int i = 0; i < length; ++i)
-   {
-      outputDevice_.putChar(data[i]);
-   }
-}
-
 void TelemetryReporting::attemptConnection()
 {
     serialPortPeripheral_.setPortName(view_.getCommunicationPort());
@@ -299,6 +291,7 @@ void TelemetryReporting::connectToView()
     connect(&view_, SIGNAL(sendKeyDriverControlSignal()), this, SLOT(sendKeyDriverControlTelemetry()));
     connect(&view_, SIGNAL(sendDriverControlDetailsSignal()), this, SLOT(sendDriverControlDetails()));
     connect(&view_, SIGNAL(sendFaultsSignal()), this, SLOT(sendFaults()));
+    connect(&view_, SIGNAL(sendBatteryDataSignal()), this, SLOT(sendBatteryData()));
     connect(&view_, SIGNAL(sendCmuDataSignal()), this, SLOT(sendAllCmuData()));
     connect(&view_, SIGNAL(sendMpptDataSignal()), this, SLOT(sendAllMpptData()));
     connect(&view_, SIGNAL(sendAllSignal()), this, SLOT(sendAll()));
