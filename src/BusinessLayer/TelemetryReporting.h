@@ -16,8 +16,7 @@ class TelemetryReporting : public QObject
 {
     Q_OBJECT
 public:
-   TelemetryReporting(QIODevice& device,
-                      SerialPortPeripheral& peripheral,
+   TelemetryReporting(SerialPortPeripheral& peripheral,
                       VehicleData& vehicleData,
                       View& view);
 
@@ -49,7 +48,6 @@ private:
    void sendMpptData(unsigned char mpptDataIndex);
 
 private:
-   QIODevice& outputDevice_;
    SerialPortPeripheral& serialPortPeripheral_;
    VehicleData& vehicleData_;
    View& view_;

@@ -45,12 +45,10 @@ namespace
    const int NUMBER_OF_MPPTS = 7;
 }
 
-TelemetryReporting::TelemetryReporting(QIODevice& device,
-                                       SerialPortPeripheral& peripheral,
+TelemetryReporting::TelemetryReporting(SerialPortPeripheral& peripheral,
                                        VehicleData& vehicleData,
                                        View& view)
-: outputDevice_(device)
-, serialPortPeripheral_(peripheral)
+: serialPortPeripheral_(peripheral)
 , vehicleData_(vehicleData)
 , view_(view)
 {
