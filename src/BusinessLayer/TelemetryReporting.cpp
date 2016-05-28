@@ -279,7 +279,6 @@ void TelemetryReporting::sendAll()
 void TelemetryReporting::connectToView()
 {
     connect(&view_, SIGNAL(attemptConnectionSignal()), this, SLOT(attemptConnection()));
-    connect(&view_, SIGNAL(differentModeSelectedSignal()), this, SLOT(differentModeSelected()));
     connect(&view_, SIGNAL(sendKeyDriverControlSignal()), this, SLOT(sendKeyDriverControlTelemetry()));
     connect(&view_, SIGNAL(sendDriverControlDetailsSignal()), this, SLOT(sendDriverControlDetails()));
     connect(&view_, SIGNAL(sendFaultsSignal()), this, SLOT(sendFaults()));
