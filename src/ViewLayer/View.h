@@ -14,7 +14,7 @@ class View : public QObject
 {
     Q_OBJECT
 public:
-    View(Window& window);
+    View();
     void setConnectionStatus(bool connectionStatus);
     QString getCommunicationPort();
     QString getModeSelected();
@@ -36,8 +36,7 @@ signals:
 
 
 private:
-    Window& window_;
-    WindowDesign* windowDesign_;
+    Window* window_;
 };
 
 #endif // VIEW_H
