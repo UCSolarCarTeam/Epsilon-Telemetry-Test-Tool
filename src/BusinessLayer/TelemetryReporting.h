@@ -20,7 +20,6 @@ public:
 
 private slots:
    void attemptConnection();
-   void differentModeSelected();
    void sendKeyDriverControlTelemetry();
    void sendDriverControlDetails();
    void sendFaults();
