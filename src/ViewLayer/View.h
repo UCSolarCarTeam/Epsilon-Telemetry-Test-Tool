@@ -4,6 +4,7 @@
 #include <QObject>
 class QSerialPort;
 class Window;
+class WindowDesign;
 class QPushButton;
 class QComboBox;
 class QLineEdit;
@@ -15,11 +16,12 @@ class View : public QObject
 public:
     View(Window& window);
     void setConnectionStatus(bool connectionStatus);
-    QString getModeSelected();
     QString getCommunicationPort();
+    QString getModeSelected();
 
 private:
     void connectToUi();
+    void connectTest();
 
 signals:
     void attemptConnectionSignal();
@@ -35,7 +37,7 @@ signals:
 
 private:
     Window& window_;
-
+    WindowDesign* windowDesign_;
 };
 
 #endif // VIEW_H

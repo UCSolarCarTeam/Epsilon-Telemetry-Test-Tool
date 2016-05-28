@@ -5,6 +5,7 @@
 #include <QComboBox>
 #include "View.h"
 #include "Window.h"
+#include "WindowDesign.h"
 
 namespace
 {
@@ -19,16 +20,13 @@ View::View(Window& window)
     connectToUi();
 }
 
+
 void View::connectToUi()
 {
     window_.connect(&(window_.getConnectButton()), SIGNAL(clicked()),
                      this, SIGNAL(attemptConnectionSignal()));
-    window_.connect(&(window_.getModeSelectionComboBox()), SIGNAL(editTextChanged(QString)),
-                     this, SIGNAL(differentModeSelectedSignal()));
     window_.connect(&(window_.getSendKeyDriverControlButton()), SIGNAL(clicked()),
                      this, SIGNAL(sendKeyDriverControlSignal()));
-    window_.connect(&(window_.getSendDriverControlDetailsButton()), SIGNAL(clicked()),
-                     this, SIGNAL(sendDriverControlDetailsSignal()));
     window_.connect(&(window_.getSendFaultsButton()), SIGNAL(clicked()),
                      this, SIGNAL(sendFaultsSignal()));
     window_.connect(&(window_.getSendBatteryDataButton()), SIGNAL(clicked()),
@@ -51,11 +49,6 @@ void View::setConnectionStatus(bool connectionStatus)
     {
         window_.getConnectionStatusLabel().setText("Connection Failed.");
     }
-}
-
-QString View::getModeSelected()
-{
-    return window_.getModeSelectionComboBox().currentText();
 }
 
 QString View::getCommunicationPort()

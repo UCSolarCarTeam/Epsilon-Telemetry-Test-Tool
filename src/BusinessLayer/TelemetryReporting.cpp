@@ -129,6 +129,14 @@ void TelemetryReporting::sendBatteryData()
    serialPortPeripheral_.sendData(packet, packetLength);
 }
 
+void TelemetryReporting::sendAllCmuData()
+{
+    for (int i = 0; i < NUMBER_OF_CMUS; ++i)
+    {
+       sendCmuData(i);
+    }
+}
+
 void TelemetryReporting::sendCmuData(unsigned char cmuDataIndex)
 {
    const unsigned int unframedPacketLength = CMU_DATA_LENGTH + CHECKSUM_LENGTH;
@@ -248,20 +256,6 @@ void TelemetryReporting::attemptConnection()
 {
     serialPortPeripheral_.setPortName(view_.getCommunicationPort());
     view_.setConnectionStatus(serialPortPeripheral_.attemptConnection());
-}
-
-void TelemetryReporting::differentModeSelected()
-{
-    QString testingMode = view_.getModeSelected();
-    qDebug() << testingMode;
-}
-
-void TelemetryReporting::sendAllCmuData()
-{
-    for (int i = 0; i < NUMBER_OF_CMUS; ++i)
-    {
-       sendCmuData(i);
-    }
 }
 
 void TelemetryReporting::sendAllMpptData()

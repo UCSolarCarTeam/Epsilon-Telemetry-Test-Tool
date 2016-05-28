@@ -21,7 +21,8 @@ HEADERS  += \
     DataLayer/VehicleData.h \
     UILayer/Window.h \
     ViewLayer/View.h \
-    Peripherals/SerialPortPeripheral.h
+    Peripherals/SerialPortPeripheral.h \
+    UILayer/WindowDesign.h
 
 
 SOURCES += \
@@ -34,6 +35,10 @@ SOURCES += \
     DataLayer/VehicleData.cpp \
     UILayer/Window.cpp \
     ViewLayer/View.cpp \
-    Peripherals/SerialPortPeripheral.cpp
+    Peripherals/SerialPortPeripheral.cpp \
+    UILayer/WindowDesign.cpp
 
 DISTFILES +=
+
+FORMS += \
+    UILayer/WindowDesign.ui

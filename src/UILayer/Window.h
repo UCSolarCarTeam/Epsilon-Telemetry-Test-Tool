@@ -18,11 +18,10 @@ public:
 public:
    QPushButton& getConnectButton();
    QLineEdit& getComPortLineEdit();
-   QLabel& getConnectionStatusLabel();
    QString& getTestingMode();
    QComboBox& getModeSelectionComboBox();
+   QLabel& getConnectionStatusLabel();
    QPushButton& getSendKeyDriverControlButton();
-   QPushButton& getSendDriverControlDetailsButton();
    QPushButton& getSendFaultsButton();
    QPushButton& getSendBatteryDataButton();
    QPushButton& getSendCmuDataButton();
@@ -35,15 +34,12 @@ public:
 private:
    void setupUi();
    void connectPointers();
-   void keyDriverControlDetails();
-   void driverControlDetails();
 
 private:
    QScopedPointer<QPushButton> connectButton_;
    QScopedPointer<QLineEdit> comPortLineEdit_;
    QScopedPointer<QLabel> connectionStatusLabel_;
    QScopedPointer<QString> testingMode_;
-   QScopedPointer<QComboBox> modeSelectionComboBox_;
    QScopedPointer<QPushButton> sendKeyDriverControlButton_;
    QScopedPointer<QPushButton> sendDriverControlDetailsButton_;
    QScopedPointer<QPushButton> sendFaultsButton_;
