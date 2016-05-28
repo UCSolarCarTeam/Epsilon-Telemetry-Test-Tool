@@ -8,7 +8,6 @@ class VehicleData;
 class SerialPortPeripheral;
 class QSerialPort;
 class View;
-class Window;
 
 class TelemetryReporting : public QObject
 {
