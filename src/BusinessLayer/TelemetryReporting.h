@@ -4,8 +4,6 @@
    Copyright (c) 2015 by University of Calgary Solar Car Team
 -------------------------------------------------------*/
 #include <QObject>
-class QDebug;
-class QIODevice;
 class VehicleData;
 class SerialPortPeripheral;
 class QSerialPort;

@@ -3,8 +3,6 @@
    Copyright (c) 2015 by University of Calgary Solar Car Team
 -------------------------------------------------------*/
 
-#include <QDebug>
-#include <QIODevice>
 #include <QSerialPort>
 #include <CcsDefines.h>
 #include <CrcCalculator.h>
