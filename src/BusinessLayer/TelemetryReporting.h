@@ -23,8 +23,8 @@ private slots:
    void sendDriverControlDetails();
    void sendFaults();
    void sendBatteryData();
-   void sendAllCmuData();
-   void sendAllMpptData();
+   void sendCmuData();
+   void sendMpptData();
    void sendAll();
 
 private:
@@ -37,11 +37,7 @@ private:
    // Add checksum into data at index length and length + 1
    void addChecksum(unsigned char* data, unsigned int length);
 
-   void writeFloatIntoData(unsigned char* data, int index, const float& value);
-   void sendData(const unsigned char* data, int length);
-   void connectToView();
-   void sendCmuData(unsigned char cmuDataIndex);
-   void sendMpptData(unsigned char mpptDataIndex);
+   void writeFloatIntoArray(unsigned char* data, int index, const float& value);
 
 private:
    SerialPortPeripheral& serialPortPeripheral_;

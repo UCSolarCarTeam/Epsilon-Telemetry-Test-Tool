@@ -2,9 +2,6 @@
 #include <QSerialPort>
 #include <QString>
 
-/*
- *
- */
 namespace
 {
     const int BAUDRATE = 9600;

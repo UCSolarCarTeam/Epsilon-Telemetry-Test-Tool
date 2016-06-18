@@ -25,7 +25,7 @@ void Window::setupUi()
    QWidget* mainWidget = new QWidget(this);
    QFormLayout* layout = new QFormLayout;
 
-   connectButton_.reset(new QPushButton("&Connect", this));
+   connectButton_.reset(new QPushButton("Connect", this));
    comPortLineEdit_.reset(new QLineEdit("/dev/ttyUSB0", this));
    connectionStatusLabel_.reset(new QLabel("Not connected", this));
 
