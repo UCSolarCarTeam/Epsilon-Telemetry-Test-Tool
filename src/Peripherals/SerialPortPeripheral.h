@@ -2,9 +2,6 @@
 class QString;
 class QSerialPort;
 
-/*
- *
- */
 class SerialPortPeripheral
 {
 public:
