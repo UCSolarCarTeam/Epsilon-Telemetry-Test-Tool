@@ -23,7 +23,6 @@ public slots:
 
 private:
     View& view_;
-    //gonna hardcode this as SerialPort type until i smooth things out
     QSerialPort* outputDevice_;
     PeripheralInterface* outputPeripheral_;
 };

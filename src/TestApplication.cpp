@@ -8,6 +8,7 @@ TestApplication::TestApplication(int& argc, char** argv)
 , telemetryReporting_(new TelemetryReporting(communicationService_->getPeripheral(), *vehicleData_, *view_))
 {
 }
-    TestApplication::~TestApplication()
+
+TestApplication::~TestApplication()
 {
 }

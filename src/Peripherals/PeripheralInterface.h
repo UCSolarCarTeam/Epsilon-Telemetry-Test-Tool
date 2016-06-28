@@ -1,6 +1,5 @@
 #pragma once
 
-class QIODevice;
 class QString;
 
 class PeripheralInterface

@@ -193,6 +193,16 @@ void TelemetryReporting::sendMpptData()
     }
 }
 
+void TelemetryReporting::sendAll()
+{
+    sendKeyDriverControlTelemetry();
+    sendDriverControlDetails();
+    sendFaults();
+    sendBatteryData();
+    sendCmuData();
+    sendMpptData();
+}
+
 unsigned int TelemetryReporting::frameData(const unsigned char* dataToEncode,
       unsigned long length, unsigned char* frameData)
 {
@@ -255,14 +265,4 @@ void TelemetryReporting::writeFloatIntoArray(unsigned char* data, int index, con
    data[index++] = floatDataUnion.charData[1];
    data[index++] = floatDataUnion.charData[2];
    data[index] = floatDataUnion.charData[3];
-}
-
-void TelemetryReporting::sendAll()
-{
-    sendKeyDriverControlTelemetry();
-    sendDriverControlDetails();
-    sendFaults();
-    sendBatteryData();
-    sendCmuData();
-    sendMpptData();
 }
