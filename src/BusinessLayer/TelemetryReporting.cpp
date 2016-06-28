@@ -3,12 +3,12 @@
    Copyright (c) 2015 by University of Calgary Solar Car Team
 -------------------------------------------------------*/
 
-#include <QSerialPort>
+#include <QIODevice>
 #include <CcsDefines.h>
 #include <CrcCalculator.h>
 #include <TelemetryReporting.h>
 #include <VehicleData.h>
-#include <SerialPortPeripheral.h>
+#include <PeripheralInterface.h>
 #include <View.h>
 
 union FloatDataUnion
@@ -43,15 +43,14 @@ namespace
    const int NUMBER_OF_MPPTS = 7;
 }
 
-TelemetryReporting::TelemetryReporting(SerialPortPeripheral& peripheral,
+TelemetryReporting::TelemetryReporting(PeripheralInterface& outputPeripheral,
                                        VehicleData& vehicleData,
                                        View& view)
-: serialPortPeripheral_(peripheral)
+: outputPeripheral_(outputPeripheral)
 , vehicleData_(vehicleData)
 , view_(view)
 {
     //Connect slots to View Signals
-    connect(&view_, SIGNAL(attemptConnectionSignal()), this, SLOT(attemptConnection()));
     connect(&view_, SIGNAL(sendKeyDriverControlSignal()), this, SLOT(sendKeyDriverControlTelemetry()));
     connect(&view_, SIGNAL(sendDriverControlDetailsSignal()), this, SLOT(sendDriverControlDetails()));
     connect(&view_, SIGNAL(sendFaultsSignal()), this, SLOT(sendFaults()));
@@ -59,6 +58,8 @@ TelemetryReporting::TelemetryReporting(SerialPortPeripheral& peripheral,
     connect(&view_, SIGNAL(sendCmuDataSignal()), this, SLOT(sendCmuData()));
     connect(&view_, SIGNAL(sendMpptDataSignal()), this, SLOT(sendMpptData()));
     connect(&view_, SIGNAL(sendAllSignal()), this, SLOT(sendAll()));
+    //Might need to connect a signal for whenever the serial port gets updated to a slot
+    //that updates the outputDevice_ to the updated device.
 }
 
 void TelemetryReporting::sendKeyDriverControlTelemetry()
@@ -76,7 +77,7 @@ void TelemetryReporting::sendKeyDriverControlTelemetry()
    addChecksum(packetPayload, KEY_DRIVER_CONTROL_LENGTH);
    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   serialPortPeripheral_.sendData(packet, packetLength);
+   outputPeripheral_.sendData(packet, packetLength);
 }
 
 void TelemetryReporting::sendDriverControlDetails()
@@ -95,7 +96,7 @@ void TelemetryReporting::sendDriverControlDetails()
    addChecksum(packetPayload, DRIVER_CONTROL_DETAILS_LENGTH);
    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   serialPortPeripheral_.sendData(packet, packetLength);
+   outputPeripheral_.sendData(packet, packetLength);
 }
 
 void TelemetryReporting::sendFaults()
@@ -115,7 +116,7 @@ void TelemetryReporting::sendFaults()
    addChecksum(packetPayload, FAULT_LENGTH);
    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   serialPortPeripheral_.sendData(packet, packetLength);
+   outputPeripheral_.sendData(packet, packetLength);
 }
 
 void TelemetryReporting::sendBatteryData()
@@ -132,7 +133,7 @@ void TelemetryReporting::sendBatteryData()
    addChecksum(packetPayload, BATTERY_DATA_LENGTH);
    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   serialPortPeripheral_.sendData(packet, packetLength);
+   outputPeripheral_.sendData(packet, packetLength);
 }
 
 void TelemetryReporting::sendCmuData()
@@ -157,7 +158,7 @@ void TelemetryReporting::sendCmuData()
         addChecksum(packetPayload, CMU_DATA_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
         unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-        serialPortPeripheral_.sendData(packet, packetLength);
+        outputPeripheral_.sendData(packet, packetLength);
     }
 }
 
@@ -188,7 +189,7 @@ void TelemetryReporting::sendMpptData()
         addChecksum(packetPayload, MPPT_DATA_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
         unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-        serialPortPeripheral_.sendData(packet, packetLength);
+        outputPeripheral_.sendData(packet, packetLength);
     }
 }
 
@@ -254,12 +255,6 @@ void TelemetryReporting::writeFloatIntoArray(unsigned char* data, int index, con
    data[index++] = floatDataUnion.charData[1];
    data[index++] = floatDataUnion.charData[2];
    data[index] = floatDataUnion.charData[3];
-}
-
-void TelemetryReporting::attemptConnection()
-{
-    serialPortPeripheral_.setPortName(view_.getCommunicationPort());
-    view_.setConnectionStatus(serialPortPeripheral_.attemptConnection());
 }
 
 void TelemetryReporting::sendAll()

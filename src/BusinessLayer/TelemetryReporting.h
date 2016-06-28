@@ -4,21 +4,21 @@
    Copyright (c) 2015 by University of Calgary Solar Car Team
 -------------------------------------------------------*/
 #include <QObject>
+
 class VehicleData;
-class SerialPortPeripheral;
-class QSerialPort;
+class PeripheralInterface;
+class QIODevice;
 class View;
 
 class TelemetryReporting : public QObject
 {
     Q_OBJECT
 public:
-   TelemetryReporting(SerialPortPeripheral& peripheral,
+   TelemetryReporting(PeripheralInterface& peripheral,
                       VehicleData& vehicleData,
                       View& view);
 
 private slots:
-   void attemptConnection();
    void sendKeyDriverControlTelemetry();
    void sendDriverControlDetails();
    void sendFaults();
@@ -40,7 +40,7 @@ private:
    void writeFloatIntoArray(unsigned char* data, int index, const float& value);
 
 private:
-   SerialPortPeripheral& serialPortPeripheral_;
+   PeripheralInterface& outputPeripheral_;
    VehicleData& vehicleData_;
    View& view_;
 };

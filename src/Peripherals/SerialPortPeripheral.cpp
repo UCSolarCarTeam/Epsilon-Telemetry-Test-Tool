@@ -8,28 +8,29 @@ namespace
     const int NUMBER_OF_CMUS = 4;
     const int NUMBER_OF_MPPTS = 7;
 }
+
 SerialPortPeripheral::SerialPortPeripheral(QSerialPort& serialPort)
-: serialPort_(serialPort)
+: outputDevice_(serialPort)
 {
-    serialPort_.setBaudRate(BAUDRATE);
+    outputDevice_.setBaudRate(BAUDRATE);
 }
 
 void SerialPortPeripheral::setPortName(QString portName)
 {
-    serialPort_.setPortName(portName);
+    outputDevice_.setPortName(portName);
 }
 
 void SerialPortPeripheral::sendData(const unsigned char* data, int length)
 {
     for (int i = 0; i < length; ++i)
     {
-       serialPort_.putChar(data[i]);
+       outputDevice_.putChar(data[i]);
     }
 }
 
 bool SerialPortPeripheral::attemptConnection()
 {
-   if (serialPort_.open(QIODevice::ReadWrite))
+   if (outputDevice_.open(QIODevice::ReadWrite))
    {
       return true;
    }
