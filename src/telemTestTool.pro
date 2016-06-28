@@ -25,7 +25,6 @@ HEADERS  += \
     Peripherals/SerialPortPeripheral.h \
     Peripherals/PeripheralInterface.h
 
-
 SOURCES += \
     main.cpp \
     TestApplication.cpp \
