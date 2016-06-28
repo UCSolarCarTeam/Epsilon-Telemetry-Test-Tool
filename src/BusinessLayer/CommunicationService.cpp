@@ -19,17 +19,17 @@ CommunicationService::CommunicationService(View& view)
 }
 void CommunicationService::setPeripheralSerialPort()
 {
-    outputDevice_(new QSerialPort());
-    outputPeripheral_(new SerialPortPeripheral(outputDevice_));
+    outputDevice_ = new QSerialPort();
+    outputPeripheral_ = new SerialPortPeripheral(*outputDevice_);
 }
 
 PeripheralInterface& CommunicationService::getPeripheral()
 {
-    return outputPeripheral_;
+    return *outputPeripheral_;
 }
 
 void CommunicationService::attemptConnection()
 {
-    outputPeripheral_.setPortName(view_.getCommunicationPort());
-    view_.setConnectionStatus(outputPeripheral_.attemptConnection());
+    outputPeripheral_->setPortName(view_.getCommunicationPort());
+    view_.setConnectionStatus(outputPeripheral_->attemptConnection());
 }

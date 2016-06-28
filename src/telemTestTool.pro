@@ -37,5 +37,4 @@ SOURCES += \
     DataLayer/VehicleData.cpp \
     UILayer/Window.cpp \
     ViewLayer/View.cpp \
-    Peripherals/SerialPortPeripheral.cpp \
-    Peripherals/PeripheralInterface.cpp
+    Peripherals/SerialPortPeripheral.cpp

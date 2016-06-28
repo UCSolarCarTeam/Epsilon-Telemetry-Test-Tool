@@ -15,6 +15,11 @@ SerialPortPeripheral::SerialPortPeripheral(QSerialPort& serialPort)
     outputDevice_.setBaudRate(BAUDRATE);
 }
 
+
+SerialPortPeripheral::~SerialPortPeripheral()
+{
+}
+
 void SerialPortPeripheral::setPortName(QString portName)
 {
     outputDevice_.setPortName(portName);

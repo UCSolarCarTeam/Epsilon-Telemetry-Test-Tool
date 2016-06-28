@@ -24,6 +24,6 @@ public slots:
 private:
     View& view_;
     //gonna hardcode this as SerialPort type until i smooth things out
-    QScopedPointer<QSerialPort> outputDevice_;
-    QScopedPointer<PeripheralInterface> outputPeripheral_;
+    QSerialPort* outputDevice_;
+    PeripheralInterface* outputPeripheral_;
 };
