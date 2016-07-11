@@ -8,7 +8,7 @@
 #include <CrcCalculator.h>
 #include <TelemetryReporting.h>
 #include <VehicleData.h>
-#include <PeripheralInterface.h>
+#include <I_CommPeripheral.h>
 #include <View.h>
 
 union FloatDataUnion
@@ -43,7 +43,7 @@ namespace
    const int NUMBER_OF_MPPTS = 7;
 }
 
-TelemetryReporting::TelemetryReporting(PeripheralInterface& outputPeripheral,
+TelemetryReporting::TelemetryReporting(I_CommPeripheral& outputPeripheral,
                                        VehicleData& vehicleData,
                                        View& view)
 : outputPeripheral_(outputPeripheral)

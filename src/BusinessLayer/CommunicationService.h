@@ -4,7 +4,7 @@
 #include <QSerialPort>
 #include <SerialPortPeripheral.h>
 
-class PeripheralInterface;
+class I_CommPeripheral;
 class View;
 class QIODevice;
 
@@ -13,7 +13,7 @@ class CommunicationService : public QObject
     Q_OBJECT
 public:
     CommunicationService(View& view);
-    PeripheralInterface& getPeripheral();
+    I_CommPeripheral& getPeripheral();
 
 private:
     void setPeripheralSerialPort();
@@ -24,5 +24,5 @@ public slots:
 private:
     View& view_;
     QSerialPort* outputDevice_;
-    PeripheralInterface* outputPeripheral_;
+    I_CommPeripheral* outputPeripheral_;
 };

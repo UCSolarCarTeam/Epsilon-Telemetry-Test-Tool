@@ -4,11 +4,6 @@
 
 class QSerialPort;
 class Window;
-class WindowDesign;
-class QPushButton;
-class QComboBox;
-class QLineEdit;
-class QLabel;
 
 class View : public QObject
 {
@@ -17,11 +12,6 @@ public:
     View();
     void setConnectionStatus(bool connectionStatus);
     QString getCommunicationPort();
-    QString getModeSelected();
-
-private:
-    void connectToUi();
-    void connectTest();
 
 signals:
     void attemptConnectionSignal();

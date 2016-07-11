@@ -23,7 +23,7 @@ HEADERS  += \
     UILayer/Window.h \
     ViewLayer/View.h \
     Peripherals/SerialPortPeripheral.h \
-    Peripherals/PeripheralInterface.h
+    Peripherals/I_CommPeripheral.h
 
 SOURCES += \
     main.cpp \

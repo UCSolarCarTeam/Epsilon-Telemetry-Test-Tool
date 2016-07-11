@@ -1,11 +1,11 @@
 #pragma once
 
-#include "PeripheralInterface.h"
+#include "I_CommPeripheral.h"
 
 class QString;
 class QSerialPort;
 
-class SerialPortPeripheral : public PeripheralInterface
+class SerialPortPeripheral : public I_CommPeripheral
 {
 public:
     SerialPortPeripheral(QSerialPort& serialPort);
@@ -15,5 +15,5 @@ public:
     void sendData(const unsigned char* data, int length);
 
 private:
-    QSerialPort& outputDevice_;
+    QSerialPort& serialPort_;
 };

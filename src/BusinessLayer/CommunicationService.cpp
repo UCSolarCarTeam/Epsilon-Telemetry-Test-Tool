@@ -1,6 +1,6 @@
 #include "CommunicationService.h"
 #include "View.h"
-#include "PeripheralInterface.h"
+#include "I_CommPeripheral.h"
 #include "SerialPortPeripheral.h"
 #include "QIODevice"
 #include "QSerialPort"
@@ -23,7 +23,7 @@ void CommunicationService::setPeripheralSerialPort()
     outputPeripheral_ = new SerialPortPeripheral(*outputDevice_);
 }
 
-PeripheralInterface& CommunicationService::getPeripheral()
+I_CommPeripheral& CommunicationService::getPeripheral()
 {
     return *outputPeripheral_;
 }

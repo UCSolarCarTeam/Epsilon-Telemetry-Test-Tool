@@ -1,8 +1,6 @@
-#include <QDebug>
 #include <QLabel>
 #include <QPushButton>
 #include <QLineEdit>
-#include <QComboBox>
 #include "View.h"
 #include "Window.h"
 
@@ -16,12 +14,7 @@ namespace
 View::View()
 {
     window_ = new Window();
-    connectToUi();
-}
-
-
-void View::connectToUi()
-{
+    //Connect slots to UI
     window_->connect(&(window_->getConnectButton()), SIGNAL(clicked()),
                      this, SIGNAL(attemptConnectionSignal()));
     window_->connect(&(window_->getSendKeyDriverControlButton()), SIGNAL(clicked()),
@@ -42,7 +35,7 @@ void View::setConnectionStatus(bool connectionStatus)
 {
     if(connectionStatus)
     {
-        window_->getConnectionStatusLabel().setText("Connected.");
+        window_->getConnectionStatusLabel().setText("Connected");
     }
     else
     {
