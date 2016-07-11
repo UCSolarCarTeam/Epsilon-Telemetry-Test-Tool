@@ -22,18 +22,18 @@ Window::~Window()
 
 void Window::setupUi()
 {
-   QScopedPointer<QWidget> mainWidget(new QWidget(this));
-   QScopedPointer<QFormLayout> layout(new QFormLayout);
+   QWidget* mainWidget = new QWidget(this);
+   QFormLayout* layout = new QFormLayout;
 
-   connectButton_(new QPushButton("Connect", this));
-   comPortLineEdit_(new QLineEdit("/dev/ttyUSB0", this));
-   connectionStatusLabel_(new QLabel("Not connected", this));
-   sendKeyDriverControlButton_(new QPushButton("Send Key Driver Control", this));
-   sendFaultsButton_(new QPushButton("Send Faults", this));
-   sendBatteryDataButton_(new QPushButton("Send Battery Data", this));
-   sendCmuDataButton_(new QPushButton("Send Cmu Data", this));
-   sendMpptDataButton_(new QPushButton("Send Mppt Data", this));
-   sendAllButton_(new QPushButton("Send All", this));
+   connectButton_.reset(new QPushButton("Connect", this));
+   comPortLineEdit_.reset(new QLineEdit("/dev/ttyUSB0", this));
+   connectionStatusLabel_.reset(new QLabel("Not connected", this));
+   sendKeyDriverControlButton_.reset(new QPushButton("Send Key Driver Control", this));
+   sendFaultsButton_.reset(new QPushButton("Send Faults", this));
+   sendBatteryDataButton_.reset(new QPushButton("Send Battery Data", this));
+   sendCmuDataButton_.reset(new QPushButton("Send Cmu Data", this));
+   sendMpptDataButton_.reset(new QPushButton("Send Mppt Data", this));
+   sendAllButton_.reset(new QPushButton("Send All", this));
 
    layout->addRow(connectButton_.data());
    layout->addRow(comPortLineEdit_.data());
@@ -44,9 +44,8 @@ void Window::setupUi()
    layout->addRow(sendCmuDataButton_.data());
    layout->addRow(sendMpptDataButton_.data());
    layout->addRow(sendAllButton_.data());
-
-   mainWidget->setLayout(layout.data());
-   setCentralWidget(mainWidget.data());
+   mainWidget->setLayout(layout);
+   setCentralWidget(mainWidget);
 }
 
 QPushButton& Window::getConnectButton()

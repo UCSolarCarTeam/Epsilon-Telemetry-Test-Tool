@@ -1,6 +1,6 @@
 #include "SerialPortPeripheral.h"
 #include <QSerialPort>
-#include <QString>
+#include <QStringList>
 
 namespace
 {
@@ -20,9 +20,9 @@ SerialPortPeripheral::~SerialPortPeripheral()
 {
 }
 
-void SerialPortPeripheral::setPortName(QString portName)
+void SerialPortPeripheral::setParameters(QStringList parameters)
 {
-    serialPort_.setPortName(portName);
+    serialPort_.setPortName(parameters.at(0));
 }
 
 void SerialPortPeripheral::sendData(const unsigned char* data, int length)

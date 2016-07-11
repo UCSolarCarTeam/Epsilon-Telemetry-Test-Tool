@@ -30,6 +30,7 @@ I_CommPeripheral& CommunicationService::getPeripheral()
 
 void CommunicationService::attemptConnection()
 {
-    outputPeripheral_->setPortName(view_.getCommunicationPort());
+    QStringList list = QStringList() << view_.getCommunicationPort();
+    outputPeripheral_->setParameters(list);
     view_.setConnectionStatus(outputPeripheral_->attemptConnection());
 }
