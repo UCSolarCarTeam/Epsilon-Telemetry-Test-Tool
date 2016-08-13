@@ -2,10 +2,10 @@
 
 #include <QApplication>
 #include <QScopedPointer>
-#include <QSerialPort>
 #include "TelemetryReporting.h"
 #include "VehicleData.h"
-#include "Window.h"
+#include "View.h"
+#include "CommunicationService.h"
 
 class TestApplication : public QApplication
 {
@@ -15,8 +15,8 @@ public:
    virtual ~TestApplication();
 
 private:
-   QScopedPointer<QSerialPort> serialPort_;
    QScopedPointer<VehicleData> vehicleData_;
+   QScopedPointer<View> view_;
+   QScopedPointer<CommunicationService> communicationService_;
    QScopedPointer<TelemetryReporting> telemetryReporting_;
-   QScopedPointer<Window> window_;
 };
