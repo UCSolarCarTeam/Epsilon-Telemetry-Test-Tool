@@ -8,7 +8,7 @@
 #include <CrcCalculator.h>
 #include <TelemetryReporting.h>
 #include <VehicleData.h>
-#include <I_CommPeripheral.h>
+#include <CommunicationService.h>
 #include <View.h>
 
 union FloatDataUnion
@@ -43,10 +43,10 @@ namespace
    const int NUMBER_OF_MPPTS = 7;
 }
 
-TelemetryReporting::TelemetryReporting(I_CommPeripheral& outputPeripheral,
+TelemetryReporting::TelemetryReporting(CommunicationService& commService,
                                        VehicleData& vehicleData,
                                        View& view)
-: outputPeripheral_(outputPeripheral)
+: communicationService_(commService)
 , vehicleData_(vehicleData)
 , view_(view)
 {
@@ -77,7 +77,7 @@ void TelemetryReporting::sendKeyDriverControlTelemetry()
    addChecksum(packetPayload, KEY_DRIVER_CONTROL_LENGTH);
    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   outputPeripheral_.sendData(packet, packetLength);
+   communicationService_.sendData(packet, packetLength);
 }
 
 void TelemetryReporting::sendDriverControlDetails()
@@ -96,7 +96,7 @@ void TelemetryReporting::sendDriverControlDetails()
    addChecksum(packetPayload, DRIVER_CONTROL_DETAILS_LENGTH);
    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   outputPeripheral_.sendData(packet, packetLength);
+   communicationService_.sendData(packet, packetLength);
 }
 
 void TelemetryReporting::sendFaults()
@@ -116,7 +116,7 @@ void TelemetryReporting::sendFaults()
    addChecksum(packetPayload, FAULT_LENGTH);
    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   outputPeripheral_.sendData(packet, packetLength);
+   communicationService_.sendData(packet, packetLength);
 }
 
 void TelemetryReporting::sendBatteryData()
@@ -133,7 +133,7 @@ void TelemetryReporting::sendBatteryData()
    addChecksum(packetPayload, BATTERY_DATA_LENGTH);
    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   outputPeripheral_.sendData(packet, packetLength);
+   communicationService_.sendData(packet, packetLength);
 }
 
 void TelemetryReporting::sendCmuData()
@@ -158,7 +158,7 @@ void TelemetryReporting::sendCmuData()
         addChecksum(packetPayload, CMU_DATA_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
         unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-        outputPeripheral_.sendData(packet, packetLength);
+        communicationService_.sendData(packet, packetLength);
     }
 }
 
@@ -189,7 +189,7 @@ void TelemetryReporting::sendMpptData()
         addChecksum(packetPayload, MPPT_DATA_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
         unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-        outputPeripheral_.sendData(packet, packetLength);
+        communicationService_.sendData(packet, packetLength);
     }
 }
 

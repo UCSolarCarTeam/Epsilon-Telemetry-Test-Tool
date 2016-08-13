@@ -6,7 +6,7 @@
 #include <QObject>
 
 class VehicleData;
-class I_CommPeripheral;
+class CommunicationService;
 class QIODevice;
 class View;
 
@@ -14,7 +14,7 @@ class TelemetryReporting : public QObject
 {
     Q_OBJECT
 public:
-   TelemetryReporting(I_CommPeripheral& peripheral,
+   TelemetryReporting(CommunicationService& commService,
                       VehicleData& vehicleData,
                       View& view);
 
@@ -39,7 +39,7 @@ private:
    void writeFloatIntoArray(unsigned char* data, int index, const float& value);
 
 private:
-   I_CommPeripheral& outputPeripheral_;
+   CommunicationService& communicationService_;
    VehicleData& vehicleData_;
    View& view_;
 };

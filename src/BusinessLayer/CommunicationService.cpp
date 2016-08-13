@@ -17,15 +17,16 @@ CommunicationService::CommunicationService(View& view)
     setPeripheralSerialPort();
     connect(&view_, SIGNAL(attemptConnectionSignal()), this, SLOT(attemptConnection()));
 }
+
 void CommunicationService::setPeripheralSerialPort()
 {
     outputDevice_ = new QSerialPort();
     outputPeripheral_ = new SerialPortPeripheral(*outputDevice_);
 }
 
-I_CommPeripheral& CommunicationService::getPeripheral()
+void CommunicationService::sendData(const unsigned char *packet, int packetLength)
 {
-    return *outputPeripheral_;
+    outputPeripheral_->sendData(packet, packetLength);
 }
 
 void CommunicationService::attemptConnection()

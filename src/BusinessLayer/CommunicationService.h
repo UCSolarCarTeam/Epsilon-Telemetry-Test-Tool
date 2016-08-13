@@ -13,7 +13,7 @@ class CommunicationService : public QObject
     Q_OBJECT
 public:
     CommunicationService(View& view);
-    I_CommPeripheral& getPeripheral();
+    void sendData(const unsigned char* packet, int packetLength);
 
 private:
     void setPeripheralSerialPort();
