@@ -31,7 +31,7 @@ void CommunicationService::sendData(const unsigned char *packet, int packetLengt
 
 void CommunicationService::attemptConnection()
 {
-    QStringList paramList = QStringList() << view_.getCommunicationPort();
+    QStringList paramList = (QStringList() << view_.getCommunicationPort());
     outputPeripheral_->setParameters(paramList);
     view_.setConnectionStatus(outputPeripheral_->attemptConnection());
 }
