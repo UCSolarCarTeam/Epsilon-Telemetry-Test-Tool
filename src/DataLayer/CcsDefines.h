@@ -1,12 +1,20 @@
 #pragma once
 
-/*-------------------------------------------------------
-   By Jordan Heinrichs for the Solar Car Team
-   Copyright (c) 2015 by University of Calgary Solar Car Team
--------------------------------------------------------*/
-
 namespace CcsDefines
 {
+   const int KEY_MOTOR_PKG_ID = 1;
+   const int MOTOR_DETAILS_0_PKG_ID = 2;
+   const int MOTOR_DETAILS_1_PKG_ID = 3;
+   const int DRIVER_CONTROLS_PKG_ID = 4;
+   const int MOTOR_FAULTS_PKG_ID = 5;
+   const int BATTERY_FAULTS_PKG_ID = 6;
+   const int CMU_PKG_ID = 8;
+   const int MPPT_PKG_ID = 9;
+   const int LIGHTS_PKG_ID = 10;
+
+   const int MPPT_COUNT = 3;
+   const int CMU_COUNT = 4;
+
    // Control parameters
    // Wavesculptor 22 requires velocity in RPM
    const int MAX_FORWARD_RPM = 1000; //Was 1298 on old system
