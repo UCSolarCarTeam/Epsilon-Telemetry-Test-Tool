@@ -3,36 +3,40 @@
 struct MotorDetailsData
 {
     MotorDetailsData()
-    : phaseCCurrent_(11.11f)
-    , phaseBCurrent_(12.21f)
-    , MotorVoltageReal_(13.31f)
-    , MotorVoltageImaginary_(14.41f)
-    , BackEmfReal_(15.51f)
-    , BackEmfImaginary_(16.61f)
-    , RailSupply15V_(17.71f)
-    , RailSupply3V_(18.81f)
-    , RailSupply1V_(19.91f)
-    , heatSinkTemperature_(20.02f)
-    , motorTemperature_(21.12f)
-    , dspBoardTempearture_(22.22f)
-    , dcBusAmpHours_(23.32f)
-    , odometer_(24.42f)
-    , slipSpeed_(25.52f)
+    : phaseCCurrent(11.11f)
+    , phaseBCurrent(12.21f)
+    , MotorVoltageReal(13.31f)
+    , MotorVoltageImaginary(14.41f)
+    , MotorCurrentReal(13.13f)
+    , MotorCurrentImaginary(14.14f)
+    , BackEmfReal(15.51f)
+    , BackEmfImaginary(16.61f)
+    , RailSupply15V(17.71f)
+    , RailSupply3V(18.81f)
+    , RailSupply1V(19.91f)
+    , heatSinkTemperature(20.02f)
+    , motorTemperature(21.12f)
+    , dspBoardTempearture(22.22f)
+    , dcBusAmpHours(23.32f)
+    , odometer(24.42f)
+    , slipSpeed(25.52f)
     {}
 
-    float phaseCCurrent_;
-    float phaseBCurrent_;
-    float MotorVoltageReal_;
-    float MotorVoltageImaginary_;
-    float BackEmfReal_;
-    float BackEmfImaginary_;
-    float RailSupply15V_;
-    float RailSupply3V_;
-    float RailSupply1V_;
-    float heatSinkTemperature_;
-    float motorTemperature_;
-    float dspBoardTempearture_;
-    float dcBusAmpHours_;
-    float odometer_;
-    float slipSpeed_;
-}
+    float phaseCCurrent;
+    float phaseBCurrent;
+    float MotorVoltageReal;
+    float MotorVoltageImaginary;
+    float MotorCurrentReal;
+    float MotorCurrentImaginary;
+    float BackEmfReal;
+    float BackEmfImaginary;
+    float RailSupply15V;
+    float RailSupply3V;
+    float RailSupply1V;
+    float heatSinkTemperature;
+    float motorTemperature;
+    float dspBoardTempearture;
+    float dcBusAmpHours;
+    float odometer;
+    float slipSpeed;
+};

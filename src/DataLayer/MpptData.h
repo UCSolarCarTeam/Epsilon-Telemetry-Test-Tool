@@ -3,14 +3,14 @@
 struct MpptData
 {
    MpptData()
-   : arrayVoltage_(71)
-   , arrayCurrent_(72)
-   , batteryVoltage_(73)
-   , temperature_(74)
+   : arrayVoltage(71)
+   , arrayCurrent(72)
+   , batteryVoltage(73)
+   , temperature(74)
    {}
 
-   float arrayVoltage_;
-   float arrayCurrent_;
-   float batteryVoltage_;
-   float temperature_;
+   unsigned short arrayVoltage;
+   unsigned short arrayCurrent;
+   unsigned short batteryVoltage;
+   unsigned short temperature;
 };

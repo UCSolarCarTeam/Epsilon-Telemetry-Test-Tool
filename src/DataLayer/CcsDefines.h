@@ -2,15 +2,17 @@
 
 namespace CcsDefines
 {
-   const int KEY_MOTOR_PKG_ID = 1;
-   const int MOTOR_DETAILS_0_PKG_ID = 2;
-   const int MOTOR_DETAILS_1_PKG_ID = 3;
-   const int DRIVER_CONTROLS_PKG_ID = 4;
-   const int MOTOR_FAULTS_PKG_ID = 5;
-   const int BATTERY_FAULTS_PKG_ID = 6;
-   const int CMU_PKG_ID = 8;
-   const int MPPT_PKG_ID = 9;
-   const int LIGHTS_PKG_ID = 10;
+   // Refer to https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=0
+   const unsigned char KEY_MOTOR_PKG_ID = 1;
+   const unsigned char MOTOR_DETAILS_0_PKG_ID = 2;
+   const unsigned char MOTOR_DETAILS_1_PKG_ID = 3;
+   const unsigned char DRIVER_CONTROLS_PKG_ID = 4;
+   const unsigned char MOTOR_FAULTS_PKG_ID = 5;
+   const unsigned char BATTERY_FAULTS_PKG_ID = 6;
+   const unsigned char BATTERY_PKG_ID = 7;
+   const unsigned char CMU_PKG_ID = 8;
+   const unsigned char MPPT_PKG_ID = 9;
+   const unsigned char LIGHTS_PKG_ID = 10;
 
    const int MPPT_COUNT = 3;
    const int CMU_COUNT = 4;

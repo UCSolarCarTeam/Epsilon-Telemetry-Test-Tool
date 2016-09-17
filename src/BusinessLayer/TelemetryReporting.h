@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <initializer_list>
 
 class BatteryData;
 class BatteryFaultsData;
@@ -20,12 +21,22 @@ class TelemetryReporting : public QObject
     Q_OBJECT
 public:
     TelemetryReporting(CommunicationService& commService,
-                       VehicleData& vehicleData,
+                       KeyMotorData& keyMotorData_,
+                       MotorDetailsData& motor0DetailsData_,
+                       MotorDetailsData& motor1DetailsData_,
+                       DriverControlsData& driverControlsData_,
+                       MotorFaultsData& motorFaultsData_,
+                       BatteryFaultsData& batteryFaultsData_,
+                       BatteryData& batteryData_,
+                       CmuData& cmuData_,
+                       MpptData& mpptData_,
+                       LightsData& lightsData_,
                        View& view);
 
 private slots:
     void sendKeyMotor();
-    void sendMotorDetails();
+    void sendMotor0Details();
+    void sendMotor1Details();
     void sendDriverControls();
     void sendMotorFaults();
     void sendBatteryFaults();
@@ -40,17 +51,21 @@ private:
     unsigned int stuffData(const unsigned char* dataToEncode, unsigned long length, unsigned char* encodedData);
     void addChecksum(unsigned char* data, unsigned int length);
     void writeFloatIntoArray(unsigned char* data, int index, const float& value);
+    void writeShortIntoArray(unsigned char* data, int index, const short& value);
+    void writeUShortIntoArray(unsigned char* data, int index, const unsigned short& value);
+    void writeBoolsIntoArray(unsigned char* data, int index, const bool values[], int numValues);
 
 private:
     CommunicationService& communicationService_;
     KeyMotorData& keyMotorData_;
-    MotorDetailsData& motorDetailsData_;
+    MotorDetailsData& motor0DetailsData_;
+    MotorDetailsData& motor1DetailsData_;
     DriverControlsData& driverControlsData_;
     MotorFaultsData& motorFaultsData_;
     BatteryFaultsData& batteryFaultsData_;
     BatteryData& batteryData_;
     CmuData& cmuData_;
     MpptData& mpptData_;
-    LightsData& lightsDa_;
+    LightsData& lightsData_;
     View& view_;
 };

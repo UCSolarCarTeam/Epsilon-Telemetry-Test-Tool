@@ -3,41 +3,43 @@
 struct BatteryData
 {
     BatteryData()
-    : alive_(true)
-    , packSocAmpHours_(32.23f)
-    , packSocPercentage_(33.33f)
-    , packBalanceSoc_(34.43f)
-    , packBalanceSocPercentage_(35)
-    , chargingCellVoltageError_(36)
-    , totalPackCapacity_(37)
-    , contactor0Errorstatus_(true)
-    , contactor1ErrorStatus_(false)
-    , contactor0Status_(true)
-    , contactor1Status_(false)
-    , contactor12VSupplyOk_(true)
-    , contactor2ErrorStatus_(false)
-    , contactor2Status_(true)
-    , prechargeState_(PrechargeState::EnablePack)
-    , perchargeTimerElapsed_(false)
-    , perchargeTimerNotElapsed_(true)
-    , prechargeTimerCount_(38)
-    , lowestCellVoltage_(39)
-    , lowestCellVoltageCmuNumber_(0)
-    , lowestCellVoltageCellNumber_(1)
-    , highestCellVoltage_(40)
-    , highestCellVoltageCmuNumber_(1)
-    , highestCellVoltageCellNumber_(2)
-    , lowestCellTemperature_(41)
-    , lowestCellTemperatureCmuNumber_(2)
-    , lowestCellTemperatureCellNumber_(3)
-    , highestCellTemperature_(42)
-    , highestCellTemperatureCmuNumber_(3)
-    , highestCellTemperatureCellNumber_(4)
-    , fan0Speed_(43)
-    , fan1Speed_(44)
-    , fanContactors12VCurrentConsumption_(45)
-    , cmu12VCurrentConsumption_(46)
-    , bmsCanLockedOut_(false)
+    : alive(true)
+    , packSocAmpHours(32.23f)
+    , packSocPercentage(33.33f)
+    , packBalanceSoc(34.43f)
+    , packBalanceSocPercentage(0.35)
+    , chargingCellVoltageError(36)
+    , cellTemperatureMargin(37)
+    , dischargingCellVoltageError(36)
+    , totalPackCapacity(37)
+    , contactor0Errorstatus(true)
+    , contactor1ErrorStatus(false)
+    , contactor0Status(true)
+    , contactor1Status(false)
+    , contactor12VSupplyOk(true)
+    , contactor2ErrorStatus(false)
+    , contactor2Status(true)
+    , prechargeState(PrechargeState::EnablePack)
+    , prechargeTimerElapsed(false)
+    , prechargeTimerNotElapsed(true)
+    , prechargeTimerCount(38)
+    , lowestCellVoltage(39)
+    , lowestCellVoltageCmuNumber(0)
+    , lowestCellVoltageCellNumber(1)
+    , highestCellVoltage(40)
+    , highestCellVoltageCmuNumber(1)
+    , highestCellVoltageCellNumber(2)
+    , lowestCellTemperature(41)
+    , lowestCellTemperatureCmuNumber(2)
+    , lowestCellTemperatureCellNumber(3)
+    , highestCellTemperature(42)
+    , highestCellTemperatureCmuNumber(3)
+    , highestCellTemperatureCellNumber(4)
+    , fan0Speed(43)
+    , fan1Speed(44)
+    , fanContactors12VCurrentConsumption(45)
+    , cmu12VCurrentConsumption(46)
+    , bmsCanLockedOut(false)
     {}
 
    enum PrechargeState
@@ -50,39 +52,41 @@ struct BatteryData
       Run = 4,
    };
 
-    bool alive_;
-    float packSocAmpHours_;
-    float packSocPercentage_;
-    float packBalanceSoc_;
-    short unsigned int packBalanceSocPercentage_;
-    short unsigned int chargingCellVoltageError_;
-    short unsigned int totalPackCapacity_;
-    bool contactor0Errorstatus_;
-    bool contactor1ErrorStatus_;
-    bool contactor0Status_;
-    bool contactor1Status_;
-    bool contactor12VSupplyOk_;
-    bool contactor2ErrorStatus_;
-    bool contactor2Status_;
-    PrechargeState prechargeState_;
-    bool perchargeTimerElapsed_;
-    bool perchargeTimerNotElapsed_;
-    unsigned short prechargeTimerCount_;
-    unsigned short lowestCellVoltage_;
-    char lowestCellVoltageCmuNumber_;
-    char lowestCellVoltageCellNumber_;
-    unsigned short highestCellVoltage_;
-    char highestCellVoltageCmuNumber_;
-    char highestCellVoltageCellNumber_;
-    unsigned short lowestCellTemperature_;
-    char lowestCellTemperatureCmuNumber_;
-    char lowestCellTemperatureCellNumber_;
-    unsigned short highestCellTemperature_;
-    char highestCellTemperatureCmuNumber_;
-    char highestCellTemperatureCellNumber_;
-    unsigned short fan0Speed_;
-    unsigned short fan1Speed_;
-    unsigned short fanContactors12VCurrentConsumption_;
-    unsigned short cmu12VCurrentConsumption_;
-    bool bmsCanLockedOut_;
-}
+    bool alive;
+    float packSocAmpHours;
+    float packSocPercentage;
+    float packBalanceSoc;
+    float packBalanceSocPercentage;
+    unsigned short chargingCellVoltageError;
+    unsigned short cellTemperatureMargin;
+    unsigned short dischargingCellVoltageError;
+    unsigned short totalPackCapacity;
+    bool contactor0Errorstatus;
+    bool contactor1ErrorStatus;
+    bool contactor0Status;
+    bool contactor1Status;
+    bool contactor12VSupplyOk;
+    bool contactor2ErrorStatus;
+    bool contactor2Status;
+    PrechargeState prechargeState;
+    bool prechargeTimerElapsed;
+    bool prechargeTimerNotElapsed;
+    unsigned short prechargeTimerCount;
+    unsigned short lowestCellVoltage;
+    unsigned char lowestCellVoltageCmuNumber;
+    unsigned char lowestCellVoltageCellNumber;
+    unsigned short highestCellVoltage;
+    unsigned char highestCellVoltageCmuNumber;
+    unsigned char highestCellVoltageCellNumber;
+    unsigned short lowestCellTemperature;
+    unsigned char lowestCellTemperatureCmuNumber;
+    unsigned char lowestCellTemperatureCellNumber;
+    unsigned short highestCellTemperature;
+    unsigned char highestCellTemperatureCmuNumber;
+    unsigned char highestCellTemperatureCellNumber;
+    unsigned short fan0Speed;
+    unsigned short fan1Speed;
+    unsigned short fanContactors12VCurrentConsumption;
+    unsigned short cmu12VCurrentConsumption;
+    bool bmsCanLockedOut;
+};
