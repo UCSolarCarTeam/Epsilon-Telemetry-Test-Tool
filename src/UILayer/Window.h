@@ -35,18 +35,18 @@ private:
    void setupUi();
 
 private:
-   QScopedPointer<QPushButton> connectButton_;
-   QScopedPointer<QLineEdit> comPortLineEdit_;
-   QScopedPointer<QLabel> connectionStatusLabel_;
-   QScopedPointer<QPushButton> sendKeyMotorButton_;
-   QScopedPointer<QPushButton> sendMotor0DetailsButton_;
-   QScopedPointer<QPushButton> sendMotor1DetailsButton_;
-   QScopedPointer<QPushButton> sendDriverControlsButton_;
-   QScopedPointer<QPushButton> sendMotorFaultsButton_;
-   QScopedPointer<QPushButton> sendBatteryFaultsButton_;
-   QScopedPointer<QPushButton> sendBatteryButton_;
-   QScopedPointer<QPushButton> sendCmuButton_;
-   QScopedPointer<QPushButton> sendMpptButton_;
-   QScopedPointer<QPushButton> sendLightsButton_;
-   QScopedPointer<QPushButton> sendAllButton_;
+   QPushButton* connectButton_;
+   QLineEdit* comPortLineEdit_;
+   QLabel* connectionStatusLabel_;
+   QPushButton* sendKeyMotorButton_;
+   QPushButton* sendMotor0DetailsButton_;
+   QPushButton* sendMotor1DetailsButton_;
+   QPushButton* sendDriverControlsButton_;
+   QPushButton* sendMotorFaultsButton_;
+   QPushButton* sendBatteryFaultsButton_;
+   QPushButton* sendBatteryButton_;
+   QPushButton* sendCmuButton_;
+   QPushButton* sendMpptButton_;
+   QPushButton* sendLightsButton_;
+   QPushButton* sendAllButton_;
 };

@@ -1,7 +1,6 @@
 #include <cstring>
 
 #include <QIODevice>
-#include <QDebug>
 
 #include <CcsDefines.h>
 #include <CrcCalculator.h>
@@ -21,8 +20,8 @@
 union DataUnion
 {
     float floatData;
-    short shortData;
-    unsigned short uShortData;
+    short shortData[2];
+    unsigned short uShortData[2];
     char charData[4];
 };
 
@@ -46,16 +45,16 @@ const unsigned char TERMINATING_BYTE = 0x00;
 }
 
 TelemetryReporting::TelemetryReporting(CommunicationService& commService,
-                                       KeyMotorData& keyMotorData,
-                                       MotorDetailsData& motor0DetailsData,
-                                       MotorDetailsData& motor1DetailsData,
-                                       DriverControlsData& driverControlsData,
-                                       MotorFaultsData& motorFaultsData,
-                                       BatteryFaultsData& batteryFaultsData,
-                                       BatteryData& batteryData,
-                                       CmuData& cmuData,
-                                       MpptData& mpptData,
-                                       LightsData& lightsData,
+                                       const KeyMotorData& keyMotorData,
+                                       const MotorDetailsData& motor0DetailsData,
+                                       const MotorDetailsData& motor1DetailsData,
+                                       const DriverControlsData& driverControlsData,
+                                       const MotorFaultsData& motorFaultsData,
+                                       const BatteryFaultsData& batteryFaultsData,
+                                       const BatteryData& batteryData,
+                                       const CmuData& cmuData,
+                                       const MpptData& mpptData,
+                                       const LightsData& lightsData,
                                        View& view)
     : communicationService_(commService)
     , keyMotorData_(keyMotorData)
@@ -86,7 +85,6 @@ TelemetryReporting::TelemetryReporting(CommunicationService& commService,
 
 void TelemetryReporting::sendKeyMotor()
 {
-    qDebug() << "Sending KeyMotor";
     const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
@@ -114,13 +112,16 @@ void TelemetryReporting::sendKeyMotor()
     communicationService_.sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendMotor0Details()
+void TelemetryReporting::sendMotorDetails(int n)
 {
-    qDebug() << "Sending Motor0Details";
     const unsigned int unframedPacketLength = MOTOR_DETAILS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
-    packetPayload[0] = CcsDefines::MOTOR_DETAILS_0_PKG_ID;
+    if(n == 0) {
+      packetPayload[0] = CcsDefines::MOTOR_DETAILS_0_PKG_ID;
+    } else {
+      packetPayload[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
+    }
     writeFloatIntoArray(packetPayload, 1, motor0DetailsData_.phaseCCurrent);
     writeFloatIntoArray(packetPayload, 5, motor0DetailsData_.phaseBCurrent);
     writeFloatIntoArray(packetPayload, 9, motor0DetailsData_.MotorVoltageReal);
@@ -145,40 +146,8 @@ void TelemetryReporting::sendMotor0Details()
     communicationService_.sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendMotor1Details()
-{
-    qDebug() << "Sending Motor1Details";
-    const unsigned int unframedPacketLength = MOTOR_DETAILS_LENGTH + CHECKSUM_LENGTH;
-    unsigned char packetPayload[unframedPacketLength];
-
-    packetPayload[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
-    writeFloatIntoArray(packetPayload, 1, motor1DetailsData_.phaseCCurrent);
-    writeFloatIntoArray(packetPayload, 5, motor1DetailsData_.phaseBCurrent);
-    writeFloatIntoArray(packetPayload, 9, motor1DetailsData_.MotorVoltageReal);
-    writeFloatIntoArray(packetPayload, 13, motor1DetailsData_.MotorVoltageImaginary);
-    writeFloatIntoArray(packetPayload, 17, motor1DetailsData_.MotorCurrentReal);
-    writeFloatIntoArray(packetPayload, 21, motor1DetailsData_.MotorCurrentImaginary);
-    writeFloatIntoArray(packetPayload, 25, motor1DetailsData_.BackEmfReal);
-    writeFloatIntoArray(packetPayload, 29, motor1DetailsData_.BackEmfImaginary);
-    writeFloatIntoArray(packetPayload, 33, motor1DetailsData_.RailSupply15V);
-    writeFloatIntoArray(packetPayload, 37, motor1DetailsData_.RailSupply3V);
-    writeFloatIntoArray(packetPayload, 41, motor1DetailsData_.RailSupply1V);
-    writeFloatIntoArray(packetPayload, 45, motor1DetailsData_.heatSinkTemperature);
-    writeFloatIntoArray(packetPayload, 49, motor1DetailsData_.motorTemperature);
-    writeFloatIntoArray(packetPayload, 53, motor1DetailsData_.dspBoardTempearture);
-    writeFloatIntoArray(packetPayload, 57, motor1DetailsData_.dcBusAmpHours);
-    writeFloatIntoArray(packetPayload, 61, motor1DetailsData_.odometer);
-    writeFloatIntoArray(packetPayload, 65, motor1DetailsData_.slipSpeed);
-
-    addChecksum(packetPayload, MOTOR_DETAILS_LENGTH);
-    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
-}
-
 void TelemetryReporting::sendDriverControls()
 {
-    qDebug() << "Sending DriverControls";
     const unsigned int unframedPacketLength = DRIVER_CONTROLS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
@@ -220,7 +189,6 @@ void TelemetryReporting::sendDriverControls()
 
 void TelemetryReporting::sendMotorFaults()
 {
-    qDebug() << "Sending MotorFaults";
     const unsigned int unframedPacketLength = MOTOR_FAULTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
@@ -277,7 +245,6 @@ void TelemetryReporting::sendMotorFaults()
 
 void TelemetryReporting::sendBatteryFaults()
 {
-    qDebug() << "Sending BatteryFaults";
     const unsigned int unframedPacketLength = BATTERY_FAULTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
@@ -296,7 +263,7 @@ void TelemetryReporting::sendBatteryFaults()
                                  batteryFaultsData_.contactorStuck,
                                  batteryFaultsData_.cmuDetectedExtraCellPresent
                                 };
-    writeBoolsIntoArray(packetPayload, 1, batteryFaultsArray, 14);
+    writeBoolsIntoArray(packetPayload, 1, batteryFaultsArray, 13);
 
     addChecksum(packetPayload, BATTERY_FAULTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
@@ -306,7 +273,6 @@ void TelemetryReporting::sendBatteryFaults()
 
 void TelemetryReporting::sendBattery()
 {
-    qDebug() << "Sending Battery";
     const unsigned int unframedPacketLength = BATTERY_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
@@ -338,16 +304,16 @@ void TelemetryReporting::sendBattery()
     writeUShortIntoArray(packetPayload, 29, batteryData_.prechargeTimerCount);
     writeUShortIntoArray(packetPayload, 31, batteryData_.lowestCellVoltage);
     packetPayload[33] = batteryData_.lowestCellVoltageCmuNumber;
-    packetPayload[33] += batteryData_.lowestCellVoltageCellNumber << 2;
+    packetPayload[33] += batteryData_.lowestCellVoltageCellNumber << 4;
     writeUShortIntoArray(packetPayload, 34, batteryData_.highestCellVoltage);
     packetPayload[36] = batteryData_.highestCellVoltageCmuNumber;
-    packetPayload[36] += batteryData_.highestCellVoltageCellNumber << 2;
+    packetPayload[36] += batteryData_.highestCellVoltageCellNumber << 4;
     writeUShortIntoArray(packetPayload, 37, batteryData_.lowestCellTemperature);
     packetPayload[39] = batteryData_.lowestCellTemperatureCmuNumber;
-    packetPayload[39] += batteryData_.lowestCellTemperatureCellNumber << 2;
+    packetPayload[39] += batteryData_.lowestCellTemperatureCellNumber << 4;
     writeUShortIntoArray(packetPayload, 40, batteryData_.highestCellTemperature);
     packetPayload[42] = batteryData_.highestCellTemperatureCmuNumber;
-    packetPayload[42] += batteryData_.highestCellTemperatureCellNumber << 2;
+    packetPayload[42] += batteryData_.highestCellTemperatureCellNumber << 4;
     writeUShortIntoArray(packetPayload, 51, batteryData_.fan0Speed);
     writeUShortIntoArray(packetPayload, 53, batteryData_.fan1Speed);
     writeUShortIntoArray(packetPayload, 55, batteryData_.fanContactors12VCurrentConsumption);
@@ -363,7 +329,6 @@ void TelemetryReporting::sendBattery()
 
 void TelemetryReporting::sendCmu()
 {
-    qDebug() << "Sending Cmu";
     const unsigned int unframedPacketLength = CMU_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
@@ -382,20 +347,17 @@ void TelemetryReporting::sendCmu()
 
     for (unsigned char i = 0; i < CcsDefines::CMU_COUNT; i++)
     {
-        unsigned char cmuPacketPayload[unframedPacketLength];
-        std::memcpy(cmuPacketPayload, packetPayload, unframedPacketLength);
-        cmuPacketPayload[1] = i;
+        packetPayload[1] = i;
 
-        addChecksum(cmuPacketPayload, CMU_LENGTH);
+        addChecksum(packetPayload, CMU_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-        unsigned int packetLength = frameData(cmuPacketPayload, unframedPacketLength, packet);
+        unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
         communicationService_.sendData(packet, packetLength);
     }
 }
 
 void TelemetryReporting::sendMppt()
 {
-    qDebug() << "Sending Mppt";
     const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
@@ -420,7 +382,6 @@ void TelemetryReporting::sendMppt()
 
 void TelemetryReporting::sendLights()
 {
-    qDebug() << "Sending Lights";
     const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
@@ -442,10 +403,9 @@ void TelemetryReporting::sendLights()
 
 void TelemetryReporting::sendAll()
 {
-    qDebug() << "Sending All";
     sendKeyMotor();
-    sendMotor0Details();
-    sendMotor1Details();
+    sendMotorDetails(0);
+    sendMotorDetails(1);
     sendDriverControls();
     sendMotorFaults();
     sendBatteryFaults();
@@ -519,7 +479,7 @@ void TelemetryReporting::writeFloatIntoArray(unsigned char* data, int index, con
 void TelemetryReporting::writeShortIntoArray(unsigned char* data, int index, const short& value)
 {
     DataUnion dataUnion;
-    dataUnion.shortData = value;
+    dataUnion.shortData[0] = value;
     data[index++] = dataUnion.charData[0];
     data[index] = dataUnion.charData[1];
 }
@@ -527,7 +487,7 @@ void TelemetryReporting::writeShortIntoArray(unsigned char* data, int index, con
 void TelemetryReporting::writeUShortIntoArray(unsigned char* data, int index, const unsigned short& value)
 {
     DataUnion dataUnion;
-    dataUnion.uShortData = value;
+    dataUnion.uShortData[0] = value;
     data[index++] = dataUnion.charData[0];
     data[index] = dataUnion.charData[1];
 }

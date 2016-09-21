@@ -21,22 +21,21 @@ class TelemetryReporting : public QObject
     Q_OBJECT
 public:
     TelemetryReporting(CommunicationService& commService,
-                       KeyMotorData& keyMotorData_,
-                       MotorDetailsData& motor0DetailsData_,
-                       MotorDetailsData& motor1DetailsData_,
-                       DriverControlsData& driverControlsData_,
-                       MotorFaultsData& motorFaultsData_,
-                       BatteryFaultsData& batteryFaultsData_,
-                       BatteryData& batteryData_,
-                       CmuData& cmuData_,
-                       MpptData& mpptData_,
-                       LightsData& lightsData_,
+                       const KeyMotorData& keyMotorData_,
+                       const MotorDetailsData& motor0DetailsData_,
+                       const MotorDetailsData& motor1DetailsData_,
+                       const DriverControlsData& driverControlsData_,
+                       const MotorFaultsData& motorFaultsData_,
+                       const BatteryFaultsData& batteryFaultsData_,
+                       const BatteryData& batteryData_,
+                       const CmuData& cmuData_,
+                       const MpptData& mpptData_,
+                       const LightsData& lightsData_,
                        View& view);
 
 private slots:
     void sendKeyMotor();
-    void sendMotor0Details();
-    void sendMotor1Details();
+    void sendMotorDetails(int n);
     void sendDriverControls();
     void sendMotorFaults();
     void sendBatteryFaults();
@@ -57,15 +56,15 @@ private:
 
 private:
     CommunicationService& communicationService_;
-    KeyMotorData& keyMotorData_;
-    MotorDetailsData& motor0DetailsData_;
-    MotorDetailsData& motor1DetailsData_;
-    DriverControlsData& driverControlsData_;
-    MotorFaultsData& motorFaultsData_;
-    BatteryFaultsData& batteryFaultsData_;
-    BatteryData& batteryData_;
-    CmuData& cmuData_;
-    MpptData& mpptData_;
-    LightsData& lightsData_;
+    const KeyMotorData& keyMotorData_;
+    const MotorDetailsData& motor0DetailsData_;
+    const MotorDetailsData& motor1DetailsData_;
+    const DriverControlsData& driverControlsData_;
+    const MotorFaultsData& motorFaultsData_;
+    const BatteryFaultsData& batteryFaultsData_;
+    const BatteryData& batteryData_;
+    const CmuData& cmuData_;
+    const MpptData& mpptData_;
+    const LightsData& lightsData_;
     View& view_;
 };
