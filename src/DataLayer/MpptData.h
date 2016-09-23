@@ -1,35 +1,16 @@
 #pragma once
-/*-------------------------------------------------------
-   By Jordan Heinrichs for the Solar Car Team
-   Copyright (c) 2014 by University of Calgary Solar Car Team
--------------------------------------------------------*/
 
 struct MpptData
 {
-   MpptData();
+   MpptData()
+   : arrayVoltage(71)
+   , arrayCurrent(72)
+   , batteryVoltage(73)
+   , temperature(74)
+   {}
 
-   enum Type
-   {
-      Helianthus = 0,
-      Dilithium = 1
-   };
-
-   enum Mode
-   {
-      Static = 0,
-      Dynamic = 1,
-      IvTrace = 2,
-      Open = 3,
-      Invalid = 4
-   };
-
-   Type type;
-   Mode mode;
-
-   float voltageIn;
-   float voltageOut;
-   float currentIn;
-   float currentOut;
-
-   static int mpptCount;
+   unsigned short arrayVoltage;
+   unsigned short arrayCurrent;
+   unsigned short batteryVoltage;
+   unsigned short temperature;
 };

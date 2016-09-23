@@ -16,10 +16,16 @@ HEADERS  += \
     BusinessLayer/CrcCalculator.h \
     BusinessLayer/TelemetryReporting.h \
     BusinessLayer/CommunicationService.h \
+    DataLayer/BatteryData.h \
+    DataLayer/BatteryFaultsData.h \
     DataLayer/CcsDefines.h \
     DataLayer/CmuData.h \
+    DataLayer/DriverControlsData.h \
+    DataLayer/KeyMotorData.h \
+    DataLayer/LightsData.h \
+    DataLayer/MotorDetailsData.h \
+    DataLayer/MotorFaultsData.h \
     DataLayer/MpptData.h \
-    DataLayer/VehicleData.h \
     UILayer/Window.h \
     ViewLayer/View.h \
     Peripherals/SerialPortPeripheral.h \
@@ -31,9 +37,6 @@ SOURCES += \
     BusinessLayer/CrcCalculator.cpp \
     BusinessLayer/TelemetryReporting.cpp \
     BusinessLayer/CommunicationService.cpp \
-    DataLayer/CmuData.cpp \
-    DataLayer/MpptData.cpp \
-    DataLayer/VehicleData.cpp \
     UILayer/Window.cpp \
     ViewLayer/View.cpp \
     Peripherals/SerialPortPeripheral.cpp

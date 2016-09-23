@@ -18,11 +18,16 @@ public:
    QPushButton& getConnectButton();
    QLineEdit& getComPortLineEdit();
    QLabel& getConnectionStatusLabel();
-   QPushButton& getSendKeyDriverControlButton();
-   QPushButton& getSendFaultsButton();
-   QPushButton& getSendBatteryDataButton();
-   QPushButton& getSendCmuDataButton();
-   QPushButton& getSendMpptDataButton();
+   QPushButton& getSendKeyMotorButton();
+   QPushButton& getSendMotor0DetailsButton();
+   QPushButton& getSendMotor1DetailsButton();
+   QPushButton& getSendDriverControlsButton();
+   QPushButton& getSendMotorFaultsButton();
+   QPushButton& getSendBatteryFaultsButton();
+   QPushButton& getSendBatteryButton();
+   QPushButton& getSendCmuButton();
+   QPushButton& getSendMpptButton();
+   QPushButton& getSendLightsButton();
    QPushButton& getSendAllButton();
    void setConnectionStatusText(QString);
 
@@ -30,13 +35,18 @@ private:
    void setupUi();
 
 private:
-   QScopedPointer<QPushButton> connectButton_;
-   QScopedPointer<QLineEdit> comPortLineEdit_;
-   QScopedPointer<QLabel> connectionStatusLabel_;
-   QScopedPointer<QPushButton> sendKeyDriverControlButton_;
-   QScopedPointer<QPushButton> sendFaultsButton_;
-   QScopedPointer<QPushButton> sendBatteryDataButton_;
-   QScopedPointer<QPushButton> sendCmuDataButton_;
-   QScopedPointer<QPushButton> sendMpptDataButton_;
-   QScopedPointer<QPushButton> sendAllButton_;
+   QPushButton* connectButton_;
+   QLineEdit* comPortLineEdit_;
+   QLabel* connectionStatusLabel_;
+   QPushButton* sendKeyMotorButton_;
+   QPushButton* sendMotor0DetailsButton_;
+   QPushButton* sendMotor1DetailsButton_;
+   QPushButton* sendDriverControlsButton_;
+   QPushButton* sendMotorFaultsButton_;
+   QPushButton* sendBatteryFaultsButton_;
+   QPushButton* sendBatteryButton_;
+   QPushButton* sendCmuButton_;
+   QPushButton* sendMpptButton_;
+   QPushButton* sendLightsButton_;
+   QPushButton* sendAllButton_;
 };

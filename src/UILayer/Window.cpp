@@ -11,9 +11,9 @@
 
 Window::Window()
 {
-   setWindowTitle("Telem Test Program");
-   setupUi();
-   show();
+    setWindowTitle("Telem Test Program");
+    setupUi();
+    show();
 }
 
 Window::~Window()
@@ -22,30 +22,40 @@ Window::~Window()
 
 void Window::setupUi()
 {
-   QWidget* mainWidget = new QWidget(this);
-   QFormLayout* layout = new QFormLayout;
+    QWidget* mainWidget = new QWidget(this);
+    QFormLayout* layout = new QFormLayout;
 
-   connectButton_.reset(new QPushButton("Connect", this));
-   comPortLineEdit_.reset(new QLineEdit("/dev/ttyUSB0", this));
-   connectionStatusLabel_.reset(new QLabel("Not connected", this));
-   sendKeyDriverControlButton_.reset(new QPushButton("Send Key Driver Control", this));
-   sendFaultsButton_.reset(new QPushButton("Send Faults", this));
-   sendBatteryDataButton_.reset(new QPushButton("Send Battery Data", this));
-   sendCmuDataButton_.reset(new QPushButton("Send Cmu Data", this));
-   sendMpptDataButton_.reset(new QPushButton("Send Mppt Data", this));
-   sendAllButton_.reset(new QPushButton("Send All", this));
+    connectButton_ = new QPushButton("Connect", this);
+    comPortLineEdit_ = new QLineEdit("/dev/ttyUSB0", this);
+    connectionStatusLabel_ = new QLabel("Not connected", this);
+    sendKeyMotorButton_ = new QPushButton("Send Key Motor", this);
+    sendMotor0DetailsButton_ = new QPushButton("Send Motor 0 Details", this);
+    sendMotor1DetailsButton_ = new QPushButton("Send Motor 1 Details", this);
+    sendDriverControlsButton_ = new QPushButton("Send Driver Controls", this);
+    sendMotorFaultsButton_ = new QPushButton("Send Motor Faults", this);
+    sendBatteryFaultsButton_ = new QPushButton("Send Battery Faults", this);
+    sendBatteryButton_ = new QPushButton("Send Battery", this);
+    sendCmuButton_ = new QPushButton("Send CMUs", this);
+    sendMpptButton_ = new QPushButton("Send MPPTs", this);
+    sendLightsButton_ = new QPushButton("Send Lights", this);
+    sendAllButton_ = new QPushButton("Send All", this);
 
-   layout->addRow(connectButton_.data());
-   layout->addRow(comPortLineEdit_.data());
-   layout->addRow(connectionStatusLabel_.data());
-   layout->addRow(sendKeyDriverControlButton_.data());
-   layout->addRow(sendFaultsButton_.data());
-   layout->addRow(sendBatteryDataButton_.data());
-   layout->addRow(sendCmuDataButton_.data());
-   layout->addRow(sendMpptDataButton_.data());
-   layout->addRow(sendAllButton_.data());
-   mainWidget->setLayout(layout);
-   setCentralWidget(mainWidget);
+    layout->addRow(connectButton_);
+    layout->addRow(comPortLineEdit_);
+    layout->addRow(connectionStatusLabel_);
+    layout->addRow(sendKeyMotorButton_);
+    layout->addRow(sendMotor0DetailsButton_);
+    layout->addRow(sendMotor1DetailsButton_);
+    layout->addRow(sendDriverControlsButton_);
+    layout->addRow(sendMotorFaultsButton_);
+    layout->addRow(sendBatteryFaultsButton_);
+    layout->addRow(sendBatteryButton_);
+    layout->addRow(sendCmuButton_);
+    layout->addRow(sendMpptButton_);
+    layout->addRow(sendLightsButton_);
+    layout->addRow(sendAllButton_);
+    mainWidget->setLayout(layout);
+    setCentralWidget(mainWidget);
 }
 
 QPushButton& Window::getConnectButton()
@@ -63,29 +73,54 @@ QLabel& Window::getConnectionStatusLabel()
     return *connectionStatusLabel_;
 }
 
-QPushButton& Window::getSendKeyDriverControlButton()
+QPushButton& Window::getSendKeyMotorButton()
 {
-    return *sendKeyDriverControlButton_;
+    return *sendKeyMotorButton_;
 }
 
-QPushButton& Window::getSendFaultsButton()
+QPushButton& Window::getSendMotor0DetailsButton()
 {
-    return *sendFaultsButton_;
+    return *sendMotor0DetailsButton_;
 }
 
-QPushButton& Window::getSendBatteryDataButton()
+QPushButton& Window::getSendMotor1DetailsButton()
 {
-    return *sendBatteryDataButton_;
+    return *sendMotor1DetailsButton_;
 }
 
-QPushButton& Window::getSendCmuDataButton()
+QPushButton& Window::getSendDriverControlsButton()
 {
-    return *sendCmuDataButton_;
+    return *sendDriverControlsButton_;
 }
 
-QPushButton& Window::getSendMpptDataButton()
+QPushButton& Window::getSendMotorFaultsButton()
 {
-    return *sendMpptDataButton_;
+    return *sendMotorFaultsButton_;
+}
+
+QPushButton& Window::getSendBatteryFaultsButton()
+{
+    return *sendBatteryFaultsButton_;
+}
+
+QPushButton& Window::getSendBatteryButton()
+{
+    return *sendBatteryButton_;
+}
+
+QPushButton& Window::getSendCmuButton()
+{
+    return *sendCmuButton_;
+}
+
+QPushButton& Window::getSendMpptButton()
+{
+    return *sendMpptButton_;
+}
+
+QPushButton& Window::getSendLightsButton()
+{
+    return *sendLightsButton_;
 }
 
 QPushButton& Window::getSendAllButton()

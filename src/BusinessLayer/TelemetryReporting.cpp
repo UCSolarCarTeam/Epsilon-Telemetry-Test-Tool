@@ -1,215 +1,425 @@
-/*-------------------------------------------------------
-   By Jordan Heinrichs for the Solar Car Team
-   Copyright (c) 2015 by University of Calgary Solar Car Team
--------------------------------------------------------*/
+#include <cstring>
 
 #include <QIODevice>
+
 #include <CcsDefines.h>
 #include <CrcCalculator.h>
 #include <TelemetryReporting.h>
-#include <VehicleData.h>
+#include <BatteryData.h>
+#include <BatteryFaultsData.h>
+#include <CmuData.h>
+#include <DriverControlsData.h>
+#include <KeyMotorData.h>
+#include <LightsData.h>
+#include <MotorDetailsData.h>
+#include <MotorFaultsData.h>
+#include <MpptData.h>
 #include <CommunicationService.h>
 #include <View.h>
 
-union FloatDataUnion
+union DataUnion
 {
-   float floatData;
-   char charData[4];
+    float floatData;
+    short shortData[2];
+    unsigned short uShortData[2];
+    char charData[4];
 };
 
 namespace
 {
-   // These lengths only include the data. Not the checksum
-   const unsigned int KEY_DRIVER_CONTROL_LENGTH = 21;
-   const unsigned int DRIVER_CONTROL_DETAILS_LENGTH = 29;
-   const unsigned int FAULT_LENGTH = 9;
-   const unsigned int BATTERY_DATA_LENGTH = 18;
-   const unsigned int CMU_DATA_LENGTH = 42;
-   const unsigned int MPPT_DATA_LENGTH = 21;
-   const unsigned int CHECKSUM_LENGTH = 2;
+// Refer to https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=0
+// These lengths only include the data. Not the checksum
+const int KEY_MOTOR_LENGTH = 43;
+const int MOTOR_DETAILS_LENGTH = 69;
+const int DRIVER_CONTROLS_LENGTH = 10;
+const int MOTOR_FAULTS_LENGTH = 9;
+const int BATTERY_FAULTS_LENGTH = 3;
+const int BATTERY_LENGTH = 60;
+const int CMU_LENGTH = 50;
+const int MPPT_LENGTH = 10;
+const int LIGHTS_LENGTH = 2;
 
-   const unsigned int FRAMING_LENGTH_INCREASE = 5;
-   const unsigned char TERMINATING_BYTE = 0x00;
-
-   // Packet IDs
-   const unsigned char KEY_DRIVER_CONTROL_ID = 0x01;
-   const unsigned char DRIVER_CONTROL_DETAILS_ID = 0x02;
-   const unsigned char FAULT_ID = 0x03;
-   const unsigned char BATTERY_DATA_ID = 0x04;
-   const unsigned char CMU_DATA_ID = 0x05;
-   const unsigned char MPPT_DATA_ID = 0x06;
-
-   const int NUMBER_OF_CMUS = 4;
-   const int NUMBER_OF_MPPTS = 7;
+const unsigned int CHECKSUM_LENGTH = 2;
+const unsigned int FRAMING_LENGTH_INCREASE = 2;
+const unsigned char TERMINATING_BYTE = 0x00;
 }
 
 TelemetryReporting::TelemetryReporting(CommunicationService& commService,
-                                       VehicleData& vehicleData,
+                                       const KeyMotorData& keyMotorData,
+                                       const MotorDetailsData& motor0DetailsData,
+                                       const MotorDetailsData& motor1DetailsData,
+                                       const DriverControlsData& driverControlsData,
+                                       const MotorFaultsData& motorFaultsData,
+                                       const BatteryFaultsData& batteryFaultsData,
+                                       const BatteryData& batteryData,
+                                       const CmuData& cmuData,
+                                       const MpptData& mpptData,
+                                       const LightsData& lightsData,
                                        View& view)
-: communicationService_(commService)
-, vehicleData_(vehicleData)
-, view_(view)
+    : communicationService_(commService)
+    , keyMotorData_(keyMotorData)
+    , motor0DetailsData_(motor0DetailsData)
+    , motor1DetailsData_(motor1DetailsData)
+    , driverControlsData_(driverControlsData)
+    , motorFaultsData_(motorFaultsData)
+    , batteryFaultsData_(batteryFaultsData)
+    , batteryData_(batteryData)
+    , cmuData_(cmuData)
+    , mpptData_(mpptData)
+    , lightsData_(lightsData)
+    , view_(view)
 {
     //Connect slots to View Signals
-    connect(&view_, SIGNAL(sendKeyDriverControlSignal()), this, SLOT(sendKeyDriverControlTelemetry()));
-    connect(&view_, SIGNAL(sendDriverControlDetailsSignal()), this, SLOT(sendDriverControlDetails()));
-    connect(&view_, SIGNAL(sendFaultsSignal()), this, SLOT(sendFaults()));
-    connect(&view_, SIGNAL(sendBatteryDataSignal()), this, SLOT(sendBatteryData()));
-    connect(&view_, SIGNAL(sendCmuDataSignal()), this, SLOT(sendCmuData()));
-    connect(&view_, SIGNAL(sendMpptDataSignal()), this, SLOT(sendMpptData()));
-    connect(&view_, SIGNAL(sendAllSignal()), this, SLOT(sendAll()));
-    //Might need to connect a signal for whenever the serial port gets updated to a slot
-    //that updates the outputDevice_ to the updated device.
+    connect(&view_, SIGNAL(sendKeyMotor()), this, SLOT(sendKeyMotor()));
+    connect(&view_, SIGNAL(sendMotor0Details()), this, SLOT(sendMotor0Details()));
+    connect(&view_, SIGNAL(sendMotor1Details()), this, SLOT(sendMotor1Details()));
+    connect(&view_, SIGNAL(sendDriverControls()), this, SLOT(sendDriverControls()));
+    connect(&view_, SIGNAL(sendMotorFaults()), this, SLOT(sendMotorFaults()));
+    connect(&view_, SIGNAL(sendBatteryFaults()), this, SLOT(sendBatteryFaults()));
+    connect(&view_, SIGNAL(sendBattery()), this, SLOT(sendBattery()));
+    connect(&view_, SIGNAL(sendCmu()), this, SLOT(sendCmu()));
+    connect(&view_, SIGNAL(sendMppt()), this, SLOT(sendMppt()));
+    connect(&view_, SIGNAL(sendLights()), this, SLOT(sendLights()));
+    connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
 }
 
-void TelemetryReporting::sendKeyDriverControlTelemetry()
+void TelemetryReporting::sendKeyMotor()
 {
-   const unsigned int unframedPacketLength = KEY_DRIVER_CONTROL_LENGTH + CHECKSUM_LENGTH;
-   unsigned char packetPayload[unframedPacketLength];
-   packetPayload[0] = KEY_DRIVER_CONTROL_ID;
-   const float driverSetSpeedMps = vehicleData_.driverSetSpeedRpm * CcsDefines::RPM_TO_MPS_CONVERSION;
-   writeFloatIntoArray(packetPayload, 1, driverSetSpeedMps);
-   writeFloatIntoArray(packetPayload, 5, vehicleData_.driverSetCurrent);
-   writeFloatIntoArray(packetPayload, 9, vehicleData_.busCurrent);
-   writeFloatIntoArray(packetPayload, 13, vehicleData_.busVoltage);
-   writeFloatIntoArray(packetPayload, 17, vehicleData_.vehicleVelocity);
+    const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
+    unsigned char packetPayload[unframedPacketLength];
 
-   addChecksum(packetPayload, KEY_DRIVER_CONTROL_LENGTH);
-   unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-   unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   communicationService_.sendData(packet, packetLength);
+    packetPayload[0] = CcsDefines::KEY_MOTOR_PKG_ID;
+
+    bool motor0AliveArray[] = {keyMotorData_.motor0Alive};
+    writeBoolsIntoArray(packetPayload, 1, motor0AliveArray, 1);
+    writeFloatIntoArray(packetPayload, 2, keyMotorData_.motor0SetCurrent);
+    writeFloatIntoArray(packetPayload, 6, keyMotorData_.motor0SetVelocity);
+    writeFloatIntoArray(packetPayload, 10, keyMotorData_.motor0BusCurrent);
+    writeFloatIntoArray(packetPayload, 14, keyMotorData_.motor0BusVoltage);
+    writeFloatIntoArray(packetPayload, 18, keyMotorData_.motor0VehicleVelocity);
+
+    bool motor1AliveArray[] = {keyMotorData_.motor1Alive};
+    writeBoolsIntoArray(packetPayload, 22, motor1AliveArray, 1);
+    writeFloatIntoArray(packetPayload, 23, keyMotorData_.motor1SetCurrent);
+    writeFloatIntoArray(packetPayload, 27, keyMotorData_.motor1SetVelocity);
+    writeFloatIntoArray(packetPayload, 31, keyMotorData_.motor1BusCurrent);
+    writeFloatIntoArray(packetPayload, 35, keyMotorData_.motor1BusVoltage);
+    writeFloatIntoArray(packetPayload, 39, keyMotorData_.motor1VehicleVelocity);
+
+    addChecksum(packetPayload, KEY_MOTOR_LENGTH);
+    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
+    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
+    communicationService_.sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendDriverControlDetails()
+void TelemetryReporting::sendMotorDetails(int n)
 {
-   const unsigned int unframedPacketLength = DRIVER_CONTROL_DETAILS_LENGTH + CHECKSUM_LENGTH;
-   unsigned char packetPayload[unframedPacketLength];
-   packetPayload[0] = DRIVER_CONTROL_DETAILS_ID;
-   writeFloatIntoArray(packetPayload, 1, vehicleData_.motorVelocityRpm);
-   writeFloatIntoArray(packetPayload, 5, vehicleData_.motorVoltageReal);
-   writeFloatIntoArray(packetPayload, 9, vehicleData_.motorCurrentReal);
-   writeFloatIntoArray(packetPayload, 13, vehicleData_.backEmfImaginary);
-   writeFloatIntoArray(packetPayload, 17, vehicleData_.dspBoardTemp);
-   writeFloatIntoArray(packetPayload, 21, vehicleData_.dcBusAmpHours);
-   writeFloatIntoArray(packetPayload, 25, vehicleData_.odometer);
+    const unsigned int unframedPacketLength = MOTOR_DETAILS_LENGTH + CHECKSUM_LENGTH;
+    unsigned char packetPayload[unframedPacketLength];
 
-   addChecksum(packetPayload, DRIVER_CONTROL_DETAILS_LENGTH);
-   unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-   unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   communicationService_.sendData(packet, packetLength);
+    if(n == 0) {
+      packetPayload[0] = CcsDefines::MOTOR_DETAILS_0_PKG_ID;
+    } else {
+      packetPayload[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
+    }
+    writeFloatIntoArray(packetPayload, 1, motor0DetailsData_.phaseCCurrent);
+    writeFloatIntoArray(packetPayload, 5, motor0DetailsData_.phaseBCurrent);
+    writeFloatIntoArray(packetPayload, 9, motor0DetailsData_.MotorVoltageReal);
+    writeFloatIntoArray(packetPayload, 13, motor0DetailsData_.MotorVoltageImaginary);
+    writeFloatIntoArray(packetPayload, 17, motor0DetailsData_.MotorCurrentReal);
+    writeFloatIntoArray(packetPayload, 21, motor0DetailsData_.MotorCurrentImaginary);
+    writeFloatIntoArray(packetPayload, 25, motor0DetailsData_.BackEmfReal);
+    writeFloatIntoArray(packetPayload, 29, motor0DetailsData_.BackEmfImaginary);
+    writeFloatIntoArray(packetPayload, 33, motor0DetailsData_.RailSupply15V);
+    writeFloatIntoArray(packetPayload, 37, motor0DetailsData_.RailSupply3V);
+    writeFloatIntoArray(packetPayload, 41, motor0DetailsData_.RailSupply1V);
+    writeFloatIntoArray(packetPayload, 45, motor0DetailsData_.heatSinkTemperature);
+    writeFloatIntoArray(packetPayload, 49, motor0DetailsData_.motorTemperature);
+    writeFloatIntoArray(packetPayload, 53, motor0DetailsData_.dspBoardTempearture);
+    writeFloatIntoArray(packetPayload, 57, motor0DetailsData_.dcBusAmpHours);
+    writeFloatIntoArray(packetPayload, 61, motor0DetailsData_.odometer);
+    writeFloatIntoArray(packetPayload, 65, motor0DetailsData_.slipSpeed);
+
+    addChecksum(packetPayload, MOTOR_DETAILS_LENGTH);
+    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
+    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
+    communicationService_.sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendFaults()
+void TelemetryReporting::sendDriverControls()
 {
-   const unsigned int unframedPacketLength = FAULT_LENGTH + CHECKSUM_LENGTH;
-   unsigned char packetPayload[unframedPacketLength];
-   packetPayload[0] = FAULT_ID;
-   packetPayload[1] = static_cast<unsigned char>(0xFF & vehicleData_.motorOneErrorFlags);
-   packetPayload[2] = static_cast<unsigned char>(0xFF & vehicleData_.motorOneLimitFlags);
-   packetPayload[3] = static_cast<unsigned char>(0xFF & vehicleData_.motorTwoErrorFlags);
-   packetPayload[4] = static_cast<unsigned char>(0xFF & vehicleData_.motorTwoLimitFlags);
-   packetPayload[5] = static_cast<unsigned char>(0xFF & vehicleData_.bmuStatusFlagsExtended);
-   packetPayload[6] = static_cast<unsigned char>(0xFF & (vehicleData_.bmuStatusFlagsExtended >> 8));
-   packetPayload[7] = vehicleData_.motorOneReceivedErrorCount;
-   packetPayload[8] = vehicleData_.motorOneTransmittedErrorCount;
+    const unsigned int unframedPacketLength = DRIVER_CONTROLS_LENGTH + CHECKSUM_LENGTH;
+    unsigned char packetPayload[unframedPacketLength];
 
-   addChecksum(packetPayload, FAULT_LENGTH);
-   unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-   unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   communicationService_.sendData(packet, packetLength);
+    packetPayload[0] = CcsDefines::DRIVER_CONTROLS_PKG_ID;
+    bool aliveArray[] = {driverControlsData_.alive};
+    writeBoolsIntoArray(packetPayload, 1, aliveArray, 1);
+    bool lightsArray[] = {driverControlsData_.headlightsOff,
+                          driverControlsData_.headlightsLow,
+                          driverControlsData_.headlightsHigh,
+                          driverControlsData_.signalLeft,
+                          driverControlsData_.signalRight,
+                          driverControlsData_.hazardLights,
+                          driverControlsData_.interiorLights
+                         };
+    writeBoolsIntoArray(packetPayload, 2, lightsArray, 7);
+    bool musicArray[] = {driverControlsData_.musicAux,
+                         driverControlsData_.volumeUp,
+                         driverControlsData_.volumeDown,
+                         driverControlsData_.nextSong,
+                         driverControlsData_.prevSong
+                        };
+    writeBoolsIntoArray(packetPayload, 3, musicArray, 5);
+    writeUShortIntoArray(packetPayload, 4, driverControlsData_.acceleration);
+    writeUShortIntoArray(packetPayload, 6, driverControlsData_.regenBraking);
+    bool controlsArray[] = {driverControlsData_.brakes,
+                            driverControlsData_.forward,
+                            driverControlsData_.reverse,
+                            driverControlsData_.pushToTalk,
+                            driverControlsData_.horn,
+                            driverControlsData_.reset
+                           };
+    writeBoolsIntoArray(packetPayload, 8, controlsArray, 6);
+
+    addChecksum(packetPayload, DRIVER_CONTROLS_LENGTH);
+    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
+    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
+    communicationService_.sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendBatteryData()
+void TelemetryReporting::sendMotorFaults()
 {
-   const unsigned int unframedPacketLength = BATTERY_DATA_LENGTH + CHECKSUM_LENGTH;
-   unsigned char packetPayload[unframedPacketLength];
-   packetPayload[0] = BATTERY_DATA_ID;
-   writeFloatIntoArray(packetPayload, 1, vehicleData_.batteryVoltage);
-   writeFloatIntoArray(packetPayload, 5, vehicleData_.batteryCurrent);
-   writeFloatIntoArray(packetPayload, 9, vehicleData_.packStateOfChargePercentage);
-   writeFloatIntoArray(packetPayload, 13, vehicleData_.balancePackStateOfCharge);
-   packetPayload[17] = static_cast<unsigned char>(vehicleData_.secondaryBatteryUnderVoltage);
+    const unsigned int unframedPacketLength = MOTOR_FAULTS_LENGTH + CHECKSUM_LENGTH;
+    unsigned char packetPayload[unframedPacketLength];
 
-   addChecksum(packetPayload, BATTERY_DATA_LENGTH);
-   unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-   unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-   communicationService_.sendData(packet, packetLength);
+    packetPayload[0] = CcsDefines::MOTOR_FAULTS_PKG_ID;
+
+    bool motor0FaultsArray[] = {motorFaultsData_.motor0OverSpeed,
+                                motorFaultsData_.motor0SoftwareOverCurrent,
+                                motorFaultsData_.motor0DcBusOverVoltage,
+                                motorFaultsData_.motor0BadMootorPositionHallSequence,
+                                motorFaultsData_.motor0WatchdogCausedLastReset,
+                                motorFaultsData_.motor0ConfigReadError,
+                                motorFaultsData_.motor0Rail15VUnderVoltageLockOut,
+                                motorFaultsData_.motor0DesaturationFault
+                               };
+    writeBoolsIntoArray(packetPayload, 1, motor0FaultsArray, 8);
+    bool motor1FaultsArray[] = {motorFaultsData_.motor1OverSpeed,
+                                motorFaultsData_.motor1SoftwareOverCurrent,
+                                motorFaultsData_.motor1DcBusOverVoltage,
+                                motorFaultsData_.motor1BadMootorPositionHallSequence,
+                                motorFaultsData_.motor1WatchdogCausedLastReset,
+                                motorFaultsData_.motor1ConfigReadError,
+                                motorFaultsData_.motor1Rail15VUnderVoltageLockOut,
+                                motorFaultsData_.motor1DesaturationFault
+                               };
+    writeBoolsIntoArray(packetPayload, 2, motor1FaultsArray, 8);
+    bool motor0LimitsArray[] = {motorFaultsData_.motor0OutputVoltagePwmLimit,
+                                motorFaultsData_.motor0MotorCurrentLimit,
+                                motorFaultsData_.motor0VelocityLimit,
+                                motorFaultsData_.motor0BusCurrentLimit,
+                                motorFaultsData_.motor0BusVoltageUpperLimit,
+                                motorFaultsData_.motor0BusVoltageLowerLimit,
+                                motorFaultsData_.motor0IpmOrMotorTemperatureLimit
+                               };
+    writeBoolsIntoArray(packetPayload, 3, motor0LimitsArray, 7);
+    bool motor1LimitsArray[] = {motorFaultsData_.motor1OutputVoltagePwmLimit,
+                                motorFaultsData_.motor1MotorCurrentLimit,
+                                motorFaultsData_.motor1VelocityLimit,
+                                motorFaultsData_.motor1BusCurrentLimit,
+                                motorFaultsData_.motor1BusVoltageUpperLimit,
+                                motorFaultsData_.motor1BusVoltageLowerLimit,
+                                motorFaultsData_.motor1IpmOrMotorTemperatureLimit
+                               };
+    writeBoolsIntoArray(packetPayload, 4, motor1LimitsArray, 7);
+    packetPayload[5] = motorFaultsData_.motor0RxErrorCount;
+    packetPayload[6] = motorFaultsData_.motor0TxErrorCount;
+    packetPayload[7] = motorFaultsData_.motor1RxErrorCount;
+    packetPayload[8] = motorFaultsData_.motor1TxErrorCount;
+
+    addChecksum(packetPayload, MOTOR_FAULTS_LENGTH);
+    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
+    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
+    communicationService_.sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendCmuData()
+void TelemetryReporting::sendBatteryFaults()
 {
-    for (int cmuDataIndex = 0; cmuDataIndex < NUMBER_OF_CMUS; ++cmuDataIndex)
+    const unsigned int unframedPacketLength = BATTERY_FAULTS_LENGTH + CHECKSUM_LENGTH;
+    unsigned char packetPayload[unframedPacketLength];
+
+    packetPayload[0] = CcsDefines::BATTERY_FAULTS_PKG_ID;
+    bool batteryFaultsArray[] = {batteryFaultsData_.cellOverVoltage,
+                                 batteryFaultsData_.cellUnderVoltage,
+                                 batteryFaultsData_.cellOverTemperature,
+                                 batteryFaultsData_.measurementUntrusted,
+                                 batteryFaultsData_.cmuCommTimeout,
+                                 batteryFaultsData_.vehicleCommTimeout,
+                                 batteryFaultsData_.bmuInSetupMode,
+                                 batteryFaultsData_.cmuCanBusPowerStatus,
+                                 batteryFaultsData_.packIsolationTestFailure,
+                                 batteryFaultsData_.softwareOverCurrent,
+                                 batteryFaultsData_.can12VSupplyLow,
+                                 batteryFaultsData_.contactorStuck,
+                                 batteryFaultsData_.cmuDetectedExtraCellPresent
+                                };
+    writeBoolsIntoArray(packetPayload, 1, batteryFaultsArray, 13);
+
+    addChecksum(packetPayload, BATTERY_FAULTS_LENGTH);
+    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
+    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
+    communicationService_.sendData(packet, packetLength);
+}
+
+void TelemetryReporting::sendBattery()
+{
+    const unsigned int unframedPacketLength = BATTERY_LENGTH + CHECKSUM_LENGTH;
+    unsigned char packetPayload[unframedPacketLength];
+
+    packetPayload[0] = CcsDefines::BATTERY_PKG_ID;
+    bool aliveArray[] = {batteryData_.alive};
+    writeBoolsIntoArray(packetPayload, 1, aliveArray, 1);
+    writeFloatIntoArray(packetPayload, 2, batteryData_.packSocAmpHours);
+    writeFloatIntoArray(packetPayload, 6, batteryData_.packSocPercentage);
+    writeFloatIntoArray(packetPayload, 10, batteryData_.packBalanceSoc);
+    writeFloatIntoArray(packetPayload, 14, batteryData_.packBalanceSocPercentage);
+    writeUShortIntoArray(packetPayload, 18, batteryData_.chargingCellVoltageError);
+    writeUShortIntoArray(packetPayload, 20, batteryData_.cellTemperatureMargin);
+    writeUShortIntoArray(packetPayload, 22, batteryData_.dischargingCellVoltageError);
+    writeUShortIntoArray(packetPayload, 24, batteryData_.totalPackCapacity);
+    bool contactorArray[] = {batteryData_.contactor0Errorstatus,
+                             batteryData_.contactor1ErrorStatus,
+                             batteryData_.contactor0Status,
+                             batteryData_.contactor1Status,
+                             batteryData_.contactor12VSupplyOk,
+                             batteryData_.contactor2ErrorStatus,
+                             batteryData_.contactor2Status
+                            };
+    writeBoolsIntoArray(packetPayload, 26, contactorArray, 7);
+    packetPayload[27] = (unsigned char)batteryData_.prechargeState;
+    bool prechargeArray[] = {batteryData_.prechargeTimerElapsed,
+                             batteryData_.prechargeTimerNotElapsed
+                            };
+    writeBoolsIntoArray(packetPayload, 28, prechargeArray, 2);
+    writeUShortIntoArray(packetPayload, 29, batteryData_.prechargeTimerCount);
+    writeUShortIntoArray(packetPayload, 31, batteryData_.lowestCellVoltage);
+    packetPayload[33] = batteryData_.lowestCellVoltageCmuNumber;
+    packetPayload[33] += batteryData_.lowestCellVoltageCellNumber << 4;
+    writeUShortIntoArray(packetPayload, 34, batteryData_.highestCellVoltage);
+    packetPayload[36] = batteryData_.highestCellVoltageCmuNumber;
+    packetPayload[36] += batteryData_.highestCellVoltageCellNumber << 4;
+    writeUShortIntoArray(packetPayload, 37, batteryData_.lowestCellTemperature);
+    packetPayload[39] = batteryData_.lowestCellTemperatureCmuNumber;
+    packetPayload[39] += batteryData_.lowestCellTemperatureCellNumber << 4;
+    writeUShortIntoArray(packetPayload, 40, batteryData_.highestCellTemperature);
+    packetPayload[42] = batteryData_.highestCellTemperatureCmuNumber;
+    packetPayload[42] += batteryData_.highestCellTemperatureCellNumber << 4;
+    writeUShortIntoArray(packetPayload, 51, batteryData_.fan0Speed);
+    writeUShortIntoArray(packetPayload, 53, batteryData_.fan1Speed);
+    writeUShortIntoArray(packetPayload, 55, batteryData_.fanContactors12VCurrentConsumption);
+    writeUShortIntoArray(packetPayload, 57, batteryData_.cmu12VCurrentConsumption);
+    bool lockedOutArray[] = {batteryData_.bmsCanLockedOut};
+    writeBoolsIntoArray(packetPayload, 59, lockedOutArray, 1);
+
+    addChecksum(packetPayload, BATTERY_LENGTH);
+    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
+    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
+    communicationService_.sendData(packet, packetLength);
+}
+
+void TelemetryReporting::sendCmu()
+{
+    const unsigned int unframedPacketLength = CMU_LENGTH + CHECKSUM_LENGTH;
+    unsigned char packetPayload[unframedPacketLength];
+
+    packetPayload[0] = CcsDefines::CMU_PKG_ID;
+    int cmuVoltageBaseIndex = 2;
+    for (int i = 0; i < 8; i++)
     {
-        const unsigned int unframedPacketLength = CMU_DATA_LENGTH + CHECKSUM_LENGTH;
-        unsigned char packetPayload[unframedPacketLength];
-        packetPayload[0] = CMU_DATA_ID;
-        packetPayload[1] = cmuDataIndex;
-        writeFloatIntoArray(packetPayload, 2, vehicleData_.cmuData[cmuDataIndex].pcbTemperature);
-        writeFloatIntoArray(packetPayload, 6, vehicleData_.cmuData[cmuDataIndex].cellTemperature);
-        writeFloatIntoArray(packetPayload, 10, vehicleData_.cmuData[cmuDataIndex].cellVoltage[0]);
-        writeFloatIntoArray(packetPayload, 14, vehicleData_.cmuData[cmuDataIndex].cellVoltage[1]);
-        writeFloatIntoArray(packetPayload, 18, vehicleData_.cmuData[cmuDataIndex].cellVoltage[2]);
-        writeFloatIntoArray(packetPayload, 22, vehicleData_.cmuData[cmuDataIndex].cellVoltage[3]);
-        writeFloatIntoArray(packetPayload, 26, vehicleData_.cmuData[cmuDataIndex].cellVoltage[4]);
-        writeFloatIntoArray(packetPayload, 30, vehicleData_.cmuData[cmuDataIndex].cellVoltage[5]);
-        writeFloatIntoArray(packetPayload, 34, vehicleData_.cmuData[cmuDataIndex].cellVoltage[6]);
-        writeFloatIntoArray(packetPayload, 38, vehicleData_.cmuData[cmuDataIndex].cellVoltage[7]);
+        writeUShortIntoArray(packetPayload, cmuVoltageBaseIndex + (i * 2), cmuData_.cellVoltage[i]);
+    }
+    writeUShortIntoArray(packetPayload, 18, cmuData_.pcbTemperature);
+    int cmuTemperatureBaseIndex = 20;
+    for (int i = 0; i < 15; i++)
+    {
+        writeUShortIntoArray(packetPayload, cmuTemperatureBaseIndex + (i * 2), cmuData_.cellTemperature[i]);
+    }
 
-        addChecksum(packetPayload, CMU_DATA_LENGTH);
+    for (unsigned char i = 0; i < CcsDefines::CMU_COUNT; i++)
+    {
+        packetPayload[1] = i;
+
+        addChecksum(packetPayload, CMU_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
         unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
         communicationService_.sendData(packet, packetLength);
     }
 }
 
-void TelemetryReporting::sendMpptData()
+void TelemetryReporting::sendMppt()
 {
-    for (int mpptDataIndex = 0; mpptDataIndex < NUMBER_OF_MPPTS; ++mpptDataIndex)
+    const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
+    unsigned char packetPayload[unframedPacketLength];
+
+    packetPayload[0] = CcsDefines::KEY_MOTOR_PKG_ID;
+    writeUShortIntoArray(packetPayload, 2, mpptData_.arrayVoltage);
+    writeUShortIntoArray(packetPayload, 4, mpptData_.arrayCurrent);
+    writeUShortIntoArray(packetPayload, 6, mpptData_.batteryVoltage);
+    writeUShortIntoArray(packetPayload, 8, mpptData_.temperature);
+
+    for (unsigned char i = 0; i < CcsDefines::MPPT_COUNT; i++)
     {
-        const unsigned int unframedPacketLength = MPPT_DATA_LENGTH + CHECKSUM_LENGTH;
-        unsigned char packetPayload[unframedPacketLength];
-        packetPayload[0] = MPPT_DATA_ID;
-        packetPayload[1] = mpptDataIndex;
-        packetPayload[2] = static_cast<unsigned char>(vehicleData_.mpptData[mpptDataIndex].type);
+        unsigned char mpptPacketPayload[unframedPacketLength];
+        std::memcpy(mpptPacketPayload, packetPayload, unframedPacketLength);
+        mpptPacketPayload[1] = i;
 
-        if (vehicleData_.mpptData[mpptDataIndex].type == MpptData::Helianthus)
-        {
-           packetPayload[3] = 0x1F;
-        }
-        else
-        {
-           packetPayload[3] = 0x07;
-        }
-        writeFloatIntoArray(packetPayload, 4, vehicleData_.mpptData[mpptDataIndex].voltageIn);
-        writeFloatIntoArray(packetPayload, 8, vehicleData_.mpptData[mpptDataIndex].currentIn);
-        writeFloatIntoArray(packetPayload, 12, vehicleData_.mpptData[mpptDataIndex].voltageOut);
-        writeFloatIntoArray(packetPayload, 16, vehicleData_.mpptData[mpptDataIndex].currentOut);
-        packetPayload[20] = static_cast<unsigned char>(vehicleData_.mpptData[mpptDataIndex].mode);
-
-        addChecksum(packetPayload, MPPT_DATA_LENGTH);
+        addChecksum(mpptPacketPayload, KEY_MOTOR_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-        unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
+        unsigned int packetLength = frameData(mpptPacketPayload, unframedPacketLength, packet);
         communicationService_.sendData(packet, packetLength);
     }
+}
+
+void TelemetryReporting::sendLights()
+{
+    const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
+    unsigned char packetPayload[unframedPacketLength];
+
+    packetPayload[0] = CcsDefines::KEY_MOTOR_PKG_ID;
+    bool lightsArray[] = {lightsData_.lowBeams,
+                          lightsData_.highBeams,
+                          lightsData_.brakes,
+                          lightsData_.leftSignal,
+                          lightsData_.rightSignal,
+                          lightsData_.bmsStrobeLight
+                         };
+    writeBoolsIntoArray(packetPayload, 1, lightsArray, 6);
+
+    addChecksum(packetPayload, KEY_MOTOR_LENGTH);
+    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
+    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
+    communicationService_.sendData(packet, packetLength);
 }
 
 void TelemetryReporting::sendAll()
 {
-    sendKeyDriverControlTelemetry();
-    sendDriverControlDetails();
-    sendFaults();
-    sendBatteryData();
-    sendCmuData();
-    sendMpptData();
+    sendKeyMotor();
+    sendMotorDetails(0);
+    sendMotorDetails(1);
+    sendDriverControls();
+    sendMotorFaults();
+    sendBatteryFaults();
+    sendBattery();
+    sendCmu();
+    sendMppt();
+    sendLights();
 }
 
-unsigned int TelemetryReporting::frameData(const unsigned char* dataToEncode,
-      unsigned long length, unsigned char* frameData)
+unsigned int TelemetryReporting::frameData(const unsigned char* dataToEncode, unsigned long length, unsigned char* frameData)
 {
-   unsigned int lengthOfFramedData =
-      stuffData(dataToEncode, length, frameData);
-   frameData[lengthOfFramedData++] = TERMINATING_BYTE;
-   return lengthOfFramedData;
+    unsigned int lengthOfFramedData = stuffData(dataToEncode, length, frameData);
+    frameData[lengthOfFramedData++] = TERMINATING_BYTE;
+    return lengthOfFramedData;
 }
 
 #define FINISH_BLOCK(X) \
@@ -219,50 +429,83 @@ unsigned int TelemetryReporting::frameData(const unsigned char* dataToEncode,
    code = 0x01; \
 }
 
-unsigned int TelemetryReporting::stuffData(const unsigned char* dataToEncode,
-      unsigned long length, unsigned char* encodedData)
+unsigned int TelemetryReporting::stuffData(const unsigned char* dataToEncode, unsigned long length, unsigned char* encodedData)
 {
-   unsigned int lengthOfEncodedData = length + 1;
-   const unsigned char* end = dataToEncode + length;
-   unsigned char* code_ptr = encodedData++;
-   unsigned char code = 0x01;
+    unsigned int lengthOfEncodedData = length + 1;
+    const unsigned char* end = dataToEncode + length;
+    unsigned char* code_ptr = encodedData++;
+    unsigned char code = 0x01;
 
-   while (dataToEncode < end)
-   {
-      if (*dataToEncode == 0)
-      {
-         FINISH_BLOCK(code);
-      }
-      else
-      {
-         *encodedData++ = *dataToEncode;
-         code++;
-         if (code == 0xFF)
-         {
+    while (dataToEncode < end)
+    {
+        if (*dataToEncode == 0)
+        {
             FINISH_BLOCK(code);
-            lengthOfEncodedData++;
-         }
-      }
-      dataToEncode++;
-   }
-   FINISH_BLOCK(code);
-   return lengthOfEncodedData;
+        }
+        else
+        {
+            *encodedData++ = *dataToEncode;
+            code++;
+            if (code == 0xFF)
+            {
+                FINISH_BLOCK(code);
+                lengthOfEncodedData++;
+            }
+        }
+        dataToEncode++;
+    }
+    FINISH_BLOCK(code);
+    return lengthOfEncodedData;
 }
 #undef FINISH_BLOCK
 
 void TelemetryReporting::addChecksum(unsigned char* data, unsigned int length)
 {
-   unsigned short crc16 = CrcCalculator::calculateCrc16(data, length);
-   data[length] = static_cast<unsigned char>(0xFF & crc16);
-   data[length + 1] = static_cast<unsigned char>(0xFF & (crc16 >> 8));
+    unsigned short crc16 = CrcCalculator::calculateCrc16(data, length);
+    data[length] = static_cast<unsigned char>(0xFF & crc16);
+    data[length + 1] = static_cast<unsigned char>(0xFF & (crc16 >> 8));
 }
 
 void TelemetryReporting::writeFloatIntoArray(unsigned char* data, int index, const float& value)
 {
-   FloatDataUnion floatDataUnion;
-   floatDataUnion.floatData = value;
-   data[index++] = floatDataUnion.charData[0];
-   data[index++] = floatDataUnion.charData[1];
-   data[index++] = floatDataUnion.charData[2];
-   data[index] = floatDataUnion.charData[3];
+    DataUnion dataUnion;
+    dataUnion.floatData = value;
+    data[index++] = dataUnion.charData[0];
+    data[index++] = dataUnion.charData[1];
+    data[index++] = dataUnion.charData[2];
+    data[index] = dataUnion.charData[3];
+}
+
+void TelemetryReporting::writeShortIntoArray(unsigned char* data, int index, const short& value)
+{
+    DataUnion dataUnion;
+    dataUnion.shortData[0] = value;
+    data[index++] = dataUnion.charData[0];
+    data[index] = dataUnion.charData[1];
+}
+
+void TelemetryReporting::writeUShortIntoArray(unsigned char* data, int index, const unsigned short& value)
+{
+    DataUnion dataUnion;
+    dataUnion.uShortData[0] = value;
+    data[index++] = dataUnion.charData[0];
+    data[index] = dataUnion.charData[1];
+}
+
+void TelemetryReporting::writeBoolsIntoArray(unsigned char* data, int index, const bool values[], int numValues)
+{
+    index -= 1;
+
+    for (int i = 0; i < numValues; i++)
+    {
+        if ((i % 8) == 0)
+        {
+            index++;
+            data[index] = 0;
+        }
+        if (values[i])
+        {
+            data[index] += 1 << (i % 8);
+        }
+    }
 }

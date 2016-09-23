@@ -16,14 +16,17 @@ public:
 signals:
     void attemptConnectionSignal();
     void differentModeSelectedSignal();
-    void sendKeyDriverControlSignal();
-    void sendDriverControlDetailsSignal();
-    void sendFaultsSignal();
-    void sendBatteryDataSignal();
-    void sendCmuDataSignal();
-    void sendMpptDataSignal();
-    void sendAllSignal();
-
+    void sendKeyMotor();
+    void sendMotor0Details();
+    void sendMotor1Details();
+    void sendDriverControls();
+    void sendMotorFaults();
+    void sendBatteryFaults();
+    void sendBattery();
+    void sendCmu();
+    void sendMppt();
+    void sendLights();
+    void sendAll();
 
 private:
     Window* window_;
