@@ -9,8 +9,15 @@ before_install:
     - qt54-env.sh 
     - cd src
 
+install:
+    - wget 'https://sourceforge.net/projects/astyle/files/latest/download'
+    - tar -zxvf download
+    - (cd astyle/build/gcc && make release && sudo make install)
+    - rm astyle -rf
+
 script: 
     - qmake
     - make
+    - "! (astyle *.h *.cpp -r --dry-run --options=astylerc | grep formatted)"
 
 language: cpp
