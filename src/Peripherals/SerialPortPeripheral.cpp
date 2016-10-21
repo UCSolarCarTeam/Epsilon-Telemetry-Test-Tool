@@ -10,7 +10,7 @@ namespace
 }
 
 SerialPortPeripheral::SerialPortPeripheral(QSerialPort& serialPort)
-: serialPort_(serialPort)
+    : serialPort_(serialPort)
 {
     serialPort_.setBaudRate(BAUDRATE);
 }
@@ -29,18 +29,18 @@ void SerialPortPeripheral::sendData(const unsigned char* data, int length)
 {
     for (int i = 0; i < length; ++i)
     {
-       serialPort_.putChar(data[i]);
+        serialPort_.putChar(data[i]);
     }
 }
 
 bool SerialPortPeripheral::attemptConnection()
 {
-   if (serialPort_.open(QIODevice::ReadWrite))
-   {
-      return true;
-   }
-   else
-   {
-      return false;
-   }
+    if (serialPort_.open(QIODevice::ReadWrite))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

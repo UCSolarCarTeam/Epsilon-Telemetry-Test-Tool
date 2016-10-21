@@ -8,5 +8,5 @@ public:
     virtual bool attemptConnection() = 0;
     virtual void setParameters(QStringList parameters) = 0;
     virtual void sendData(const unsigned char* data, int length) = 0;
-    virtual ~I_CommPeripheral(){}
+    virtual ~I_CommPeripheral() {}
 };

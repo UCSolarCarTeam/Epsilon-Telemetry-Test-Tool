@@ -7,6 +7,6 @@
 
 int main(int argc, char** argv)
 {
-   TestApplication a(argc, argv);
-   return a.exec();
+    TestApplication a(argc, argv);
+    return a.exec();
 }
