@@ -14,7 +14,7 @@
 #include <MotorDetailsData.h>
 #include <MotorFaultsData.h>
 #include <MpptData.h>
-#include <CommunicationService.h>
+#include <I_CommunicationService.h>
 #include <View.h>
 
 union DataUnion
@@ -44,7 +44,7 @@ const unsigned int FRAMING_LENGTH_INCREASE = 2;
 const unsigned char TERMINATING_BYTE = 0x00;
 }
 
-TelemetryReporting::TelemetryReporting(CommunicationService& commService,
+TelemetryReporting::TelemetryReporting(I_CommunicationService& commService,
                                        const KeyMotorData& keyMotorData,
                                        const MotorDetailsData& motor0DetailsData,
                                        const MotorDetailsData& motor1DetailsData,

@@ -3,6 +3,8 @@
 #include <QObject>
 #include <initializer_list>
 
+#include "gtest/gtest_prod.h"
+
 class BatteryData;
 class BatteryFaultsData;
 class CmuData;
@@ -12,7 +14,7 @@ class LightsData;
 class MotorDetailsData;
 class MotorFaultsData;
 class MpptData;
-class CommunicationService;
+class I_CommunicationService;
 class QIODevice;
 class View;
 
@@ -20,7 +22,7 @@ class TelemetryReporting : public QObject
 {
     Q_OBJECT
 public:
-    TelemetryReporting(CommunicationService& commService,
+    TelemetryReporting(I_CommunicationService& commService,
                        const KeyMotorData& keyMotorData_,
                        const MotorDetailsData& motor0DetailsData_,
                        const MotorDetailsData& motor1DetailsData_,
@@ -33,7 +35,10 @@ public:
                        const LightsData& lightsData_,
                        View& view);
 
+//friend class ::TelemetryReportingTest;
+
 private slots:
+	FRIEND_TEST(TelemetryReportingTest, dataForwarded);
     void sendKeyMotor();
     void sendMotorDetails(int n);
     void sendDriverControls();
@@ -55,7 +60,7 @@ private:
     void writeBoolsIntoArray(unsigned char* data, int index, const bool values[], int numValues);
 
 private:
-    CommunicationService& communicationService_;
+    I_CommunicationService& communicationService_;
     const KeyMotorData& keyMotorData_;
     const MotorDetailsData& motor0DetailsData_;
     const MotorDetailsData& motor1DetailsData_;
