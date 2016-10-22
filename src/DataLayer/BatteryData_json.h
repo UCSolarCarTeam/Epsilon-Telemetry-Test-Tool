@@ -1,10 +1,11 @@
 #pragma once
 
 #include <QString>
+#include <QStringList>
 
-struct BatteryData
+struct BatteryData_json
 {
-    BatteryData()
+    BatteryData_json()
     : alive(true)
     , packSocAmpHours(32.23f)
     , packSocPercentage(33.33f)
@@ -21,7 +22,7 @@ struct BatteryData
     , contactor12VSupplyOk(true)
     , contactor2ErrorStatus(false)
     , contactor2Status(true)
-    , prechargeState(PrechargeState::EnablePack)
+    , prechargeState("Enable Pack")
     , prechargeTimerElapsed(false)
     , prechargeTimerNotElapsed(true)
     , prechargeTimerCount(38)
@@ -45,19 +46,15 @@ struct BatteryData
     , cmu12VCurrentConsumption(46)
     , bmsCanLockedOut(false)
     {}
-
-    enum PrechargeState
-    {
-       Error = 0,
-       Idle = 1,
-       EnablePack = 5,
-       Measure = 2,
-       Precharge = 3,
-       Run = 4,
-    };
-
-
-
+/*
+ * Precharge states:
+ * Error
+ * Idle
+ * Enable Pack
+ * Measure
+ * Precharge
+ * Run
+*/
     bool alive;
     float packSocAmpHours;
     float packSocPercentage;
@@ -74,7 +71,7 @@ struct BatteryData
     bool contactor12VSupplyOk;
     bool contactor2ErrorStatus;
     bool contactor2Status;
-    PrechargeState prechargeState;
+    const char* prechargeState;
     bool prechargeTimerElapsed;
     bool prechargeTimerNotElapsed;
     unsigned short prechargeTimerCount;

@@ -16,6 +16,8 @@ class CommunicationService;
 class QIODevice;
 class View;
 
+class BatteryData_json;
+
 class TelemetryReporting_json : public QObject
 {
     Q_OBJECT
@@ -27,7 +29,7 @@ public:
                        const DriverControlsData& driverControlsData_,
                        const MotorFaultsData& motorFaultsData_,
                        const BatteryFaultsData& batteryFaultsData_,
-                       const BatteryData& batteryData_,
+                       const BatteryData_json& batteryData_json_,
                        const CmuData& cmuData_,
                        const MpptData& mpptData_,
                        const LightsData& lightsData_,
@@ -62,7 +64,7 @@ private:
     const DriverControlsData& driverControlsData_;
     const MotorFaultsData& motorFaultsData_;
     const BatteryFaultsData& batteryFaultsData_;
-    const BatteryData& batteryData_;
+    const BatteryData_json& batteryData_json_;
     const CmuData& cmuData_;
     const MpptData& mpptData_;
     const LightsData& lightsData_;
