@@ -98,7 +98,7 @@ TelemetryReporting_json::TelemetryReporting_json(CommunicationService& commServi
 }
 
 void TelemetryReporting_json::sendKeyMotor()
-{
+{/*
     const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
@@ -124,10 +124,45 @@ void TelemetryReporting_json::sendKeyMotor()
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
     communicationService_.sendData(packet, packetLength);
+    */
+
+    QJsonArray KeyMotor;
+
+    QJsonObject KeyMotor0;
+    KeyMotor0.insert("Alive", keyMotorData_.motor0Alive);
+    KeyMotor0.insert("SetCurrent", keyMotorData_.motor0SetCurrent);
+    KeyMotor0.insert("SetVelocity", keyMotorData_.motor0SetVelocity);
+    KeyMotor0.insert("BusCurrent", keyMotorData_.motor0BusVoltage);
+    KeyMotor0.insert("BusVoltage", keyMotorData_.motor0BusVoltage);
+    KeyMotor0.insert("VehicleVelocity", keyMotorData_.motor0VehicleVelocity);
+    KeyMotor.push_back(KeyMotor0);
+
+    QJsonObject KeyMotor1;
+    KeyMotor1.insert("Alive", keyMotorData_.motor1Alive);
+    KeyMotor1.insert("SetCurrent", keyMotorData_.motor1SetCurrent);
+    KeyMotor1.insert("SetVelocity", keyMotorData_.motor1SetVelocity);
+    KeyMotor1.insert("BusCurrent", keyMotorData_.motor1BusVoltage);
+    KeyMotor1.insert("BusVoltage", keyMotorData_.motor1BusVoltage);
+    KeyMotor1.insert("VehicleVelocity", keyMotorData_.motor1VehicleVelocity);
+    KeyMotor.push_back(KeyMotor1);
+
+    QJsonDocument doc(KeyMotor);
+
+    QString filename ="KeyMotorData.txt";
+
+    QFile file( filename );
+    if ( file.open(QIODevice::ReadWrite) )
+    {
+        //Simulate sending document
+        QTextStream stream( &file );
+        stream << doc.toJson();
+    }
+
+
 }
 
 void TelemetryReporting_json::sendMotorDetails(int n)
-{
+{/*
     const unsigned int unframedPacketLength = MOTOR_DETAILS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
@@ -158,10 +193,46 @@ void TelemetryReporting_json::sendMotorDetails(int n)
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
     communicationService_.sendData(packet, packetLength);
+    */
+    QJsonObject MotorDetails;
+
+    MotorDetails.insert("PhaseCCurrent", motor0DetailsData_.phaseCCurrent);
+    MotorDetails.insert("PhaseBCurrent", motor0DetailsData_.phaseBCurrent);
+    MotorDetails.insert("MotorVoltageReal", motor0DetailsData_.MotorVoltageReal);
+    MotorDetails.insert("MotorVoltageImaginary", motor0DetailsData_.MotorVoltageImaginary);
+    MotorDetails.insert("MotorCurrentReal", motor0DetailsData_.MotorCurrentReal);
+    MotorDetails.insert("MotorCurrentImaginary", motor0DetailsData_.MotorCurrentImaginary);
+    MotorDetails.insert("BackEmfReal", motor0DetailsData_.BackEmfReal);
+    MotorDetails.insert("VoltageRail15VSupply", motor0DetailsData_.RailSupply15V);
+    MotorDetails.insert("VoltageRail3VSupply", motor0DetailsData_.RailSupply3V);
+    MotorDetails.insert("VoltageRail1VSupply", motor0DetailsData_.RailSupply1V);
+    MotorDetails.insert("HeatSinkTemp", motor0DetailsData_.heatSinkTemperature);
+    MotorDetails.insert("MotorTemp", motor0DetailsData_.motorTemperature);
+    MotorDetails.insert("DspBoardTemp", motor0DetailsData_.dspBoardTempearture);
+    MotorDetails.insert("DcBusAmpHours", motor0DetailsData_.dcBusAmpHours);
+    MotorDetails.insert("Odometer", motor0DetailsData_.odometer);
+    MotorDetails.insert("Slipspeed", motor0DetailsData_.slipSpeed);
+
+    QJsonDocument doc(MotorDetails);
+
+    QString filename ="MotorDetailsData";
+    filename.append(n);
+    filename.append(".txt");
+
+    QFile file( filename );
+    if ( file.open(QIODevice::ReadWrite) )
+    {
+        //Simulate sending document
+        QTextStream stream( &file );
+        stream << doc.toJson();
+    }
+
+
+
 }
 
 void TelemetryReporting_json::sendDriverControls()
-{
+{/*
     const unsigned int unframedPacketLength = DRIVER_CONTROLS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
@@ -199,10 +270,48 @@ void TelemetryReporting_json::sendDriverControls()
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
     communicationService_.sendData(packet, packetLength);
+    */
+    QJsonObject DriverControls;
+
+    DriverControls.insert("Alive", driverControlsData_.alive);
+    DriverControls.insert("HeadlightsOff", driverControlsData_.headlightsOff);
+    DriverControls.insert("HeadLightsLow", driverControlsData_.headlightsLow);
+    DriverControls.insert("HeadlightsHigh", driverControlsData_.headlightsHigh);
+    DriverControls.insert("SignalRight", driverControlsData_.signalRight);
+    DriverControls.insert("SignalLeft", driverControlsData_.signalLeft);
+    DriverControls.insert("Hazard", driverControlsData_.hazardLights);
+    DriverControls.insert("Interior", driverControlsData_.interiorLights);
+    DriverControls.insert("Aux", driverControlsData_.musicAux);
+    DriverControls.insert("VolumeUp", driverControlsData_.volumeUp);
+    DriverControls.insert("VolumeDown", driverControlsData_.volumeDown);
+    DriverControls.insert("NextSong", driverControlsData_.nextSong);
+    DriverControls.insert("PrevSong", driverControlsData_.prevSong);
+    DriverControls.insert("Acceleration", driverControlsData_.acceleration);
+    DriverControls.insert("RegenBraking", driverControlsData_.regenBraking);
+    DriverControls.insert("Brakes", driverControlsData_.brakes);
+    DriverControls.insert("Forward", driverControlsData_.forward);
+    DriverControls.insert("Reverse", driverControlsData_.reverse);
+    DriverControls.insert("PushToTalk", driverControlsData_.pushToTalk);
+    DriverControls.insert("Horn", driverControlsData_.horn);
+    DriverControls.insert("Reset", driverControlsData_.reset);
+
+    QJsonDocument doc(DriverControls);
+
+    QString filename ="DriverControlData.txt";
+
+    QFile file( filename );
+    if ( file.open(QIODevice::ReadWrite) )
+    {
+        //Simulate sending document
+        QTextStream stream( &file );
+        stream << doc.toJson();
+    }
+
+
 }
 
 void TelemetryReporting_json::sendMotorFaults()
-{
+{/*
     const unsigned int unframedPacketLength = MOTOR_FAULTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
@@ -255,10 +364,84 @@ void TelemetryReporting_json::sendMotorFaults()
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
     communicationService_.sendData(packet, packetLength);
+    */
+    QJsonArray MotorFaults;
+
+    QJsonObject MotorFaults0;
+
+    QJsonObject ErrorFlags0;
+
+    ErrorFlags0.insert("MotorOverSpeed", motorFaultsData_.motor0OverSpeed);
+    ErrorFlags0.insert("SoftwareOverCurrent", motorFaultsData_.motor0SoftwareOverCurrent);
+    ErrorFlags0.insert("DcBusOverVoltage", motorFaultsData_.motor0DcBusOverVoltage);
+    ErrorFlags0.insert("BadMototPositionHallSequence", motorFaultsData_.motor0BadMootorPositionHallSequence);
+    ErrorFlags0.insert("WatchdogCausedLastReset", motorFaultsData_.motor0WatchdogCausedLastReset);
+    ErrorFlags0.insert("ConfigReadError", motorFaultsData_.motor0ConfigReadError);
+    ErrorFlags0.insert("Rail15VUnderVoltageLockOut", motorFaultsData_.motor0Rail15VUnderVoltageLockOut);
+    ErrorFlags0.insert("DesaturationFault", motorFaultsData_.motor0DesaturationFault);
+    MotorFaults0.insert("Error Flags", ErrorFlags0);
+
+    QJsonObject LimitFlags0;
+    LimitFlags0.insert("OutputVoltagePwm", motorFaultsData_.motor0OutputVoltagePwmLimit);
+    LimitFlags0.insert("MotorCurrent", motorFaultsData_.motor0MotorCurrentLimit);
+    LimitFlags0.insert("Velocity", motorFaultsData_.motor0VelocityLimit);
+    LimitFlags0.insert("BusCurrent", motorFaultsData_.motor0BusCurrentLimit);
+    LimitFlags0.insert("BusVoltageUpper", motorFaultsData_.motor0BusVoltageUpperLimit);
+    LimitFlags0.insert("BusVoltageLower", motorFaultsData_.motor0BusVoltageLowerLimit);
+    LimitFlags0.insert("IpmOrMotorTemperature", motorFaultsData_.motor0IpmOrMotorTemperatureLimit);
+    MotorFaults0.insert("LimitFlags", LimitFlags0);
+
+    MotorFaults0.insert("RxErrorCount", motorFaultsData_.motor0RxErrorCount);
+    MotorFaults0.insert("TxErrorCount", motorFaultsData_.motor0TxErrorCount);
+
+    MotorFaults.push_back(MotorFaults0);
+
+    QJsonObject MotorFaults1;
+
+    QJsonObject ErrorFlags1;
+
+    ErrorFlags1.insert("MotorOverSpeed", motorFaultsData_.motor1OverSpeed);
+    ErrorFlags1.insert("SoftwareOverCurrent", motorFaultsData_.motor1SoftwareOverCurrent);
+    ErrorFlags1.insert("DcBusOverVoltage", motorFaultsData_.motor1DcBusOverVoltage);
+    ErrorFlags1.insert("BadMototPositionHallSequence", motorFaultsData_.motor1BadMootorPositionHallSequence);
+    ErrorFlags1.insert("WatchdogCausedLastReset", motorFaultsData_.motor1WatchdogCausedLastReset);
+    ErrorFlags1.insert("ConfigReadError", motorFaultsData_.motor1ConfigReadError);
+    ErrorFlags1.insert("Rail15VUnderVoltageLockOut", motorFaultsData_.motor1Rail15VUnderVoltageLockOut);
+    ErrorFlags1.insert("DesaturationFault", motorFaultsData_.motor1DesaturationFault);
+    MotorFaults1.insert("Error Flags", ErrorFlags1);
+
+    QJsonObject LimitFlags1;
+    LimitFlags1.insert("OutputVoltagePwm", motorFaultsData_.motor1OutputVoltagePwmLimit);
+    LimitFlags1.insert("MotorCurrent", motorFaultsData_.motor1MotorCurrentLimit);
+    LimitFlags1.insert("Velocity", motorFaultsData_.motor1VelocityLimit);
+    LimitFlags1.insert("BusCurrent", motorFaultsData_.motor1BusCurrentLimit);
+    LimitFlags1.insert("BusVoltageUpper", motorFaultsData_.motor1BusVoltageUpperLimit);
+    LimitFlags1.insert("BusVoltageLower", motorFaultsData_.motor1BusVoltageLowerLimit);
+    LimitFlags1.insert("IpmOrMotorTemperature", motorFaultsData_.motor1IpmOrMotorTemperatureLimit);
+    MotorFaults1.insert("LimitFlags", LimitFlags1);
+
+    MotorFaults1.insert("RxErrorCount", motorFaultsData_.motor1RxErrorCount);
+    MotorFaults1.insert("TxErrorCount", motorFaultsData_.motor1TxErrorCount);
+
+    MotorFaults.push_back(MotorFaults1);
+
+    QJsonDocument doc(MotorFaults);
+
+    QString filename ="MotorFaultsData.txt";
+
+    QFile file( filename );
+    if ( file.open(QIODevice::ReadWrite) )
+    {
+        //Simulate sending document
+        QTextStream stream( &file );
+        stream << doc.toJson();
+    }
+
+
 }
 
 void TelemetryReporting_json::sendBatteryFaults()
-{
+{/*
     const unsigned int unframedPacketLength = BATTERY_FAULTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
@@ -283,6 +466,34 @@ void TelemetryReporting_json::sendBatteryFaults()
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
     communicationService_.sendData(packet, packetLength);
+*/
+    QJsonObject BatteryFaults;
+
+    BatteryFaults.insert("CellOverVoltage", batteryFaultsData_.cellOverVoltage);
+    BatteryFaults.insert("CellUnderVoltage", batteryFaultsData_.cellOverVoltage);
+    BatteryFaults.insert("CellOverTemp", batteryFaultsData_.cellOverTemperature);
+    BatteryFaults.insert("MeasurementUntrusted", batteryFaultsData_.measurementUntrusted);
+    BatteryFaults.insert("CMUCommTimeout", batteryFaultsData_.cmuCommTimeout);
+    BatteryFaults.insert("BMUSetupMode", batteryFaultsData_.bmuInSetupMode);
+    BatteryFaults.insert("CMUCANBusPowerStatus", batteryFaultsData_.cmuCanBusPowerStatus);
+    BatteryFaults.insert("PackIsolationFailure", batteryFaultsData_.packIsolationTestFailure);
+    BatteryFaults.insert("SoftwareOverCurrent", batteryFaultsData_.softwareOverCurrent);
+    BatteryFaults.insert("CAN12VSupplyLow", batteryFaultsData_.can12VSupplyLow);
+    BatteryFaults.insert("ContactorStuck", batteryFaultsData_.contactorStuck);
+    BatteryFaults.insert("CMUDetectedExtraCell", batteryFaultsData_.cmuDetectedExtraCellPresent);
+
+    QJsonDocument doc(BatteryFaults);
+
+    QString filename ="BatteryFaultsData.txt";
+
+    QFile file( filename );
+    if ( file.open(QIODevice::ReadWrite) )
+    {
+        //Simulate sending document
+        QTextStream stream( &file );
+        stream << doc.toJson();
+    }
+
 
 }
 
