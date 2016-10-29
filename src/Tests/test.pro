@@ -17,17 +17,14 @@ LIBS += -L../../build/.lib -lgtest -lgtest_main -lgmock
 
 
 HEADERS += \
-    ../DataLayer/KeyMotorData.h
-#    CommunicationLayer/CommDeviceControl/MockMessageForwarder.h \
-#    InfrastructureLayer/Settings/MockSettings.h \
-#    DataLayer/BatteryData/MockBatteryData.h \
-#    DataLayer/FaultsData/MockFaultsData.h \
-#    DataLayer/PowerData/MockPowerData.h \
-#    DataLayer/VehicleData/MockVehicleData.h
+#    BusinessLayer/CommunicationServiceTestWrapper.h \
+    BusinessLayer/MockCommunicationService.h \
+
 
 SOURCES += \
     testmain.cpp \
-    BusinessLayer/TelemetryReportingTest.cpp
+    BusinessLayer/TelemetryReportingTest.cpp \
+#    BusinessLayer/CommunicationServiceTestWrapper.cpp \
 
 DESTDIR = ../../build/tests
 #DESTDIR = ../../build/.tests
