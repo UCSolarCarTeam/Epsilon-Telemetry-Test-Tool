@@ -4,9 +4,12 @@
 -------------------------------------------------------*/
 
 #include "TestApplication.h"
+#include "TestApplication_json.h"
 
 int main(int argc, char** argv)
 {
-   TestApplication a(argc, argv);
-   return a.exec();
+   //TestApplication a(argc, argv);     //Serial data
+   TestApplication_json b(argc, argv);  //JSON data
+   //return a.exec();
+   return b.exec();
 }

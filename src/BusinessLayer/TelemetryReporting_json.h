@@ -12,17 +12,17 @@ class LightsData;
 class MotorDetailsData;
 class MotorFaultsData;
 class MpptData;
-class CommunicationService;
 class QIODevice;
 class View;
 
 class BatteryData_json;
+class CommunicationService_json;
 
 class TelemetryReporting_json : public QObject
 {
     Q_OBJECT
 public:
-    TelemetryReporting_json(CommunicationService& commService,
+    TelemetryReporting_json(CommunicationService_json& commService,
                        const KeyMotorData& keyMotorData_,
                        const MotorDetailsData& motor0DetailsData_,
                        const MotorDetailsData& motor1DetailsData_,
@@ -48,16 +48,18 @@ private slots:
     void sendAll();
 
 private:
-    unsigned int frameData(const unsigned char* dataToEncode, unsigned long length, unsigned char* frameData);
-    unsigned int stuffData(const unsigned char* dataToEncode, unsigned long length, unsigned char* encodedData);
-    void addChecksum(unsigned char* data, unsigned int length);
-    void writeFloatIntoArray(unsigned char* data, int index, const float& value);
-    void writeShortIntoArray(unsigned char* data, int index, const short& value);
-    void writeUShortIntoArray(unsigned char* data, int index, const unsigned short& value);
-    void writeBoolsIntoArray(unsigned char* data, int index, const bool values[], int numValues);
+    void makeKeyMotor();
+    void makeMotorDetails(int n);
+    void makeDriverControls();
+    void makeMotorFaults();
+    void makeBatteryFaults();
+    void makeBattery();
+    void makeCmu();
+    void makeMppt();
+    void makeLights();
 
 private:
-    CommunicationService& communicationService_;
+    CommunicationService_json& communicationService_json_;
     const KeyMotorData& keyMotorData_;
     const MotorDetailsData& motor0DetailsData_;
     const MotorDetailsData& motor1DetailsData_;

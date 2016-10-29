@@ -3,9 +3,6 @@
 #include <QIODevice>
 
 #include <CcsDefines.h>
-#include <CrcCalculator.h>
-//#include <TelemetryReporting.h>
-//#include <BatteryData.h>
 #include <BatteryFaultsData.h>
 #include <CmuData.h>
 #include <DriverControlsData.h>
@@ -14,51 +11,30 @@
 #include <MotorDetailsData.h>
 #include <MotorFaultsData.h>
 #include <MpptData.h>
-#include <CommunicationService.h>
 #include <View.h>
 
 #include <TelemetryReporting_json.h>
 #include <BatteryData_json.h>
+#include <CommunicationService_json.h>
 
-#include <QDebug>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QFile>
-#include <QTextStream>
-#include <QString>
-#include <QStringList>
-#include <QJsonValue>
-#include <QJsonArray>
+#include "qdatetime.h"
+#include "qjsonarray.h"
+#include "qstring.h"
+#include "qjsondocument.h"
+#include "qjsonobject.h"
 
+QJsonArray KeyMotor;
+QJsonObject MotorDetails0;
+QJsonObject MotorDetails1;
+QJsonObject DriverControls;
+QJsonArray MotorFaults;
+QJsonObject BatteryFaults;
+QJsonObject Battery;
+QJsonArray CMUArray;
+QJsonArray mPPTArray;
+QJsonObject lightsInfo;
 
-union DataUnion
-{
-    float floatData;
-    short shortData[2];
-    unsigned short uShortData[2];
-    char charData[4];
-};
-
-namespace
-{
-// Refer to https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=0
-// These lengths only include the data. Not the checksum
-const int KEY_MOTOR_LENGTH = 43;
-const int MOTOR_DETAILS_LENGTH = 69;
-const int DRIVER_CONTROLS_LENGTH = 10;
-const int MOTOR_FAULTS_LENGTH = 9;
-const int BATTERY_FAULTS_LENGTH = 3;
-const int BATTERY_LENGTH = 60;
-const int CMU_LENGTH = 50;
-const int MPPT_LENGTH = 10;
-const int LIGHTS_LENGTH = 2;
-
-const unsigned int CHECKSUM_LENGTH = 2;
-const unsigned int FRAMING_LENGTH_INCREASE = 2;
-const unsigned char TERMINATING_BYTE = 0x00;
-}
-
-TelemetryReporting_json::TelemetryReporting_json(CommunicationService& commService,
+TelemetryReporting_json::TelemetryReporting_json(CommunicationService_json& commService,
                                        const KeyMotorData& keyMotorData,
                                        const MotorDetailsData& motor0DetailsData,
                                        const MotorDetailsData& motor1DetailsData,
@@ -70,7 +46,7 @@ TelemetryReporting_json::TelemetryReporting_json(CommunicationService& commServi
                                        const MpptData& mpptData,
                                        const LightsData& lightsData,
                                        View& view)
-    : communicationService_(commService)
+    : communicationService_json_(commService)
     , keyMotorData_(keyMotorData)
     , motor0DetailsData_(motor0DetailsData)
     , motor1DetailsData_(motor1DetailsData)
@@ -97,36 +73,8 @@ TelemetryReporting_json::TelemetryReporting_json(CommunicationService& commServi
     connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
 }
 
-void TelemetryReporting_json::sendKeyMotor()
-{/*
-    const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
-    unsigned char packetPayload[unframedPacketLength];
-
-    packetPayload[0] = CcsDefines::KEY_MOTOR_PKG_ID;
-
-    bool motor0AliveArray[] = {keyMotorData_.motor0Alive};
-    writeBoolsIntoArray(packetPayload, 1, motor0AliveArray, 1);
-    writeFloatIntoArray(packetPayload, 2, keyMotorData_.motor0SetCurrent);
-    writeFloatIntoArray(packetPayload, 6, keyMotorData_.motor0SetVelocity);
-    writeFloatIntoArray(packetPayload, 10, keyMotorData_.motor0BusCurrent);
-    writeFloatIntoArray(packetPayload, 14, keyMotorData_.motor0BusVoltage);
-    writeFloatIntoArray(packetPayload, 18, keyMotorData_.motor0VehicleVelocity);
-
-    bool motor1AliveArray[] = {keyMotorData_.motor1Alive};
-    writeBoolsIntoArray(packetPayload, 22, motor1AliveArray, 1);
-    writeFloatIntoArray(packetPayload, 23, keyMotorData_.motor1SetCurrent);
-    writeFloatIntoArray(packetPayload, 27, keyMotorData_.motor1SetVelocity);
-    writeFloatIntoArray(packetPayload, 31, keyMotorData_.motor1BusCurrent);
-    writeFloatIntoArray(packetPayload, 35, keyMotorData_.motor1BusVoltage);
-    writeFloatIntoArray(packetPayload, 39, keyMotorData_.motor1VehicleVelocity);
-
-    addChecksum(packetPayload, KEY_MOTOR_LENGTH);
-    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
-    */
-
-    QJsonArray KeyMotor;
+void TelemetryReporting_json::makeKeyMotor(){
+    KeyMotor = QJsonArray();
 
     QJsonObject KeyMotor0;
     KeyMotor0.insert("Alive", keyMotorData_.motor0Alive);
@@ -146,132 +94,55 @@ void TelemetryReporting_json::sendKeyMotor()
     KeyMotor1.insert("VehicleVelocity", keyMotorData_.motor1VehicleVelocity);
     KeyMotor.push_back(KeyMotor1);
 
-    QJsonDocument doc(KeyMotor);
-
-    QString filename ="KeyMotorData.txt";
-
-    QFile file( filename );
-    if ( file.open(QIODevice::ReadWrite) )
-    {
-        //Simulate sending document
-        QTextStream stream( &file );
-        stream << doc.toJson();
-    }
-
-
 }
 
-void TelemetryReporting_json::sendMotorDetails(int n)
-{/*
-    const unsigned int unframedPacketLength = MOTOR_DETAILS_LENGTH + CHECKSUM_LENGTH;
-    unsigned char packetPayload[unframedPacketLength];
-
+void TelemetryReporting_json::makeMotorDetails(int n){
     if(n == 0) {
-      packetPayload[0] = CcsDefines::MOTOR_DETAILS_0_PKG_ID;
-    } else {
-      packetPayload[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
-    }
-    writeFloatIntoArray(packetPayload, 1, motor0DetailsData_.phaseCCurrent);
-    writeFloatIntoArray(packetPayload, 5, motor0DetailsData_.phaseBCurrent);
-    writeFloatIntoArray(packetPayload, 9, motor0DetailsData_.MotorVoltageReal);
-    writeFloatIntoArray(packetPayload, 13, motor0DetailsData_.MotorVoltageImaginary);
-    writeFloatIntoArray(packetPayload, 17, motor0DetailsData_.MotorCurrentReal);
-    writeFloatIntoArray(packetPayload, 21, motor0DetailsData_.MotorCurrentImaginary);
-    writeFloatIntoArray(packetPayload, 25, motor0DetailsData_.BackEmfReal);
-    writeFloatIntoArray(packetPayload, 29, motor0DetailsData_.BackEmfImaginary);
-    writeFloatIntoArray(packetPayload, 33, motor0DetailsData_.RailSupply15V);
-    writeFloatIntoArray(packetPayload, 37, motor0DetailsData_.RailSupply3V);
-    writeFloatIntoArray(packetPayload, 41, motor0DetailsData_.RailSupply1V);
-    writeFloatIntoArray(packetPayload, 45, motor0DetailsData_.heatSinkTemperature);
-    writeFloatIntoArray(packetPayload, 49, motor0DetailsData_.motorTemperature);
-    writeFloatIntoArray(packetPayload, 53, motor0DetailsData_.dspBoardTempearture);
-    writeFloatIntoArray(packetPayload, 57, motor0DetailsData_.dcBusAmpHours);
-    writeFloatIntoArray(packetPayload, 61, motor0DetailsData_.odometer);
-    writeFloatIntoArray(packetPayload, 65, motor0DetailsData_.slipSpeed);
-
-    addChecksum(packetPayload, MOTOR_DETAILS_LENGTH);
-    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
-    */
-    QJsonObject MotorDetails;
-
-    MotorDetails.insert("PhaseCCurrent", motor0DetailsData_.phaseCCurrent);
-    MotorDetails.insert("PhaseBCurrent", motor0DetailsData_.phaseBCurrent);
-    MotorDetails.insert("MotorVoltageReal", motor0DetailsData_.MotorVoltageReal);
-    MotorDetails.insert("MotorVoltageImaginary", motor0DetailsData_.MotorVoltageImaginary);
-    MotorDetails.insert("MotorCurrentReal", motor0DetailsData_.MotorCurrentReal);
-    MotorDetails.insert("MotorCurrentImaginary", motor0DetailsData_.MotorCurrentImaginary);
-    MotorDetails.insert("BackEmfReal", motor0DetailsData_.BackEmfReal);
-    MotorDetails.insert("VoltageRail15VSupply", motor0DetailsData_.RailSupply15V);
-    MotorDetails.insert("VoltageRail3VSupply", motor0DetailsData_.RailSupply3V);
-    MotorDetails.insert("VoltageRail1VSupply", motor0DetailsData_.RailSupply1V);
-    MotorDetails.insert("HeatSinkTemp", motor0DetailsData_.heatSinkTemperature);
-    MotorDetails.insert("MotorTemp", motor0DetailsData_.motorTemperature);
-    MotorDetails.insert("DspBoardTemp", motor0DetailsData_.dspBoardTempearture);
-    MotorDetails.insert("DcBusAmpHours", motor0DetailsData_.dcBusAmpHours);
-    MotorDetails.insert("Odometer", motor0DetailsData_.odometer);
-    MotorDetails.insert("Slipspeed", motor0DetailsData_.slipSpeed);
-
-    QJsonDocument doc(MotorDetails);
-
-    QString filename ="MotorDetailsData";
-    filename.append(n);
-    filename.append(".txt");
-
-    QFile file( filename );
-    if ( file.open(QIODevice::ReadWrite) )
-    {
-        //Simulate sending document
-        QTextStream stream( &file );
-        stream << doc.toJson();
+        MotorDetails0 = QJsonObject();
+        MotorDetails0.insert("PhaseCCurrent", motor0DetailsData_.phaseCCurrent);
+        MotorDetails0.insert("PhaseBCurrent", motor0DetailsData_.phaseBCurrent);
+        MotorDetails0.insert("MotorVoltageReal", motor0DetailsData_.MotorVoltageReal);
+        MotorDetails0.insert("MotorVoltageImaginary", motor0DetailsData_.MotorVoltageImaginary);
+        MotorDetails0.insert("MotorCurrentReal", motor0DetailsData_.MotorCurrentReal);
+        MotorDetails0.insert("MotorCurrentImaginary", motor0DetailsData_.MotorCurrentImaginary);
+        MotorDetails0.insert("BackEmfReal", motor0DetailsData_.BackEmfReal);
+        MotorDetails0.insert("VoltageRail15VSupply", motor0DetailsData_.RailSupply15V);
+        MotorDetails0.insert("VoltageRail3VSupply", motor0DetailsData_.RailSupply3V);
+        MotorDetails0.insert("VoltageRail1VSupply", motor0DetailsData_.RailSupply1V);
+        MotorDetails0.insert("HeatSinkTemp", motor0DetailsData_.heatSinkTemperature);
+        MotorDetails0.insert("MotorTemp", motor0DetailsData_.motorTemperature);
+        MotorDetails0.insert("DspBoardTemp", motor0DetailsData_.dspBoardTempearture);
+        MotorDetails0.insert("DcBusAmpHours", motor0DetailsData_.dcBusAmpHours);
+        MotorDetails0.insert("Odometer", motor0DetailsData_.odometer);
+        MotorDetails0.insert("Slipspeed", motor0DetailsData_.slipSpeed);
     }
 
+
+    if( n== 1){
+        MotorDetails1 = QJsonObject();
+        MotorDetails1.insert("PhaseCCurrent", motor1DetailsData_.phaseCCurrent);
+        MotorDetails1.insert("PhaseBCurrent", motor1DetailsData_.phaseBCurrent);
+        MotorDetails1.insert("MotorVoltageReal", motor1DetailsData_.MotorVoltageReal);
+        MotorDetails1.insert("MotorVoltageImaginary", motor1DetailsData_.MotorVoltageImaginary);
+        MotorDetails1.insert("MotorCurrentReal", motor1DetailsData_.MotorCurrentReal);
+        MotorDetails1.insert("MotorCurrentImaginary", motor1DetailsData_.MotorCurrentImaginary);
+        MotorDetails1.insert("BackEmfReal", motor1DetailsData_.BackEmfReal);
+        MotorDetails1.insert("VoltageRail15VSupply", motor1DetailsData_.RailSupply15V);
+        MotorDetails1.insert("VoltageRail3VSupply", motor1DetailsData_.RailSupply3V);
+        MotorDetails1.insert("VoltageRail1VSupply", motor1DetailsData_.RailSupply1V);
+        MotorDetails1.insert("HeatSinkTemp", motor1DetailsData_.heatSinkTemperature);
+        MotorDetails1.insert("MotorTemp", motor1DetailsData_.motorTemperature);
+        MotorDetails1.insert("DspBoardTemp", motor1DetailsData_.dspBoardTempearture);
+        MotorDetails1.insert("DcBusAmpHours", motor1DetailsData_.dcBusAmpHours);
+        MotorDetails1.insert("Odometer", motor1DetailsData_.odometer);
+        MotorDetails1.insert("Slipspeed", motor1DetailsData_.slipSpeed);
+    }
 
 
 }
 
-void TelemetryReporting_json::sendDriverControls()
-{/*
-    const unsigned int unframedPacketLength = DRIVER_CONTROLS_LENGTH + CHECKSUM_LENGTH;
-    unsigned char packetPayload[unframedPacketLength];
-
-    packetPayload[0] = CcsDefines::DRIVER_CONTROLS_PKG_ID;
-    bool aliveArray[] = {driverControlsData_.alive};
-    writeBoolsIntoArray(packetPayload, 1, aliveArray, 1);
-    bool lightsArray[] = {driverControlsData_.headlightsOff,
-                          driverControlsData_.headlightsLow,
-                          driverControlsData_.headlightsHigh,
-                          driverControlsData_.signalLeft,
-                          driverControlsData_.signalRight,
-                          driverControlsData_.hazardLights,
-                          driverControlsData_.interiorLights
-                         };
-    writeBoolsIntoArray(packetPayload, 2, lightsArray, 7);
-    bool musicArray[] = {driverControlsData_.musicAux,
-                         driverControlsData_.volumeUp,
-                         driverControlsData_.volumeDown,
-                         driverControlsData_.nextSong,
-                         driverControlsData_.prevSong
-                        };
-    writeBoolsIntoArray(packetPayload, 3, musicArray, 5);
-    writeUShortIntoArray(packetPayload, 4, driverControlsData_.acceleration);
-    writeUShortIntoArray(packetPayload, 6, driverControlsData_.regenBraking);
-    bool controlsArray[] = {driverControlsData_.brakes,
-                            driverControlsData_.forward,
-                            driverControlsData_.reverse,
-                            driverControlsData_.pushToTalk,
-                            driverControlsData_.horn,
-                            driverControlsData_.reset
-                           };
-    writeBoolsIntoArray(packetPayload, 8, controlsArray, 6);
-
-    addChecksum(packetPayload, DRIVER_CONTROLS_LENGTH);
-    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
-    */
-    QJsonObject DriverControls;
+void TelemetryReporting_json::makeDriverControls(){
+    DriverControls = QJsonObject();
 
     DriverControls.insert("Alive", driverControlsData_.alive);
     DriverControls.insert("HeadlightsOff", driverControlsData_.headlightsOff);
@@ -295,77 +166,10 @@ void TelemetryReporting_json::sendDriverControls()
     DriverControls.insert("Horn", driverControlsData_.horn);
     DriverControls.insert("Reset", driverControlsData_.reset);
 
-    QJsonDocument doc(DriverControls);
-
-    QString filename ="DriverControlData.txt";
-
-    QFile file( filename );
-    if ( file.open(QIODevice::ReadWrite) )
-    {
-        //Simulate sending document
-        QTextStream stream( &file );
-        stream << doc.toJson();
-    }
-
-
 }
 
-void TelemetryReporting_json::sendMotorFaults()
-{/*
-    const unsigned int unframedPacketLength = MOTOR_FAULTS_LENGTH + CHECKSUM_LENGTH;
-    unsigned char packetPayload[unframedPacketLength];
-
-    packetPayload[0] = CcsDefines::MOTOR_FAULTS_PKG_ID;
-
-    bool motor0FaultsArray[] = {motorFaultsData_.motor0OverSpeed,
-                                motorFaultsData_.motor0SoftwareOverCurrent,
-                                motorFaultsData_.motor0DcBusOverVoltage,
-                                motorFaultsData_.motor0BadMootorPositionHallSequence,
-                                motorFaultsData_.motor0WatchdogCausedLastReset,
-                                motorFaultsData_.motor0ConfigReadError,
-                                motorFaultsData_.motor0Rail15VUnderVoltageLockOut,
-                                motorFaultsData_.motor0DesaturationFault
-                               };
-    writeBoolsIntoArray(packetPayload, 1, motor0FaultsArray, 8);
-    bool motor1FaultsArray[] = {motorFaultsData_.motor1OverSpeed,
-                                motorFaultsData_.motor1SoftwareOverCurrent,
-                                motorFaultsData_.motor1DcBusOverVoltage,
-                                motorFaultsData_.motor1BadMootorPositionHallSequence,
-                                motorFaultsData_.motor1WatchdogCausedLastReset,
-                                motorFaultsData_.motor1ConfigReadError,
-                                motorFaultsData_.motor1Rail15VUnderVoltageLockOut,
-                                motorFaultsData_.motor1DesaturationFault
-                               };
-    writeBoolsIntoArray(packetPayload, 2, motor1FaultsArray, 8);
-    bool motor0LimitsArray[] = {motorFaultsData_.motor0OutputVoltagePwmLimit,
-                                motorFaultsData_.motor0MotorCurrentLimit,
-                                motorFaultsData_.motor0VelocityLimit,
-                                motorFaultsData_.motor0BusCurrentLimit,
-                                motorFaultsData_.motor0BusVoltageUpperLimit,
-                                motorFaultsData_.motor0BusVoltageLowerLimit,
-                                motorFaultsData_.motor0IpmOrMotorTemperatureLimit
-                               };
-    writeBoolsIntoArray(packetPayload, 3, motor0LimitsArray, 7);
-    bool motor1LimitsArray[] = {motorFaultsData_.motor1OutputVoltagePwmLimit,
-                                motorFaultsData_.motor1MotorCurrentLimit,
-                                motorFaultsData_.motor1VelocityLimit,
-                                motorFaultsData_.motor1BusCurrentLimit,
-                                motorFaultsData_.motor1BusVoltageUpperLimit,
-                                motorFaultsData_.motor1BusVoltageLowerLimit,
-                                motorFaultsData_.motor1IpmOrMotorTemperatureLimit
-                               };
-    writeBoolsIntoArray(packetPayload, 4, motor1LimitsArray, 7);
-    packetPayload[5] = motorFaultsData_.motor0RxErrorCount;
-    packetPayload[6] = motorFaultsData_.motor0TxErrorCount;
-    packetPayload[7] = motorFaultsData_.motor1RxErrorCount;
-    packetPayload[8] = motorFaultsData_.motor1TxErrorCount;
-
-    addChecksum(packetPayload, MOTOR_FAULTS_LENGTH);
-    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
-    */
-    QJsonArray MotorFaults;
+void TelemetryReporting_json::makeMotorFaults(){
+    MotorFaults = QJsonArray();
 
     QJsonObject MotorFaults0;
 
@@ -424,50 +228,10 @@ void TelemetryReporting_json::sendMotorFaults()
     MotorFaults1.insert("TxErrorCount", motorFaultsData_.motor1TxErrorCount);
 
     MotorFaults.push_back(MotorFaults1);
-
-    QJsonDocument doc(MotorFaults);
-
-    QString filename ="MotorFaultsData.txt";
-
-    QFile file( filename );
-    if ( file.open(QIODevice::ReadWrite) )
-    {
-        //Simulate sending document
-        QTextStream stream( &file );
-        stream << doc.toJson();
-    }
-
-
 }
 
-void TelemetryReporting_json::sendBatteryFaults()
-{/*
-    const unsigned int unframedPacketLength = BATTERY_FAULTS_LENGTH + CHECKSUM_LENGTH;
-    unsigned char packetPayload[unframedPacketLength];
-
-    packetPayload[0] = CcsDefines::BATTERY_FAULTS_PKG_ID;
-    bool batteryFaultsArray[] = {batteryFaultsData_.cellOverVoltage,
-                                 batteryFaultsData_.cellUnderVoltage,
-                                 batteryFaultsData_.cellOverTemperature,
-                                 batteryFaultsData_.measurementUntrusted,
-                                 batteryFaultsData_.cmuCommTimeout,
-                                 batteryFaultsData_.vehicleCommTimeout,
-                                 batteryFaultsData_.bmuInSetupMode,
-                                 batteryFaultsData_.cmuCanBusPowerStatus,
-                                 batteryFaultsData_.packIsolationTestFailure,
-                                 batteryFaultsData_.softwareOverCurrent,
-                                 batteryFaultsData_.can12VSupplyLow,
-                                 batteryFaultsData_.contactorStuck,
-                                 batteryFaultsData_.cmuDetectedExtraCellPresent
-                                };
-    writeBoolsIntoArray(packetPayload, 1, batteryFaultsArray, 13);
-
-    addChecksum(packetPayload, BATTERY_FAULTS_LENGTH);
-    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
-*/
-    QJsonObject BatteryFaults;
+void TelemetryReporting_json::makeBatteryFaults(){
+    BatteryFaults = QJsonObject();
 
     BatteryFaults.insert("CellOverVoltage", batteryFaultsData_.cellOverVoltage);
     BatteryFaults.insert("CellUnderVoltage", batteryFaultsData_.cellOverVoltage);
@@ -481,79 +245,11 @@ void TelemetryReporting_json::sendBatteryFaults()
     BatteryFaults.insert("CAN12VSupplyLow", batteryFaultsData_.can12VSupplyLow);
     BatteryFaults.insert("ContactorStuck", batteryFaultsData_.contactorStuck);
     BatteryFaults.insert("CMUDetectedExtraCell", batteryFaultsData_.cmuDetectedExtraCellPresent);
-
-    QJsonDocument doc(BatteryFaults);
-
-    QString filename ="BatteryFaultsData.txt";
-
-    QFile file( filename );
-    if ( file.open(QIODevice::ReadWrite) )
-    {
-        //Simulate sending document
-        QTextStream stream( &file );
-        stream << doc.toJson();
-    }
-
-
 }
 
-void TelemetryReporting_json::sendBattery()
-{
-    /*const unsigned int unframedPacketLength = BATTERY_LENGTH + CHECKSUM_LENGTH;
-    unsigned char packetPayload[unframedPacketLength];
+void TelemetryReporting_json::makeBattery(){
 
-    packetPayload[0] = CcsDefines::BATTERY_PKG_ID;
-    bool aliveArray[] = {batteryData_.alive};
-    writeBoolsIntoArray(packetPayload, 1, aliveArray, 1);
-    writeFloatIntoArray(packetPayload, 2, batteryData_.packSocAmpHours);
-    writeFloatIntoArray(packetPayload, 6, batteryData_.packSocPercentage);
-    writeFloatIntoArray(packetPayload, 10, batteryData_.packBalanceSoc);
-    writeFloatIntoArray(packetPayload, 14, batteryData_.packBalanceSocPercentage);
-    writeUShortIntoArray(packetPayload, 18, batteryData_.chargingCellVoltageError);
-    writeUShortIntoArray(packetPayload, 20, batteryData_.cellTemperatureMargin);
-    writeUShortIntoArray(packetPayload, 22, batteryData_.dischargingCellVoltageError);
-    writeUShortIntoArray(packetPayload, 24, batteryData_.totalPackCapacity);
-    bool contactorArray[] = {batteryData_.contactor0Errorstatus,
-                             batteryData_.contactor1ErrorStatus,
-                             batteryData_.contactor0Status,
-                             batteryData_.contactor1Status,
-                             batteryData_.contactor12VSupplyOk,
-                             batteryData_.contactor2ErrorStatus,
-                             batteryData_.contactor2Status
-                            };
-    writeBoolsIntoArray(packetPayload, 26, contactorArray, 7);
-    packetPayload[27] = (unsigned char)batteryData_.prechargeState;
-    bool prechargeArray[] = {batteryData_.prechargeTimerElapsed,
-                             batteryData_.prechargeTimerNotElapsed
-                            };
-    writeBoolsIntoArray(packetPayload, 28, prechargeArray, 2);
-    writeUShortIntoArray(packetPayload, 29, batteryData_.prechargeTimerCount);
-    writeUShortIntoArray(packetPayload, 31, batteryData_.lowestCellVoltage);
-    packetPayload[33] = batteryData_.lowestCellVoltageCmuNumber;
-    packetPayload[33] += batteryData_.lowestCellVoltageCellNumber << 4;
-    writeUShortIntoArray(packetPayload, 34, batteryData_.highestCellVoltage);
-    packetPayload[36] = batteryData_.highestCellVoltageCmuNumber;
-    packetPayload[36] += batteryData_.highestCellVoltageCellNumber << 4;
-    writeUShortIntoArray(packetPayload, 37, batteryData_.lowestCellTemperature);
-    packetPayload[39] = batteryData_.lowestCellTemperatureCmuNumber;
-    packetPayload[39] += batteryData_.lowestCellTemperatureCellNumber << 4;
-    writeUShortIntoArray(packetPayload, 40, batteryData_.highestCellTemperature);
-    packetPayload[42] = batteryData_.highestCellTemperatureCmuNumber;
-    packetPayload[42] += batteryData_.highestCellTemperatureCellNumber << 4;
-    writeUShortIntoArray(packetPayload, 51, batteryData_.fan0Speed);
-    writeUShortIntoArray(packetPayload, 53, batteryData_.fan1Speed);
-    writeUShortIntoArray(packetPayload, 55, batteryData_.fanContactors12VCurrentConsumption);
-    writeUShortIntoArray(packetPayload, 57, batteryData_.cmu12VCurrentConsumption);
-    bool lockedOutArray[] = {batteryData_.bmsCanLockedOut};
-    writeBoolsIntoArray(packetPayload, 59, lockedOutArray, 1);
-
-    addChecksum(packetPayload, BATTERY_LENGTH);
-    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
-    */
-
-    QJsonObject Battery;
+    Battery = QJsonObject();
 
     Battery.insert("Alive", batteryData_json_.alive);
     Battery.insert("PackSocAmpHours", batteryData_json_.packSocAmpHours);
@@ -611,55 +307,13 @@ void TelemetryReporting_json::sendBattery()
     Battery.insert("FanContactorsCurrent", batteryData_json_.fanContactors12VCurrentConsumption);
     Battery.insert("CmuCurrent", batteryData_json_.cmu12VCurrentConsumption);
 
-    QJsonDocument doc(Battery);
-
-    QString filename ="BatteryData.txt";
-
-    QFile file( filename );
-    if ( file.open(QIODevice::ReadWrite) )
-    {
-        //Simulate sending document
-        QTextStream stream( &file );
-        stream << doc.toJson();
-    }
-
-
-
-
 }
 
-void TelemetryReporting_json::sendCmu()
-{/*
-    const unsigned int unframedPacketLength = CMU_LENGTH + CHECKSUM_LENGTH;
-    unsigned char packetPayload[unframedPacketLength];
-
-    packetPayload[0] = CcsDefines::CMU_PKG_ID;
-    int cmuVoltageBaseIndex = 2;
-    for (int i = 0; i < 8; i++)
-    {
-        writeUShortIntoArray(packetPayload, cmuVoltageBaseIndex + (i * 2), cmuData_.cellVoltage[i]);
-    }
-    writeUShortIntoArray(packetPayload, 18, cmuData_.pcbTemperature);
-    int cmuTemperatureBaseIndex = 20;
-    for (int i = 0; i < 15; i++)
-    {
-        writeUShortIntoArray(packetPayload, cmuTemperatureBaseIndex + (i * 2), cmuData_.cellTemperature[i]);
-    }
-
-    for (unsigned char i = 0; i < CcsDefines::CMU_COUNT; i++)
-    {
-        packetPayload[1] = i;
-
-        addChecksum(packetPayload, CMU_LENGTH);
-        unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-        unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-        communicationService_.sendData(packet, packetLength);
-    }
-    */
+void TelemetryReporting_json::makeCmu(){
 
     QJsonObject CMUinfo;
 
-    QJsonArray CMUArray;
+    CMUArray = QJsonArray();
 
     QJsonArray cellVoltageInfo;
     for (int i = 0; i < 8; i++)
@@ -684,49 +338,12 @@ void TelemetryReporting_json::sendCmu()
         CMUArray.push_back(CMUinfo);
     }
 
-    QJsonDocument doc(CMUArray);
-
-    QString filename ="CMUData.txt";
-
-    QFile file( filename );
-    if ( file.open(QIODevice::ReadWrite) )
-    {
-        //Simulate sending document
-        QTextStream stream( &file );
-        stream << doc.toJson();
-    }
-
 }
 
-void TelemetryReporting_json::sendMppt()
-{
-/*
-    const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
-    unsigned char packetPayload[unframedPacketLength];
-
-    packetPayload[0] = CcsDefines::KEY_MOTOR_PKG_ID;
-    writeUShortIntoArray(packetPayload, 2, mpptData_.arrayVoltage);
-    writeUShortIntoArray(packetPayload, 4, mpptData_.arrayCurrent);
-    writeUShortIntoArray(packetPayload, 6, mpptData_.batteryVoltage);
-    writeUShortIntoArray(packetPayload, 8, mpptData_.temperature);
-
-    for (unsigned char i = 0; i < CcsDefines::MPPT_COUNT; i++)
-    {
-        unsigned char mpptPacketPayload[unframedPacketLength];
-        std::memcpy(mpptPacketPayload, packetPayload, unframedPacketLength);
-        mpptPacketPayload[1] = i;
-
-        addChecksum(mpptPacketPayload, KEY_MOTOR_LENGTH);
-        unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-        unsigned int packetLength = frameData(mpptPacketPayload, unframedPacketLength, packet);
-        communicationService_.sendData(packet, packetLength);
-    }
-    */
-
+void TelemetryReporting_json::makeMppt(){
+    mPPTArray = QJsonArray();
 
     QJsonObject mPPTInfo;
-
-    QJsonArray mPPTArray;
 
     mPPTInfo.insert("Alive", mpptData_.alive);
     mPPTInfo.insert("ArrayVoltage", mpptData_.arrayVoltage);
@@ -738,45 +355,10 @@ void TelemetryReporting_json::sendMppt()
     {
         mPPTArray.push_back(mPPTInfo);
     }
-
-    QJsonDocument doc(mPPTArray);
-
-    QString filename = "mPPTData.txt";
-    QFile file( filename );
-
-    if ( file.open(QIODevice::ReadWrite) )
-    {
-        //Simulate sending document
-        QTextStream stream( &file );
-        stream << doc.toJson();
-    }
-
-
 }
 
-void TelemetryReporting_json::sendLights()
-{
-    /*
-    const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
-    unsigned char packetPayload[unframedPacketLength];
-
-    packetPayload[0] = CcsDefines::KEY_MOTOR_PKG_ID;
-    bool lightsArray[] = {lightsData_.lowBeams,
-                          lightsData_.highBeams,
-                          lightsData_.brakes,
-                          lightsData_.leftSignal,
-                          lightsData_.rightSignal,
-                          lightsData_.bmsStrobeLight
-                         };
-    writeBoolsIntoArray(packetPayload, 1, lightsArray, 6);
-
-    addChecksum(packetPayload, KEY_MOTOR_LENGTH);
-    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
-    */
-
-    QJsonObject lightsInfo;
+void TelemetryReporting_json::makeLights(){
+    lightsInfo = QJsonObject();
 
     lightsInfo.insert("LowBeams", lightsData_.lowBeams);
     lightsInfo.insert("HighBeams", lightsData_.highBeams);
@@ -784,128 +366,146 @@ void TelemetryReporting_json::sendLights()
     lightsInfo.insert("LeftSignal", lightsData_.leftSignal);
     lightsInfo.insert("RightSignal", lightsData_.rightSignal);
     lightsInfo.insert("BmsStrobeLight", lightsData_.bmsStrobeLight);
+}
+
+
+void TelemetryReporting_json::sendKeyMotor()
+{
+    makeKeyMotor();
+
+    QJsonDocument doc(KeyMotor);
+
+    QByteArray data = doc.toBinaryData();
+    communicationService_json_.sendData(data);
+}
+
+void TelemetryReporting_json::sendMotorDetails(int n)
+{
+    makeMotorDetails(n);
+
+    QJsonDocument doc;
+
+    if(n == 0)
+        doc = QJsonDocument(MotorDetails0);
+    if(n == 1)
+        doc = QJsonDocument(MotorDetails0);
+
+    QByteArray data = doc.toBinaryData();
+    communicationService_json_.sendData(data);
+}
+
+void TelemetryReporting_json::sendDriverControls()
+{
+    makeDriverControls();
+
+    QJsonDocument doc(DriverControls);
+
+    QByteArray data = doc.toBinaryData();
+    communicationService_json_.sendData(data);
+}
+
+void TelemetryReporting_json::sendMotorFaults()
+{
+    makeMotorFaults();
+
+    QJsonDocument doc(MotorFaults);
+
+    QByteArray data = doc.toBinaryData();
+    communicationService_json_.sendData(data);
+}
+
+void TelemetryReporting_json::sendBatteryFaults()
+{
+    makeBatteryFaults();
+
+    QJsonDocument doc(BatteryFaults);
+
+    QByteArray data = doc.toBinaryData();
+    communicationService_json_.sendData(data);
+}
+
+void TelemetryReporting_json::sendBattery()
+{
+    makeBattery();
+
+    QJsonDocument doc(Battery);
+
+    QByteArray data = doc.toBinaryData();
+    communicationService_json_.sendData(data);
+}
+
+void TelemetryReporting_json::sendCmu()
+{
+    makeCmu();
+
+    QJsonDocument doc(CMUArray);
+
+    QByteArray data = doc.toBinaryData();
+    communicationService_json_.sendData(data);
+
+}
+
+void TelemetryReporting_json::sendMppt()
+{
+
+    makeMppt();
+
+    QJsonDocument doc(mPPTArray);
+
+    QByteArray data = doc.toBinaryData();
+    communicationService_json_.sendData(data);
+
+}
+
+void TelemetryReporting_json::sendLights()
+{
+    makeLights();
 
     QJsonDocument doc(lightsInfo);
 
-   // qDebug() << doc.toJson();
-
-    QString filename="lightsData.txt";
-    QFile file( filename );
-    if ( file.open(QIODevice::ReadWrite) )
-    {
-        QTextStream stream( &file );
-        stream << doc.toJson();
-
-        //Simulate sending the a JSON document
-    }
+    QByteArray data = doc.toBinaryData();
+    communicationService_json_.sendData(data);
 
 }
 
 void TelemetryReporting_json::sendAll()
 {
-    sendKeyMotor();
-    sendMotorDetails(0);
-    sendMotorDetails(1);
-    sendDriverControls();
-    sendMotorFaults();
-    sendBatteryFaults();
-    sendBattery();
-    sendCmu();
-    sendMppt();
-    sendLights();
+    makeKeyMotor();
+    makeMotorDetails(0);
+    makeMotorDetails(1);
+    makeDriverControls();
+    makeMotorFaults();
+    makeBatteryFaults();
+    makeBattery();
+    makeCmu();
+    makeMppt();
+    makeLights();
+
+    QJsonObject obj;
+    QDateTime date = date.currentDateTime();
+    QString dateString = date.toString("yyyy-MM-dd hh:mm:ss.zzz");
+
+    QJsonArray MotorDetails;
+    MotorDetails.push_back(MotorDetails0);
+    MotorDetails.push_back(MotorDetails1);
+
+    obj.insert("PacketTitle", "UofC Solar Car Gen 5");
+    obj.insert("TimeStamp", dateString);
+    obj.insert("KeyMotor", KeyMotor);
+    obj.insert("MotorDetails", MotorDetails);
+    obj.insert("DriverControls", DriverControls);
+    obj.insert("MotorFaults", MotorFaults);
+    obj.insert("BatteryFaults", BatteryFaults);
+    obj.insert("Battery", Battery);
+    obj.insert("CMU", CMUArray);
+    obj.insert("MPPT", mPPTArray);
+    obj.insert("Lights", lightsInfo);
+
+    QJsonDocument doc(obj);
+
+    QByteArray data = doc.toBinaryData();
+    communicationService_json_.sendData(data);
+
 }
 
-unsigned int TelemetryReporting_json::frameData(const unsigned char* dataToEncode, unsigned long length, unsigned char* frameData)
-{
-    unsigned int lengthOfFramedData = stuffData(dataToEncode, length, frameData);
-    frameData[lengthOfFramedData++] = TERMINATING_BYTE;
-    return lengthOfFramedData;
-}
 
-#define FINISH_BLOCK(X) \
-{\
-   *code_ptr = (X); \
-   code_ptr = encodedData++; \
-   code = 0x01; \
-}
-
-unsigned int TelemetryReporting_json::stuffData(const unsigned char* dataToEncode, unsigned long length, unsigned char* encodedData)
-{
-    unsigned int lengthOfEncodedData = length + 1;
-    const unsigned char* end = dataToEncode + length;
-    unsigned char* code_ptr = encodedData++;
-    unsigned char code = 0x01;
-
-    while (dataToEncode < end)
-    {
-        if (*dataToEncode == 0)
-        {
-            FINISH_BLOCK(code);
-        }
-        else
-        {
-            *encodedData++ = *dataToEncode;
-            code++;
-            if (code == 0xFF)
-            {
-                FINISH_BLOCK(code);
-                lengthOfEncodedData++;
-            }
-        }
-        dataToEncode++;
-    }
-    FINISH_BLOCK(code);
-    return lengthOfEncodedData;
-}
-#undef FINISH_BLOCK
-
-void TelemetryReporting_json::addChecksum(unsigned char* data, unsigned int length)
-{
-    unsigned short crc16 = CrcCalculator::calculateCrc16(data, length);
-    data[length] = static_cast<unsigned char>(0xFF & crc16);
-    data[length + 1] = static_cast<unsigned char>(0xFF & (crc16 >> 8));
-}
-
-void TelemetryReporting_json::writeFloatIntoArray(unsigned char* data, int index, const float& value)
-{
-    DataUnion dataUnion;
-    dataUnion.floatData = value;
-    data[index++] = dataUnion.charData[0];
-    data[index++] = dataUnion.charData[1];
-    data[index++] = dataUnion.charData[2];
-    data[index] = dataUnion.charData[3];
-}
-
-void TelemetryReporting_json::writeShortIntoArray(unsigned char* data, int index, const short& value)
-{
-    DataUnion dataUnion;
-    dataUnion.shortData[0] = value;
-    data[index++] = dataUnion.charData[0];
-    data[index] = dataUnion.charData[1];
-}
-
-void TelemetryReporting_json::writeUShortIntoArray(unsigned char* data, int index, const unsigned short& value)
-{
-    DataUnion dataUnion;
-    dataUnion.uShortData[0] = value;
-    data[index++] = dataUnion.charData[0];
-    data[index] = dataUnion.charData[1];
-}
-
-void TelemetryReporting_json::writeBoolsIntoArray(unsigned char* data, int index, const bool values[], int numValues)
-{
-    index -= 1;
-
-    for (int i = 0; i < numValues; i++)
-    {
-        if ((i % 8) == 0)
-        {
-            index++;
-            data[index] = 0;
-        }
-        if (values[i])
-        {
-            data[index] += 1 << (i % 8);
-        }
-    }
-}
