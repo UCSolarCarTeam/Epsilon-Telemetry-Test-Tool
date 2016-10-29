@@ -38,8 +38,9 @@ public:
 //friend class ::TelemetryReportingTest;
 
 private slots:
-	FRIEND_TEST(TelemetryReportingTest, dataForwarded);
+	FRIEND_TEST(TelemetryReportingTest, sendKeyMotorTest);
     void sendKeyMotor();
+    FRIEND_TEST(TelemetryReportingTest, sendMotorDetailsTest);
     void sendMotorDetails(int n);
     void sendDriverControls();
     void sendMotorFaults();
@@ -52,8 +53,10 @@ private slots:
 
 private:
     unsigned int frameData(const unsigned char* dataToEncode, unsigned long length, unsigned char* frameData);
+    FRIEND_TEST(TelemetryReportingTest, StuffDataTest);
     unsigned int stuffData(const unsigned char* dataToEncode, unsigned long length, unsigned char* encodedData);
     void addChecksum(unsigned char* data, unsigned int length);
+    FRIEND_TEST(TelemetryReportingTest, writeFloatIntoArrayTest);
     void writeFloatIntoArray(unsigned char* data, int index, const float& value);
     void writeShortIntoArray(unsigned char* data, int index, const short& value);
     void writeUShortIntoArray(unsigned char* data, int index, const unsigned short& value);

@@ -2,6 +2,7 @@
 #include <gmock/gmock.h>
 
 #include <QScopedPointer>
+#include <vector>
 
 #include "KeyMotorData.h"
 #include "MotorDetailsData.h"
@@ -14,14 +15,13 @@
 #include "LightsData.h"
 #include "View.h"
 #include "TelemetryReporting.h"
-
-//#include "CommunicationServiceTestWrapper.h"
 #include "MockCommunicationService.h"
 
 using ::testing::_;
+using ::testing::StartsWith;
+using ::testing::ElementsAre;
+//using ::testing::Eq;
 
-// TODO make this class a friend class to allow the testing of private functions 
-// https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md#testing-private-code
 
 class TelemetryReportingTest : public ::testing::Test
 {
@@ -47,12 +47,9 @@ protected:
     virtual void SetUp()
     {
 
-    	std::cout << "CALLED SetUp" << std::endl;
-
     	communicationService_.reset(new MockCommunicationService());
 
         keyMotorData_.reset(new KeyMotorData());
-        std::cout << "1 SetUp" << std::endl;
         motor0DetailsData_.reset(new MotorDetailsData());
         motor1DetailsData_.reset(new MotorDetailsData());
 
@@ -64,8 +61,6 @@ protected:
         mpptData_.reset(new MpptData());
         lightsData_.reset(new LightsData());
         view.reset(new View());
-
-        std::cout << "10 SetUp" << std::endl;
 
         telemetryReporting_.reset(new TelemetryReporting(*communicationService_,
         		*keyMotorData_,
@@ -81,23 +76,76 @@ protected:
 				*view
 				));
 
-        std::cout << "END OF CALL TO SetUp" << std::endl;
-
     }
 
 };
 
 /*
- * Actual test cases starts here
+ * Actual test cases are starting here
  */
 
-TEST_F(TelemetryReportingTest, dataForwarded)
+/*
+ * This test tests for the correct structure of the sendKeyMotor package as defined in
+ * https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=782574835
+ *
+ * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
+ * separately.
+ */
+TEST_F(TelemetryReportingTest, sendKeyMotorTest)
 {
-	std::cout << "CALLED TEST 1" << std::endl;
-    // TODO
 	// first check if called at all
-	EXPECT_CALL(*communicationService_, sendData(_,_)).Times(1);
+	const unsigned int expectedPackageLength = 47;
+	/*unsigned char data[expectedPackageLength-4];
+	data[0] = CcsDefines::KEY_MOTOR_PKG_ID;
+	data[1] = keyMotorData_->motor0Alive;
+
+	CrcCalculator::calculateCrc16(data, length);
+
+	unsigned char expectedPacket[expectedPackageLength];*/
+	// TODO create correctly encoded expected package
+	EXPECT_CALL(*communicationService_, sendData(_/*ElementsAreArray(expectedPacket)TODO*/, expectedPackageLength)).Times(1);
 	telemetryReporting_->sendKeyMotor();
-    
-// TODO check result which has been sent
+}
+
+/*
+ * This test tests for the correct structure of the sendMotorDetails package as defined in
+ * https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=782574835
+ *
+ * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
+ * separately.
+ */
+TEST_F(TelemetryReportingTest, sendMotorDetailsTest)
+{
+	// first check if called at all
+	const unsigned int expectedPackageLength = 73;
+	//const unsigned char expectedPacketMotor0[] = {1};
+	// TODO create correctly encoded expected package
+	EXPECT_CALL(*communicationService_, sendData(_/*ElementsAreArray(expectedPacketMotor0)TODO*/, expectedPackageLength)).Times(1);
+	telemetryReporting_->sendMotorDetails(0);
+
+	EXPECT_CALL(*communicationService_, sendData(_/*ElementsAreArray(expectedPacketMotor1)TODO*/, expectedPackageLength)).Times(1);
+	telemetryReporting_->sendMotorDetails(1);
+}
+
+TEST_F(TelemetryReportingTest, StuffDataTest)
+{
+	// TODO test if Consistent Overhead Byte Stuffing (COBS) is working as intended
+}
+
+TEST_F(TelemetryReportingTest, writeFloatIntoArrayTest)
+{
+	const std::vector<float> inputs = {42.1234, 0, 3512.341, 19921.213, -10.2, -42.32, -7, 12,
+			400, -66, -235.324, 8773.823, std::numeric_limits<float>::infinity(),
+			std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::epsilon(),
+			std::numeric_limits<float>::min(), std::numeric_limits<float>::max()};
+	for(std::vector<float>::const_iterator it = inputs.begin(); it != inputs.end(); ++it)
+	{
+		const float input = *it;
+		char* p = ( char*)((void*)&input);
+		unsigned char actual[sizeof(float)];
+
+		telemetryReporting_->writeFloatIntoArray(actual, 0, input);
+
+		ASSERT_THAT(actual, ElementsAre(*p, *(p+1), *(p+2), *(p+3)));
+	}
 }
