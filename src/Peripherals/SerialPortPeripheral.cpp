@@ -1,6 +1,6 @@
-#include "SerialPortPeripheral.h"
 #include <QSerialPort>
 #include <QStringList>
+#include "SerialPortPeripheral.h"
 
 namespace
 {
