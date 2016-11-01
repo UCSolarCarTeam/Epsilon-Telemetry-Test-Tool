@@ -2,20 +2,20 @@
 
 #include <QIODevice>
 
-#include <CcsDefines.h>
-#include <CrcCalculator.h>
-#include <TelemetryReporting.h>
-#include <BatteryData.h>
-#include <BatteryFaultsData.h>
-#include <CmuData.h>
-#include <DriverControlsData.h>
-#include <KeyMotorData.h>
-#include <LightsData.h>
-#include <MotorDetailsData.h>
-#include <MotorFaultsData.h>
-#include <MpptData.h>
-#include <CommunicationService.h>
-#include <View.h>
+#include "CcsDefines.h"
+#include "CrcCalculator.h"
+#include "TelemetryReporting.h"
+#include "BatteryData.h"
+#include "BatteryFaultsData.h"
+#include "CmuData.h"
+#include "DriverControlsData.h"
+#include "KeyMotorData.h"
+#include "LightsData.h"
+#include "MotorDetailsData.h"
+#include "MotorFaultsData.h"
+#include "MpptData.h"
+#include "CommunicationService.h"
+#include "View.h"
 
 union DataUnion
 {
