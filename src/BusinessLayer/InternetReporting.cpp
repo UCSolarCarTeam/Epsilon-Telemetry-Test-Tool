@@ -15,7 +15,7 @@
 #include <MpptData.h>
 #include <View.h>
 
-#include <TelemetryReporting_json.h>
+#include <InternetReporting.h>
 
 #include "qdatetime.h"
 #include "qjsonarray.h"
@@ -34,7 +34,7 @@ QJsonArray CMUArray;
 QJsonArray mPPTArray;
 QJsonObject lightsInfo;
 
-TelemetryReporting_json::TelemetryReporting_json(CommunicationService& commService,
+InternetReporting::InternetReporting(CommunicationService& commService,
                                        const KeyMotorData& keyMotorData,
                                        const MotorDetailsData& motor0DetailsData,
                                        const MotorDetailsData& motor1DetailsData,
@@ -73,7 +73,7 @@ TelemetryReporting_json::TelemetryReporting_json(CommunicationService& commServi
     connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
 }
 
-void TelemetryReporting_json::makeKeyMotor(){
+void InternetReporting::makeKeyMotor(){
     KeyMotor = QJsonArray();
 
     QJsonObject KeyMotor0;
@@ -96,7 +96,7 @@ void TelemetryReporting_json::makeKeyMotor(){
 
 }
 
-void TelemetryReporting_json::makeMotorDetails(int n){
+void InternetReporting::makeMotorDetails(int n){
     if(n == 0) {
         MotorDetails0 = QJsonObject();
         MotorDetails0.insert("PhaseCCurrent", motor0DetailsData_.phaseCCurrent);
@@ -141,7 +141,7 @@ void TelemetryReporting_json::makeMotorDetails(int n){
 
 }
 
-void TelemetryReporting_json::makeDriverControls(){
+void InternetReporting::makeDriverControls(){
     DriverControls = QJsonObject();
 
     DriverControls.insert("Alive", driverControlsData_.alive);
@@ -168,7 +168,7 @@ void TelemetryReporting_json::makeDriverControls(){
 
 }
 
-void TelemetryReporting_json::makeMotorFaults(){
+void InternetReporting::makeMotorFaults(){
     MotorFaults = QJsonArray();
 
     QJsonObject MotorFaults0;
@@ -230,7 +230,7 @@ void TelemetryReporting_json::makeMotorFaults(){
     MotorFaults.push_back(MotorFaults1);
 }
 
-void TelemetryReporting_json::makeBatteryFaults(){
+void InternetReporting::makeBatteryFaults(){
     BatteryFaults = QJsonObject();
 
     BatteryFaults.insert("CellOverVoltage", batteryFaultsData_.cellOverVoltage);
@@ -247,7 +247,7 @@ void TelemetryReporting_json::makeBatteryFaults(){
     BatteryFaults.insert("CMUDetectedExtraCell", batteryFaultsData_.cmuDetectedExtraCellPresent);
 }
 
-void TelemetryReporting_json::makeBattery(){
+void InternetReporting::makeBattery(){
 
     Battery = QJsonObject();
 
@@ -309,7 +309,7 @@ void TelemetryReporting_json::makeBattery(){
 
 }
 
-void TelemetryReporting_json::makeCmu(){
+void InternetReporting::makeCmu(){
 
     QJsonObject CMUinfo;
 
@@ -340,7 +340,7 @@ void TelemetryReporting_json::makeCmu(){
 
 }
 
-void TelemetryReporting_json::makeMppt(){
+void InternetReporting::makeMppt(){
     mPPTArray = QJsonArray();
 
     QJsonObject mPPTInfo;
@@ -357,7 +357,7 @@ void TelemetryReporting_json::makeMppt(){
     }
 }
 
-void TelemetryReporting_json::makeLights(){
+void InternetReporting::makeLights(){
     lightsInfo = QJsonObject();
 
     lightsInfo.insert("LowBeams", lightsData_.lowBeams);
@@ -369,7 +369,7 @@ void TelemetryReporting_json::makeLights(){
 }
 
 
-void TelemetryReporting_json::sendKeyMotor()
+void InternetReporting::sendKeyMotor()
 {
     makeKeyMotor();
 
@@ -379,7 +379,7 @@ void TelemetryReporting_json::sendKeyMotor()
     communicationService_.sendDataInternet(data);;
 }
 
-void TelemetryReporting_json::sendMotorDetails(int n)
+void InternetReporting::sendMotorDetails(int n)
 {
     makeMotorDetails(n);
 
@@ -394,7 +394,7 @@ void TelemetryReporting_json::sendMotorDetails(int n)
     communicationService_.sendDataInternet(data);;
 }
 
-void TelemetryReporting_json::sendDriverControls()
+void InternetReporting::sendDriverControls()
 {
     makeDriverControls();
 
@@ -404,7 +404,7 @@ void TelemetryReporting_json::sendDriverControls()
     communicationService_.sendDataInternet(data);
 }
 
-void TelemetryReporting_json::sendMotorFaults()
+void InternetReporting::sendMotorFaults()
 {
     makeMotorFaults();
 
@@ -414,7 +414,7 @@ void TelemetryReporting_json::sendMotorFaults()
     communicationService_.sendDataInternet(data);
 }
 
-void TelemetryReporting_json::sendBatteryFaults()
+void InternetReporting::sendBatteryFaults()
 {
     makeBatteryFaults();
 
@@ -424,7 +424,7 @@ void TelemetryReporting_json::sendBatteryFaults()
     communicationService_.sendDataInternet(data);
 }
 
-void TelemetryReporting_json::sendBattery()
+void InternetReporting::sendBattery()
 {
     makeBattery();
 
@@ -434,7 +434,7 @@ void TelemetryReporting_json::sendBattery()
     communicationService_.sendDataInternet(data);
 }
 
-void TelemetryReporting_json::sendCmu()
+void InternetReporting::sendCmu()
 {
     makeCmu();
 
@@ -445,7 +445,7 @@ void TelemetryReporting_json::sendCmu()
 
 }
 
-void TelemetryReporting_json::sendMppt()
+void InternetReporting::sendMppt()
 {
 
     makeMppt();
@@ -457,7 +457,7 @@ void TelemetryReporting_json::sendMppt()
 
 }
 
-void TelemetryReporting_json::sendLights()
+void InternetReporting::sendLights()
 {
     makeLights();
 
@@ -468,7 +468,7 @@ void TelemetryReporting_json::sendLights()
 
 }
 
-void TelemetryReporting_json::sendAll()
+void InternetReporting::sendAll()
 {
     makeKeyMotor();
     makeMotorDetails(0);

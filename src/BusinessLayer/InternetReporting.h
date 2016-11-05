@@ -16,11 +16,11 @@ class QIODevice;
 class View;
 class CommunicationService;
 
-class TelemetryReporting_json : public QObject
+class InternetReporting : public QObject
 {
     Q_OBJECT
 public:
-    TelemetryReporting_json(CommunicationService& commService,
+    InternetReporting(CommunicationService& commService,
                        const KeyMotorData& keyMotorData_,
                        const MotorDetailsData& motor0DetailsData_,
                        const MotorDetailsData& motor1DetailsData_,

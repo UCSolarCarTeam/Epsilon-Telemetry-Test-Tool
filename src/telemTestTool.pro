@@ -30,7 +30,7 @@ HEADERS  += \
     ViewLayer/View.h \
     Peripherals/SerialPortPeripheral.h \
     Peripherals/I_CommPeripheral.h \
-    BusinessLayer/TelemetryReporting_json.h
+    BusinessLayer/InternetReporting.h
 
 SOURCES += \
     main.cpp \
@@ -41,4 +41,4 @@ SOURCES += \
     UILayer/Window.cpp \
     ViewLayer/View.cpp \
     Peripherals/SerialPortPeripheral.cpp \
-    BusinessLayer/TelemetryReporting_json.cpp
+    BusinessLayer/InternetReporting.cpp

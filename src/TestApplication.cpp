@@ -26,7 +26,7 @@ TestApplication::TestApplication(int& argc, char** argv)
                           *mpptData_,
                           *lightsData_,
                           *view_))
-    ,telemetryReporting_json_(new TelemetryReporting_json(*communicationService_,
+    ,internetReporting_(new InternetReporting(*communicationService_,
                                                 *keyMotorData_,
                                                 *motor0DetailsData_,
                                                 *motor1DetailsData_,
