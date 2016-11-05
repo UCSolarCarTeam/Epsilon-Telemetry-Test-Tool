@@ -29,6 +29,11 @@ void CommunicationService::sendData(const unsigned char *packet, int packetLengt
     outputPeripheral_->sendData(packet, packetLength);
 }
 
+void CommunicationService::sendDataInternet(const QByteArray &data)
+{
+    outputPeripheral_->sendDataInternet(data);
+}
+
 void CommunicationService::attemptConnection()
 {
     QStringList paramList = (QStringList() << view_.getCommunicationPort());

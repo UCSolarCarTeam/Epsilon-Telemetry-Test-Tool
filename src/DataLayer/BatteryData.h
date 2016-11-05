@@ -20,6 +20,7 @@ struct BatteryData
     , contactor2ErrorStatus(false)
     , contactor2Status(true)
     , prechargeState(PrechargeState::EnablePack)
+    , prechargeStateJSON("Enable Pack")
     , prechargeTimerElapsed(false)
     , prechargeTimerNotElapsed(true)
     , prechargeTimerCount(38)
@@ -35,6 +36,8 @@ struct BatteryData
     , highestCellTemperature(42)
     , highestCellTemperatureCmuNumber(3)
     , highestCellTemperatureCellNumber(4)
+    , voltage(12.34)
+    , current(12.34)
     , fan0Speed(43)
     , fan1Speed(44)
     , fanContactors12VCurrentConsumption(45)
@@ -69,6 +72,7 @@ struct BatteryData
     bool contactor2ErrorStatus;
     bool contactor2Status;
     PrechargeState prechargeState;
+    const char* prechargeStateJSON;
     bool prechargeTimerElapsed;
     bool prechargeTimerNotElapsed;
     unsigned short prechargeTimerCount;
@@ -84,6 +88,8 @@ struct BatteryData
     unsigned short highestCellTemperature;
     unsigned char highestCellTemperatureCmuNumber;
     unsigned char highestCellTemperatureCellNumber;
+    unsigned short voltage;
+    unsigned short current;
     unsigned short fan0Speed;
     unsigned short fan1Speed;
     unsigned short fanContactors12VCurrentConsumption;

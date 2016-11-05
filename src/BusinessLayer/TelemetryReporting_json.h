@@ -14,22 +14,20 @@ class MotorFaultsData;
 class MpptData;
 class QIODevice;
 class View;
-
-class BatteryData_json;
-class CommunicationService_json;
+class CommunicationService;
 
 class TelemetryReporting_json : public QObject
 {
     Q_OBJECT
 public:
-    TelemetryReporting_json(CommunicationService_json& commService,
+    TelemetryReporting_json(CommunicationService& commService,
                        const KeyMotorData& keyMotorData_,
                        const MotorDetailsData& motor0DetailsData_,
                        const MotorDetailsData& motor1DetailsData_,
                        const DriverControlsData& driverControlsData_,
                        const MotorFaultsData& motorFaultsData_,
                        const BatteryFaultsData& batteryFaultsData_,
-                       const BatteryData_json& batteryData_json_,
+                       const BatteryData& batteryData_,
                        const CmuData& cmuData_,
                        const MpptData& mpptData_,
                        const LightsData& lightsData_,
@@ -59,14 +57,14 @@ private:
     void makeLights();
 
 private:
-    CommunicationService_json& communicationService_json_;
+    CommunicationService& communicationService_;
     const KeyMotorData& keyMotorData_;
     const MotorDetailsData& motor0DetailsData_;
     const MotorDetailsData& motor1DetailsData_;
     const DriverControlsData& driverControlsData_;
     const MotorFaultsData& motorFaultsData_;
     const BatteryFaultsData& batteryFaultsData_;
-    const BatteryData_json& batteryData_json_;
+    const BatteryData& batteryData_;
     const CmuData& cmuData_;
     const MpptData& mpptData_;
     const LightsData& lightsData_;

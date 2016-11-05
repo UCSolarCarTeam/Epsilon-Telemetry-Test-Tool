@@ -15,7 +15,7 @@ public:
     //Sets the port name to parameters[0]
     void setParameters(QStringList parameters);
     void sendData(const unsigned char* data, int length);
-    void sendData_json(const QByteArray &data);
+    void sendDataInternet(const QByteArray &data);
 
 private:
     QSerialPort& serialPort_;

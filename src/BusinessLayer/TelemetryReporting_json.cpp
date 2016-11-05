@@ -3,7 +3,9 @@
 #include <QIODevice>
 
 #include <CcsDefines.h>
+#include <CommunicationService.h>
 #include <BatteryFaultsData.h>
+#include <BatteryData.h>
 #include <CmuData.h>
 #include <DriverControlsData.h>
 #include <KeyMotorData.h>
@@ -14,8 +16,6 @@
 #include <View.h>
 
 #include <TelemetryReporting_json.h>
-#include <BatteryData_json.h>
-#include <CommunicationService_json.h>
 
 #include "qdatetime.h"
 #include "qjsonarray.h"
@@ -34,26 +34,26 @@ QJsonArray CMUArray;
 QJsonArray mPPTArray;
 QJsonObject lightsInfo;
 
-TelemetryReporting_json::TelemetryReporting_json(CommunicationService_json& commService,
+TelemetryReporting_json::TelemetryReporting_json(CommunicationService& commService,
                                        const KeyMotorData& keyMotorData,
                                        const MotorDetailsData& motor0DetailsData,
                                        const MotorDetailsData& motor1DetailsData,
                                        const DriverControlsData& driverControlsData,
                                        const MotorFaultsData& motorFaultsData,
                                        const BatteryFaultsData& batteryFaultsData,
-                                       const BatteryData_json& batteryData_json,
+                                       const BatteryData& batteryData,
                                        const CmuData& cmuData,
                                        const MpptData& mpptData,
                                        const LightsData& lightsData,
                                        View& view)
-    : communicationService_json_(commService)
+    : communicationService_(commService)
     , keyMotorData_(keyMotorData)
     , motor0DetailsData_(motor0DetailsData)
     , motor1DetailsData_(motor1DetailsData)
     , driverControlsData_(driverControlsData)
     , motorFaultsData_(motorFaultsData)
     , batteryFaultsData_(batteryFaultsData)
-    , batteryData_json_(batteryData_json)
+    , batteryData_(batteryData)
     , cmuData_(cmuData)
     , mpptData_(mpptData)
     , lightsData_(lightsData)
@@ -251,61 +251,61 @@ void TelemetryReporting_json::makeBattery(){
 
     Battery = QJsonObject();
 
-    Battery.insert("Alive", batteryData_json_.alive);
-    Battery.insert("PackSocAmpHours", batteryData_json_.packSocAmpHours);
-    Battery.insert("PackSocPercentage", batteryData_json_.packSocPercentage);
-    Battery.insert("PackBalanceSocAmpHours", batteryData_json_.packBalanceSoc);
-    Battery.insert("PackBalanceSocPercentage", batteryData_json_.packBalanceSocPercentage);
-    Battery.insert("ChargingCellVoltageError", batteryData_json_.chargingCellVoltageError);
-    Battery.insert("CellTempMargin", batteryData_json_.cellTemperatureMargin);
-    Battery.insert("DischargingCellVoltageError", batteryData_json_.dischargingCellVoltageError);
-    Battery.insert("TotalPackCapacity", batteryData_json_.totalPackCapacity);
-    Battery.insert("PrechargeContactor0DriverStatus", batteryData_json_.contactor0Status);
-    Battery.insert("PrechargeContactor1DriverStatus", batteryData_json_.contactor1Status);
-    Battery.insert("PrechargeContactor2DriverStatus", batteryData_json_.contactor2Status);
-    Battery.insert("PrechargeContactor0DriverError", batteryData_json_.contactor0Errorstatus);
-    Battery.insert("PrechargeContactor1DriverError", batteryData_json_.contactor1ErrorStatus);
-    Battery.insert("PrechargeContactor2DriverError", batteryData_json_.contactor2ErrorStatus);
-    Battery.insert("ContactorSupplyOK", batteryData_json_.contactor12VSupplyOk);
+    Battery.insert("Alive", batteryData_.alive);
+    Battery.insert("PackSocAmpHours", batteryData_.packSocAmpHours);
+    Battery.insert("PackSocPercentage", batteryData_.packSocPercentage);
+    Battery.insert("PackBalanceSocAmpHours", batteryData_.packBalanceSoc);
+    Battery.insert("PackBalanceSocPercentage", batteryData_.packBalanceSocPercentage);
+    Battery.insert("ChargingCellVoltageError", batteryData_.chargingCellVoltageError);
+    Battery.insert("CellTempMargin", batteryData_.cellTemperatureMargin);
+    Battery.insert("DischargingCellVoltageError", batteryData_.dischargingCellVoltageError);
+    Battery.insert("TotalPackCapacity", batteryData_.totalPackCapacity);
+    Battery.insert("PrechargeContactor0DriverStatus", batteryData_.contactor0Status);
+    Battery.insert("PrechargeContactor1DriverStatus", batteryData_.contactor1Status);
+    Battery.insert("PrechargeContactor2DriverStatus", batteryData_.contactor2Status);
+    Battery.insert("PrechargeContactor0DriverError", batteryData_.contactor0Errorstatus);
+    Battery.insert("PrechargeContactor1DriverError", batteryData_.contactor1ErrorStatus);
+    Battery.insert("PrechargeContactor2DriverError", batteryData_.contactor2ErrorStatus);
+    Battery.insert("ContactorSupplyOK", batteryData_.contactor12VSupplyOk);
 
-    Battery.insert("PrechargeState", batteryData_json_.prechargeState);
-    Battery.insert("PrechargeTimerElapsed", batteryData_json_.prechargeTimerElapsed);
-    Battery.insert("PrechargeTimeCount", batteryData_json_.prechargeTimerCount);
+    Battery.insert("PrechargeState", batteryData_.prechargeStateJSON);
+    Battery.insert("PrechargeTimerElapsed", batteryData_.prechargeTimerElapsed);
+    Battery.insert("PrechargeTimeCount", batteryData_.prechargeTimerCount);
 
     QJsonObject LowestCellVoltage;
-    LowestCellVoltage.insert("Voltage", batteryData_json_.lowestCellVoltage);
-    LowestCellVoltage.insert("CmuNumber", batteryData_json_.lowestCellVoltageCmuNumber);
-    LowestCellVoltage.insert("CellNumber", batteryData_json_.lowestCellVoltageCellNumber);
+    LowestCellVoltage.insert("Voltage", batteryData_.lowestCellVoltage);
+    LowestCellVoltage.insert("CmuNumber", batteryData_.lowestCellVoltageCmuNumber);
+    LowestCellVoltage.insert("CellNumber", batteryData_.lowestCellVoltageCellNumber);
 
     Battery.insert("LowestCellVoltage", LowestCellVoltage);
 
     QJsonObject LowestCellTemp;
-    LowestCellTemp.insert("Temp", batteryData_json_.lowestCellTemperature);
-    LowestCellTemp.insert("CmuNumber", batteryData_json_.lowestCellTemperatureCmuNumber);
-    LowestCellTemp.insert("CellNumber", batteryData_json_.lowestCellTemperatureCellNumber);
+    LowestCellTemp.insert("Temp", batteryData_.lowestCellTemperature);
+    LowestCellTemp.insert("CmuNumber", batteryData_.lowestCellTemperatureCmuNumber);
+    LowestCellTemp.insert("CellNumber", batteryData_.lowestCellTemperatureCellNumber);
 
     Battery.insert("LowestCellTemp", LowestCellTemp);
 
     QJsonObject HighestCellVoltage;
-    HighestCellVoltage.insert("Voltage", batteryData_json_.highestCellVoltage);
-    HighestCellVoltage.insert("CmuNumber", batteryData_json_.highestCellVoltageCmuNumber);
-    HighestCellVoltage.insert("CellNumber", batteryData_json_.highestCellVoltageCellNumber);
+    HighestCellVoltage.insert("Voltage", batteryData_.highestCellVoltage);
+    HighestCellVoltage.insert("CmuNumber", batteryData_.highestCellVoltageCmuNumber);
+    HighestCellVoltage.insert("CellNumber", batteryData_.highestCellVoltageCellNumber);
 
     Battery.insert("HighestCellVoltage", HighestCellVoltage);
 
     QJsonObject HighestCellTemp;
-    HighestCellTemp.insert("Temp", batteryData_json_.highestCellTemperature);
-    HighestCellTemp.insert("CmuNumber", batteryData_json_.highestCellTemperatureCmuNumber);
-    HighestCellTemp.insert("CellNumber", batteryData_json_.highestCellTemperatureCellNumber);
+    HighestCellTemp.insert("Temp", batteryData_.highestCellTemperature);
+    HighestCellTemp.insert("CmuNumber", batteryData_.highestCellTemperatureCmuNumber);
+    HighestCellTemp.insert("CellNumber", batteryData_.highestCellTemperatureCellNumber);
 
     Battery.insert("HighestCellTemp", HighestCellTemp);
 
-    Battery.insert("Voltage", batteryData_json_.voltage);
-    Battery.insert("Current", batteryData_json_.current);
-    Battery.insert("Fan0Speed", batteryData_json_.fan0Speed);
-    Battery.insert("Fan1Speed", batteryData_json_.fan1Speed);
-    Battery.insert("FanContactorsCurrent", batteryData_json_.fanContactors12VCurrentConsumption);
-    Battery.insert("CmuCurrent", batteryData_json_.cmu12VCurrentConsumption);
+    Battery.insert("Voltage", batteryData_.voltage);
+    Battery.insert("Current", batteryData_.current);
+    Battery.insert("Fan0Speed", batteryData_.fan0Speed);
+    Battery.insert("Fan1Speed", batteryData_.fan1Speed);
+    Battery.insert("FanContactorsCurrent", batteryData_.fanContactors12VCurrentConsumption);
+    Battery.insert("CmuCurrent", batteryData_.cmu12VCurrentConsumption);
 
 }
 
@@ -376,7 +376,7 @@ void TelemetryReporting_json::sendKeyMotor()
     QJsonDocument doc(KeyMotor);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_json_.sendData(data);
+    communicationService_.sendDataInternet(data);;
 }
 
 void TelemetryReporting_json::sendMotorDetails(int n)
@@ -391,7 +391,7 @@ void TelemetryReporting_json::sendMotorDetails(int n)
         doc = QJsonDocument(MotorDetails0);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_json_.sendData(data);
+    communicationService_.sendDataInternet(data);;
 }
 
 void TelemetryReporting_json::sendDriverControls()
@@ -401,7 +401,7 @@ void TelemetryReporting_json::sendDriverControls()
     QJsonDocument doc(DriverControls);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_json_.sendData(data);
+    communicationService_.sendDataInternet(data);
 }
 
 void TelemetryReporting_json::sendMotorFaults()
@@ -411,7 +411,7 @@ void TelemetryReporting_json::sendMotorFaults()
     QJsonDocument doc(MotorFaults);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_json_.sendData(data);
+    communicationService_.sendDataInternet(data);
 }
 
 void TelemetryReporting_json::sendBatteryFaults()
@@ -421,7 +421,7 @@ void TelemetryReporting_json::sendBatteryFaults()
     QJsonDocument doc(BatteryFaults);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_json_.sendData(data);
+    communicationService_.sendDataInternet(data);
 }
 
 void TelemetryReporting_json::sendBattery()
@@ -431,7 +431,7 @@ void TelemetryReporting_json::sendBattery()
     QJsonDocument doc(Battery);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_json_.sendData(data);
+    communicationService_.sendDataInternet(data);
 }
 
 void TelemetryReporting_json::sendCmu()
@@ -441,7 +441,7 @@ void TelemetryReporting_json::sendCmu()
     QJsonDocument doc(CMUArray);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_json_.sendData(data);
+    communicationService_.sendDataInternet(data);
 
 }
 
@@ -453,7 +453,7 @@ void TelemetryReporting_json::sendMppt()
     QJsonDocument doc(mPPTArray);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_json_.sendData(data);
+    communicationService_.sendDataInternet(data);
 
 }
 
@@ -464,7 +464,7 @@ void TelemetryReporting_json::sendLights()
     QJsonDocument doc(lightsInfo);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_json_.sendData(data);
+    communicationService_.sendDataInternet(data);
 
 }
 
@@ -504,7 +504,7 @@ void TelemetryReporting_json::sendAll()
     QJsonDocument doc(obj);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_json_.sendData(data);
+    communicationService_.sendDataInternet(data);
 
 }
 

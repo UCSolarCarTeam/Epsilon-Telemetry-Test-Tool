@@ -30,10 +30,7 @@ HEADERS  += \
     ViewLayer/View.h \
     Peripherals/SerialPortPeripheral.h \
     Peripherals/I_CommPeripheral.h \
-    BusinessLayer/TelemetryReporting_json.h \
-    DataLayer/BatteryData_json.h \
-    BusinessLayer/CommunicationService_json.h \
-    TestApplication_json.h
+    BusinessLayer/TelemetryReporting_json.h
 
 SOURCES += \
     main.cpp \
@@ -44,6 +41,4 @@ SOURCES += \
     UILayer/Window.cpp \
     ViewLayer/View.cpp \
     Peripherals/SerialPortPeripheral.cpp \
-    BusinessLayer/TelemetryReporting_json.cpp \
-    BusinessLayer/CommunicationService_json.cpp \
-    TestApplication_json.cpp
+    BusinessLayer/TelemetryReporting_json.cpp

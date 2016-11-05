@@ -45,6 +45,6 @@ bool SerialPortPeripheral::attemptConnection()
    }
 }
 
-void SerialPortPeripheral::sendData_json(const QByteArray &data){
+void SerialPortPeripheral::sendDataInternet(const QByteArray &data){
     serialPort_.write(data);
 }

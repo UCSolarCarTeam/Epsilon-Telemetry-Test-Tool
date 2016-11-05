@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QSerialPort>
+#include <QByteArray>
 #include <SerialPortPeripheral.h>
 
 class I_CommPeripheral;
@@ -14,7 +15,7 @@ class CommunicationService : public QObject
 public:
     CommunicationService(View& view);
     void sendData(const unsigned char* packet, int packetLength);
-
+    void sendDataInternet(const QByteArray &data);
 private:
     void setPeripheralSerialPort();
 
