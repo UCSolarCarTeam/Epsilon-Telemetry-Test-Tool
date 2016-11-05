@@ -116,11 +116,13 @@ protected:
  */
 TEST_F(TelemetryReportingTest, sendKeyMotorTest)
 {
-	// first check if called at all
+	// prepare payload
 	const unsigned int expectedPackageLength = 47;
 	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
 	unsigned char data[payloadLength];
+
 	data[0] = CcsDefines::KEY_MOTOR_PKG_ID;
+
 	bool motor0Alive[] = {keyMotorData_->motor0Alive};
 	telemetryReporting_->writeBoolsIntoArray(data, 1, motor0Alive, 1);
 	telemetryReporting_->writeFloatIntoArray(data, 2, keyMotorData_->motor0SetCurrent);
@@ -147,6 +149,7 @@ TEST_F(TelemetryReportingTest, sendKeyMotorTest)
 	unsigned char expectedPacket[expectedPackageLength];
 	telemetryReporting_->frameData(data, payloadLength, expectedPacket);
 
+	// check call
 	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0,1>(ElementsAreArray(expectedPacket, expectedPackageLength))).Times(1);
 	telemetryReporting_->sendKeyMotor();
 }
@@ -160,14 +163,73 @@ TEST_F(TelemetryReportingTest, sendKeyMotorTest)
  */
 TEST_F(TelemetryReportingTest, sendMotorDetailsTest)
 {
-	// first check if called at all
+	// create payload
 	const unsigned int expectedPackageLength = 73;
-	//const unsigned char expectedPacketMotor0[] = {1};
-	// TODO create correctly encoded expected package
-	EXPECT_CALL(*communicationService_, sendData(_/*ElementsAreArray(expectedPacketMotor0)TODO*/, expectedPackageLength)).Times(1);
+
+	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
+	unsigned char data[payloadLength];
+
+	data[0] = CcsDefines::MOTOR_DETAILS_0_PKG_ID;
+
+	telemetryReporting_->writeFloatIntoArray(data, 1, motor0DetailsData_->phaseCCurrent);
+	telemetryReporting_->writeFloatIntoArray(data, 5, motor0DetailsData_->phaseBCurrent);
+	telemetryReporting_->writeFloatIntoArray(data, 9, motor0DetailsData_->MotorVoltageReal);
+	telemetryReporting_->writeFloatIntoArray(data, 13, motor0DetailsData_->MotorVoltageImaginary);
+	telemetryReporting_->writeFloatIntoArray(data, 17, motor0DetailsData_->MotorCurrentReal);
+	telemetryReporting_->writeFloatIntoArray(data, 21, motor0DetailsData_->MotorCurrentImaginary);
+	telemetryReporting_->writeFloatIntoArray(data, 25, motor0DetailsData_->BackEmfReal);
+	telemetryReporting_->writeFloatIntoArray(data, 29, motor0DetailsData_->BackEmfImaginary);
+	telemetryReporting_->writeFloatIntoArray(data, 33, motor0DetailsData_->RailSupply15V);
+	telemetryReporting_->writeFloatIntoArray(data, 37, motor0DetailsData_->RailSupply3V);
+	telemetryReporting_->writeFloatIntoArray(data, 41, motor0DetailsData_->RailSupply1V);
+	telemetryReporting_->writeFloatIntoArray(data, 45, motor0DetailsData_->heatSinkTemperature);
+	telemetryReporting_->writeFloatIntoArray(data, 49, motor0DetailsData_->motorTemperature);
+	telemetryReporting_->writeFloatIntoArray(data, 53, motor0DetailsData_->dspBoardTempearture);
+	telemetryReporting_->writeFloatIntoArray(data, 57, motor0DetailsData_->dcBusAmpHours);
+	telemetryReporting_->writeFloatIntoArray(data, 61, motor0DetailsData_->odometer);
+	telemetryReporting_->writeFloatIntoArray(data, 65, motor0DetailsData_->slipSpeed);
+
+	appendChecksum(data, payloadLength);
+
+	// do some additional data checks
+	ASSERT_THAT(data[0], Eq(0x02)); // packet id
+
+	unsigned char expectedPacket0[expectedPackageLength];
+	telemetryReporting_->frameData(data, payloadLength, expectedPacket0);
+
+	// check call
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0,1>(ElementsAreArray(expectedPacket0, expectedPackageLength))).Times(1);
 	telemetryReporting_->sendMotorDetails(0);
 
-	EXPECT_CALL(*communicationService_, sendData(_/*ElementsAreArray(expectedPacketMotor1)TODO*/, expectedPackageLength)).Times(1);
+	data[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
+
+	telemetryReporting_->writeFloatIntoArray(data, 1, motor1DetailsData_->phaseCCurrent);
+	telemetryReporting_->writeFloatIntoArray(data, 5, motor1DetailsData_->phaseBCurrent);
+	telemetryReporting_->writeFloatIntoArray(data, 9, motor1DetailsData_->MotorVoltageReal);
+	telemetryReporting_->writeFloatIntoArray(data, 13, motor1DetailsData_->MotorVoltageImaginary);
+	telemetryReporting_->writeFloatIntoArray(data, 17, motor1DetailsData_->MotorCurrentReal);
+	telemetryReporting_->writeFloatIntoArray(data, 21, motor1DetailsData_->MotorCurrentImaginary);
+	telemetryReporting_->writeFloatIntoArray(data, 25, motor1DetailsData_->BackEmfReal);
+	telemetryReporting_->writeFloatIntoArray(data, 29, motor1DetailsData_->BackEmfImaginary);
+	telemetryReporting_->writeFloatIntoArray(data, 33, motor1DetailsData_->RailSupply15V);
+	telemetryReporting_->writeFloatIntoArray(data, 37, motor1DetailsData_->RailSupply3V);
+	telemetryReporting_->writeFloatIntoArray(data, 41, motor1DetailsData_->RailSupply1V);
+	telemetryReporting_->writeFloatIntoArray(data, 45, motor1DetailsData_->heatSinkTemperature);
+	telemetryReporting_->writeFloatIntoArray(data, 49, motor1DetailsData_->motorTemperature);
+	telemetryReporting_->writeFloatIntoArray(data, 53, motor1DetailsData_->dspBoardTempearture);
+	telemetryReporting_->writeFloatIntoArray(data, 57, motor1DetailsData_->dcBusAmpHours);
+	telemetryReporting_->writeFloatIntoArray(data, 61, motor1DetailsData_->odometer);
+	telemetryReporting_->writeFloatIntoArray(data, 65, motor1DetailsData_->slipSpeed);
+
+	appendChecksum(data, payloadLength);
+
+	// do some additional data checks
+	ASSERT_THAT(data[0], Eq(0x03)); // packet id
+
+	unsigned char expectedPacket1[expectedPackageLength];
+	telemetryReporting_->frameData(data, payloadLength, expectedPacket1);
+
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0,1>(ElementsAreArray(expectedPacket1, expectedPackageLength))).Times(1);
 	telemetryReporting_->sendMotorDetails(1);
 }
 
