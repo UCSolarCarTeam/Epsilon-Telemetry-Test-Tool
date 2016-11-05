@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QScopedPointer>
 #include "TelemetryReporting.h"
+#include "TelemetryReporting_json.h"
 #include "KeyMotorData.h"
 #include "MotorDetailsData.h"
 #include "DriverControlsData.h"
@@ -36,4 +37,5 @@ private:
     QScopedPointer<View> view_;
     QScopedPointer<CommunicationService> communicationService_;
     QScopedPointer<TelemetryReporting> telemetryReporting_;
+    QScopedPointer<TelemetryReporting_json> telemetryReporting_json_;
 };
