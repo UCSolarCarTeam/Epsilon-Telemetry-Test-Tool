@@ -60,6 +60,7 @@ private:
     void writeFloatIntoArray(unsigned char* data, int index, const float& value);
     void writeShortIntoArray(unsigned char* data, int index, const short& value);
     void writeUShortIntoArray(unsigned char* data, int index, const unsigned short& value);
+    FRIEND_TEST(TelemetryReportingTest, writeBoolsIntoArrayTest);
     void writeBoolsIntoArray(unsigned char* data, int index, const bool values[], int numValues);
 
 private:
