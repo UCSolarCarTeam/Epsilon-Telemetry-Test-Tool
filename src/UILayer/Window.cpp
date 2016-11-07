@@ -24,7 +24,6 @@ void Window::setupUi()
 {
     QWidget* mainWidget = new QWidget(this);
     QFormLayout* layout = new QFormLayout;
-
     connectButton_ = new QPushButton("Connect", this);
     comPortLineEdit_ = new QLineEdit("/dev/ttyUSB0", this);
     connectionStatusLabel_ = new QLabel("Not connected", this);
@@ -39,7 +38,6 @@ void Window::setupUi()
     sendMpptButton_ = new QPushButton("Send MPPTs", this);
     sendLightsButton_ = new QPushButton("Send Lights", this);
     sendAllButton_ = new QPushButton("Send All", this);
-
     layout->addRow(connectButton_);
     layout->addRow(comPortLineEdit_);
     layout->addRow(connectionStatusLabel_);
