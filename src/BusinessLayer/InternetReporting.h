@@ -13,7 +13,6 @@ class MotorDetailsData;
 class MotorFaultsData;
 class MpptData;
 class QIODevice;
-class View;
 class CommunicationService;
 
 class InternetReporting : public QObject
@@ -21,17 +20,17 @@ class InternetReporting : public QObject
     Q_OBJECT
 public:
     InternetReporting(CommunicationService& commService,
-                       const KeyMotorData& keyMotorData_,
-                       const MotorDetailsData& motor0DetailsData_,
-                       const MotorDetailsData& motor1DetailsData_,
-                       const DriverControlsData& driverControlsData_,
-                       const MotorFaultsData& motorFaultsData_,
-                       const BatteryFaultsData& batteryFaultsData_,
-                       const BatteryData& batteryData_,
-                       const CmuData& cmuData_,
-                       const MpptData& mpptData_,
-                       const LightsData& lightsData_,
-                       View& view);
+                      const KeyMotorData& keyMotorData_,
+                      const MotorDetailsData& motor0DetailsData_,
+                      const MotorDetailsData& motor1DetailsData_,
+                      const DriverControlsData& driverControlsData_,
+                      const MotorFaultsData& motorFaultsData_,
+                      const BatteryFaultsData& batteryFaultsData_,
+                      const BatteryData& batteryData_,
+                      const CmuData& cmuData_,
+                      const MpptData& mpptData_,
+                      const LightsData& lightsData_
+                     );
 
 private slots:
     void sendKeyMotor();
@@ -68,5 +67,4 @@ private:
     const CmuData& cmuData_;
     const MpptData& mpptData_;
     const LightsData& lightsData_;
-    View& view_;
 };

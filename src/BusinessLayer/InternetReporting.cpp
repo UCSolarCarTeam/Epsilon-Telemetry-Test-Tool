@@ -35,17 +35,17 @@ QJsonArray mPPTArray;
 QJsonObject lightsInfo;
 
 InternetReporting::InternetReporting(CommunicationService& commService,
-                                       const KeyMotorData& keyMotorData,
-                                       const MotorDetailsData& motor0DetailsData,
-                                       const MotorDetailsData& motor1DetailsData,
-                                       const DriverControlsData& driverControlsData,
-                                       const MotorFaultsData& motorFaultsData,
-                                       const BatteryFaultsData& batteryFaultsData,
-                                       const BatteryData& batteryData,
-                                       const CmuData& cmuData,
-                                       const MpptData& mpptData,
-                                       const LightsData& lightsData,
-                                       View& view)
+                                     const KeyMotorData& keyMotorData,
+                                     const MotorDetailsData& motor0DetailsData,
+                                     const MotorDetailsData& motor1DetailsData,
+                                     const DriverControlsData& driverControlsData,
+                                     const MotorFaultsData& motorFaultsData,
+                                     const BatteryFaultsData& batteryFaultsData,
+                                     const BatteryData& batteryData,
+                                     const CmuData& cmuData,
+                                     const MpptData& mpptData,
+                                     const LightsData& lightsData
+                                    )
     : communicationService_(commService)
     , keyMotorData_(keyMotorData)
     , motor0DetailsData_(motor0DetailsData)
@@ -57,23 +57,9 @@ InternetReporting::InternetReporting(CommunicationService& commService,
     , cmuData_(cmuData)
     , mpptData_(mpptData)
     , lightsData_(lightsData)
-    , view_(view)
-{
-    //Connect slots to View Signals
-    connect(&view_, SIGNAL(sendKeyMotor()), this, SLOT(sendKeyMotor()));
-    connect(&view_, SIGNAL(sendMotor0Details()), this, SLOT(sendMotor0Details()));
-    connect(&view_, SIGNAL(sendMotor1Details()), this, SLOT(sendMotor1Details()));
-    connect(&view_, SIGNAL(sendDriverControls()), this, SLOT(sendDriverControls()));
-    connect(&view_, SIGNAL(sendMotorFaults()), this, SLOT(sendMotorFaults()));
-    connect(&view_, SIGNAL(sendBatteryFaults()), this, SLOT(sendBatteryFaults()));
-    connect(&view_, SIGNAL(sendBattery()), this, SLOT(sendBattery()));
-    connect(&view_, SIGNAL(sendCmu()), this, SLOT(sendCmu()));
-    connect(&view_, SIGNAL(sendMppt()), this, SLOT(sendMppt()));
-    connect(&view_, SIGNAL(sendLights()), this, SLOT(sendLights()));
-    connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
-}
+{}
 
-void InternetReporting::makeKeyMotor(){
+void InternetReporting::makeKeyMotor() {
     KeyMotor = QJsonArray();
 
     QJsonObject KeyMotor0;
@@ -96,7 +82,7 @@ void InternetReporting::makeKeyMotor(){
 
 }
 
-void InternetReporting::makeMotorDetails(int n){
+void InternetReporting::makeMotorDetails(int n) {
     if(n == 0) {
         MotorDetails0 = QJsonObject();
         MotorDetails0.insert("PhaseCCurrent", motor0DetailsData_.phaseCCurrent);
@@ -118,7 +104,7 @@ void InternetReporting::makeMotorDetails(int n){
     }
 
 
-    if( n== 1){
+    if( n== 1) {
         MotorDetails1 = QJsonObject();
         MotorDetails1.insert("PhaseCCurrent", motor1DetailsData_.phaseCCurrent);
         MotorDetails1.insert("PhaseBCurrent", motor1DetailsData_.phaseBCurrent);
@@ -141,7 +127,7 @@ void InternetReporting::makeMotorDetails(int n){
 
 }
 
-void InternetReporting::makeDriverControls(){
+void InternetReporting::makeDriverControls() {
     DriverControls = QJsonObject();
 
     DriverControls.insert("Alive", driverControlsData_.alive);
@@ -168,7 +154,7 @@ void InternetReporting::makeDriverControls(){
 
 }
 
-void InternetReporting::makeMotorFaults(){
+void InternetReporting::makeMotorFaults() {
     MotorFaults = QJsonArray();
 
     QJsonObject MotorFaults0;
@@ -230,7 +216,7 @@ void InternetReporting::makeMotorFaults(){
     MotorFaults.push_back(MotorFaults1);
 }
 
-void InternetReporting::makeBatteryFaults(){
+void InternetReporting::makeBatteryFaults() {
     BatteryFaults = QJsonObject();
 
     BatteryFaults.insert("CellOverVoltage", batteryFaultsData_.cellOverVoltage);
@@ -247,7 +233,7 @@ void InternetReporting::makeBatteryFaults(){
     BatteryFaults.insert("CMUDetectedExtraCell", batteryFaultsData_.cmuDetectedExtraCellPresent);
 }
 
-void InternetReporting::makeBattery(){
+void InternetReporting::makeBattery() {
 
     Battery = QJsonObject();
 
@@ -309,7 +295,7 @@ void InternetReporting::makeBattery(){
 
 }
 
-void InternetReporting::makeCmu(){
+void InternetReporting::makeCmu() {
 
     QJsonObject CMUinfo;
 
@@ -340,7 +326,7 @@ void InternetReporting::makeCmu(){
 
 }
 
-void InternetReporting::makeMppt(){
+void InternetReporting::makeMppt() {
     mPPTArray = QJsonArray();
 
     QJsonObject mPPTInfo;
@@ -357,7 +343,7 @@ void InternetReporting::makeMppt(){
     }
 }
 
-void InternetReporting::makeLights(){
+void InternetReporting::makeLights() {
     lightsInfo = QJsonObject();
 
     lightsInfo.insert("LowBeams", lightsData_.lowBeams);

@@ -27,17 +27,16 @@ TestApplication::TestApplication(int& argc, char** argv)
                           *lightsData_,
                           *view_))
     ,internetReporting_(new InternetReporting(*communicationService_,
-                                                *keyMotorData_,
-                                                *motor0DetailsData_,
-                                                *motor1DetailsData_,
-                                                *driverControlsData_,
-                                                *motorFaultsData_,
-                                                *batteryFaultsData_,
-                                                *batteryData_,
-                                                *cmuData_,
-                                                *mpptData_,
-                                                *lightsData_,
-                                                *view_))
+                        *keyMotorData_,
+                        *motor0DetailsData_,
+                        *motor1DetailsData_,
+                        *driverControlsData_,
+                        *motorFaultsData_,
+                        *batteryFaultsData_,
+                        *batteryData_,
+                        *cmuData_,
+                        *mpptData_,
+                        *lightsData_))
 {
 }
 
