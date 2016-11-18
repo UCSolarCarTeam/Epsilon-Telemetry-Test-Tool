@@ -36,6 +36,7 @@ public:
                        View& view);
 
 //friend class ::TelemetryReportingTest;
+    friend class TelemetryReportingTest;
 
 private slots:
 	FRIEND_TEST(TelemetryReportingTest, sendKeyMotorTest);

@@ -28,6 +28,14 @@ using ::testing::ElementsAreArray;
 using ::testing::Args;
 using ::testing::Eq;
 
+using ::testing::Matcher;
+    using ::testing::MatcherInterface;
+    using ::testing::MatchResultListener;
+
+#include<iterator>
+
+#define HEX( x ) std::setw(2) << "\\x" << std::hex << (int)( x )
+
 
 class TelemetryReportingTest : public ::testing::Test
 {
@@ -88,6 +96,15 @@ protected:
 
     }
 
+    void assertThatCOBScorrect(unsigned char* input, unsigned char* expected, const unsigned int inputLength) {
+    	const unsigned int expectedArrayLength = inputLength+2;
+    	unsigned char encodedArray[expectedArrayLength];
+    	telemetryReporting_->frameData(input, inputLength, encodedArray);
+    	ASSERT_THAT(std::vector<unsigned char>(encodedArray, encodedArray+expectedArrayLength),
+    			ElementsAreArray(std::vector<unsigned char>(expected, expected + expectedArrayLength)));
+    }
+
+
     void appendChecksum(unsigned char *data, unsigned int lengthPayload) {
     	const unsigned short checksum = CrcCalculator::calculateCrc16(data, lengthPayload - CHECK_SUM_LENGTH);
     	const unsigned char lowerByte = (unsigned char) checksum & 0xFF;
@@ -100,6 +117,42 @@ protected:
     	data[lengthPayload-CHECK_SUM_LENGTH] = lowerByte;
     	data[lengthPayload-(CHECK_SUM_LENGTH-1)] = higherByte;
     }
+/*
+    class COBSEncodedIsMatcher : public MatcherInterface<std::vector<unsigned char> > {
+     public:
+      explicit COBSEncodedIsMatcher(std::vector<unsigned char> &expectedArray, TelemetryReportingTest &containingTest)
+          : expectedArray_(expectedArray), containingTest_(containingTest) {}
+
+      virtual bool MatchAndExplain(std::vector<unsigned char> input,
+                                   MatchResultListener* listener) const {
+
+    	  unsigned char encodedArray[expectedArray_.size()];
+    	  containingTest_.telemetryReporting_->frameData(&input[0], input.size(), encodedArray);
+
+    	  return ::testing::ExplainMatchResult(ElementsAreArray(expectedArray_),
+    			  std::vector<unsigned char>(encodedArray, encodedArray+expectedArray_.size()), listener);
+      }
+
+      virtual void DescribeTo(::std::ostream* os) const {
+
+    	 *os << "has " << expectedArray_.size() << " elements where" << std::endl;
+    	 for(std::vector<unsigned char>::const_iterator it = expectedArray_.begin(); it != expectedArray_.end(); it++) {
+    		 const unsigned int idx = it - expectedArray_.begin();
+    		 *os << "element #" << it - expectedArray_.begin() << " is equal to \'" << HEX(*it) << "\' (" << ((int) *it) << ")";
+    		 if(idx != expectedArray_.size()-1) {
+    			 *os << "," << std::endl;;
+    		 }
+    	 }
+      }
+
+     private:
+      const std::vector<unsigned char>& expectedArray_;
+      const TelemetryReportingTest &containingTest_;
+    };
+
+    inline Matcher<std::vector<unsigned char> > COBSEncodedIs(std::vector<unsigned char> &expectedArray) {
+      return MakeMatcher(new COBSEncodedIsMatcher(expectedArray, *this));
+    }*/
 
 };
 
@@ -161,7 +214,7 @@ TEST_F(TelemetryReportingTest, sendKeyMotorTest)
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendMotorDetailsTest)
+TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create special matcher per message!!!!
 {
 	// create payload
 	const unsigned int expectedPackageLength = 73;
@@ -235,6 +288,15 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest)
 
 TEST_F(TelemetryReportingTest, StuffDataTest)
 {
+	unsigned char nullArrayInput[] = {0x00};
+	unsigned char nullArrayExpected[] = {0x01, 0x01, 0x00};
+	assertThatCOBScorrect(nullArrayInput, nullArrayExpected, 1);
+
+
+	//std::vector<unsigned char> a = {0x00};
+	//std::vector<unsigned char> b = {0x01, 0x01, 0x00};
+	//ASSERT_THAT(a, COBSEncodedIs(b));
+
 	// TODO test if Consistent Overhead Byte Stuffing (COBS) is working as intended
 	// TODO maybe also test frameData in here
 }
@@ -308,3 +370,7 @@ TEST_F(TelemetryReportingTest, writeFloatIntoArrayTest)
 		ASSERT_THAT(actual, ElementsAre(*p, *(p+1), *(p+2), *(p+3)));
 	}
 }
+
+
+
+
