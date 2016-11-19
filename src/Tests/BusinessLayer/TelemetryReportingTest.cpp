@@ -29,8 +29,8 @@ using ::testing::Args;
 using ::testing::Eq;
 
 using ::testing::Matcher;
-    using ::testing::MatcherInterface;
-    using ::testing::MatchResultListener;
+using ::testing::MatcherInterface;
+using ::testing::MatchResultListener;
 
 #include<iterator>
 
@@ -117,6 +117,43 @@ protected:
 
     	data[lengthPayload-CHECK_SUM_LENGTH] = lowerByte;
     	data[lengthPayload-(CHECK_SUM_LENGTH-1)] = higherByte;
+    }
+
+    inline unsigned char fitTwoSingleUChar(unsigned char bit0To3, unsigned char bit4To7) {
+    	unsigned char ret = (bit4To7 << 4) | (bit0To3 & 0x0F);
+    	return ret;
+
+    }
+
+    void fillCmuData(unsigned char *data) {
+    	data[0] = CcsDefines::CMU_PKG_ID;
+    	data[1] = cmuData_->cmuNumber;
+
+    	const int cmuCellVoltageOffset = 2;
+    	const int numCellVoltageFields = 8;
+    	for (int i = 0; i < numCellVoltageFields; ++i) {
+    		telemetryReporting_->writeShortIntoArray(data, cmuCellVoltageOffset + (i * 2), cmuData_->cellVoltage[i]);
+    	}
+
+    	telemetryReporting_->writeUShortIntoArray(data, 18, cmuData_->pcbTemperature);
+    	const int cmuCellTemperatureOffset = 20;
+    	const int numCellTemperatureFields = 15;
+    	for (int i = 0; i < numCellTemperatureFields; i++)
+    	{
+    		telemetryReporting_->writeUShortIntoArray(data, cmuCellTemperatureOffset + (i * 2), cmuData_->cellTemperature[i]);
+    	}
+    }
+
+    void fillMpptData(unsigned char *data) {
+		data[0] = CcsDefines::MPPT_PKG_ID;
+		data[1] = mpptData_->mpptNumber & 0x3;
+        if(mpptData_->alive) {
+        	data[1] |= 0x80;
+        }
+		telemetryReporting_->writeUShortIntoArray(data, 2, mpptData_->arrayVoltage);
+		telemetryReporting_->writeUShortIntoArray(data, 4, mpptData_->arrayCurrent);
+		telemetryReporting_->writeUShortIntoArray(data, 6, mpptData_->batteryVoltage);
+		telemetryReporting_->writeUShortIntoArray(data, 8, mpptData_->temperature);
     }
 /*
     class COBSEncodedIsMatcher : public MatcherInterface<std::vector<unsigned char> > {
@@ -303,34 +340,34 @@ TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function w
 
 	data[0] = CcsDefines::DRIVER_CONTROLS_PKG_ID;
 
-	bool driverControlBoardsAlive[] = {driverControlBoardsAlive->alive};
+	bool driverControlBoardsAlive[] = {driverControlsData_->alive};
 	telemetryReporting_->writeBoolsIntoArray(data, 1, driverControlBoardsAlive, 1);
 
-	bool lightsInputs[] = { driverControlBoardsAlive.headlightsOff,
-			driverControlBoardsAlive.headlightsLow,
-			driverControlBoardsAlive.headlightsHigh,
-			driverControlBoardsAlive.signalLeft,
-			driverControlBoardsAlive.signalRight,
-			driverControlBoardsAlive.hazardLights,
-			driverControlBoardsAlive.interiorLights };
+	bool lightsInputs[] = { driverControlsData_->headlightsOff,
+			driverControlsData_->headlightsLow,
+			driverControlsData_->headlightsHigh,
+			driverControlsData_->signalLeft,
+			driverControlsData_->signalRight,
+			driverControlsData_->hazardLights,
+			driverControlsData_->interiorLights };
 	telemetryReporting_->writeBoolsIntoArray(data, 2, lightsInputs, 7);
 
-	bool musicInputs[] = { driverControlBoardsAlive.musicAux,
-			driverControlBoardsAlive.volumeUp,
-			driverControlBoardsAlive.volumeDown,
-			driverControlBoardsAlive.nextSong,
-			driverControlBoardsAlive.prevSong };
+	bool musicInputs[] = { driverControlsData_->musicAux,
+			driverControlsData_->volumeUp,
+			driverControlsData_->volumeDown,
+			driverControlsData_->nextSong,
+			driverControlsData_->prevSong };
 	telemetryReporting_->writeBoolsIntoArray(data, 3, musicInputs, 5);
 
-	telemetryReporting_->writeUShortIntoArray(data, 4, driverControlBoardsAlive->acceleration);
-	telemetryReporting_->writeUShortIntoArray(data, 6, driverControlBoardsAlive->regenBraking);
+	telemetryReporting_->writeUShortIntoArray(data, 4, driverControlsData_->acceleration);
+	telemetryReporting_->writeUShortIntoArray(data, 6, driverControlsData_->regenBraking);
 
-	bool driverInputs[] = { driverControlBoardsAlive.brakes,
-			driverControlBoardsAlive.forward,
-			driverControlBoardsAlive.reverse,
-			driverControlBoardsAlive.pushToTalk,
-			driverControlBoardsAlive.horn,
-			driverControlBoardsAlive.reset };
+	bool driverInputs[] = { driverControlsData_->brakes,
+			driverControlsData_->forward,
+			driverControlsData_->reverse,
+			driverControlsData_->pushToTalk,
+			driverControlsData_->horn,
+			driverControlsData_->reset };
 	telemetryReporting_->writeBoolsIntoArray(data, 8, driverInputs, 6);
 
 	appendChecksum(data, payloadLength);
@@ -355,7 +392,67 @@ TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function w
  */
 TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function which build the actual package to create some tescases more easy...
 {
-	 // TODO
+	// prepare payload
+	const unsigned int expectedPackageLength = 13;
+	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
+	unsigned char data[payloadLength];
+
+	data[0] = CcsDefines::MOTOR_FAULTS_PKG_ID;
+
+	bool motor0ErrorFlags[] = { motorFaultsData_->motor0OverSpeed,
+			motorFaultsData_->motor0SoftwareOverCurrent,
+			motorFaultsData_->motor0DcBusOverVoltage,
+			motorFaultsData_->motor0BadMootorPositionHallSequence,
+			motorFaultsData_->motor0WatchdogCausedLastReset,
+			motorFaultsData_->motor0ConfigReadError,
+			motorFaultsData_->motor0Rail15VUnderVoltageLockOut,
+			motorFaultsData_->motor0DesaturationFault };
+	telemetryReporting_->writeBoolsIntoArray(data, 1, motor0ErrorFlags, 8);
+
+	bool motor1ErrorFlags[] = { motorFaultsData_->motor1OverSpeed,
+			motorFaultsData_->motor1SoftwareOverCurrent,
+			motorFaultsData_->motor1DcBusOverVoltage,
+			motorFaultsData_->motor1BadMootorPositionHallSequence,
+			motorFaultsData_->motor1WatchdogCausedLastReset,
+			motorFaultsData_->motor1ConfigReadError,
+			motorFaultsData_->motor1Rail15VUnderVoltageLockOut,
+			motorFaultsData_->motor1DesaturationFault };
+	telemetryReporting_->writeBoolsIntoArray(data, 2, motor1ErrorFlags, 8);
+
+	bool motor0LimitFlags[] = { motorFaultsData_->motor0OutputVoltagePwmLimit,
+			motorFaultsData_->motor0MotorCurrentLimit,
+			motorFaultsData_->motor0VelocityLimit,
+			motorFaultsData_->motor0BusCurrentLimit,
+			motorFaultsData_->motor0BusVoltageUpperLimit,
+			motorFaultsData_->motor0BusVoltageLowerLimit,
+			motorFaultsData_->motor0IpmOrMotorTemperatureLimit };
+	telemetryReporting_->writeBoolsIntoArray(data, 3, motor0LimitFlags, 7);
+
+	bool motor1LimitFlags[] = { motorFaultsData_->motor1OutputVoltagePwmLimit,
+			motorFaultsData_->motor1MotorCurrentLimit,
+			motorFaultsData_->motor1VelocityLimit,
+			motorFaultsData_->motor1BusCurrentLimit,
+			motorFaultsData_->motor1BusVoltageUpperLimit,
+			motorFaultsData_->motor1BusVoltageLowerLimit,
+			motorFaultsData_->motor1IpmOrMotorTemperatureLimit };
+	telemetryReporting_->writeBoolsIntoArray(data, 4, motor1LimitFlags, 7);
+
+	data[5] = motorFaultsData_->motor0RxErrorCount;
+	data[6] = motorFaultsData_->motor0TxErrorCount;
+	data[7] = motorFaultsData_->motor1RxErrorCount;
+	data[8] = motorFaultsData_->motor1TxErrorCount;
+
+	appendChecksum(data, payloadLength);
+
+	// do some additional data checks
+	ASSERT_THAT(data[0], Eq(0x05)); // packet id
+
+	unsigned char expectedPacket[expectedPackageLength];
+	telemetryReporting_->frameData(data, payloadLength, expectedPacket);
+
+	// check call
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0,1>(ElementsAreArray(expectedPacket, expectedPackageLength))).Times(1);
+	telemetryReporting_->sendMotorFaults();
 }
 
 /*
@@ -367,7 +464,39 @@ TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function whic
  */
 TEST_F(TelemetryReportingTest, sendBatteryFaultsTest) // TODO create function which build the actual package to create some tescases more easy...
 {
-	 // TODO
+	// prepare payload
+	const unsigned int expectedPackageLength = 7;
+	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
+	unsigned char data[payloadLength];
+
+	data[0] = CcsDefines::BATTERY_FAULTS_PKG_ID;
+
+	bool errorFlags[] = { batteryFaultsData_->cellOverVoltage,
+			batteryFaultsData_->cellUnderVoltage,
+			batteryFaultsData_->cellOverTemperature,
+			batteryFaultsData_->measurementUntrusted,
+			batteryFaultsData_->cmuCommTimeout,
+			batteryFaultsData_->vehicleCommTimeout,
+			batteryFaultsData_->bmuInSetupMode,
+			batteryFaultsData_->cmuCanBusPowerStatus,
+			batteryFaultsData_->packIsolationTestFailure,
+			batteryFaultsData_->softwareOverCurrent,
+			batteryFaultsData_->can12VSupplyLow,
+			batteryFaultsData_->contactorStuck,
+			batteryFaultsData_->cmuDetectedExtraCellPresent};
+	telemetryReporting_->writeBoolsIntoArray(data, 1, errorFlags, 13);
+
+	appendChecksum(data, payloadLength);
+
+	// do some additional data checks
+	ASSERT_THAT(data[0], Eq(0x06)); // packet id
+
+	unsigned char expectedPacket[expectedPackageLength];
+	telemetryReporting_->frameData(data, payloadLength, expectedPacket);
+
+	// check call
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0,1>(ElementsAreArray(expectedPacket, expectedPackageLength))).Times(1);
+	telemetryReporting_->sendBatteryFaults();
 }
 
 /*
@@ -379,7 +508,76 @@ TEST_F(TelemetryReportingTest, sendBatteryFaultsTest) // TODO create function wh
  */
 TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which build the actual package to create some tescases more easy...
 {
-	 // TODO
+	// prepare payload
+	const unsigned int expectedPackageLength = 64;
+	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
+	unsigned char data[payloadLength];
+
+	data[0] = CcsDefines::BATTERY_PKG_ID;
+
+	bool bmuAlive[] = { batteryData_->alive};
+	telemetryReporting_->writeBoolsIntoArray(data, 1, bmuAlive, 1);
+
+	telemetryReporting_->writeFloatIntoArray(data, 2, batteryData_->packSocAmpHours);
+	telemetryReporting_->writeFloatIntoArray(data, 6, batteryData_->packSocPercentage);
+	telemetryReporting_->writeFloatIntoArray(data, 10, batteryData_->packBalanceSoc);
+	telemetryReporting_->writeFloatIntoArray(data, 14, batteryData_->packBalanceSocPercentage);
+
+	telemetryReporting_->writeUShortIntoArray(data, 18, batteryData_->chargingCellVoltageError);
+	telemetryReporting_->writeUShortIntoArray(data, 20, batteryData_->cellTemperatureMargin);
+	telemetryReporting_->writeUShortIntoArray(data, 22, batteryData_->dischargingCellVoltageError);
+	telemetryReporting_->writeUShortIntoArray(data, 24, batteryData_->totalPackCapacity);
+
+	bool PrechargeContactorDriverStatus[] = { batteryData_->contactor0Errorstatus,
+			batteryData_->contactor1ErrorStatus,
+			batteryData_->contactor0Status,
+			batteryData_->contactor1Status,
+			batteryData_->contactor12VSupplyOk,
+			batteryData_->contactor2ErrorStatus,
+			batteryData_->contactor2Status };
+	telemetryReporting_->writeBoolsIntoArray(data, 26, PrechargeContactorDriverStatus, 7);
+
+	data[27] = (unsigned char) batteryData_->prechargeState;
+	bool PrechargeTimerElapsed[] = { batteryData_->prechargeTimerElapsed,
+			batteryData_->prechargeTimerNotElapsed };
+	telemetryReporting_->writeBoolsIntoArray(data, 28, PrechargeTimerElapsed, 2);
+
+	telemetryReporting_->writeUShortIntoArray(data, 29, batteryData_->prechargeTimerCount);
+
+	telemetryReporting_->writeUShortIntoArray(data, 31, batteryData_->lowestCellVoltage);
+	data[33] = fitTwoSingleUChar(batteryData_->lowestCellVoltageCmuNumber, batteryData_->lowestCellVoltageCellNumber);
+
+	telemetryReporting_->writeUShortIntoArray(data, 34, batteryData_->highestCellVoltage);
+	data[36] = fitTwoSingleUChar(batteryData_->highestCellVoltageCmuNumber, batteryData_->highestCellVoltageCellNumber);
+
+	telemetryReporting_->writeUShortIntoArray(data, 37, batteryData_->lowestCellTemperature);
+	data[39] = fitTwoSingleUChar(batteryData_->lowestCellTemperatureCmuNumber, batteryData_->lowestCellTemperatureCellNumber);
+
+	telemetryReporting_->writeUShortIntoArray(data, 40, batteryData_->highestCellTemperature);
+	data[42] = fitTwoSingleUChar(batteryData_->highestCellTemperatureCmuNumber, batteryData_->highestCellTemperatureCellNumber);
+
+	telemetryReporting_->writeUIntIntoArray(data, 43, batteryData_->voltage);
+	telemetryReporting_->writeUIntIntoArray(data, 47, batteryData_->current);
+
+	telemetryReporting_->writeUShortIntoArray(data, 51, batteryData_->fan0Speed);
+	telemetryReporting_->writeUShortIntoArray(data, 53, batteryData_->fan1Speed);
+	telemetryReporting_->writeUShortIntoArray(data, 55, batteryData_->fanContactors12VCurrentConsumption);
+	telemetryReporting_->writeUShortIntoArray(data, 57, batteryData_->cmu12VCurrentConsumption);
+
+	bool BMSCanLockedOut[] = {batteryData_->bmsCanLockedOut};
+	telemetryReporting_->writeBoolsIntoArray(data, 59, BMSCanLockedOut, 1);
+
+	appendChecksum(data, payloadLength);
+
+	// do some additional data checks
+	ASSERT_THAT(data[0], Eq(0x07)); // packet id
+
+	unsigned char expectedPacket[expectedPackageLength];
+	telemetryReporting_->frameData(data, payloadLength, expectedPacket);
+
+	// check call
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0,1>(ElementsAreArray(expectedPacket, expectedPackageLength))).Times(1);
+	telemetryReporting_->sendBattery();
 }
 
 /*
@@ -391,7 +589,31 @@ TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which bu
  */
 TEST_F(TelemetryReportingTest, sendCmuTest) // TODO create function which build the actual package to create some tescases more easy...
 {
-	 // TODO
+	// prepare payload
+	const unsigned int expectedPackageLength = 54;
+	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
+
+	unsigned char expectedPacket[CcsDefines::CMU_COUNT][expectedPackageLength];
+
+	for (unsigned char i = 0; i < CcsDefines::CMU_COUNT; i++)
+	{
+		unsigned char data[payloadLength];
+		cmuData_->cmuNumber = i;
+		fillCmuData(data);
+
+		appendChecksum(data, payloadLength);
+
+		// do some additional data checks
+		ASSERT_THAT(data[0], Eq(0x08)); // packet id
+		ASSERT_THAT(data[1], Eq(i)); // cmu number
+
+		telemetryReporting_->frameData(data, payloadLength, expectedPacket[i]);
+
+		EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0,1>(ElementsAreArray(expectedPacket[i], expectedPackageLength))).Times(1);
+	}
+
+	// check call
+	telemetryReporting_->sendCmu();
 }
 
 /*
@@ -403,7 +625,36 @@ TEST_F(TelemetryReportingTest, sendCmuTest) // TODO create function which build 
  */
 TEST_F(TelemetryReportingTest, sendMpptTest) // TODO create function which build the actual package to create some tescases more easy...
 {
-	 // TODO
+	// prepare payload
+	const unsigned int expectedPackageLength = 14;
+	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
+
+	unsigned char expectedPacket[CcsDefines::MPPT_COUNT][expectedPackageLength];
+
+	for (unsigned char i = 0; i < CcsDefines::MPPT_COUNT; i++)
+	{
+		unsigned char data[payloadLength];
+		mpptData_->mpptNumber = i;
+		mpptData_->alive = (i % 2 == 0); // set all odd mppts to non alive
+		fillMpptData(data);
+
+		appendChecksum(data, payloadLength);
+
+		// do some additional data checks
+		ASSERT_THAT(data[0], Eq(0x09)); // packet id
+		if(mpptData_->alive) {
+			ASSERT_THAT(data[1], Eq((i | 0x80))); // mppt number including alive bit
+		} else {
+			ASSERT_THAT(data[1], Eq(i)); // mppt number including alive bit
+		}
+
+		telemetryReporting_->frameData(data, payloadLength, expectedPacket[i]);
+
+		EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0,1>(ElementsAreArray(expectedPacket[i], expectedPackageLength))).Times(1);
+	}
+
+	// check call
+	telemetryReporting_->sendMppt();
 }
 
 /*
@@ -415,7 +666,39 @@ TEST_F(TelemetryReportingTest, sendMpptTest) // TODO create function which build
  */
 TEST_F(TelemetryReportingTest, sendLightsTest) // TODO create function which build the actual package to create some tescases more easy...
 {
-	 // TODO
+	// prepare payload
+	const unsigned int expectedPackageLength = 6;
+	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
+	unsigned char data[payloadLength];
+
+	data[0] = CcsDefines::LIGHTS_PKG_ID;
+
+	bool lightsStatus[] = {lightsData_->lowBeams,
+			lightsData_->highBeams,
+			lightsData_->brakes,
+			lightsData_->leftSignal,
+			lightsData_->rightSignal,
+			lightsData_->bmsStrobeLight
+	};
+	telemetryReporting_->writeBoolsIntoArray(data, 1, lightsStatus, 6);
+
+	appendChecksum(data, payloadLength);
+
+	// do some additional data checks
+	ASSERT_THAT(data[0], Eq(0x0A)); // packet id
+	ASSERT_THAT(((data[1] & 0x01) == 0x01), lightsData_->lowBeams);
+	ASSERT_THAT(((data[1] & 0x02) == 0x02), lightsData_->highBeams);
+	ASSERT_THAT(((data[1] & 0x04) == 0x04), lightsData_->brakes);
+	ASSERT_THAT(((data[1] & 0x08) == 0x08), lightsData_->leftSignal);
+	ASSERT_THAT(((data[1] & 0x10) == 0x10), lightsData_->rightSignal);
+	ASSERT_THAT(((data[1] & 0x20) == 0x20), lightsData_->bmsStrobeLight);
+
+	unsigned char expectedPacket[expectedPackageLength];
+	telemetryReporting_->frameData(data, payloadLength, expectedPacket);
+
+	// check call
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0,1>(ElementsAreArray(expectedPacket, expectedPackageLength))).Times(1);
+	telemetryReporting_->sendLights();
 }
 
 // tests if Consistent Overhead Byte Stuffing (COBS) is working as intended
