@@ -429,6 +429,10 @@ unsigned int TelemetryReporting::frameData(const unsigned char* dataToEncode, un
    code = 0x01; \
 }
 
+/*
+ * TODO This method can only encode arbitrary data (parameter dataToEncode) if it's length is smaller or equal to 253.
+ * Note that the maximal possible message length supported by the COBS encoding would be 254. So don't send messages longer than 253.
+ */
 unsigned int TelemetryReporting::stuffData(const unsigned char* dataToEncode, unsigned long length, unsigned char* encodedData)
 {
     unsigned int lengthOfEncodedData = length + 1;
@@ -449,7 +453,7 @@ unsigned int TelemetryReporting::stuffData(const unsigned char* dataToEncode, un
             if (code == 0xFF)
             {
                 FINISH_BLOCK(code);
-                lengthOfEncodedData++;
+                lengthOfEncodedData++;	// TODO maybe artifact. Prevents correct encoding of message with length of 254 bytes
             }
         }
         dataToEncode++;
