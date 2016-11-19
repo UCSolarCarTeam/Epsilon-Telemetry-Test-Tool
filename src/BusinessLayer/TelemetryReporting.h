@@ -53,8 +53,8 @@ private slots:
     void sendAll();
 
 private:
+    FRIEND_TEST(TelemetryReportingTest, COBS);
     unsigned int frameData(const unsigned char* dataToEncode, unsigned long length, unsigned char* frameData);
-    FRIEND_TEST(TelemetryReportingTest, StuffDataTest);
     unsigned int stuffData(const unsigned char* dataToEncode, unsigned long length, unsigned char* encodedData);
     void addChecksum(unsigned char* data, unsigned int length);
     FRIEND_TEST(TelemetryReportingTest, writeFloatIntoArrayTest);

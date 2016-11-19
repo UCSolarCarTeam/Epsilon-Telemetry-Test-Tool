@@ -100,6 +100,7 @@ protected:
     	const unsigned int expectedArrayLength = inputLength+2;
     	unsigned char encodedArray[expectedArrayLength];
     	telemetryReporting_->frameData(input, inputLength, encodedArray);
+    	std::cout << HEX(encodedArray[inputLength]) << " " << HEX(encodedArray[inputLength+1]) << std::endl;
     	ASSERT_THAT(std::vector<unsigned char>(encodedArray, encodedArray+expectedArrayLength),
     			ElementsAreArray(std::vector<unsigned char>(expected, expected + expectedArrayLength)));
     }
@@ -286,19 +287,58 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create special matc
 	telemetryReporting_->sendMotorDetails(1);
 }
 
-TEST_F(TelemetryReportingTest, StuffDataTest)
+// tests if Consistent Overhead Byte Stuffing (COBS) is working as intended
+TEST_F(TelemetryReportingTest, COBSTest)
 {
 	unsigned char nullArrayInput[] = {0x00};
 	unsigned char nullArrayExpected[] = {0x01, 0x01, 0x00};
 	assertThatCOBScorrect(nullArrayInput, nullArrayExpected, 1);
 
+	unsigned char input1[] = {0x00, 0x00};
+	unsigned char expected1[] = {0x01, 0x01, 0x01, 0x00};
+	assertThatCOBScorrect(input1, expected1, 2);
+
+	unsigned char input2[] = {0x11, 0x22, 0x00, 0x33};
+	unsigned char expected2[] = {0x03, 0x11, 0x22, 0x02, 0x33, 0x00};
+	assertThatCOBScorrect(input2, expected2, 4);
+
+	unsigned char input3[] = {0x11, 0x22, 0x33, 0x44};
+	unsigned char expected3[] = {0x05, 0x11, 0x22, 0x33, 0x44, 0x00};
+	assertThatCOBScorrect(input3, expected3, 4);
+
+	unsigned char input4[] = {0x11, 0x00, 0x00, 0x00};
+	unsigned char expected4[] = {0x02, 0x11, 0x01, 0x01, 0x01, 0x00};
+	assertThatCOBScorrect(input4, expected4, 4);
+
+	const unsigned int MAX_COBS_PACKAGE_LENGTH = 254;
+
+	unsigned char inputAlmostMax[MAX_COBS_PACKAGE_LENGTH-1];
+	unsigned char expectedAlmostMax[MAX_COBS_PACKAGE_LENGTH+1];
+	for(unsigned char i = 0; i < MAX_COBS_PACKAGE_LENGTH-1; ++i) {
+		inputAlmostMax[i] = i+1;
+		expectedAlmostMax[i+1] = i+1;
+	}
+	expectedAlmostMax[0] = 0xFE;
+	expectedAlmostMax[MAX_COBS_PACKAGE_LENGTH] = 0x00;
+	assertThatCOBScorrect(inputAlmostMax, expectedAlmostMax, MAX_COBS_PACKAGE_LENGTH-1);
+
+	unsigned char inputMax[MAX_COBS_PACKAGE_LENGTH];
+	unsigned char expectedMax[MAX_COBS_PACKAGE_LENGTH+2];
+	for(unsigned char i = 0; i < MAX_COBS_PACKAGE_LENGTH; ++i) {
+		inputMax[i] = i+1;
+		expectedMax[i+1] = i+1;
+	}
+	expectedMax[0] = 0xFF;
+	expectedMax[MAX_COBS_PACKAGE_LENGTH+1] = 0x00;
+	assertThatCOBScorrect(inputMax, expectedMax, MAX_COBS_PACKAGE_LENGTH); // TODO this one fails. can probably be fixed by removing line 452 from TelemetryReporting.cpp
+
+	// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// TODO WHAT HAPPENS IF THE Distance to the first zero is more than 254 bytes?? (our packages are smaller...)
+	// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	//std::vector<unsigned char> a = {0x00};
 	//std::vector<unsigned char> b = {0x01, 0x01, 0x00};
 	//ASSERT_THAT(a, COBSEncodedIs(b));
-
-	// TODO test if Consistent Overhead Byte Stuffing (COBS) is working as intended
-	// TODO maybe also test frameData in here
 }
 
 TEST_F(TelemetryReportingTest, writeBoolsIntoArrayTest)
