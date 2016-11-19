@@ -23,6 +23,7 @@ union DataUnion
     short shortData[2];
     unsigned short uShortData[2];
     char charData[4];
+    unsigned int uIntData;
 };
 
 namespace
@@ -314,6 +315,10 @@ void TelemetryReporting::sendBattery()
     writeUShortIntoArray(packetPayload, 40, batteryData_.highestCellTemperature);
     packetPayload[42] = batteryData_.highestCellTemperatureCmuNumber;
     packetPayload[42] += batteryData_.highestCellTemperatureCellNumber << 4;
+
+	writeUIntIntoArray(packetPayload, 43, batteryData_.voltage);
+	writeUIntIntoArray(packetPayload, 47, batteryData_.current);
+
     writeUShortIntoArray(packetPayload, 51, batteryData_.fan0Speed);
     writeUShortIntoArray(packetPayload, 53, batteryData_.fan1Speed);
     writeUShortIntoArray(packetPayload, 55, batteryData_.fanContactors12VCurrentConsumption);
@@ -479,6 +484,17 @@ void TelemetryReporting::writeFloatIntoArray(unsigned char* data, int index, con
     data[index++] = dataUnion.charData[2];
     data[index] = dataUnion.charData[3];
 }
+
+void TelemetryReporting::writeUIntIntoArray(unsigned char* data, int index, const unsigned int& value)
+{
+    DataUnion dataUnion;
+    dataUnion.uIntData = value;
+    data[index++] = dataUnion.charData[0];
+    data[index++] = dataUnion.charData[1];
+    data[index++] = dataUnion.charData[2];
+    data[index] = dataUnion.charData[3];
+}
+
 
 void TelemetryReporting::writeShortIntoArray(unsigned char* data, int index, const short& value)
 {
