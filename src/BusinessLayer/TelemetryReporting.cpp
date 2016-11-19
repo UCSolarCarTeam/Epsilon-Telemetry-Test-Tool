@@ -32,7 +32,7 @@ namespace
 // These lengths only include the data. Not the checksum
 const int KEY_MOTOR_LENGTH = 43;
 const int MOTOR_DETAILS_LENGTH = 69;
-const int DRIVER_CONTROLS_LENGTH = 10;
+const int DRIVER_CONTROLS_LENGTH = 9;
 const int MOTOR_FAULTS_LENGTH = 9;
 const int BATTERY_FAULTS_LENGTH = 3;
 const int BATTERY_LENGTH = 60;
@@ -363,7 +363,7 @@ void TelemetryReporting::sendCmu()
 
 void TelemetryReporting::sendMppt()
 {
-    const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
+    const unsigned int unframedPacketLength = MPPT_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
     packetPayload[0] = CcsDefines::KEY_MOTOR_PKG_ID;
@@ -381,7 +381,7 @@ void TelemetryReporting::sendMppt()
         	mpptPacketPayload[1] |= 0x80;
         }
 
-        addChecksum(mpptPacketPayload, KEY_MOTOR_LENGTH);
+        addChecksum(mpptPacketPayload, MPPT_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
         unsigned int packetLength = frameData(mpptPacketPayload, unframedPacketLength, packet);
         communicationService_.sendData(packet, packetLength);
@@ -390,7 +390,7 @@ void TelemetryReporting::sendMppt()
 
 void TelemetryReporting::sendLights()
 {
-    const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
+    const unsigned int unframedPacketLength = LIGHTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
     packetPayload[0] = CcsDefines::KEY_MOTOR_PKG_ID;
@@ -403,7 +403,7 @@ void TelemetryReporting::sendLights()
                          };
     writeBoolsIntoArray(packetPayload, 1, lightsArray, 6);
 
-    addChecksum(packetPayload, KEY_MOTOR_LENGTH);
+    addChecksum(packetPayload, LIGHTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
     communicationService_.sendData(packet, packetLength);
