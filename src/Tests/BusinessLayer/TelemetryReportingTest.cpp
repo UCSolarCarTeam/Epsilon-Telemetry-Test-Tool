@@ -215,7 +215,7 @@ TEST_F(TelemetryReportingTest, sendKeyMotorTest)
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create special matcher per message!!!!
+TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create special matcher per message?!
 {
 	// create payload
 	const unsigned int expectedPackageLength = 73;
@@ -285,6 +285,137 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create special matc
 
 	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0,1>(ElementsAreArray(expectedPacket1, expectedPackageLength))).Times(1);
 	telemetryReporting_->sendMotorDetails(1);
+}
+
+/*
+ * This test tests for the correct structure of the sendDriverControls package as defined in
+ * https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=782574835
+ *
+ * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
+ * separately.
+ */
+TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function which build the actual package to create some tescases more easy...
+{
+	// prepare payload
+	const unsigned int expectedPackageLength = 13;
+	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
+	unsigned char data[payloadLength];
+
+	data[0] = CcsDefines::DRIVER_CONTROLS_PKG_ID;
+
+	bool driverControlBoardsAlive[] = {driverControlBoardsAlive->alive};
+	telemetryReporting_->writeBoolsIntoArray(data, 1, driverControlBoardsAlive, 1);
+
+	bool lightsInputs[] = { driverControlBoardsAlive.headlightsOff,
+			driverControlBoardsAlive.headlightsLow,
+			driverControlBoardsAlive.headlightsHigh,
+			driverControlBoardsAlive.signalLeft,
+			driverControlBoardsAlive.signalRight,
+			driverControlBoardsAlive.hazardLights,
+			driverControlBoardsAlive.interiorLights };
+	telemetryReporting_->writeBoolsIntoArray(data, 2, lightsInputs, 7);
+
+	bool musicInputs[] = { driverControlBoardsAlive.musicAux,
+			driverControlBoardsAlive.volumeUp,
+			driverControlBoardsAlive.volumeDown,
+			driverControlBoardsAlive.nextSong,
+			driverControlBoardsAlive.prevSong };
+	telemetryReporting_->writeBoolsIntoArray(data, 3, musicInputs, 5);
+
+	telemetryReporting_->writeUShortIntoArray(data, 4, driverControlBoardsAlive->acceleration);
+	telemetryReporting_->writeUShortIntoArray(data, 6, driverControlBoardsAlive->regenBraking);
+
+	bool driverInputs[] = { driverControlBoardsAlive.brakes,
+			driverControlBoardsAlive.forward,
+			driverControlBoardsAlive.reverse,
+			driverControlBoardsAlive.pushToTalk,
+			driverControlBoardsAlive.horn,
+			driverControlBoardsAlive.reset };
+	telemetryReporting_->writeBoolsIntoArray(data, 8, driverInputs, 6);
+
+	appendChecksum(data, payloadLength);
+
+	// do some additional data checks
+	ASSERT_THAT(data[0], Eq(0x04)); // packet id
+
+	unsigned char expectedPacket[expectedPackageLength];
+	telemetryReporting_->frameData(data, payloadLength, expectedPacket);
+
+	// check call
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0,1>(ElementsAreArray(expectedPacket, expectedPackageLength))).Times(1);
+	telemetryReporting_->sendDriverControls();
+}
+
+/*
+ * This test tests for the correct structure of the sendMotorFaults package as defined in
+ * https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=782574835
+ *
+ * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
+ * separately.
+ */
+TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function which build the actual package to create some tescases more easy...
+{
+	 // TODO
+}
+
+/*
+ * This test tests for the correct structure of the sendBatteryFaults package as defined in
+ * https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=782574835
+ *
+ * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
+ * separately.
+ */
+TEST_F(TelemetryReportingTest, sendBatteryFaultsTest) // TODO create function which build the actual package to create some tescases more easy...
+{
+	 // TODO
+}
+
+/*
+ * This test tests for the correct structure of the sendBattery package as defined in
+ * https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=782574835
+ *
+ * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
+ * separately.
+ */
+TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which build the actual package to create some tescases more easy...
+{
+	 // TODO
+}
+
+/*
+ * This test tests for the correct structure of the sendCmu package as defined in
+ * https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=782574835
+ *
+ * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
+ * separately.
+ */
+TEST_F(TelemetryReportingTest, sendCmuTest) // TODO create function which build the actual package to create some tescases more easy...
+{
+	 // TODO
+}
+
+/*
+ * This test tests for the correct structure of the sendMppt package as defined in
+ * https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=782574835
+ *
+ * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
+ * separately.
+ */
+TEST_F(TelemetryReportingTest, sendMpptTest) // TODO create function which build the actual package to create some tescases more easy...
+{
+	 // TODO
+}
+
+/*
+ * This test tests for the correct structure of the sendLights package as defined in
+ * https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=782574835
+ *
+ * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
+ * separately.
+ */
+TEST_F(TelemetryReportingTest, sendLightsTest) // TODO create function which build the actual package to create some tescases more easy...
+{
+	 // TODO
 }
 
 // tests if Consistent Overhead Byte Stuffing (COBS) is working as intended

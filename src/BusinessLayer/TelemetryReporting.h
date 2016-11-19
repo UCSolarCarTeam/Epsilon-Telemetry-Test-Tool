@@ -41,15 +41,31 @@ public:
 private slots:
 	FRIEND_TEST(TelemetryReportingTest, sendKeyMotorTest);
     void sendKeyMotor();
+
     FRIEND_TEST(TelemetryReportingTest, sendMotorDetailsTest);
     void sendMotorDetails(int n);
+
+	FRIEND_TEST(TelemetryReportingTest, sendDriverControlsTest);
     void sendDriverControls();
+
+    FRIEND_TEST(TelemetryReportingTest, sendMotorFaultsTest);
     void sendMotorFaults();
+
+    FRIEND_TEST(TelemetryReportingTest, sendBatteryFaultsTest);
     void sendBatteryFaults();
+
+    FRIEND_TEST(TelemetryReportingTest, sendBatteryTest);
     void sendBattery();
+
+    FRIEND_TEST(TelemetryReportingTest, sendCmuTest);
     void sendCmu();
+
+    FRIEND_TEST(TelemetryReportingTest, sendMpptTest);
     void sendMppt();
+
+    FRIEND_TEST(TelemetryReportingTest, sendLightsTest);
     void sendLights();
+
     void sendAll();
 
 private:
