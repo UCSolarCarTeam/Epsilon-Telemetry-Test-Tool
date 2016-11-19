@@ -3,6 +3,7 @@
 #include <QIODevice>
 
 #include <CcsDefines.h>
+#include <InternetReporting.h>
 #include <CommunicationService.h>
 #include <BatteryFaultsData.h>
 #include <BatteryData.h>
@@ -14,8 +15,6 @@
 #include <MotorFaultsData.h>
 #include <MpptData.h>
 #include <View.h>
-
-#include <InternetReporting.h>
 
 #include "qdatetime.h"
 #include "qjsonarray.h"
@@ -44,8 +43,7 @@ InternetReporting::InternetReporting(CommunicationService& commService,
                                      const BatteryData& batteryData,
                                      const CmuData& cmuData,
                                      const MpptData& mpptData,
-                                     const LightsData& lightsData
-                                    )
+                                     const LightsData& lightsData)
     : communicationService_(commService)
     , keyMotorData_(keyMotorData)
     , motor0DetailsData_(motor0DetailsData)
@@ -57,9 +55,11 @@ InternetReporting::InternetReporting(CommunicationService& commService,
     , cmuData_(cmuData)
     , mpptData_(mpptData)
     , lightsData_(lightsData)
-{}
+{
+}
 
-void InternetReporting::makeKeyMotor() {
+void InternetReporting::makeKeyMotor()
+{
     KeyMotor = QJsonArray();
 
     QJsonObject KeyMotor0;
@@ -82,8 +82,10 @@ void InternetReporting::makeKeyMotor() {
 
 }
 
-void InternetReporting::makeMotorDetails(int n) {
-    if(n == 0) {
+void InternetReporting::makeMotorDetails(int n)
+{
+    if(n == 0)
+    {
         MotorDetails0 = QJsonObject();
         MotorDetails0.insert("PhaseCCurrent", motor0DetailsData_.phaseCCurrent);
         MotorDetails0.insert("PhaseBCurrent", motor0DetailsData_.phaseBCurrent);
@@ -104,7 +106,8 @@ void InternetReporting::makeMotorDetails(int n) {
     }
 
 
-    if( n== 1) {
+    if( n== 1)
+    {
         MotorDetails1 = QJsonObject();
         MotorDetails1.insert("PhaseCCurrent", motor1DetailsData_.phaseCCurrent);
         MotorDetails1.insert("PhaseBCurrent", motor1DetailsData_.phaseBCurrent);
@@ -123,11 +126,10 @@ void InternetReporting::makeMotorDetails(int n) {
         MotorDetails1.insert("Odometer", motor1DetailsData_.odometer);
         MotorDetails1.insert("Slipspeed", motor1DetailsData_.slipSpeed);
     }
-
-
 }
 
-void InternetReporting::makeDriverControls() {
+void InternetReporting::makeDriverControls()
+{
     DriverControls = QJsonObject();
 
     DriverControls.insert("Alive", driverControlsData_.alive);
@@ -154,13 +156,13 @@ void InternetReporting::makeDriverControls() {
 
 }
 
-void InternetReporting::makeMotorFaults() {
+void InternetReporting::makeMotorFaults()
+{
     MotorFaults = QJsonArray();
 
     QJsonObject MotorFaults0;
 
     QJsonObject ErrorFlags0;
-
     ErrorFlags0.insert("MotorOverSpeed", motorFaultsData_.motor0OverSpeed);
     ErrorFlags0.insert("SoftwareOverCurrent", motorFaultsData_.motor0SoftwareOverCurrent);
     ErrorFlags0.insert("DcBusOverVoltage", motorFaultsData_.motor0DcBusOverVoltage);
@@ -189,7 +191,6 @@ void InternetReporting::makeMotorFaults() {
     QJsonObject MotorFaults1;
 
     QJsonObject ErrorFlags1;
-
     ErrorFlags1.insert("MotorOverSpeed", motorFaultsData_.motor1OverSpeed);
     ErrorFlags1.insert("SoftwareOverCurrent", motorFaultsData_.motor1SoftwareOverCurrent);
     ErrorFlags1.insert("DcBusOverVoltage", motorFaultsData_.motor1DcBusOverVoltage);
@@ -216,7 +217,8 @@ void InternetReporting::makeMotorFaults() {
     MotorFaults.push_back(MotorFaults1);
 }
 
-void InternetReporting::makeBatteryFaults() {
+void InternetReporting::makeBatteryFaults()
+{
     BatteryFaults = QJsonObject();
 
     BatteryFaults.insert("CellOverVoltage", batteryFaultsData_.cellOverVoltage);
@@ -233,7 +235,8 @@ void InternetReporting::makeBatteryFaults() {
     BatteryFaults.insert("CMUDetectedExtraCell", batteryFaultsData_.cmuDetectedExtraCellPresent);
 }
 
-void InternetReporting::makeBattery() {
+void InternetReporting::makeBattery()
+{
 
     Battery = QJsonObject();
 
@@ -253,7 +256,6 @@ void InternetReporting::makeBattery() {
     Battery.insert("PrechargeContactor1DriverError", batteryData_.contactor1ErrorStatus);
     Battery.insert("PrechargeContactor2DriverError", batteryData_.contactor2ErrorStatus);
     Battery.insert("ContactorSupplyOK", batteryData_.contactor12VSupplyOk);
-
     Battery.insert("PrechargeState", batteryData_.prechargeStateJSON);
     Battery.insert("PrechargeTimerElapsed", batteryData_.prechargeTimerElapsed);
     Battery.insert("PrechargeTimeCount", batteryData_.prechargeTimerCount);
@@ -262,28 +264,24 @@ void InternetReporting::makeBattery() {
     LowestCellVoltage.insert("Voltage", batteryData_.lowestCellVoltage);
     LowestCellVoltage.insert("CmuNumber", batteryData_.lowestCellVoltageCmuNumber);
     LowestCellVoltage.insert("CellNumber", batteryData_.lowestCellVoltageCellNumber);
-
     Battery.insert("LowestCellVoltage", LowestCellVoltage);
 
     QJsonObject LowestCellTemp;
     LowestCellTemp.insert("Temp", batteryData_.lowestCellTemperature);
     LowestCellTemp.insert("CmuNumber", batteryData_.lowestCellTemperatureCmuNumber);
     LowestCellTemp.insert("CellNumber", batteryData_.lowestCellTemperatureCellNumber);
-
     Battery.insert("LowestCellTemp", LowestCellTemp);
 
     QJsonObject HighestCellVoltage;
     HighestCellVoltage.insert("Voltage", batteryData_.highestCellVoltage);
     HighestCellVoltage.insert("CmuNumber", batteryData_.highestCellVoltageCmuNumber);
     HighestCellVoltage.insert("CellNumber", batteryData_.highestCellVoltageCellNumber);
-
     Battery.insert("HighestCellVoltage", HighestCellVoltage);
 
     QJsonObject HighestCellTemp;
     HighestCellTemp.insert("Temp", batteryData_.highestCellTemperature);
     HighestCellTemp.insert("CmuNumber", batteryData_.highestCellTemperatureCmuNumber);
     HighestCellTemp.insert("CellNumber", batteryData_.highestCellTemperatureCellNumber);
-
     Battery.insert("HighestCellTemp", HighestCellTemp);
 
     Battery.insert("Voltage", batteryData_.voltage);
@@ -295,7 +293,8 @@ void InternetReporting::makeBattery() {
 
 }
 
-void InternetReporting::makeCmu() {
+void InternetReporting::makeCmu()
+{
 
     QJsonObject CMUinfo;
 
@@ -326,11 +325,11 @@ void InternetReporting::makeCmu() {
 
 }
 
-void InternetReporting::makeMppt() {
+void InternetReporting::makeMppt()
+{
     mPPTArray = QJsonArray();
 
     QJsonObject mPPTInfo;
-
     mPPTInfo.insert("Alive", mpptData_.alive);
     mPPTInfo.insert("ArrayVoltage", mpptData_.arrayVoltage);
     mPPTInfo.insert("ArrayCurrent", mpptData_.arrayCurrent);
@@ -343,9 +342,9 @@ void InternetReporting::makeMppt() {
     }
 }
 
-void InternetReporting::makeLights() {
+void InternetReporting::makeLights()
+{
     lightsInfo = QJsonObject();
-
     lightsInfo.insert("LowBeams", lightsData_.lowBeams);
     lightsInfo.insert("HighBeams", lightsData_.highBeams);
     lightsInfo.insert("Brakes", lightsData_.brakes);
@@ -433,7 +432,6 @@ void InternetReporting::sendCmu()
 
 void InternetReporting::sendMppt()
 {
-
     makeMppt();
 
     QJsonDocument doc(mPPTArray);

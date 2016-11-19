@@ -29,8 +29,7 @@ public:
                       const BatteryData& batteryData_,
                       const CmuData& cmuData_,
                       const MpptData& mpptData_,
-                      const LightsData& lightsData_
-                     );
+                      const LightsData& lightsData_);
 
 private slots:
     void sendKeyMotor();
