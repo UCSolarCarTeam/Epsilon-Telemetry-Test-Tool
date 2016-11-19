@@ -1,26 +1,26 @@
 #include <cstring>
 
 #include <QIODevice>
+#include <QDateTime>
+#include <QJsonArray>
+#include <QString>
+#include <QJsonDocument>
+#include <QJsonObject>
 
-#include <CcsDefines.h>
-#include <InternetReporting.h>
-#include <CommunicationService.h>
-#include <BatteryFaultsData.h>
-#include <BatteryData.h>
-#include <CmuData.h>
-#include <DriverControlsData.h>
-#include <KeyMotorData.h>
-#include <LightsData.h>
-#include <MotorDetailsData.h>
-#include <MotorFaultsData.h>
-#include <MpptData.h>
-#include <View.h>
-
-#include "qdatetime.h"
-#include "qjsonarray.h"
-#include "qstring.h"
-#include "qjsondocument.h"
-#include "qjsonobject.h"
+#include "CcsDefines.h"
+#include "CrcCalculator.h"
+#include "InternetReporting.h"
+#include "BatteryData.h"
+#include "BatteryFaultsData.h"
+#include "CmuData.h"
+#include "DriverControlsData.h"
+#include "KeyMotorData.h"
+#include "LightsData.h"
+#include "MotorDetailsData.h"
+#include "MotorFaultsData.h"
+#include "MpptData.h"
+#include "CommunicationService.h"
+#include "View.h"
 
 QJsonArray KeyMotor;
 QJsonObject MotorDetails0;
