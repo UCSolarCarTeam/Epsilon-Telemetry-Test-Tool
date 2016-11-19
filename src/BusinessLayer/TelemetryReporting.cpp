@@ -338,7 +338,6 @@ void TelemetryReporting::sendCmu()
     unsigned char packetPayload[unframedPacketLength];
 
     packetPayload[0] = CcsDefines::CMU_PKG_ID;
-    packetPayload[1] = cmuData_.cmuNumber;
     const int cmuVoltageBaseIndex = 2;
     for (int i = 0; i < 8; i++)
     {
