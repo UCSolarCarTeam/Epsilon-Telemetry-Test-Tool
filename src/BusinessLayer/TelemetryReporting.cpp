@@ -338,13 +338,14 @@ void TelemetryReporting::sendCmu()
     unsigned char packetPayload[unframedPacketLength];
 
     packetPayload[0] = CcsDefines::CMU_PKG_ID;
-    int cmuVoltageBaseIndex = 2;
+    packetPayload[1] = cmuData_.cmuNumber;
+    const int cmuVoltageBaseIndex = 2;
     for (int i = 0; i < 8; i++)
     {
-        writeUShortIntoArray(packetPayload, cmuVoltageBaseIndex + (i * 2), cmuData_.cellVoltage[i]);
+        writeShortIntoArray(packetPayload, cmuVoltageBaseIndex + (i * 2), cmuData_.cellVoltage[i]);
     }
     writeUShortIntoArray(packetPayload, 18, cmuData_.pcbTemperature);
-    int cmuTemperatureBaseIndex = 20;
+    const int cmuTemperatureBaseIndex = 20;
     for (int i = 0; i < 15; i++)
     {
         writeUShortIntoArray(packetPayload, cmuTemperatureBaseIndex + (i * 2), cmuData_.cellTemperature[i]);
