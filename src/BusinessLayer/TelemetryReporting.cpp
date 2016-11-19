@@ -376,7 +376,10 @@ void TelemetryReporting::sendMppt()
     {
         unsigned char mpptPacketPayload[unframedPacketLength];
         std::memcpy(mpptPacketPayload, packetPayload, unframedPacketLength);
-        mpptPacketPayload[1] = i;
+        mpptPacketPayload[1] = i & 0x03;
+        if(mpptData_.alive) {
+        	mpptPacketPayload[1] |= 0x80;
+        }
 
         addChecksum(mpptPacketPayload, KEY_MOTOR_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
