@@ -366,7 +366,7 @@ void TelemetryReporting::sendMppt()
     const unsigned int unframedPacketLength = MPPT_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
-    packetPayload[0] = CcsDefines::KEY_MOTOR_PKG_ID;
+    packetPayload[0] = CcsDefines::MPPT_PKG_ID;
     writeUShortIntoArray(packetPayload, 2, mpptData_.arrayVoltage);
     writeUShortIntoArray(packetPayload, 4, mpptData_.arrayCurrent);
     writeUShortIntoArray(packetPayload, 6, mpptData_.batteryVoltage);
@@ -393,7 +393,7 @@ void TelemetryReporting::sendLights()
     const unsigned int unframedPacketLength = LIGHTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
-    packetPayload[0] = CcsDefines::KEY_MOTOR_PKG_ID;
+    packetPayload[0] = CcsDefines::LIGHTS_PKG_ID;
     bool lightsArray[] = {lightsData_.lowBeams,
                           lightsData_.highBeams,
                           lightsData_.brakes,
