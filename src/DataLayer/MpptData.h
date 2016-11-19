@@ -2,17 +2,17 @@
 
 struct MpptData
 {
-   MpptData()
-   : alive(false)
-   , arrayVoltage(71)
-   , arrayCurrent(72)
-   , batteryVoltage(73)
-   , temperature(74)
-   {}
+    MpptData()
+        : alive(false)
+        , arrayVoltage(71)
+        , arrayCurrent(72)
+        , batteryVoltage(73)
+        , temperature(74)
+    {}
 
-   bool alive;
-   unsigned short arrayVoltage;
-   unsigned short arrayCurrent;
-   unsigned short batteryVoltage;
-   unsigned short temperature;
+    bool alive;
+    unsigned short arrayVoltage;
+    unsigned short arrayCurrent;
+    unsigned short batteryVoltage;
+    unsigned short temperature;
 };
