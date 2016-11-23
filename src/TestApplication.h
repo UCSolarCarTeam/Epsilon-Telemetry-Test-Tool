@@ -1,3 +1,4 @@
+// COPY RIGHT ENOCH!
 #pragma once
 
 #include <QApplication>
