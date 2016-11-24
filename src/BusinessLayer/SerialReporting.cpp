@@ -4,7 +4,7 @@
 
 #include "CcsDefines.h"
 #include "CrcCalculator.h"
-#include "TelemetryReporting.h"
+#include "SerialReporting.h"
 #include "BatteryData.h"
 #include "BatteryFaultsData.h"
 #include "CmuData.h"
@@ -44,7 +44,7 @@ namespace
     const unsigned char TERMINATING_BYTE = 0x00;
 }
 
-TelemetryReporting::TelemetryReporting(CommunicationService& commService,
+SerialReporting::SerialReporting(CommunicationService& commService,
                                        const KeyMotorData& keyMotorData,
                                        const MotorDetailsData& motor0DetailsData,
                                        const MotorDetailsData& motor1DetailsData,
@@ -83,7 +83,7 @@ TelemetryReporting::TelemetryReporting(CommunicationService& commService,
     connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
 }
 
-void TelemetryReporting::sendKeyMotor()
+void SerialReporting::sendKeyMotor()
 {
     const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -108,7 +108,7 @@ void TelemetryReporting::sendKeyMotor()
     communicationService_.sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendMotorDetails(int n)
+void SerialReporting::sendMotorDetails(int n)
 {
     const unsigned int unframedPacketLength = MOTOR_DETAILS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -145,7 +145,7 @@ void TelemetryReporting::sendMotorDetails(int n)
     communicationService_.sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendDriverControls()
+void SerialReporting::sendDriverControls()
 {
     const unsigned int unframedPacketLength = DRIVER_CONTROLS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -184,7 +184,7 @@ void TelemetryReporting::sendDriverControls()
     communicationService_.sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendMotorFaults()
+void SerialReporting::sendMotorFaults()
 {
     const unsigned int unframedPacketLength = MOTOR_FAULTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -237,7 +237,7 @@ void TelemetryReporting::sendMotorFaults()
     communicationService_.sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendBatteryFaults()
+void SerialReporting::sendBatteryFaults()
 {
     const unsigned int unframedPacketLength = BATTERY_FAULTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -263,7 +263,7 @@ void TelemetryReporting::sendBatteryFaults()
     communicationService_.sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendBattery()
+void SerialReporting::sendBattery()
 {
     const unsigned int unframedPacketLength = BATTERY_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -317,7 +317,7 @@ void TelemetryReporting::sendBattery()
     communicationService_.sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendCmu()
+void SerialReporting::sendCmu()
 {
     const unsigned int unframedPacketLength = CMU_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -347,7 +347,7 @@ void TelemetryReporting::sendCmu()
     }
 }
 
-void TelemetryReporting::sendMppt()
+void SerialReporting::sendMppt()
 {
     const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -369,7 +369,7 @@ void TelemetryReporting::sendMppt()
     }
 }
 
-void TelemetryReporting::sendLights()
+void SerialReporting::sendLights()
 {
     const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -388,7 +388,7 @@ void TelemetryReporting::sendLights()
     communicationService_.sendData(packet, packetLength);
 }
 
-void TelemetryReporting::sendAll()
+void SerialReporting::sendAll()
 {
     sendKeyMotor();
     sendMotorDetails(0);
@@ -402,7 +402,7 @@ void TelemetryReporting::sendAll()
     sendLights();
 }
 
-unsigned int TelemetryReporting::frameData(const unsigned char* dataToEncode, unsigned long length, unsigned char* frameData)
+unsigned int SerialReporting::frameData(const unsigned char* dataToEncode, unsigned long length, unsigned char* frameData)
 {
     unsigned int lengthOfFramedData = stuffData(dataToEncode, length, frameData);
     frameData[lengthOfFramedData++] = TERMINATING_BYTE;
@@ -416,7 +416,7 @@ unsigned int TelemetryReporting::frameData(const unsigned char* dataToEncode, un
    code = 0x01; \
 }
 
-unsigned int TelemetryReporting::stuffData(const unsigned char* dataToEncode, unsigned long length, unsigned char* encodedData)
+unsigned int SerialReporting::stuffData(const unsigned char* dataToEncode, unsigned long length, unsigned char* encodedData)
 {
     unsigned int lengthOfEncodedData = length + 1;
     const unsigned char* end = dataToEncode + length;
@@ -449,14 +449,14 @@ unsigned int TelemetryReporting::stuffData(const unsigned char* dataToEncode, un
 }
 #undef FINISH_BLOCK
 
-void TelemetryReporting::addChecksum(unsigned char* data, unsigned int length)
+void SerialReporting::addChecksum(unsigned char* data, unsigned int length)
 {
     unsigned short crc16 = CrcCalculator::calculateCrc16(data, length);
     data[length] = static_cast<unsigned char>(0xFF & crc16);
     data[length + 1] = static_cast<unsigned char>(0xFF & (crc16 >> 8));
 }
 
-void TelemetryReporting::writeFloatIntoArray(unsigned char* data, int index, const float& value)
+void SerialReporting::writeFloatIntoArray(unsigned char* data, int index, const float& value)
 {
     DataUnion dataUnion;
     dataUnion.floatData = value;
@@ -466,7 +466,7 @@ void TelemetryReporting::writeFloatIntoArray(unsigned char* data, int index, con
     data[index] = dataUnion.charData[3];
 }
 
-void TelemetryReporting::writeShortIntoArray(unsigned char* data, int index, const short& value)
+void SerialReporting::writeShortIntoArray(unsigned char* data, int index, const short& value)
 {
     DataUnion dataUnion;
     dataUnion.shortData[0] = value;
@@ -474,7 +474,7 @@ void TelemetryReporting::writeShortIntoArray(unsigned char* data, int index, con
     data[index] = dataUnion.charData[1];
 }
 
-void TelemetryReporting::writeUShortIntoArray(unsigned char* data, int index, const unsigned short& value)
+void SerialReporting::writeUShortIntoArray(unsigned char* data, int index, const unsigned short& value)
 {
     DataUnion dataUnion;
     dataUnion.uShortData[0] = value;
@@ -482,7 +482,7 @@ void TelemetryReporting::writeUShortIntoArray(unsigned char* data, int index, co
     data[index] = dataUnion.charData[1];
 }
 
-void TelemetryReporting::writeBoolsIntoArray(unsigned char* data, int index, const bool values[], int numValues)
+void SerialReporting::writeBoolsIntoArray(unsigned char* data, int index, const bool values[], int numValues)
 {
     index -= 1;
 

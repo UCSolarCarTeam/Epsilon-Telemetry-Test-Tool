@@ -16,11 +16,11 @@ class CommunicationService;
 class QIODevice;
 class View;
 
-class TelemetryReporting : public QObject
+class SerialReporting : public QObject
 {
     Q_OBJECT
 public:
-    TelemetryReporting(CommunicationService& commService,
+    SerialReporting(CommunicationService& commService,
                        const KeyMotorData& keyMotorData_,
                        const MotorDetailsData& motor0DetailsData_,
                        const MotorDetailsData& motor1DetailsData_,

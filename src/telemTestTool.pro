@@ -3,6 +3,7 @@
 }
 
 QT += widgets
+QT += network
 TEMPLATE = app
 TARGET = telemTestApp
 INCLUDEPATH = BusinessLayer \
@@ -14,7 +15,6 @@ INCLUDEPATH = BusinessLayer \
 HEADERS  += \
     TestApplication.h \
     BusinessLayer/CrcCalculator.h \
-    BusinessLayer/TelemetryReporting.h \
     BusinessLayer/CommunicationService.h \
     DataLayer/BatteryData.h \
     DataLayer/BatteryFaultsData.h \
@@ -30,15 +30,16 @@ HEADERS  += \
     ViewLayer/View.h \
     Peripherals/SerialPortPeripheral.h \
     Peripherals/I_CommPeripheral.h \
-    BusinessLayer/InternetReporting.h
+    BusinessLayer/InternetReporting.h \
+    BusinessLayer/SerialReporting.h
 
 SOURCES += \
     main.cpp \
     TestApplication.cpp \
     BusinessLayer/CrcCalculator.cpp \
-    BusinessLayer/TelemetryReporting.cpp \
     BusinessLayer/CommunicationService.cpp \
     UILayer/Window.cpp \
     ViewLayer/View.cpp \
     Peripherals/SerialPortPeripheral.cpp \
-    BusinessLayer/InternetReporting.cpp
+    BusinessLayer/InternetReporting.cpp \
+    BusinessLayer/SerialReporting.cpp

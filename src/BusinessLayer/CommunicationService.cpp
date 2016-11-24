@@ -1,6 +1,9 @@
 #include <QIODevice>
 #include <QSerialPort>
 #include <QStringList>
+#include <QUrl>
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkAccessManager>
 #include "CommunicationService.h"
 #include "View.h"
 #include "I_CommPeripheral.h"
@@ -32,7 +35,17 @@ void CommunicationService::sendData(const unsigned char* packet, int packetLengt
 
 void CommunicationService::sendDataInternet(const QByteArray &data)
 {
-    outputPeripheral_->sendDataInternet(data);
+    QUrl url("localhost:1234");
+    QNetworkRequest request(url);
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+
+    connect(manager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(syncRequestFinished(QNetworkReply*)));
+
+    manager->post(request, data);
 }
 
 void CommunicationService::attemptConnection()

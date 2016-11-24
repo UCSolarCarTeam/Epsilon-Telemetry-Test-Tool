@@ -2,7 +2,7 @@
 
 #include <QApplication>
 #include <QScopedPointer>
-#include "TelemetryReporting.h"
+#include "SerialReporting.h"
 #include "InternetReporting.h"
 #include "KeyMotorData.h"
 #include "MotorDetailsData.h"
@@ -36,6 +36,6 @@ private:
     QScopedPointer<LightsData> lightsData_;
     QScopedPointer<View> view_;
     QScopedPointer<CommunicationService> communicationService_;
-    QScopedPointer<TelemetryReporting> telemetryReporting_;
+    QScopedPointer<SerialReporting> serialReporting_;
     QScopedPointer<InternetReporting> internetReporting_;
 };
