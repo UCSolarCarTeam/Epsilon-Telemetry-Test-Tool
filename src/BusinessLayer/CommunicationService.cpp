@@ -35,15 +35,12 @@ void CommunicationService::sendData(const unsigned char* packet, int packetLengt
 
 void CommunicationService::sendDataInternet(const QByteArray &data)
 {
-    QUrl url("localhost:1234");
+    QUrl url("localhost:1234"); //Replace with actual URL
+
     QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "headerinfo"); //Replace with actual header info
 
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-
-    connect(manager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(syncRequestFinished(QNetworkReply*)));
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this); //Needs to be connected
 
     manager->post(request, data);
 }
