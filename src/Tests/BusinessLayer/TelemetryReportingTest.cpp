@@ -146,10 +146,11 @@ protected:
 
     void fillMpptData(unsigned char *data) {
 		data[0] = CcsDefines::MPPT_PKG_ID;
-		data[1] = mpptData_->mpptNumber & 0x3;
+		unsigned char numberAndAlive = mpptData_->mpptNumber & 0x3;
         if(mpptData_->alive) {
-        	data[1] |= 0x80;
+        	numberAndAlive |= 0x80;
         }
+        data[1] = numberAndAlive;
 		telemetryReporting_->writeUShortIntoArray(data, 2, mpptData_->arrayVoltage);
 		telemetryReporting_->writeUShortIntoArray(data, 4, mpptData_->arrayCurrent);
 		telemetryReporting_->writeUShortIntoArray(data, 6, mpptData_->batteryVoltage);
@@ -629,32 +630,35 @@ TEST_F(TelemetryReportingTest, sendMpptTest) // TODO create function which build
 	const unsigned int expectedPackageLength = 14;
 	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
 
-	unsigned char expectedPacket[CcsDefines::MPPT_COUNT][expectedPackageLength];
+	for (unsigned char testCount = 0; testCount < 2; testCount++) {
 
-	for (unsigned char i = 0; i < CcsDefines::MPPT_COUNT; i++)
-	{
-		unsigned char data[payloadLength];
-		mpptData_->mpptNumber = i;
-		mpptData_->alive = (i % 2 == 0); // set all odd mppts to non alive
-		fillMpptData(data);
+		unsigned char expectedPacket[CcsDefines::MPPT_COUNT][expectedPackageLength];
+		mpptData_->alive = testCount % 2 == 0; // set all mppts to non alive in all odd test runs
 
-		appendChecksum(data, payloadLength);
+		for (unsigned char i = 0; i < CcsDefines::MPPT_COUNT; i++)
+		{
+			unsigned char data[payloadLength];
+			mpptData_->mpptNumber = i;
+			fillMpptData(data);
 
-		// do some additional data checks
-		ASSERT_THAT(data[0], Eq(0x09)); // packet id
-		if(mpptData_->alive) {
-			ASSERT_THAT(data[1], Eq((i | 0x80))); // mppt number including alive bit
-		} else {
-			ASSERT_THAT(data[1], Eq(i)); // mppt number including alive bit
+			appendChecksum(data, payloadLength);
+
+			// do some additional data checks
+			ASSERT_THAT(data[0], Eq(0x09)); // packet id
+			if(mpptData_->alive) {
+				ASSERT_THAT(data[1], Eq((i | 0x80))); // mppt number including alive bit
+			} else {
+				ASSERT_THAT(data[1], Eq(i)); // mppt number including alive bit
+			}
+
+			telemetryReporting_->frameData(data, payloadLength, expectedPacket[i]);
+
+			EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0,1>(ElementsAreArray(expectedPacket[i], expectedPackageLength))).Times(1);
 		}
 
-		telemetryReporting_->frameData(data, payloadLength, expectedPacket[i]);
-
-		EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0,1>(ElementsAreArray(expectedPacket[i], expectedPackageLength))).Times(1);
+		// check call
+		telemetryReporting_->sendMppt();
 	}
-
-	// check call
-	telemetryReporting_->sendMppt();
 }
 
 /*
