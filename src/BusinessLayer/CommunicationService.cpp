@@ -8,6 +8,7 @@
 #include "View.h"
 #include "I_CommPeripheral.h"
 #include "SerialPortPeripheral.h"
+#include "InternetPeripheral.h"
 
 /*--------------------------------------------------------
                 Communication Service
@@ -28,6 +29,12 @@ void CommunicationService::setPeripheralSerialPort()
     outputPeripheral_ = new SerialPortPeripheral(*outputDevice_);
 }
 
+void CommunicationService::setPeripheralInternet()
+{
+    outputDevice_ = new QSerialPort();
+    outputPeripheralInternet_ = new InternetPeripheral(*outputDevice_);
+}
+
 void CommunicationService::sendData(const unsigned char* packet, int packetLength)
 {
     outputPeripheral_->sendData(packet, packetLength);
@@ -35,14 +42,7 @@ void CommunicationService::sendData(const unsigned char* packet, int packetLengt
 
 void CommunicationService::sendDataInternet(const QByteArray &data)
 {
-    QUrl url("localhost:1234"); //Replace with actual URL
-
-    QNetworkRequest request(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "headerinfo"); //Replace with actual header info
-
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this); //Needs to be connected
-
-    manager->post(request, data);
+    outputPeripheralInternet_->sendData(data);
 }
 
 void CommunicationService::attemptConnection()

@@ -4,6 +4,7 @@
 #include <QSerialPort>
 #include <QByteArray>
 #include <SerialPortPeripheral.h>
+#include <InternetPeripheral.h>
 
 class I_CommPeripheral;
 class View;
@@ -18,6 +19,7 @@ public:
     void sendDataInternet(const QByteArray &data);
 private:
     void setPeripheralSerialPort();
+    void setPeripheralInternet();
 
 public slots:
     void attemptConnection();
@@ -25,5 +27,6 @@ public slots:
 private:
     View& view_;
     QSerialPort* outputDevice_;
-    I_CommPeripheral* outputPeripheral_;
+    SerialPortPeripheral* outputPeripheral_;
+    InternetPeripheral* outputPeripheralInternet_;
 };

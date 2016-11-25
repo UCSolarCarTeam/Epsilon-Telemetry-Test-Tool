@@ -31,7 +31,8 @@ HEADERS  += \
     Peripherals/SerialPortPeripheral.h \
     Peripherals/I_CommPeripheral.h \
     BusinessLayer/InternetReporting.h \
-    BusinessLayer/SerialReporting.h
+    BusinessLayer/SerialReporting.h \
+    Peripherals/InternetPeripheral.h
 
 SOURCES += \
     main.cpp \
@@ -42,4 +43,5 @@ SOURCES += \
     ViewLayer/View.cpp \
     Peripherals/SerialPortPeripheral.cpp \
     BusinessLayer/InternetReporting.cpp \
-    BusinessLayer/SerialReporting.cpp
+    BusinessLayer/SerialReporting.cpp \
+    Peripherals/InternetPeripheral.cpp
