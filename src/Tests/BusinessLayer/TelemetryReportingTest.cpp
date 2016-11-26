@@ -56,7 +56,6 @@ public:
 
 protected:
 
-	//QScopedPointer<CommunicationServiceTestWrapper> communicationService_;
 	QScopedPointer<MockCommunicationService> communicationService_;
     QScopedPointer<KeyMotorData> keyMotorData_;
     QScopedPointer<MotorDetailsData> motor0DetailsData_;

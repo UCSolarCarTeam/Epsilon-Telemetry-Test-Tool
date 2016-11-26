@@ -36,7 +36,7 @@ struct BatteryData
     , highestCellTemperatureCmuNumber(3)
     , highestCellTemperatureCellNumber(4)
     , voltage(240)
-	, current(1200)
+    , current(1200)
     , fan0Speed(43)
     , fan1Speed(44)
     , fanContactors12VCurrentConsumption(45)

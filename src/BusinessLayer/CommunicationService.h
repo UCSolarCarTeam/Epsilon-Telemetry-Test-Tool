@@ -2,7 +2,6 @@
 
 #include "I_CommunicationService.h"
 
-//#include <QObject> // TODO maybe remove
 #include <QSerialPort>
 #include <SerialPortPeripheral.h>
 

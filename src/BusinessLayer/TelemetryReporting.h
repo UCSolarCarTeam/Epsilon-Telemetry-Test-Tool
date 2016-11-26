@@ -35,7 +35,6 @@ public:
                        const LightsData& lightsData_,
                        View& view);
 
-//friend class ::TelemetryReportingTest;
     friend class TelemetryReportingTest;
 
 private slots:
