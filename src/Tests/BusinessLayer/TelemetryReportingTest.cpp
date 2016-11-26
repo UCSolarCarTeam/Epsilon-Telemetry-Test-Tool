@@ -44,6 +44,16 @@ public:
 	const unsigned int CHECK_SUM_LENGTH = 2;
 	const unsigned int COBS_ADDITIONAL_FRAME_DATA_SIZE = 2;
 
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_KEY_MOTOR = 47;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS = 73;	// TODO make them global + use packageIdMatcher everywhere!
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS = 13;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 13;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 7;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 64;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_CMU = 54;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 6;
+
 protected:
 
 	//QScopedPointer<CommunicationServiceTestWrapper> communicationService_;
@@ -254,7 +264,7 @@ protected:
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendKeyMotorTest)
+TEST_F(TelemetryReportingTest, sendKeyMotorTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
 	// prepare payload
 	const unsigned int expectedPackageLength = 47;
@@ -301,7 +311,7 @@ TEST_F(TelemetryReportingTest, sendKeyMotorTest)
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create special matcher per message?!
+TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
 	// create payload
 	const unsigned int expectedPackageLength = 73;
@@ -380,7 +390,7 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create special matc
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function which build the actual package to create some tescases more easy...
+TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
 	// prepare payload
 	const unsigned int expectedPackageLength = 13;
@@ -439,7 +449,7 @@ TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function w
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function which build the actual package to create some tescases more easy...
+TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
 	// prepare payload
 	const unsigned int expectedPackageLength = 13;
@@ -511,7 +521,7 @@ TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function whic
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendBatteryFaultsTest) // TODO create function which build the actual package to create some tescases more easy...
+TEST_F(TelemetryReportingTest, sendBatteryFaultsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
 	// prepare payload
 	const unsigned int expectedPackageLength = 7;
@@ -555,7 +565,7 @@ TEST_F(TelemetryReportingTest, sendBatteryFaultsTest) // TODO create function wh
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which build the actual package to create some tescases more easy...
+TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
 	// prepare payload
 	const unsigned int expectedPackageLength = 64;
@@ -636,7 +646,7 @@ TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which bu
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendCmuTest) // TODO create function which build the actual package to create some tescases more easy...
+TEST_F(TelemetryReportingTest, sendCmuTest)
 {
 	// prepare payload
 	const unsigned int expectedPackageLength = 54;
@@ -648,6 +658,8 @@ TEST_F(TelemetryReportingTest, sendCmuTest) // TODO create function which build 
 	{
 		unsigned char data[payloadLength];
 		cmuData_->cmuNumber = i;
+
+		// build actual package
 		fillCmuData(data);
 
 		appendChecksum(data, payloadLength);
@@ -672,7 +684,7 @@ TEST_F(TelemetryReportingTest, sendCmuTest) // TODO create function which build 
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendMpptTest) // TODO create function which build the actual package to create some tescases more easy...
+TEST_F(TelemetryReportingTest, sendMpptTest)
 {
 	// prepare payload
 	const unsigned int expectedPackageLength = 14;
@@ -687,6 +699,8 @@ TEST_F(TelemetryReportingTest, sendMpptTest) // TODO create function which build
 		{
 			unsigned char data[payloadLength];
 			mpptData_->mpptNumber = i;
+
+			// build actual package
 			fillMpptData(data);
 
 			appendChecksum(data, payloadLength);
@@ -716,7 +730,7 @@ TEST_F(TelemetryReportingTest, sendMpptTest) // TODO create function which build
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendLightsTest) // TODO create function which build the actual package to create some tescases more easy...
+TEST_F(TelemetryReportingTest, sendLightsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
 	// prepare payload
 	const unsigned int expectedPackageLength = 6;
@@ -759,32 +773,25 @@ TEST_F(TelemetryReportingTest, sendLightsTest) // TODO create function which bui
  * The actual methods, stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendAllTest) // TODO create function which build the actual package to create some tescases more easy...
+TEST_F(TelemetryReportingTest, sendAllTest)
 {
-	const unsigned int expectedPackageLengthSendKeyMotor = 47;
-	const unsigned int expectedPackageLengthSendMotorDetails = 73;	// TODO make them global + use packageIdMatcher everywhere!
-	const unsigned int expectedPackageLengthSendDriverControls = 13;
-	const unsigned int expectedPackageLengthSendMotorFaults = 13;
-	const unsigned int expectedPackageLengthSendBatteryFaults = 7;
-	const unsigned int expectedPackageLengthSendBattery = 64;
-	const unsigned int expectedPackageLengthSendCmu = 54;
-	const unsigned int expectedPackageLengthSendMppt = 14;
-	const unsigned int expectedPackageLengthSendLights = 6;
-
-	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendKeyMotor)).Times(1);
-	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendMotorDetails)).Times(2);
-	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendDriverControls)).Times(1);
-	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendMotorFaults)).With(Args<0,1>(packageIdIs(5))).Times(1);
-	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendBatteryFaults)).With(Args<0,1>(packageIdIs(6))).Times(1);
-	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendBattery)).Times(1);
-	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendCmu)).Times(CcsDefines::CMU_COUNT);
-	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendMppt)).Times(CcsDefines::MPPT_COUNT);
-	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendLights)).Times(1);
+	EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_KEY_MOTOR)).With(Args<0,1>(packageIdIs(1))).Times(1);
+	EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS)).With(Args<0,1>(packageIdIs(2))).Times(1);
+	EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS)).With(Args<0,1>(packageIdIs(3))).Times(1);
+	EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS)).With(Args<0,1>(packageIdIs(4))).Times(1);
+	EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS)).With(Args<0,1>(packageIdIs(5))).Times(1);
+	EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS)).With(Args<0,1>(packageIdIs(6))).Times(1);
+	EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_BATTERY)).With(Args<0,1>(packageIdIs(7))).Times(1);
+	EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_CMU)).With(Args<0,1>(packageIdIs(8))).Times(CcsDefines::CMU_COUNT);
+	EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_MPPT)).With(Args<0,1>(packageIdIs(9))).Times(CcsDefines::MPPT_COUNT);
+	EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS)).With(Args<0,1>(packageIdIs(10))).Times(1);
 
 	telemetryReporting_->sendAll();
 }
 
-// tests if Consistent Overhead Byte Stuffing (COBS) is working as intended
+/*
+ * Tests if Consistent Overhead Byte Stuffing (COBS) is working as intended
+ */
 TEST_F(TelemetryReportingTest, COBSTest)
 {
 	unsigned char nullArrayInput[] = {0x00};
@@ -832,10 +839,33 @@ TEST_F(TelemetryReportingTest, COBSTest)
 	// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// TODO WHAT HAPPENS IF THE Distance to the first zero is more than 254 bytes?? (our packages are smaller...)
 	// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+}
 
-	//std::vector<unsigned char> a = {0x00};
-	//std::vector<unsigned char> b = {0x01, 0x01, 0x00};
-	//ASSERT_THAT(a, COBSEncodedIs(b));
+/*
+ * This test tests if the checksum is correctly appended. It does not test the checksum calculation itself.
+ * (Supposed to work correctly, as copied from already tested code?!)
+ */
+TEST_F(TelemetryReportingTest, addChecksumTest)
+{
+	const unsigned char numberOfTestRuns = 42;
+	for(unsigned char i = 0; i < numberOfTestRuns; i++) {
+		const unsigned int length = i + 16;
+		unsigned char dataExpected[length];
+		unsigned char dataActual[length];
+
+		for(unsigned char c = 0; c < length; c++) {
+			dataActual[c] = c+i;
+			dataExpected[c] = c+i;
+		}
+
+		appendChecksum(dataExpected, length);
+		telemetryReporting_->addChecksum(dataActual, length-CHECK_SUM_LENGTH);
+
+		ASSERT_THAT(std::vector<unsigned char>(dataActual, dataActual+length),
+				ElementsAreArray(std::vector<unsigned char>(dataExpected, dataExpected + length)));
+
+	}
+
 }
 
 TEST_F(TelemetryReportingTest, writeBoolsIntoArrayTest)

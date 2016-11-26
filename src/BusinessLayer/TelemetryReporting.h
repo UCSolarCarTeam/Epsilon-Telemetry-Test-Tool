@@ -73,6 +73,7 @@ private:
     FRIEND_TEST(TelemetryReportingTest, COBSTest); // tests both frameData and stuffData
     unsigned int frameData(const unsigned char* dataToEncode, unsigned long length, unsigned char* frameData);
     unsigned int stuffData(const unsigned char* dataToEncode, unsigned long length, unsigned char* encodedData);
+    FRIEND_TEST(TelemetryReportingTest, addChecksumTest);
     void addChecksum(unsigned char* data, unsigned int length);
     FRIEND_TEST(TelemetryReportingTest, writeFloatIntoArrayTest);
     void writeFloatIntoArray(unsigned char* data, int index, const float& value);
