@@ -45,7 +45,7 @@ public:
 	const unsigned int COBS_ADDITIONAL_FRAME_DATA_SIZE = 2;
 
 	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_KEY_MOTOR = 47;
-	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS = 73;	// TODO make them global + use packageIdMatcher everywhere!
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS = 73;
 	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS = 13;
 	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 13;
 	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 7;
@@ -266,7 +266,7 @@ protected:
 TEST_F(TelemetryReportingTest, sendKeyMotorTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
 	// prepare payload
-	const unsigned int expectedPackageLength = 47;
+	const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_KEY_MOTOR;
 	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
 	unsigned char data[payloadLength];
 
@@ -313,7 +313,7 @@ TEST_F(TelemetryReportingTest, sendKeyMotorTest) // TODO create function which b
 TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
 	// create payload
-	const unsigned int expectedPackageLength = 73;
+	const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS;
 
 	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
 	unsigned char data[payloadLength];
@@ -392,7 +392,7 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function whi
 TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
 	// prepare payload
-	const unsigned int expectedPackageLength = 13;
+	const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS;
 	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
 	unsigned char data[payloadLength];
 
@@ -451,7 +451,7 @@ TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function w
 TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
 	// prepare payload
-	const unsigned int expectedPackageLength = 13;
+	const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS;
 	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
 	unsigned char data[payloadLength];
 
@@ -523,7 +523,7 @@ TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function whic
 TEST_F(TelemetryReportingTest, sendBatteryFaultsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
 	// prepare payload
-	const unsigned int expectedPackageLength = 7;
+	const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS;
 	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
 	unsigned char data[payloadLength];
 
@@ -567,7 +567,7 @@ TEST_F(TelemetryReportingTest, sendBatteryFaultsTest) // TODO create function wh
 TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
 	// prepare payload
-	const unsigned int expectedPackageLength = 64;
+	const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_BATTERY;
 	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
 	unsigned char data[payloadLength];
 
@@ -648,7 +648,7 @@ TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which bu
 TEST_F(TelemetryReportingTest, sendCmuTest)
 {
 	// prepare payload
-	const unsigned int expectedPackageLength = 54;
+	const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_CMU;
 	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
 
 	unsigned char expectedPacket[CcsDefines::CMU_COUNT][expectedPackageLength];
@@ -686,7 +686,7 @@ TEST_F(TelemetryReportingTest, sendCmuTest)
 TEST_F(TelemetryReportingTest, sendMpptTest)
 {
 	// prepare payload
-	const unsigned int expectedPackageLength = 14;
+	const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_MPPT;
 	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
 
 	for (unsigned char testCount = 0; testCount < 2; testCount++) {
@@ -732,7 +732,7 @@ TEST_F(TelemetryReportingTest, sendMpptTest)
 TEST_F(TelemetryReportingTest, sendLightsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
 	// prepare payload
-	const unsigned int expectedPackageLength = 6;
+	const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS;
 	const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
 	unsigned char data[payloadLength];
 
