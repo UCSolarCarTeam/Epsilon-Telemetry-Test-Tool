@@ -192,6 +192,54 @@ protected:
     inline Matcher<std::vector<unsigned char> > COBSEncodedIs(std::vector<unsigned char> &expectedArray) {
       return MakeMatcher(new COBSEncodedIsMatcher(expectedArray, *this));
     }*/
+    class PackageIdMatcher : public MatcherInterface<std::tuple<const unsigned char*, int> > {
+         public:
+          explicit PackageIdMatcher(unsigned char expectedId, TelemetryReportingTest &containingTest)
+              : expectedId_(expectedId), containingTest_(containingTest) {}
+
+          virtual bool MatchAndExplain(std::tuple<const unsigned char*, int> input, /* has to contain at least 2 elements! */
+                                       MatchResultListener* listener) const {
+
+        	  if(expectedId_ < 1) {
+        		  if (listener->IsInterested()) {
+					  ::std::ostream* os = listener->stream();
+					  *os << "ILLEGAL MATCHER STATE: ID has to be larger than zero" << std::endl;
+        		  }
+        		  return false;
+        	  }
+
+        	  const int inputLength = std::get<1>(input);
+
+        	  if(inputLength < 2) {
+        		  if (listener->IsInterested()) {
+					  ::std::ostream* os = listener->stream();
+					  *os << "Actual array is to short (length =" << inputLength << ")" << std::endl;
+        		  }
+        		  return false;
+        	  }
+
+        	  const unsigned char actualId = std::get<0>(input)[1];
+
+        	  bool res = actualId == expectedId_;
+        	  if(!res && listener->IsInterested()) {
+        		  ::std::ostream* os = listener->stream();
+        		  *os << "Actual id is " << actualId << std::endl;
+        	  }
+        	  return res;
+          }
+
+          virtual void DescribeTo(::std::ostream* os) const {
+        	 *os << "Expected package ID = " << expectedId_ << std::endl;
+          }
+
+         private:
+          const unsigned char expectedId_;
+          const TelemetryReportingTest &containingTest_;
+        };
+
+        inline Matcher<std::tuple<const unsigned char*, int>> packageIdIs(unsigned char expectedId) {
+        	return MakeMatcher(new PackageIdMatcher(expectedId, *this));
+        }
 
 };
 
@@ -705,6 +753,37 @@ TEST_F(TelemetryReportingTest, sendLightsTest) // TODO create function which bui
 	telemetryReporting_->sendLights();
 }
 
+/*
+ * This test tests if during sendAll all methods which send a message are called.
+ *
+ * The actual methods, stuffing, framing and conversion is assumed to work correctly here. These methods are tested
+ * separately.
+ */
+TEST_F(TelemetryReportingTest, sendAllTest) // TODO create function which build the actual package to create some tescases more easy...
+{
+	const unsigned int expectedPackageLengthSendKeyMotor = 47;
+	const unsigned int expectedPackageLengthSendMotorDetails = 73;	// TODO make them global + use packageIdMatcher everywhere!
+	const unsigned int expectedPackageLengthSendDriverControls = 13;
+	const unsigned int expectedPackageLengthSendMotorFaults = 13;
+	const unsigned int expectedPackageLengthSendBatteryFaults = 7;
+	const unsigned int expectedPackageLengthSendBattery = 64;
+	const unsigned int expectedPackageLengthSendCmu = 54;
+	const unsigned int expectedPackageLengthSendMppt = 14;
+	const unsigned int expectedPackageLengthSendLights = 6;
+
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendKeyMotor)).Times(1);
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendMotorDetails)).Times(2);
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendDriverControls)).Times(1);
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendMotorFaults)).With(Args<0,1>(packageIdIs(5))).Times(1);
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendBatteryFaults)).With(Args<0,1>(packageIdIs(6))).Times(1);
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendBattery)).Times(1);
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendCmu)).Times(CcsDefines::CMU_COUNT);
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendMppt)).Times(CcsDefines::MPPT_COUNT);
+	EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLengthSendLights)).Times(1);
+
+	telemetryReporting_->sendAll();
+}
+
 // tests if Consistent Overhead Byte Stuffing (COBS) is working as intended
 TEST_F(TelemetryReportingTest, COBSTest)
 {
@@ -824,6 +903,83 @@ TEST_F(TelemetryReportingTest, writeFloatIntoArrayTest)
 		unsigned char actual[sizeof(float)];
 
 		telemetryReporting_->writeFloatIntoArray(actual, 0, input);
+
+		ASSERT_THAT(actual, ElementsAre(*p, *(p+1), *(p+2), *(p+3)));
+	}
+}
+
+// test may fail if short size is smaller than 16 bit!!
+TEST_F(TelemetryReportingTest, writeShortIntoArrayTest)
+{
+	std::vector<short> inputs = {42, 3512, 19921, 12, 400, 66, 235, 8773,
+			12416, 3264, 12825, 6, 31210 , 24,
+			-42, -3512, -19921, -12, -400, -66, -235, -8773,
+						-12416, -3264, -12825, -6, -31210 , -24,
+			std::numeric_limits<short>::min()+1, std::numeric_limits<short>::max()-1,
+			std::numeric_limits<short>::min(), std::numeric_limits<short>::max()};
+	short pot2 = 1;
+	for(int i = 0; i < 16; i++) {
+		inputs.push_back(pot2-1);
+		inputs.push_back(pot2);
+		pot2 *= 2;
+	}
+	for(std::vector<short>::const_iterator it = inputs.begin(); it != inputs.end(); ++it)
+	{
+		const short input = *it;
+		char* p = ( char*)((void*)&input);
+		unsigned char actual[sizeof(short)];
+
+		telemetryReporting_->writeShortIntoArray(actual, 0, input);
+
+		ASSERT_THAT(actual, ElementsAre(*p, *(p+1)));
+	}
+}
+
+// test may fail if short size is smaller than 16 bit!!
+TEST_F(TelemetryReportingTest, writeUShortIntoArrayTest)
+{
+	std::vector<unsigned short> inputs = {42, 3512, 19921, 12, 400, 66, 235, 8773,
+			12416, 3264, 12825, 6, 51210 , 24,
+			std::numeric_limits<unsigned short>::min()+1, std::numeric_limits<unsigned short>::max()-1,
+			std::numeric_limits<unsigned short>::min(), std::numeric_limits<unsigned short>::max()};
+	unsigned short pot2 = 1;
+	for(int i = 0; i < 16; i++) {
+		inputs.push_back(pot2-1);
+		inputs.push_back(pot2);
+		pot2 *= 2;
+	}
+	for(std::vector<unsigned short>::const_iterator it = inputs.begin(); it != inputs.end(); ++it)
+	{
+		const unsigned short input = *it;
+		char* p = ( char*)((void*)&input);
+		unsigned char actual[sizeof(unsigned short)];
+
+		telemetryReporting_->writeUShortIntoArray(actual, 0, input);
+
+		ASSERT_THAT(actual, ElementsAre(*p, *(p+1)));
+	}
+}
+
+// test may fail if uint size smaller than 32 bit!!
+TEST_F(TelemetryReportingTest, writeUIntIntoArrayTest)
+{
+	std::vector<unsigned int> inputs = {42, 3512, 19921, 12, 400, 66, 235, 8773,
+			1241632, 64128256, 5121024,
+			std::numeric_limits<unsigned int>::min()+1, std::numeric_limits<unsigned int>::max()-1,
+			std::numeric_limits<unsigned int>::min(), std::numeric_limits<unsigned int>::max()};
+	unsigned int pot2 = 1;
+	for(int i = 0; i < 32; i++) {
+		inputs.push_back(pot2-1);
+		inputs.push_back(pot2);
+		pot2 *= 2;
+	}
+	for(std::vector<unsigned int>::const_iterator it = inputs.begin(); it != inputs.end(); ++it)
+	{
+		const unsigned int input = *it;
+		char* p = ( char*)((void*)&input);
+		unsigned char actual[sizeof(unsigned int)];
+
+		telemetryReporting_->writeUIntIntoArray(actual, 0, input);
 
 		ASSERT_THAT(actual, ElementsAre(*p, *(p+1), *(p+2), *(p+3)));
 	}
