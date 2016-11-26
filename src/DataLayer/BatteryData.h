@@ -44,15 +44,15 @@ struct BatteryData
     , bmsCanLockedOut(false)
     {}
 
-   enum PrechargeState
-   {
-      Error = 0,
-      Idle = 1,
-      EnablePack = 5,
-      Measure = 2,
-      Precharge = 3,
-      Run = 4,
-   };
+    enum PrechargeState
+    {
+        Error = 0,
+        Idle = 1,
+        EnablePack = 5,
+        Measure = 2,
+        Precharge = 3,
+        Run = 4,
+    };
 
     bool alive;
     float packSocAmpHours;

@@ -118,11 +118,15 @@ void TelemetryReporting::sendMotorDetails(int n)
     const unsigned int unframedPacketLength = MOTOR_DETAILS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
-    if(n == 0) {
-      packetPayload[0] = CcsDefines::MOTOR_DETAILS_0_PKG_ID;
-    } else {
-      packetPayload[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
+    if (n == 0)
+    {
+        packetPayload[0] = CcsDefines::MOTOR_DETAILS_0_PKG_ID;
     }
+    else
+    {
+        packetPayload[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
+    }
+
     writeFloatIntoArray(packetPayload, 1, motor0DetailsData_.phaseCCurrent);
     writeFloatIntoArray(packetPayload, 5, motor0DetailsData_.phaseBCurrent);
     writeFloatIntoArray(packetPayload, 9, motor0DetailsData_.MotorVoltageReal);
@@ -316,9 +320,8 @@ void TelemetryReporting::sendBattery()
     packetPayload[42] = batteryData_.highestCellTemperatureCmuNumber;
     packetPayload[42] += batteryData_.highestCellTemperatureCellNumber << 4;
 
-	writeUIntIntoArray(packetPayload, 43, batteryData_.voltage);
-	writeUIntIntoArray(packetPayload, 47, batteryData_.current);
-
+    writeUIntIntoArray(packetPayload, 43, batteryData_.voltage);
+    writeUIntIntoArray(packetPayload, 47, batteryData_.current);
     writeUShortIntoArray(packetPayload, 51, batteryData_.fan0Speed);
     writeUShortIntoArray(packetPayload, 53, batteryData_.fan1Speed);
     writeUShortIntoArray(packetPayload, 55, batteryData_.fanContactors12VCurrentConsumption);
@@ -343,6 +346,7 @@ void TelemetryReporting::sendCmu()
     {
         writeShortIntoArray(packetPayload, cmuVoltageBaseIndex + (i * 2), cmuData_.cellVoltage[i]);
     }
+
     writeUShortIntoArray(packetPayload, 18, cmuData_.pcbTemperature);
     const int cmuTemperatureBaseIndex = 20;
     for (int i = 0; i < 15; i++)
@@ -353,7 +357,6 @@ void TelemetryReporting::sendCmu()
     for (unsigned char i = 0; i < CcsDefines::CMU_COUNT; i++)
     {
         packetPayload[1] = i;
-
         addChecksum(packetPayload, CMU_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
         unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
@@ -459,14 +462,17 @@ unsigned int TelemetryReporting::stuffData(const unsigned char* dataToEncode, un
         {
             *encodedData++ = *dataToEncode;
             code++;
+
             if (code == 0xFF)
             {
                 FINISH_BLOCK(code);
                 lengthOfEncodedData++;	// TODO maybe artifact. Prevents correct encoding of message with length of 254 bytes
             }
         }
+
         dataToEncode++;
     }
+
     FINISH_BLOCK(code);
     return lengthOfEncodedData;
 }
@@ -527,6 +533,7 @@ void TelemetryReporting::writeBoolsIntoArray(unsigned char* data, int index, con
             index++;
             data[index] = 0;
         }
+
         if (values[i])
         {
             data[index] += 1 << (i % 8);
