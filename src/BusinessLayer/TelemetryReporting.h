@@ -38,13 +38,13 @@ public:
     friend class TelemetryReportingTest;
 
 private slots:
-	FRIEND_TEST(TelemetryReportingTest, sendKeyMotorTest);
+    FRIEND_TEST(TelemetryReportingTest, sendKeyMotorTest);
     void sendKeyMotor();
 
     FRIEND_TEST(TelemetryReportingTest, sendMotorDetailsTest);
     void sendMotorDetails(int n);
 
-	FRIEND_TEST(TelemetryReportingTest, sendDriverControlsTest);
+    FRIEND_TEST(TelemetryReportingTest, sendDriverControlsTest);
     void sendDriverControls();
 
     FRIEND_TEST(TelemetryReportingTest, sendMotorFaultsTest);

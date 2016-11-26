@@ -8,8 +8,8 @@ class MockCommunicationService : public I_CommunicationService
 {
 
 public:
-	//CommunicationServiceTestWrapper();
-    MOCK_METHOD2(sendData,void(const unsigned char* packet, int packetLength));
+    //CommunicationServiceTestWrapper();
+    MOCK_METHOD2(sendData, void(const unsigned char* packet, int packetLength));
 
 private:
 
