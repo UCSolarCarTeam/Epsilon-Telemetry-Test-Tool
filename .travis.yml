@@ -7,11 +7,8 @@ before_install:
     - sudo apt-get -qq install g++-4.8 libc6-i386 qt54tools qt54svg qt54webkit qt54serialport
     - PATH="/opt/qt54/bin:$PATH"
     - qt54-env.sh
-    - cd ..
-    - mv ./Epsilon-Telemetry-Test-Tool ./src
-    - mkdir -p Epsilon-Telemetry-Test-Tool/build/.lib/
-    - mv ./src ./Epsilon-Telemetry-Test-Tool/
-    - cd ./Epsilon-Telemetry-Test-Tool/src
+    - mkdir -p build/.lib/
+    - cd src
 
 install:
     - wget 'https://sourceforge.net/projects/astyle/files/latest/download'
