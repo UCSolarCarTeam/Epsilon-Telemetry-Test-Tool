@@ -1,23 +1,22 @@
+TEMPLATE = app
+
+LIBS += -L../../build/.lib -lBusinessLayer -lViewLayer -lUILayer -lPeripherals
+
 ! include( ../common.pri ) {
     error( "Couldn't find the common.pri file!" )
 }
 
-! include( ../core.pri ) {
-    error( "Couldn't find the core.pri file!" )
-}
+PRE_TARGETDEPS += \
+   ../../build/.lib/*
 
-QT += widgets
-TEMPLATE = app
 TARGET = telemTestApp
+DESTDIR = ../../build
 
-# LIBS += -L../../build/.lib -lBusinessLayer -lDataLayer -lPeripherals
+INCLUDEPATH += ../DataLayer/ ../ViewLayer/ ../Peripherals/ ../BusinessLayer/ 
 
 HEADERS  += \
-    TestApplication.h \
+    $$PWD/TestApplication.h \
 
 SOURCES += \
-    main.cpp \
-    TestApplication.cpp \
-
-#DESTDIR = ../build/.lib
-DESTDIR = ../../build/
+    $$PWD/main.cpp \
+    $$PWD/TestApplication.cpp \

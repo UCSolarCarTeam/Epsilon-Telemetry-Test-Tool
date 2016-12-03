@@ -2,6 +2,9 @@ TEMPLATE = subdirs
 CONFIG += ordered static
 
 SUBDIRS = \
-    TelemTestToolMain \
-    Tests
-
+    BusinessLayer \
+    ViewLayer \
+    UILayer \
+    Peripherals \
+    Tests \
+    TelemTestToolMain

@@ -1,15 +1,13 @@
-# TEMPLATE = lib
-# CONFIG += staticlib
+TEMPLATE = lib
+CONFIG += staticlib
 
-# ! include( ../common.pri ) {
-#    error( "Couldn't find the common.pri file!" )
-# }
+! include( ../common.pri ) {
+    error( "Couldn't find the common.pri file!" )
+}
 
-# INCLUDEPATH += ../DataLayer/ ../ViewLayer/ ../Peripherals/
+INCLUDEPATH += ../DataLayer/ ../ViewLayer/ ../Peripherals/
 
-# DESTDIR = ../../build/.lib
-
-INCLUDEPATH += $$PWD
+DESTDIR = ../../build/.lib
 
 HEADERS += \
     $$PWD/CrcCalculator.h \
