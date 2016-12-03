@@ -364,14 +364,14 @@ void TelemetryReporting::sendMppt()
     {
         unsigned char mpptPacketPayload[unframedPacketLength];
         std::memcpy(mpptPacketPayload, packetPayload, unframedPacketLength);
-        unsigned char secondField = i & 0x03;
+        unsigned char numberAndAlive = i & 0x03;
 
         if (mpptData_.alive)
         {
-            secondField |= 0x80;
+            numberAndAlive |= 0x80;
         }
 
-        mpptPacketPayload[1] = secondField;
+        mpptPacketPayload[1] = numberAndAlive;
         addChecksum(mpptPacketPayload, MPPT_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
         unsigned int packetLength = frameData(mpptPacketPayload, unframedPacketLength, packet);

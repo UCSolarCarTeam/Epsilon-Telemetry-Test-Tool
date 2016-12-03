@@ -34,25 +34,27 @@ using ::testing::MatchResultListener;
 
 #include<iterator>
 
-#define HEX( x ) std::setw(2) << "\\x" << std::hex << (int)( x )
+#define COUT_HEX( x ) std::setw(2) << "\\x" << std::hex << (int)( x )
+
+namespace
+{
+	const unsigned int CHECK_SUM_LENGTH = 2;
+	const unsigned int COBS_ADDITIONAL_FRAME_DATA_SIZE = 2;
+
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_KEY_MOTOR = 47;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS = 73;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS = 13;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 13;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 7;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 64;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_CMU = 54;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
+	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 6;
+}
 
 
 class TelemetryReportingTest : public ::testing::Test
 {
-
-public:
-    const unsigned int CHECK_SUM_LENGTH = 2;
-    const unsigned int COBS_ADDITIONAL_FRAME_DATA_SIZE = 2;
-
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_KEY_MOTOR = 47;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS = 73;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS = 13;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 13;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 7;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 64;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_CMU = 54;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 6;
 
 protected:
 
@@ -100,13 +102,13 @@ protected:
                                                         ));
     }
 
-    void assertThatCOBScorrect(unsigned char* input, unsigned char* expected, const unsigned int inputLength)
+    void expectCobsCorrect(unsigned char* input, unsigned char* expected, const unsigned int inputLength)
     {
         const unsigned int expectedArrayLength = inputLength + 2;
         unsigned char encodedArray[expectedArrayLength];
         telemetryReporting_->frameData(input, inputLength, encodedArray);
-        std::cout << HEX(encodedArray[inputLength]) << " " << HEX(encodedArray[inputLength + 1]) << std::endl;
-        ASSERT_THAT(std::vector<unsigned char>(encodedArray, encodedArray + expectedArrayLength),
+        std::cout << COUT_HEX(encodedArray[inputLength]) << " " << COUT_HEX(encodedArray[inputLength + 1]) << std::endl;
+        EXPECT_THAT(std::vector<unsigned char>(encodedArray, encodedArray + expectedArrayLength),
                     ElementsAreArray(std::vector<unsigned char>(expected, expected + expectedArrayLength)));
     }
 
@@ -167,42 +169,7 @@ protected:
         telemetryReporting_->writeUShortIntoArray(data, 6, mpptData_->batteryVoltage);
         telemetryReporting_->writeUShortIntoArray(data, 8, mpptData_->temperature);
     }
-    /*
-        class COBSEncodedIsMatcher : public MatcherInterface<std::vector<unsigned char> > {
-         public:
-          explicit COBSEncodedIsMatcher(std::vector<unsigned char> &expectedArray, TelemetryReportingTest &containingTest)
-              : expectedArray_(expectedArray), containingTest_(containingTest) {}
 
-          virtual bool MatchAndExplain(std::vector<unsigned char> input,
-                                       MatchResultListener* listener) const {
-
-        	  unsigned char encodedArray[expectedArray_.size()];
-        	  containingTest_.telemetryReporting_->frameData(&input[0], input.size(), encodedArray);
-
-        	  return ::testing::ExplainMatchResult(ElementsAreArray(expectedArray_),
-        			  std::vector<unsigned char>(encodedArray, encodedArray+expectedArray_.size()), listener);
-          }
-
-          virtual void DescribeTo(::std::ostream* os) const {
-
-        	 *os << "has " << expectedArray_.size() << " elements where" << std::endl;
-        	 for(std::vector<unsigned char>::const_iterator it = expectedArray_.begin(); it != expectedArray_.end(); it++) {
-        		 const unsigned int idx = it - expectedArray_.begin();
-        		 *os << "element #" << it - expectedArray_.begin() << " is equal to \'" << HEX(*it) << "\' (" << ((int) *it) << ")";
-        		 if(idx != expectedArray_.size()-1) {
-        			 *os << "," << std::endl;;
-        		 }
-        	 }
-          }
-
-         private:
-          const std::vector<unsigned char>& expectedArray_;
-          const TelemetryReportingTest &containingTest_;
-        };
-
-        inline Matcher<std::vector<unsigned char> > COBSEncodedIs(std::vector<unsigned char> &expectedArray) {
-          return MakeMatcher(new COBSEncodedIsMatcher(expectedArray, *this));
-        }*/
     class PackageIdMatcher : public MatcherInterface<std::tuple<const unsigned char*, int>>
     {
     public:
@@ -300,12 +267,16 @@ TEST_F(TelemetryReportingTest, sendKeyMotorTest) // TODO create function which b
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x01)); // packet id
-    ASSERT_THAT(data[1], Eq(0x01));
-    ASSERT_THAT(data[22], Eq(0x00));
+    const unsigned char aliveBitMotor0Enconding = keyMotorData_->motor0Alive? 0x01 : 0x00;
+    const unsigned char aliveBitMotor1Enconding = keyMotorData_->motor1Alive? 0x01 : 0x00;
+    ASSERT_THAT(data[1], Eq(aliveBitMotor0Enconding));
+    ASSERT_THAT(data[22], Eq(aliveBitMotor1Enconding));
+
     unsigned char expectedPacket[expectedPackageLength];
     telemetryReporting_->frameData(data, payloadLength, expectedPacket);
     // check call
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength))).Times(1);
+    const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
+    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
     telemetryReporting_->sendKeyMotor();
 }
 
@@ -346,7 +317,8 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function whi
     unsigned char expectedPacket0[expectedPackageLength];
     telemetryReporting_->frameData(data, payloadLength, expectedPacket0);
     // check call
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0, 1>(ElementsAreArray(expectedPacket0, expectedPackageLength))).Times(1);
+    const auto expectedPacket0AsArg = Args<0, 1>(ElementsAreArray(expectedPacket0, expectedPackageLength));
+    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacket0AsArg).Times(1);
     telemetryReporting_->sendMotorDetails(0);
     data[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
     telemetryReporting_->writeFloatIntoArray(data, 1, motor1DetailsData_->phaseCCurrent);
@@ -371,7 +343,8 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function whi
     ASSERT_THAT(data[0], Eq(0x03)); // packet id
     unsigned char expectedPacket1[expectedPackageLength];
     telemetryReporting_->frameData(data, payloadLength, expectedPacket1);
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0, 1>(ElementsAreArray(expectedPacket1, expectedPackageLength))).Times(1);
+    const auto expectedPacket1AsArg = Args<0, 1>(ElementsAreArray(expectedPacket1, expectedPackageLength));
+    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacket1AsArg).Times(1);
     telemetryReporting_->sendMotorDetails(1);
 }
 
@@ -423,7 +396,8 @@ TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function w
     unsigned char expectedPacket[expectedPackageLength];
     telemetryReporting_->frameData(data, payloadLength, expectedPacket);
     // check call
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength))).Times(1);
+    const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
+    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
     telemetryReporting_->sendDriverControls();
 }
 
@@ -489,7 +463,8 @@ TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function whic
     unsigned char expectedPacket[expectedPackageLength];
     telemetryReporting_->frameData(data, payloadLength, expectedPacket);
     // check call
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength))).Times(1);
+    const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
+    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
     telemetryReporting_->sendMotorFaults();
 }
 
@@ -528,7 +503,8 @@ TEST_F(TelemetryReportingTest, sendBatteryFaultsTest) // TODO create function wh
     unsigned char expectedPacket[expectedPackageLength];
     telemetryReporting_->frameData(data, payloadLength, expectedPacket);
     // check call
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength))).Times(1);
+    const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
+    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
     telemetryReporting_->sendBatteryFaults();
 }
 
@@ -593,7 +569,8 @@ TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which bu
     unsigned char expectedPacket[expectedPackageLength];
     telemetryReporting_->frameData(data, payloadLength, expectedPacket);
     // check call
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength))).Times(1);
+    const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
+    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
     telemetryReporting_->sendBattery();
 }
 
@@ -622,7 +599,8 @@ TEST_F(TelemetryReportingTest, sendCmuTest)
         ASSERT_THAT(data[0], Eq(0x08)); // packet id
         ASSERT_THAT(data[1], Eq(i)); // cmu number
         telemetryReporting_->frameData(data, payloadLength, expectedPacket[i]);
-        EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0, 1>(ElementsAreArray(expectedPacket[i], expectedPackageLength))).Times(1);
+        const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket[i], expectedPackageLength));
+        EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
     }
 
     // check call
@@ -667,7 +645,8 @@ TEST_F(TelemetryReportingTest, sendMpptTest)
             }
 
             telemetryReporting_->frameData(data, payloadLength, expectedPacket[i]);
-            EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0, 1>(ElementsAreArray(expectedPacket[i], expectedPackageLength))).Times(1);
+            const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket[i], expectedPackageLength));
+            EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
         }
 
         // check call
@@ -709,7 +688,8 @@ TEST_F(TelemetryReportingTest, sendLightsTest) // TODO create function which bui
     unsigned char expectedPacket[expectedPackageLength];
     telemetryReporting_->frameData(data, payloadLength, expectedPacket);
     // check call
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength))).Times(1);
+    const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
+    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
     telemetryReporting_->sendLights();
 }
 
@@ -741,19 +721,19 @@ TEST_F(TelemetryReportingTest, COBSTest)
 {
     unsigned char nullArrayInput[] = {0x00};
     unsigned char nullArrayExpected[] = {0x01, 0x01, 0x00};
-    assertThatCOBScorrect(nullArrayInput, nullArrayExpected, 1);
+    expectCobsCorrect(nullArrayInput, nullArrayExpected, 1);
     unsigned char input1[] = {0x00, 0x00};
     unsigned char expected1[] = {0x01, 0x01, 0x01, 0x00};
-    assertThatCOBScorrect(input1, expected1, 2);
+    expectCobsCorrect(input1, expected1, 2);
     unsigned char input2[] = {0x11, 0x22, 0x00, 0x33};
     unsigned char expected2[] = {0x03, 0x11, 0x22, 0x02, 0x33, 0x00};
-    assertThatCOBScorrect(input2, expected2, 4);
+    expectCobsCorrect(input2, expected2, 4);
     unsigned char input3[] = {0x11, 0x22, 0x33, 0x44};
     unsigned char expected3[] = {0x05, 0x11, 0x22, 0x33, 0x44, 0x00};
-    assertThatCOBScorrect(input3, expected3, 4);
+    expectCobsCorrect(input3, expected3, 4);
     unsigned char input4[] = {0x11, 0x00, 0x00, 0x00};
     unsigned char expected4[] = {0x02, 0x11, 0x01, 0x01, 0x01, 0x00};
-    assertThatCOBScorrect(input4, expected4, 4);
+    expectCobsCorrect(input4, expected4, 4);
     const unsigned int MAX_COBS_PACKAGE_LENGTH = 254;
     unsigned char inputAlmostMax[MAX_COBS_PACKAGE_LENGTH - 1];
     unsigned char expectedAlmostMax[MAX_COBS_PACKAGE_LENGTH + 1];
@@ -766,7 +746,7 @@ TEST_F(TelemetryReportingTest, COBSTest)
 
     expectedAlmostMax[0] = 0xFE;
     expectedAlmostMax[MAX_COBS_PACKAGE_LENGTH] = 0x00;
-    assertThatCOBScorrect(inputAlmostMax, expectedAlmostMax, MAX_COBS_PACKAGE_LENGTH - 1);
+    expectCobsCorrect(inputAlmostMax, expectedAlmostMax, MAX_COBS_PACKAGE_LENGTH - 1);
     unsigned char inputMax[MAX_COBS_PACKAGE_LENGTH];
     unsigned char expectedMax[MAX_COBS_PACKAGE_LENGTH + 2];
 
@@ -778,7 +758,7 @@ TEST_F(TelemetryReportingTest, COBSTest)
 
     expectedMax[0] = 0xFF;
     expectedMax[MAX_COBS_PACKAGE_LENGTH + 1] = 0x00;
-    assertThatCOBScorrect(inputMax, expectedMax, MAX_COBS_PACKAGE_LENGTH); // TODO this one fails. can probably be fixed by removing line 452 from TelemetryReporting.cpp
+    expectCobsCorrect(inputMax, expectedMax, MAX_COBS_PACKAGE_LENGTH); // TODO this one fails. can probably be fixed by removing line 452 from TelemetryReporting.cpp
     // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // TODO WHAT HAPPENS IF THE Distance to the first zero is more than 254 bytes?? (our packages are smaller...)
     // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -786,7 +766,6 @@ TEST_F(TelemetryReportingTest, COBSTest)
 
 /*
  * This test tests if the checksum is correctly appended. It does not test the checksum calculation itself.
- * (Supposed to work correctly, as copied from already tested code?!)
  */
 TEST_F(TelemetryReportingTest, addChecksumTest)
 {
