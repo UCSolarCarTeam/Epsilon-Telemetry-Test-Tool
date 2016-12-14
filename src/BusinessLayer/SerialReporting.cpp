@@ -105,7 +105,7 @@ void SerialReporting::sendKeyMotor()
     addChecksum(packetPayload, KEY_MOTOR_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
+    communicationService_.sendSerialData(packet, packetLength);
 }
 
 void SerialReporting::sendMotorDetails(int n)
@@ -142,7 +142,7 @@ void SerialReporting::sendMotorDetails(int n)
     addChecksum(packetPayload, MOTOR_DETAILS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
+    communicationService_.sendSerialData(packet, packetLength);
 }
 
 void SerialReporting::sendDriverControls()
@@ -181,7 +181,7 @@ void SerialReporting::sendDriverControls()
     addChecksum(packetPayload, DRIVER_CONTROLS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
+    communicationService_.sendSerialData(packet, packetLength);
 }
 
 void SerialReporting::sendMotorFaults()
@@ -234,7 +234,7 @@ void SerialReporting::sendMotorFaults()
     addChecksum(packetPayload, MOTOR_FAULTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
+    communicationService_.sendSerialData(packet, packetLength);
 }
 
 void SerialReporting::sendBatteryFaults()
@@ -260,7 +260,7 @@ void SerialReporting::sendBatteryFaults()
     addChecksum(packetPayload, BATTERY_FAULTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
+    communicationService_.sendSerialData(packet, packetLength);
 }
 
 void SerialReporting::sendBattery()
@@ -314,7 +314,7 @@ void SerialReporting::sendBattery()
     addChecksum(packetPayload, BATTERY_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
+    communicationService_.sendSerialData(packet, packetLength);
 }
 
 void SerialReporting::sendCmu()
@@ -343,7 +343,7 @@ void SerialReporting::sendCmu()
         addChecksum(packetPayload, CMU_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
         unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-        communicationService_.sendData(packet, packetLength);
+        communicationService_.sendSerialData(packet, packetLength);
     }
 }
 
@@ -365,7 +365,7 @@ void SerialReporting::sendMppt()
         addChecksum(mpptPacketPayload, KEY_MOTOR_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
         unsigned int packetLength = frameData(mpptPacketPayload, unframedPacketLength, packet);
-        communicationService_.sendData(packet, packetLength);
+        communicationService_.sendSerialData(packet, packetLength);
     }
 }
 
@@ -385,7 +385,7 @@ void SerialReporting::sendLights()
     addChecksum(packetPayload, KEY_MOTOR_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
+    communicationService_.sendSerialData(packet, packetLength);
 }
 
 void SerialReporting::sendAll()

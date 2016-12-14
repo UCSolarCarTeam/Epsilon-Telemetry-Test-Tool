@@ -29,7 +29,7 @@ void CommunicationService::setPeripheralSerialPort()
     outputPeripheral_ = new SerialPortPeripheral(*outputDevice_);
 }
 
-void CommunicationService::sendData(const unsigned char* packet, int packetLength)
+void CommunicationService::sendSerialData(const unsigned char* packet, int packetLength)
 {
     outputPeripheral_->sendSerialData(packet, packetLength);
 }

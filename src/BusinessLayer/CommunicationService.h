@@ -15,7 +15,7 @@ class CommunicationService : public QObject
     Q_OBJECT
 public:
     CommunicationService(View& view);
-    void sendData(const unsigned char* packet, int packetLength);
+    void sendSerialData(const unsigned char* packet, int packetLength);
     void sendInternetData(const QByteArray &data);
 private:
     void setPeripheralSerialPort();
