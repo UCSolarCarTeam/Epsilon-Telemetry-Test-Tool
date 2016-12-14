@@ -1,18 +1,9 @@
-#include <QSerialPort>
 #include <QStringList>
 #include "InternetPeripheral.h"
 
-namespace
+InternetPeripheral::InternetPeripheral(/*parameter here*/)
 {
-    const int BAUDRATE = 9600;
-    const int NUMBER_OF_CMUS = 4;
-    const int NUMBER_OF_MPPTS = 7;
-}
-
-InternetPeripheral::InternetPeripheral(QSerialPort& serialPort)
-    : serialPort_(serialPort)
-{
-    serialPort_.setBaudRate(BAUDRATE);
+    //constructor stub
 }
 
 
@@ -20,24 +11,18 @@ InternetPeripheral::~InternetPeripheral()
 {
 }
 
-void InternetPeripheral::setParameters(QStringList parameters)
+void InternetPeripheral::setParameters(QStringList /*parameters*/)
 {
-    serialPort_.setPortName(parameters.at(0));
+   //function stub
 }
 
 
 bool InternetPeripheral::attemptConnection()
 {
-    if (serialPort_.open(QIODevice::ReadWrite))
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    //function stub
+    return true;
 }
 
-void InternetPeripheral::sendInternetData(const QByteArray &data){
-    serialPort_.write(data);
+void InternetPeripheral::sendInternetData(const QByteArray & /*JSON data in a byte array*/){
+    //function stub
 }

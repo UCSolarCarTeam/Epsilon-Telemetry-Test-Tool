@@ -9,13 +9,13 @@ class QByteArray;
 class InternetPeripheral : public I_CommPeripheral
 {
 public:
-    InternetPeripheral(QSerialPort& serialPort);
+    InternetPeripheral(/* parameters here */);
     virtual ~InternetPeripheral();
     bool attemptConnection();
     //Sets the port name to parameters[0]
-    void setParameters(QStringList parameters);
-    void sendInternetData(const QByteArray &data);
+    void setParameters(QStringList /*parameters*/);
+    void sendInternetData(const QByteArray & /*JSON data in byte array*/);
 
 private:
-    QSerialPort& serialPort_;
+
 };
