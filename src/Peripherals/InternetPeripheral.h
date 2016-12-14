@@ -14,7 +14,7 @@ public:
     bool attemptConnection();
     //Sets the port name to parameters[0]
     void setParameters(QStringList parameters);
-    void sendData(const QByteArray &data);
+    void sendInternetData(const QByteArray &data);
 
 private:
     QSerialPort& serialPort_;

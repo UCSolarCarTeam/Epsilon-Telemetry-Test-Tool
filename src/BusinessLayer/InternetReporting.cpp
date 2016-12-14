@@ -361,7 +361,7 @@ void InternetReporting::sendKeyMotor()
     QJsonDocument doc(KeyMotor);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_.sendDataInternet(data);;
+    communicationService_.sendInternetData(data);;
 }
 
 void InternetReporting::sendMotorDetails(int n)
@@ -376,7 +376,7 @@ void InternetReporting::sendMotorDetails(int n)
         doc = QJsonDocument(MotorDetails0);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_.sendDataInternet(data);;
+    communicationService_.sendInternetData(data);;
 }
 
 void InternetReporting::sendDriverControls()
@@ -386,7 +386,7 @@ void InternetReporting::sendDriverControls()
     QJsonDocument doc(DriverControls);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_.sendDataInternet(data);
+    communicationService_.sendInternetData(data);
 }
 
 void InternetReporting::sendMotorFaults()
@@ -396,7 +396,7 @@ void InternetReporting::sendMotorFaults()
     QJsonDocument doc(MotorFaults);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_.sendDataInternet(data);
+    communicationService_.sendInternetData(data);
 }
 
 void InternetReporting::sendBatteryFaults()
@@ -406,7 +406,7 @@ void InternetReporting::sendBatteryFaults()
     QJsonDocument doc(BatteryFaults);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_.sendDataInternet(data);
+    communicationService_.sendInternetData(data);
 }
 
 void InternetReporting::sendBattery()
@@ -416,7 +416,7 @@ void InternetReporting::sendBattery()
     QJsonDocument doc(Battery);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_.sendDataInternet(data);
+    communicationService_.sendInternetData(data);
 }
 
 void InternetReporting::sendCmu()
@@ -426,7 +426,7 @@ void InternetReporting::sendCmu()
     QJsonDocument doc(CMUArray);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_.sendDataInternet(data);
+    communicationService_.sendInternetData(data);
 
 }
 
@@ -437,7 +437,7 @@ void InternetReporting::sendMppt()
     QJsonDocument doc(mPPTArray);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_.sendDataInternet(data);
+    communicationService_.sendInternetData(data);
 
 }
 
@@ -448,7 +448,7 @@ void InternetReporting::sendLights()
     QJsonDocument doc(lightsInfo);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_.sendDataInternet(data);
+    communicationService_.sendInternetData(data);
 
 }
 
@@ -488,7 +488,7 @@ void InternetReporting::sendAll()
     QJsonDocument doc(obj);
 
     QByteArray data = doc.toBinaryData();
-    communicationService_.sendDataInternet(data);
+    communicationService_.sendInternetData(data);
 
 }
 

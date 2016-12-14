@@ -29,21 +29,16 @@ void CommunicationService::setPeripheralSerialPort()
     outputPeripheral_ = new SerialPortPeripheral(*outputDevice_);
 }
 
-void CommunicationService::setPeripheralInternet()
-{
-    outputDevice_ = new QSerialPort();
-    outputPeripheralInternet_ = new InternetPeripheral(*outputDevice_);
-}
-
 void CommunicationService::sendData(const unsigned char* packet, int packetLength)
 {
-    outputPeripheral_->sendData(packet, packetLength);
+    outputPeripheral_->sendSerialData(packet, packetLength);
 }
 
-void CommunicationService::sendDataInternet(const QByteArray &data)
+void CommunicationService::sendInternetData(const QByteArray & /*parameter name here*/)
 {
-    outputPeripheralInternet_->sendData(data);
+    //function stub
 }
+
 
 void CommunicationService::attemptConnection()
 {

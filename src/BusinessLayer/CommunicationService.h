@@ -16,10 +16,9 @@ class CommunicationService : public QObject
 public:
     CommunicationService(View& view);
     void sendData(const unsigned char* packet, int packetLength);
-    void sendDataInternet(const QByteArray &data);
+    void sendInternetData(const QByteArray &data);
 private:
     void setPeripheralSerialPort();
-    void setPeripheralInternet();
 
 public slots:
     void attemptConnection();
@@ -28,5 +27,4 @@ private:
     View& view_;
     QSerialPort* outputDevice_;
     SerialPortPeripheral* outputPeripheral_;
-    InternetPeripheral* outputPeripheralInternet_;
 };
