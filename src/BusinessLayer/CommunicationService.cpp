@@ -1,9 +1,6 @@
 #include <QIODevice>
 #include <QSerialPort>
 #include <QStringList>
-#include <QUrl>
-#include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkAccessManager>
 #include "CommunicationService.h"
 #include "View.h"
 #include "I_CommPeripheral.h"
@@ -29,6 +26,10 @@ void CommunicationService::setPeripheralSerialPort()
     outputPeripheral_ = new SerialPortPeripheral(*outputDevice_);
 }
 
+void CommunicationService::setInternetConnection(){
+    //function stub
+}
+
 void CommunicationService::sendSerialData(const unsigned char* packet, int packetLength)
 {
     outputPeripheral_->sendSerialData(packet, packetLength);
@@ -45,4 +46,8 @@ void CommunicationService::attemptConnection()
     QStringList paramList = (QStringList() << view_.getCommunicationPort());
     outputPeripheral_->setParameters(paramList);
     view_.setConnectionStatus(outputPeripheral_->attemptConnection());
+}
+
+void CommunicationService::attemptInternetConnection(){
+    //function stub
 }

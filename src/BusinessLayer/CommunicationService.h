@@ -19,12 +19,15 @@ public:
     void sendInternetData(const QByteArray &data);
 private:
     void setPeripheralSerialPort();
+    void setInternetConnection();
 
 public slots:
     void attemptConnection();
+    void attemptInternetConnection();
 
 private:
     View& view_;
     QSerialPort* outputDevice_;
     SerialPortPeripheral* outputPeripheral_;
+    InternetPeripheral* internetPeripheral_;
 };
