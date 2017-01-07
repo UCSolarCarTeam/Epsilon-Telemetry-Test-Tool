@@ -22,7 +22,7 @@ private:
     void setInternetConnection();
 
 public slots:
-    void attemptConnection();
+    void attemptSerialConnection();
     void attemptInternetConnection();
 
 private:

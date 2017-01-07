@@ -41,7 +41,7 @@ void CommunicationService::sendInternetData(const QByteArray & /*parameter name 
 }
 
 
-void CommunicationService::attemptConnection()
+void CommunicationService::attemptSerialConnection()
 {
     QStringList paramList = (QStringList() << view_.getCommunicationPort());
     outputPeripheral_->setParameters(paramList);
