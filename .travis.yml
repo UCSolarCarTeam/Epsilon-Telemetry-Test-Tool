@@ -15,7 +15,11 @@ before_install:
 
 install:
     - wget 'https://sourceforge.net/projects/astyle/files/latest/download'
-    - tar -zxvf download
+    # it seems as currently the archive online is a zip rather than a tar.gz
+    #- tar -zxvf download
+    - unzip download
+    - mv Astyle astyle
+    # end of unzip blob
     - (cd astyle/build/gcc && make release && sudo make install)
     - rm astyle -rf
     - git clone https://github.com/google/googletest.git
