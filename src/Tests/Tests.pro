@@ -4,7 +4,7 @@ CONFIG += testcase
 
 TARGET = runTestSuite
 
-LIBS += -L../../build/.lib -lBusinessLayer -lViewLayer -lUILayer -libgmock.a #-lgtest -lgtest_main -lgmock
+LIBS += -L../../build/.lib -lBusinessLayer -lViewLayer -lUILayer -lgmock #-libgmock.a #-lgtest -lgtest_main -lgmock
 
 ! include( ../common.pri ) {
     error( "Couldn't find the common.pri file!" )
