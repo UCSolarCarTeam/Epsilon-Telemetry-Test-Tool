@@ -34,12 +34,15 @@ install:
     - cd ..
 
 script:
-    - update-alternatives --query gcc
+    - mv /usr/bin/g++ /usr/bin/g++_depr
+    - ln -s $(which $CXX) /usr/bin/g++
     - $CXX --version
     - g++ --version
     - qmake
     - make
     - cd ..
     - "! (astyle *.h *.cpp -r --dry-run --options=astylerc --exclude=googletest | grep formatted)"
+    # maybe not needed
+    - mv /usr/bin/g++_depr /usr/bin/g++
 
 language: cpp
