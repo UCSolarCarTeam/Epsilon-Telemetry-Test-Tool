@@ -4,7 +4,8 @@ CONFIG += testcase
 
 TARGET = runTestSuite
 
-LIBS += -L../../build/.lib -lBusinessLayer -lViewLayer -lUILayer -lgmock #-libgmock.a #-lgtest -lgtest_main -lgmock
+#If google test is installed locally using a package manager it might be necessary to add -lgtest -lgtest_main -lgmock
+LIBS += -L../../build/.lib -lBusinessLayer -lViewLayer -lUILayer -lgmock
 
 ! include( ../common.pri ) {
     error( "Couldn't find the common.pri file!" )
