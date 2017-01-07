@@ -18,7 +18,8 @@ install:
     # it seems as currently the archive online is a zip rather than a tar.gz
     #- tar -zxvf download
     - unzip download
-    - mv Astyle astyle
+    - ls
+    #- mv Astyle astyle
     # end of unzip blob
     - (cd astyle/build/gcc && make release && sudo make install)
     - rm astyle -rf
