@@ -35,6 +35,7 @@ install:
 
 script:
     - $CXX --version
+    - g++ --version
     - qmake
     - make
     - cd ..
