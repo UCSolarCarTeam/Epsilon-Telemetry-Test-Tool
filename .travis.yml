@@ -39,6 +39,7 @@ script:
     - $CXX --version
     - g++ --version
     - qmake
+    - ls ../../build/.lib/
     - make
     - cd ..
     - "! (astyle *.h *.cpp -r --dry-run --options=astylerc --exclude=googletest | grep formatted)"
