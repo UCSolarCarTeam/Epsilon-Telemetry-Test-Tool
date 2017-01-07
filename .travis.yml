@@ -34,8 +34,8 @@ install:
     - cd ..
 
 script:
-    - mv /usr/bin/g++ /usr/bin/g++_depr
-    - ln -s $(which $CXX) /usr/bin/g++
+    - sudo mv /usr/bin/g++ /usr/bin/g++_depr
+    - sudo ln -s $(which $CXX) /usr/bin/g++
     - $CXX --version
     - g++ --version
     - qmake
@@ -43,6 +43,6 @@ script:
     - cd ..
     - "! (astyle *.h *.cpp -r --dry-run --options=astylerc --exclude=googletest | grep formatted)"
     # maybe not needed
-    - mv /usr/bin/g++_depr /usr/bin/g++
+    - sudo mv /usr/bin/g++_depr /usr/bin/g++
 
 language: cpp
