@@ -10,7 +10,7 @@ before_install:
     - cd src
 
 install:
-    - wget "https://sourceforge.net/projects/astyle/files/astyle/astyle%202.06/astyle_2.06_linux.tar.gz
+    - wget "https://sourceforge.net/projects/astyle/files/astyle/astyle%202.06/astyle_2.06_linux.tar.gz"
     - tar -zxvf download
     - (cd astyle/build/gcc && make release && sudo make install)
     - rm astyle -rf
