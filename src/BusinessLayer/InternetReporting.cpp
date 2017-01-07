@@ -8,7 +8,6 @@
 #include <QJsonObject>
 
 #include "CcsDefines.h"
-#include "CrcCalculator.h"
 #include "InternetReporting.h"
 #include "BatteryData.h"
 #include "BatteryFaultsData.h"
