@@ -14,13 +14,11 @@ before_install:
     - cd src
 
 install:
-    - wget 'https://sourceforge.net/projects/astyle/files/latest/download'
-    # it seems as currently the archive online is a zip rather than a tar.gz
-    #- tar -zxvf download
-    - unzip download
-    - ls
-    #- mv Astyle astyle
-    # end of unzip blob
+    # it seems as currently the redirect to the latest version is buggy when using wget (always windows version delivered
+    #- wget 'https://sourceforge.net/projects/astyle/files/latest/download'
+    # workaround hard code to newest version
+    - wget "https://sourceforge.net/projects/astyle/files/astyle/astyle%202.06/astyle_2.06_linux.tar.gz/download"
+    - tar -zxvf download
     - (cd astyle/build/gcc && make release && sudo make install)
     - rm astyle -rf
     - git clone https://github.com/google/googletest.git
