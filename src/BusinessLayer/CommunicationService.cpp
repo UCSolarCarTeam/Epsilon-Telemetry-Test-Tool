@@ -26,7 +26,8 @@ void CommunicationService::setPeripheralSerialPort()
     outputPeripheral_ = new SerialPortPeripheral(*outputDevice_);
 }
 
-void CommunicationService::setInternetConnection(){
+void CommunicationService::setInternetConnection()
+{
     //function stub
 }
 
@@ -48,6 +49,7 @@ void CommunicationService::attemptSerialConnection()
     view_.setConnectionStatus(outputPeripheral_->attemptConnection());
 }
 
-void CommunicationService::attemptInternetConnection(){
+void CommunicationService::attemptInternetConnection()
+{
     //function stub
 }

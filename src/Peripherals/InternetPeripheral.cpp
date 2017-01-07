@@ -1,9 +1,17 @@
 #include <QStringList>
 #include "InternetPeripheral.h"
 
+/*--------------------------------------------------------
+                Internet Peripheral
+    Suggested function stubs for the internet peripheral
+    to connect to the Internet.
+    Some or all of these functions may or may not be used
+    in the actual implementation.
+--------------------------------------------------------*/
 InternetPeripheral::InternetPeripheral(/*parameter here*/)
 {
-    //constructor stub
+    //constructor
+    //function stub
 }
 
 
@@ -23,6 +31,7 @@ bool InternetPeripheral::attemptConnection()
     return true;
 }
 
-void InternetPeripheral::sendInternetData(const QByteArray & /*JSON data in a byte array*/){
+void InternetPeripheral::sendInternetData(const QByteArray & /*JSON data in a byte array*/)
+{
     //function stub
 }
