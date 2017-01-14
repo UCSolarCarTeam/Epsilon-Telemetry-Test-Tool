@@ -26,7 +26,7 @@ TestApplication::TestApplication(int& argc, char** argv)
                           *mpptData_,
                           *lightsData_,
                           *view_))
-    ,internetReporting_(new InternetReporting(*communicationService_,
+    , internetReporting_(new InternetReporting(*communicationService_,
                         *keyMotorData_,
                         *motor0DetailsData_,
                         *motor1DetailsData_,

@@ -44,6 +44,7 @@ InternetReporting::InternetReporting(CommunicationService& commService,
     , mpptData_(mpptData)
     , lightsData_(lightsData)
 {
+    //TODO: Connect this class to a view (user interface)
 }
 
 QJsonArray InternetReporting::makeKeyMotor()
@@ -67,7 +68,6 @@ QJsonArray InternetReporting::makeKeyMotor()
     keyMotor1.insert("BusVoltage", keyMotorData_.motor1BusVoltage);
     keyMotor1.insert("VehicleVelocity", keyMotorData_.motor1VehicleVelocity);
     keyMotor.push_back(keyMotor1);
-
     return keyMotor;
 }
 
@@ -93,8 +93,6 @@ QJsonObject InternetReporting::makeMotorDetails(int n)
         motorDetails.insert("DcBusAmpHours", motor0DetailsData_.dcBusAmpHours);
         motorDetails.insert("Odometer", motor0DetailsData_.odometer);
         motorDetails.insert("Slipspeed", motor0DetailsData_.slipSpeed);
-
-        return motorDetails;
     }
 
     else
@@ -115,9 +113,8 @@ QJsonObject InternetReporting::makeMotorDetails(int n)
         motorDetails.insert("DcBusAmpHours", motor1DetailsData_.dcBusAmpHours);
         motorDetails.insert("Odometer", motor1DetailsData_.odometer);
         motorDetails.insert("Slipspeed", motor1DetailsData_.slipSpeed);
-
-        return motorDetails;
     }
+    return motorDetails;
 }
 
 QJsonObject InternetReporting::makeDriverControls()
@@ -144,7 +141,6 @@ QJsonObject InternetReporting::makeDriverControls()
     driverControls.insert("PushToTalk", driverControlsData_.pushToTalk);
     driverControls.insert("Horn", driverControlsData_.horn);
     driverControls.insert("Reset", driverControlsData_.reset);
-
     return driverControls;
 
 }
@@ -204,7 +200,6 @@ QJsonArray InternetReporting::makeMotorFaults()
     motorFaults1.insert("RxErrorCount", motorFaultsData_.motor1RxErrorCount);
     motorFaults1.insert("TxErrorCount", motorFaultsData_.motor1TxErrorCount);
     motorFaults.push_back(motorFaults1);
-
     return motorFaults;
 }
 
@@ -223,7 +218,6 @@ QJsonObject InternetReporting::makeBatteryFaults()
     batteryFaults.insert("CAN12VSupplyLow", batteryFaultsData_.can12VSupplyLow);
     batteryFaults.insert("ContactorStuck", batteryFaultsData_.contactorStuck);
     batteryFaults.insert("CMUDetectedExtraCell", batteryFaultsData_.cmuDetectedExtraCellPresent);
-
     return batteryFaults;
 }
 
@@ -280,7 +274,6 @@ QJsonObject InternetReporting::makeBattery()
     battery.insert("Fan1Speed", batteryData_.fan1Speed);
     battery.insert("FanContactorsCurrent", batteryData_.fanContactors12VCurrentConsumption);
     battery.insert("CmuCurrent", batteryData_.cmu12VCurrentConsumption);
-
     return battery;
 
 }
@@ -311,9 +304,7 @@ QJsonArray InternetReporting::makeCmu()
     {
         cmu.push_back(cmuInfo);
     }
-
     return cmu;
-
 }
 
 QJsonArray InternetReporting::makeMppt()
@@ -331,7 +322,6 @@ QJsonArray InternetReporting::makeMppt()
     {
         mppt.push_back(mpptInfo);
     }
-
     return mppt;
 }
 
@@ -344,7 +334,6 @@ QJsonObject InternetReporting::makeLights()
     lightsInfo.insert("LeftSignal", lightsData_.leftSignal);
     lightsInfo.insert("RightSignal", lightsData_.rightSignal);
     lightsInfo.insert("BmsStrobeLight", lightsData_.bmsStrobeLight);
-
     return lightsInfo;
 }
 
