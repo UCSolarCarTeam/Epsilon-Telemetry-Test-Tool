@@ -97,7 +97,6 @@ QJsonObject InternetReporting::makeMotorDetails(int n)
         return motorDetails;
     }
 
-
     else
     {
         motorDetails.insert("PhaseCCurrent", motor1DetailsData_.phaseCCurrent);
@@ -124,7 +123,6 @@ QJsonObject InternetReporting::makeMotorDetails(int n)
 QJsonObject InternetReporting::makeDriverControls()
 {
     QJsonObject driverControls;
-
     driverControls.insert("Alive", driverControlsData_.alive);
     driverControls.insert("HeadlightsOff", driverControlsData_.headlightsOff);
     driverControls.insert("HeadLightsLow", driverControlsData_.headlightsLow);
@@ -154,8 +152,8 @@ QJsonObject InternetReporting::makeDriverControls()
 QJsonArray InternetReporting::makeMotorFaults()
 {
     QJsonArray motorFaults;
-
     QJsonObject motorFaults0;
+    QJsonObject motorFaults1;
 
     QJsonObject errorFlags0;
     errorFlags0.insert("MotorOverSpeed", motorFaultsData_.motor0OverSpeed);
@@ -176,14 +174,11 @@ QJsonArray InternetReporting::makeMotorFaults()
     limitFlags0.insert("BusVoltageUpper", motorFaultsData_.motor0BusVoltageUpperLimit);
     limitFlags0.insert("BusVoltageLower", motorFaultsData_.motor0BusVoltageLowerLimit);
     limitFlags0.insert("IpmOrMotorTemperature", motorFaultsData_.motor0IpmOrMotorTemperatureLimit);
-    motorFaults0.insert("LimitFlags", limitFlags0);
 
+    motorFaults0.insert("LimitFlags", limitFlags0);
     motorFaults0.insert("RxErrorCount", motorFaultsData_.motor0RxErrorCount);
     motorFaults0.insert("TxErrorCount", motorFaultsData_.motor0TxErrorCount);
-
     motorFaults.push_back(motorFaults0);
-
-    QJsonObject motorFaults1;
 
     QJsonObject errorFlags1;
     errorFlags1.insert("MotorOverSpeed", motorFaultsData_.motor1OverSpeed);
@@ -204,11 +199,10 @@ QJsonArray InternetReporting::makeMotorFaults()
     limitFlags1.insert("BusVoltageUpper", motorFaultsData_.motor1BusVoltageUpperLimit);
     limitFlags1.insert("BusVoltageLower", motorFaultsData_.motor1BusVoltageLowerLimit);
     limitFlags1.insert("IpmOrMotorTemperature", motorFaultsData_.motor1IpmOrMotorTemperatureLimit);
-    motorFaults1.insert("LimitFlags", limitFlags1);
 
+    motorFaults1.insert("LimitFlags", limitFlags1);
     motorFaults1.insert("RxErrorCount", motorFaultsData_.motor1RxErrorCount);
     motorFaults1.insert("TxErrorCount", motorFaultsData_.motor1TxErrorCount);
-
     motorFaults.push_back(motorFaults1);
 
     return motorFaults;
@@ -217,7 +211,6 @@ QJsonArray InternetReporting::makeMotorFaults()
 QJsonObject InternetReporting::makeBatteryFaults()
 {
     QJsonObject batteryFaults;
-
     batteryFaults.insert("CellOverVoltage", batteryFaultsData_.cellOverVoltage);
     batteryFaults.insert("CellUnderVoltage", batteryFaultsData_.cellOverVoltage);
     batteryFaults.insert("CellOverTemp", batteryFaultsData_.cellOverTemperature);
@@ -236,9 +229,7 @@ QJsonObject InternetReporting::makeBatteryFaults()
 
 QJsonObject InternetReporting::makeBattery()
 {
-
     QJsonObject battery;
-
     battery.insert("Alive", batteryData_.alive);
     battery.insert("PackSocAmpHours", batteryData_.packSocAmpHours);
     battery.insert("PackSocPercentage", batteryData_.packSocPercentage);
@@ -281,8 +272,8 @@ QJsonObject InternetReporting::makeBattery()
     highestCellTemp.insert("Temp", batteryData_.highestCellTemperature);
     highestCellTemp.insert("CmuNumber", batteryData_.highestCellTemperatureCmuNumber);
     highestCellTemp.insert("CellNumber", batteryData_.highestCellTemperatureCellNumber);
-    battery.insert("HighestCellTemp", highestCellTemp);
 
+    battery.insert("HighestCellTemp", highestCellTemp);
     battery.insert("Voltage", batteryData_.voltage);
     battery.insert("Current", batteryData_.current);
     battery.insert("Fan0Speed", batteryData_.fan0Speed);
@@ -296,10 +287,8 @@ QJsonObject InternetReporting::makeBattery()
 
 QJsonArray InternetReporting::makeCmu()
 {
-
-    QJsonObject cMUInfo;
-
-    QJsonArray cMUArray;
+    QJsonObject cmuInfo;
+    QJsonArray cmu;
 
     QJsonArray cellVoltageInfo;
     for (int i = 0; i < 8; i++)
@@ -307,9 +296,8 @@ QJsonArray InternetReporting::makeCmu()
         cellVoltageInfo.push_back(cmuData_.cellVoltage[i]);
     }
 
-    cMUInfo.insert("Voltages", cellVoltageInfo);
-
-    cMUInfo.insert("PcbTemp", cmuData_.pcbTemperature);
+    cmuInfo.insert("Voltages", cellVoltageInfo);
+    cmuInfo.insert("PcbTemp", cmuData_.pcbTemperature);
 
     QJsonArray cellTemperatureInfo;
     for (int i = 0; i < 15; i++)
@@ -317,34 +305,34 @@ QJsonArray InternetReporting::makeCmu()
         cellTemperatureInfo.push_back(cmuData_.cellTemperature[i]);
     }
 
-    cMUInfo.insert("CellTemps", cellTemperatureInfo);
+    cmuInfo.insert("CellTemps", cellTemperatureInfo);
 
     for(unsigned char i = 0; i < CcsDefines::CMU_COUNT; i++)
     {
-        cMUArray.push_back(cMUInfo);
+        cmu.push_back(cmuInfo);
     }
 
-    return cMUArray;
+    return cmu;
 
 }
 
 QJsonArray InternetReporting::makeMppt()
 {
-    QJsonArray mPPTArray;
+    QJsonArray mppt;
 
-    QJsonObject mPPTInfo;
-    mPPTInfo.insert("Alive", mpptData_.alive);
-    mPPTInfo.insert("ArrayVoltage", mpptData_.arrayVoltage);
-    mPPTInfo.insert("ArrayCurrent", mpptData_.arrayCurrent);
-    mPPTInfo.insert("BatteryVoltage", mpptData_.batteryVoltage);
-    mPPTInfo.insert("Temperature", mpptData_.temperature);
+    QJsonObject mpptInfo;
+    mpptInfo.insert("Alive", mpptData_.alive);
+    mpptInfo.insert("ArrayVoltage", mpptData_.arrayVoltage);
+    mpptInfo.insert("ArrayCurrent", mpptData_.arrayCurrent);
+    mpptInfo.insert("BatteryVoltage", mpptData_.batteryVoltage);
+    mpptInfo.insert("Temperature", mpptData_.temperature);
 
     for(unsigned char i = 0; i < CcsDefines::MPPT_COUNT; i++)
     {
-        mPPTArray.push_back(mPPTInfo);
+        mppt.push_back(mpptInfo);
     }
 
-    return mPPTArray;
+    return mppt;
 }
 
 QJsonObject InternetReporting::makeLights()
