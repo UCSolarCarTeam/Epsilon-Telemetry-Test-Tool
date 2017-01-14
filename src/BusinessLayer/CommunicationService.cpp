@@ -23,7 +23,7 @@ CommunicationService::CommunicationService(View& view)
 void CommunicationService::setPeripheralSerialPort()
 {
     outputDevice_ = new QSerialPort();
-    outputPeripheral_ = new SerialPortPeripheral(*outputDevice_);
+    serialPeripheral_ = new SerialPortPeripheral(*outputDevice_);
 }
 
 void CommunicationService::setInternetConnection()
@@ -33,7 +33,7 @@ void CommunicationService::setInternetConnection()
 
 void CommunicationService::sendSerialData(const unsigned char* packet, int packetLength)
 {
-    outputPeripheral_->sendSerialData(packet, packetLength);
+    serialPeripheral_->sendSerialData(packet, packetLength);
 }
 
 void CommunicationService::sendInternetData(const QByteArray & /*data*/)
@@ -44,8 +44,8 @@ void CommunicationService::sendInternetData(const QByteArray & /*data*/)
 void CommunicationService::attemptSerialConnection()
 {
     QStringList paramList = (QStringList() << view_.getCommunicationPort());
-    outputPeripheral_->setParameters(paramList);
-    view_.setConnectionStatus(outputPeripheral_->attemptConnection());
+    serialPeripheral_->setParameters(paramList);
+    view_.setConnectionStatus(serialPeripheral_->attemptConnection());
 }
 
 void CommunicationService::attemptInternetConnection()

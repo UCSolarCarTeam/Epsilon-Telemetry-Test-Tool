@@ -29,6 +29,6 @@ public slots:
 private:
     View& view_;
     QSerialPort* outputDevice_;
-    SerialPortPeripheral* outputPeripheral_;
+    SerialPortPeripheral* serialPeripheral_;
     InternetPeripheral* internetPeripheral_;
 };
