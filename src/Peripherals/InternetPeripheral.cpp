@@ -18,8 +18,9 @@ InternetPeripheral::~InternetPeripheral()
 {
 }
 
-void InternetPeripheral::setParameters(QStringList /*params*/)
+void InternetPeripheral::setParameters(QStringList parameters)
 {
+    Q_UNUSED(parameters);
    //TODO: Implement or replace this function to set up parameters
 }
 
@@ -30,7 +31,8 @@ bool InternetPeripheral::attemptConnection()
     return true;
 }
 
-void InternetPeripheral::sendInternetData(const QByteArray & /*data*/)
+void InternetPeripheral::sendInternetData(const QByteArray &data)
 {
+    Q_UNUSED(data);
     //TODO: Implement or replace this function to send data to the server
 }

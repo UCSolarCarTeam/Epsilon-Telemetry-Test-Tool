@@ -36,8 +36,9 @@ void CommunicationService::sendSerialData(const unsigned char* packet, int packe
     serialPeripheral_->sendSerialData(packet, packetLength);
 }
 
-void CommunicationService::sendInternetData(const QByteArray & /*data*/)
+void CommunicationService::sendInternetData(const QByteArray &data)
 {
+    Q_UNUSED(data);
     //TODO: Implement or replace this function to send incoming data
 }
 
