@@ -14,8 +14,10 @@ HEADERS += \
     $$PWD/TelemetryReporting.h \
     $$PWD/I_CommunicationService.h \
     $$PWD/CommunicationService.h \
+    $$PWD/Util.h \
 
 SOURCES += \
     $$PWD/CrcCalculator.cpp \
     $$PWD/TelemetryReporting.cpp \
     $$PWD/CommunicationService.cpp \
+    $$PWD/Util.cpp \

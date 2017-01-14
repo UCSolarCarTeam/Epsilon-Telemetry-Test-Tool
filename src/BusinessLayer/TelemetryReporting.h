@@ -74,16 +74,6 @@ private:
     unsigned int stuffData(const unsigned char* dataToEncode, unsigned long length, unsigned char* encodedData);
     FRIEND_TEST(TelemetryReportingTest, addChecksumTest);
     void addChecksum(unsigned char* data, unsigned int length);
-    FRIEND_TEST(TelemetryReportingTest, writeFloatIntoArrayTest);
-    void writeFloatIntoArray(unsigned char* data, int index, const float& value);
-    FRIEND_TEST(TelemetryReportingTest, writeShortIntoArrayTest);
-    void writeShortIntoArray(unsigned char* data, int index, const short& value);
-    FRIEND_TEST(TelemetryReportingTest, writeUShortIntoArrayTest);
-    void writeUShortIntoArray(unsigned char* data, int index, const unsigned short& value);
-    FRIEND_TEST(TelemetryReportingTest, writeUIntIntoArrayTest);
-    void writeUIntIntoArray(unsigned char* data, int index, const unsigned int& value);
-    FRIEND_TEST(TelemetryReportingTest, writeBoolsIntoArrayTest);
-    void writeBoolsIntoArray(unsigned char* data, int index, const bool values[], int numValues);
 
 private:
     I_CommunicationService& communicationService_;

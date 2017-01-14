@@ -17,6 +17,7 @@
 #include "View.h"
 #include "TelemetryReporting.h"
 #include "MockCommunicationService.h"
+#include "Util.h"
 
 #include "CcsDefines.h"
 #include "CrcCalculator.h"
@@ -140,16 +141,16 @@ protected:
 
         for (int i = 0; i < numCellVoltageFields; ++i)
         {
-            telemetryReporting_->writeShortIntoArray(data, cmuCellVoltageOffset + (i * 2), cmuData_->cellVoltage[i]);
+            Util::writeShortIntoArray(data, cmuCellVoltageOffset + (i * 2), cmuData_->cellVoltage[i]);
         }
 
-        telemetryReporting_->writeUShortIntoArray(data, 18, cmuData_->pcbTemperature);
+        Util::writeUShortIntoArray(data, 18, cmuData_->pcbTemperature);
         const int cmuCellTemperatureOffset = 20;
         const int numCellTemperatureFields = 15;
 
         for (int i = 0; i < numCellTemperatureFields; i++)
         {
-            telemetryReporting_->writeUShortIntoArray(data, cmuCellTemperatureOffset + (i * 2), cmuData_->cellTemperature[i]);
+        	Util::writeUShortIntoArray(data, cmuCellTemperatureOffset + (i * 2), cmuData_->cellTemperature[i]);
         }
     }
 
@@ -164,10 +165,10 @@ protected:
         }
 
         data[1] = numberAndAlive;
-        telemetryReporting_->writeUShortIntoArray(data, 2, mpptData_->arrayVoltage);
-        telemetryReporting_->writeUShortIntoArray(data, 4, mpptData_->arrayCurrent);
-        telemetryReporting_->writeUShortIntoArray(data, 6, mpptData_->batteryVoltage);
-        telemetryReporting_->writeUShortIntoArray(data, 8, mpptData_->temperature);
+        Util::writeUShortIntoArray(data, 2, mpptData_->arrayVoltage);
+        Util::writeUShortIntoArray(data, 4, mpptData_->arrayCurrent);
+        Util::writeUShortIntoArray(data, 6, mpptData_->batteryVoltage);
+        Util::writeUShortIntoArray(data, 8, mpptData_->temperature);
     }
 
     class PackageIdMatcher : public MatcherInterface<std::tuple<const unsigned char*, int>>
@@ -251,19 +252,19 @@ TEST_F(TelemetryReportingTest, sendKeyMotorTest) // TODO create function which b
     unsigned char data[payloadLength];
     data[0] = CcsDefines::KEY_MOTOR_PKG_ID;
     bool motor0Alive[] = {keyMotorData_->motor0Alive};
-    telemetryReporting_->writeBoolsIntoArray(data, 1, motor0Alive, 1);
-    telemetryReporting_->writeFloatIntoArray(data, 2, keyMotorData_->motor0SetCurrent);
-    telemetryReporting_->writeFloatIntoArray(data, 6, keyMotorData_->motor0SetVelocity);
-    telemetryReporting_->writeFloatIntoArray(data, 10, keyMotorData_->motor0BusCurrent);
-    telemetryReporting_->writeFloatIntoArray(data, 14, keyMotorData_->motor0BusVoltage);
-    telemetryReporting_->writeFloatIntoArray(data, 18, keyMotorData_->motor0VehicleVelocity);
+    Util::writeBoolsIntoArray(data, 1, motor0Alive, 1);
+    Util::writeFloatIntoArray(data, 2, keyMotorData_->motor0SetCurrent);
+    Util::writeFloatIntoArray(data, 6, keyMotorData_->motor0SetVelocity);
+    Util::writeFloatIntoArray(data, 10, keyMotorData_->motor0BusCurrent);
+    Util::writeFloatIntoArray(data, 14, keyMotorData_->motor0BusVoltage);
+    Util::writeFloatIntoArray(data, 18, keyMotorData_->motor0VehicleVelocity);
     bool motor1Alive[] = {keyMotorData_->motor1Alive};
-    telemetryReporting_->writeBoolsIntoArray(data, 22, motor1Alive, 1);
-    telemetryReporting_->writeFloatIntoArray(data, 23, keyMotorData_->motor1SetCurrent);
-    telemetryReporting_->writeFloatIntoArray(data, 27, keyMotorData_->motor1SetVelocity);
-    telemetryReporting_->writeFloatIntoArray(data, 31, keyMotorData_->motor1BusCurrent);
-    telemetryReporting_->writeFloatIntoArray(data, 35, keyMotorData_->motor1BusVoltage);
-    telemetryReporting_->writeFloatIntoArray(data, 39, keyMotorData_->motor1VehicleVelocity);
+    Util::writeBoolsIntoArray(data, 22, motor1Alive, 1);
+    Util::writeFloatIntoArray(data, 23, keyMotorData_->motor1SetCurrent);
+    Util::writeFloatIntoArray(data, 27, keyMotorData_->motor1SetVelocity);
+    Util::writeFloatIntoArray(data, 31, keyMotorData_->motor1BusCurrent);
+    Util::writeFloatIntoArray(data, 35, keyMotorData_->motor1BusVoltage);
+    Util::writeFloatIntoArray(data, 39, keyMotorData_->motor1VehicleVelocity);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x01)); // packet id
@@ -294,23 +295,23 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function whi
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
     unsigned char data[payloadLength];
     data[0] = CcsDefines::MOTOR_DETAILS_0_PKG_ID;
-    telemetryReporting_->writeFloatIntoArray(data, 1, motor0DetailsData_->phaseCCurrent);
-    telemetryReporting_->writeFloatIntoArray(data, 5, motor0DetailsData_->phaseBCurrent);
-    telemetryReporting_->writeFloatIntoArray(data, 9, motor0DetailsData_->MotorVoltageReal);
-    telemetryReporting_->writeFloatIntoArray(data, 13, motor0DetailsData_->MotorVoltageImaginary);
-    telemetryReporting_->writeFloatIntoArray(data, 17, motor0DetailsData_->MotorCurrentReal);
-    telemetryReporting_->writeFloatIntoArray(data, 21, motor0DetailsData_->MotorCurrentImaginary);
-    telemetryReporting_->writeFloatIntoArray(data, 25, motor0DetailsData_->BackEmfReal);
-    telemetryReporting_->writeFloatIntoArray(data, 29, motor0DetailsData_->BackEmfImaginary);
-    telemetryReporting_->writeFloatIntoArray(data, 33, motor0DetailsData_->RailSupply15V);
-    telemetryReporting_->writeFloatIntoArray(data, 37, motor0DetailsData_->RailSupply3V);
-    telemetryReporting_->writeFloatIntoArray(data, 41, motor0DetailsData_->RailSupply1V);
-    telemetryReporting_->writeFloatIntoArray(data, 45, motor0DetailsData_->heatSinkTemperature);
-    telemetryReporting_->writeFloatIntoArray(data, 49, motor0DetailsData_->motorTemperature);
-    telemetryReporting_->writeFloatIntoArray(data, 53, motor0DetailsData_->dspBoardTempearture);
-    telemetryReporting_->writeFloatIntoArray(data, 57, motor0DetailsData_->dcBusAmpHours);
-    telemetryReporting_->writeFloatIntoArray(data, 61, motor0DetailsData_->odometer);
-    telemetryReporting_->writeFloatIntoArray(data, 65, motor0DetailsData_->slipSpeed);
+    Util::writeFloatIntoArray(data, 1, motor0DetailsData_->phaseCCurrent);
+    Util::writeFloatIntoArray(data, 5, motor0DetailsData_->phaseBCurrent);
+    Util::writeFloatIntoArray(data, 9, motor0DetailsData_->MotorVoltageReal);
+    Util::writeFloatIntoArray(data, 13, motor0DetailsData_->MotorVoltageImaginary);
+    Util::writeFloatIntoArray(data, 17, motor0DetailsData_->MotorCurrentReal);
+    Util::writeFloatIntoArray(data, 21, motor0DetailsData_->MotorCurrentImaginary);
+    Util::writeFloatIntoArray(data, 25, motor0DetailsData_->BackEmfReal);
+    Util::writeFloatIntoArray(data, 29, motor0DetailsData_->BackEmfImaginary);
+    Util::writeFloatIntoArray(data, 33, motor0DetailsData_->RailSupply15V);
+    Util::writeFloatIntoArray(data, 37, motor0DetailsData_->RailSupply3V);
+    Util::writeFloatIntoArray(data, 41, motor0DetailsData_->RailSupply1V);
+    Util::writeFloatIntoArray(data, 45, motor0DetailsData_->heatSinkTemperature);
+    Util::writeFloatIntoArray(data, 49, motor0DetailsData_->motorTemperature);
+    Util::writeFloatIntoArray(data, 53, motor0DetailsData_->dspBoardTempearture);
+    Util::writeFloatIntoArray(data, 57, motor0DetailsData_->dcBusAmpHours);
+    Util::writeFloatIntoArray(data, 61, motor0DetailsData_->odometer);
+    Util::writeFloatIntoArray(data, 65, motor0DetailsData_->slipSpeed);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x02)); // packet id
@@ -321,23 +322,23 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function whi
     EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacket0AsArg).Times(1);
     telemetryReporting_->sendMotorDetails(0);
     data[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
-    telemetryReporting_->writeFloatIntoArray(data, 1, motor1DetailsData_->phaseCCurrent);
-    telemetryReporting_->writeFloatIntoArray(data, 5, motor1DetailsData_->phaseBCurrent);
-    telemetryReporting_->writeFloatIntoArray(data, 9, motor1DetailsData_->MotorVoltageReal);
-    telemetryReporting_->writeFloatIntoArray(data, 13, motor1DetailsData_->MotorVoltageImaginary);
-    telemetryReporting_->writeFloatIntoArray(data, 17, motor1DetailsData_->MotorCurrentReal);
-    telemetryReporting_->writeFloatIntoArray(data, 21, motor1DetailsData_->MotorCurrentImaginary);
-    telemetryReporting_->writeFloatIntoArray(data, 25, motor1DetailsData_->BackEmfReal);
-    telemetryReporting_->writeFloatIntoArray(data, 29, motor1DetailsData_->BackEmfImaginary);
-    telemetryReporting_->writeFloatIntoArray(data, 33, motor1DetailsData_->RailSupply15V);
-    telemetryReporting_->writeFloatIntoArray(data, 37, motor1DetailsData_->RailSupply3V);
-    telemetryReporting_->writeFloatIntoArray(data, 41, motor1DetailsData_->RailSupply1V);
-    telemetryReporting_->writeFloatIntoArray(data, 45, motor1DetailsData_->heatSinkTemperature);
-    telemetryReporting_->writeFloatIntoArray(data, 49, motor1DetailsData_->motorTemperature);
-    telemetryReporting_->writeFloatIntoArray(data, 53, motor1DetailsData_->dspBoardTempearture);
-    telemetryReporting_->writeFloatIntoArray(data, 57, motor1DetailsData_->dcBusAmpHours);
-    telemetryReporting_->writeFloatIntoArray(data, 61, motor1DetailsData_->odometer);
-    telemetryReporting_->writeFloatIntoArray(data, 65, motor1DetailsData_->slipSpeed);
+    Util::writeFloatIntoArray(data, 1, motor1DetailsData_->phaseCCurrent);
+    Util::writeFloatIntoArray(data, 5, motor1DetailsData_->phaseBCurrent);
+    Util::writeFloatIntoArray(data, 9, motor1DetailsData_->MotorVoltageReal);
+    Util::writeFloatIntoArray(data, 13, motor1DetailsData_->MotorVoltageImaginary);
+    Util::writeFloatIntoArray(data, 17, motor1DetailsData_->MotorCurrentReal);
+    Util::writeFloatIntoArray(data, 21, motor1DetailsData_->MotorCurrentImaginary);
+    Util::writeFloatIntoArray(data, 25, motor1DetailsData_->BackEmfReal);
+    Util::writeFloatIntoArray(data, 29, motor1DetailsData_->BackEmfImaginary);
+    Util::writeFloatIntoArray(data, 33, motor1DetailsData_->RailSupply15V);
+    Util::writeFloatIntoArray(data, 37, motor1DetailsData_->RailSupply3V);
+    Util::writeFloatIntoArray(data, 41, motor1DetailsData_->RailSupply1V);
+    Util::writeFloatIntoArray(data, 45, motor1DetailsData_->heatSinkTemperature);
+    Util::writeFloatIntoArray(data, 49, motor1DetailsData_->motorTemperature);
+    Util::writeFloatIntoArray(data, 53, motor1DetailsData_->dspBoardTempearture);
+    Util::writeFloatIntoArray(data, 57, motor1DetailsData_->dcBusAmpHours);
+    Util::writeFloatIntoArray(data, 61, motor1DetailsData_->odometer);
+    Util::writeFloatIntoArray(data, 65, motor1DetailsData_->slipSpeed);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x03)); // packet id
@@ -363,7 +364,7 @@ TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function w
     unsigned char data[payloadLength];
     data[0] = CcsDefines::DRIVER_CONTROLS_PKG_ID;
     bool driverControlBoardsAlive[] = {driverControlsData_->alive};
-    telemetryReporting_->writeBoolsIntoArray(data, 1, driverControlBoardsAlive, 1);
+    Util::writeBoolsIntoArray(data, 1, driverControlBoardsAlive, 1);
     bool lightsInputs[] = { driverControlsData_->headlightsOff,
                             driverControlsData_->headlightsLow,
                             driverControlsData_->headlightsHigh,
@@ -372,16 +373,16 @@ TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function w
                             driverControlsData_->hazardLights,
                             driverControlsData_->interiorLights
                           };
-    telemetryReporting_->writeBoolsIntoArray(data, 2, lightsInputs, 7);
+    Util::writeBoolsIntoArray(data, 2, lightsInputs, 7);
     bool musicInputs[] = { driverControlsData_->musicAux,
                            driverControlsData_->volumeUp,
                            driverControlsData_->volumeDown,
                            driverControlsData_->nextSong,
                            driverControlsData_->prevSong
                          };
-    telemetryReporting_->writeBoolsIntoArray(data, 3, musicInputs, 5);
-    telemetryReporting_->writeUShortIntoArray(data, 4, driverControlsData_->acceleration);
-    telemetryReporting_->writeUShortIntoArray(data, 6, driverControlsData_->regenBraking);
+    Util::writeBoolsIntoArray(data, 3, musicInputs, 5);
+    Util::writeUShortIntoArray(data, 4, driverControlsData_->acceleration);
+    Util::writeUShortIntoArray(data, 6, driverControlsData_->regenBraking);
     bool driverInputs[] = { driverControlsData_->brakes,
                             driverControlsData_->forward,
                             driverControlsData_->reverse,
@@ -389,7 +390,7 @@ TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function w
                             driverControlsData_->horn,
                             driverControlsData_->reset
                           };
-    telemetryReporting_->writeBoolsIntoArray(data, 8, driverInputs, 6);
+    Util::writeBoolsIntoArray(data, 8, driverInputs, 6);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x04)); // packet id
@@ -424,7 +425,7 @@ TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function whic
                                 motorFaultsData_->motor0Rail15VUnderVoltageLockOut,
                                 motorFaultsData_->motor0DesaturationFault
                               };
-    telemetryReporting_->writeBoolsIntoArray(data, 1, motor0ErrorFlags, 8);
+    Util::writeBoolsIntoArray(data, 1, motor0ErrorFlags, 8);
     bool motor1ErrorFlags[] = { motorFaultsData_->motor1OverSpeed,
                                 motorFaultsData_->motor1SoftwareOverCurrent,
                                 motorFaultsData_->motor1DcBusOverVoltage,
@@ -434,7 +435,7 @@ TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function whic
                                 motorFaultsData_->motor1Rail15VUnderVoltageLockOut,
                                 motorFaultsData_->motor1DesaturationFault
                               };
-    telemetryReporting_->writeBoolsIntoArray(data, 2, motor1ErrorFlags, 8);
+    Util::writeBoolsIntoArray(data, 2, motor1ErrorFlags, 8);
     bool motor0LimitFlags[] = { motorFaultsData_->motor0OutputVoltagePwmLimit,
                                 motorFaultsData_->motor0MotorCurrentLimit,
                                 motorFaultsData_->motor0VelocityLimit,
@@ -443,7 +444,7 @@ TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function whic
                                 motorFaultsData_->motor0BusVoltageLowerLimit,
                                 motorFaultsData_->motor0IpmOrMotorTemperatureLimit
                               };
-    telemetryReporting_->writeBoolsIntoArray(data, 3, motor0LimitFlags, 7);
+    Util::writeBoolsIntoArray(data, 3, motor0LimitFlags, 7);
     bool motor1LimitFlags[] = { motorFaultsData_->motor1OutputVoltagePwmLimit,
                                 motorFaultsData_->motor1MotorCurrentLimit,
                                 motorFaultsData_->motor1VelocityLimit,
@@ -452,7 +453,7 @@ TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function whic
                                 motorFaultsData_->motor1BusVoltageLowerLimit,
                                 motorFaultsData_->motor1IpmOrMotorTemperatureLimit
                               };
-    telemetryReporting_->writeBoolsIntoArray(data, 4, motor1LimitFlags, 7);
+    Util::writeBoolsIntoArray(data, 4, motor1LimitFlags, 7);
     data[5] = motorFaultsData_->motor0RxErrorCount;
     data[6] = motorFaultsData_->motor0TxErrorCount;
     data[7] = motorFaultsData_->motor1RxErrorCount;
@@ -496,7 +497,7 @@ TEST_F(TelemetryReportingTest, sendBatteryFaultsTest) // TODO create function wh
                           batteryFaultsData_->contactorStuck,
                           batteryFaultsData_->cmuDetectedExtraCellPresent
                         };
-    telemetryReporting_->writeBoolsIntoArray(data, 1, errorFlags, 13);
+    Util::writeBoolsIntoArray(data, 1, errorFlags, 13);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x06)); // packet id
@@ -523,15 +524,15 @@ TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which bu
     unsigned char data[payloadLength];
     data[0] = CcsDefines::BATTERY_PKG_ID;
     bool bmuAlive[] = { batteryData_->alive};
-    telemetryReporting_->writeBoolsIntoArray(data, 1, bmuAlive, 1);
-    telemetryReporting_->writeFloatIntoArray(data, 2, batteryData_->packSocAmpHours);
-    telemetryReporting_->writeFloatIntoArray(data, 6, batteryData_->packSocPercentage);
-    telemetryReporting_->writeFloatIntoArray(data, 10, batteryData_->packBalanceSoc);
-    telemetryReporting_->writeFloatIntoArray(data, 14, batteryData_->packBalanceSocPercentage);
-    telemetryReporting_->writeUShortIntoArray(data, 18, batteryData_->chargingCellVoltageError);
-    telemetryReporting_->writeUShortIntoArray(data, 20, batteryData_->cellTemperatureMargin);
-    telemetryReporting_->writeUShortIntoArray(data, 22, batteryData_->dischargingCellVoltageError);
-    telemetryReporting_->writeUShortIntoArray(data, 24, batteryData_->totalPackCapacity);
+    Util::writeBoolsIntoArray(data, 1, bmuAlive, 1);
+    Util::writeFloatIntoArray(data, 2, batteryData_->packSocAmpHours);
+    Util::writeFloatIntoArray(data, 6, batteryData_->packSocPercentage);
+    Util::writeFloatIntoArray(data, 10, batteryData_->packBalanceSoc);
+    Util::writeFloatIntoArray(data, 14, batteryData_->packBalanceSocPercentage);
+    Util::writeUShortIntoArray(data, 18, batteryData_->chargingCellVoltageError);
+    Util::writeUShortIntoArray(data, 20, batteryData_->cellTemperatureMargin);
+    Util::writeUShortIntoArray(data, 22, batteryData_->dischargingCellVoltageError);
+    Util::writeUShortIntoArray(data, 24, batteryData_->totalPackCapacity);
     bool PrechargeContactorDriverStatus[] = { batteryData_->contactor0Errorstatus,
                                               batteryData_->contactor1ErrorStatus,
                                               batteryData_->contactor0Status,
@@ -540,29 +541,29 @@ TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which bu
                                               batteryData_->contactor2ErrorStatus,
                                               batteryData_->contactor2Status
                                             };
-    telemetryReporting_->writeBoolsIntoArray(data, 26, PrechargeContactorDriverStatus, 7);
+    Util::writeBoolsIntoArray(data, 26, PrechargeContactorDriverStatus, 7);
     data[27] = (unsigned char) batteryData_->prechargeState;
     bool PrechargeTimerElapsed[] = { batteryData_->prechargeTimerElapsed,
                                      batteryData_->prechargeTimerNotElapsed
                                    };
-    telemetryReporting_->writeBoolsIntoArray(data, 28, PrechargeTimerElapsed, 2);
-    telemetryReporting_->writeUShortIntoArray(data, 29, batteryData_->prechargeTimerCount);
-    telemetryReporting_->writeUShortIntoArray(data, 31, batteryData_->lowestCellVoltage);
+    Util::writeBoolsIntoArray(data, 28, PrechargeTimerElapsed, 2);
+    Util::writeUShortIntoArray(data, 29, batteryData_->prechargeTimerCount);
+    Util::writeUShortIntoArray(data, 31, batteryData_->lowestCellVoltage);
     data[33] = fitTwoSingleUChar(batteryData_->lowestCellVoltageCmuNumber, batteryData_->lowestCellVoltageCellNumber);
-    telemetryReporting_->writeUShortIntoArray(data, 34, batteryData_->highestCellVoltage);
+    Util::writeUShortIntoArray(data, 34, batteryData_->highestCellVoltage);
     data[36] = fitTwoSingleUChar(batteryData_->highestCellVoltageCmuNumber, batteryData_->highestCellVoltageCellNumber);
-    telemetryReporting_->writeUShortIntoArray(data, 37, batteryData_->lowestCellTemperature);
+    Util::writeUShortIntoArray(data, 37, batteryData_->lowestCellTemperature);
     data[39] = fitTwoSingleUChar(batteryData_->lowestCellTemperatureCmuNumber, batteryData_->lowestCellTemperatureCellNumber);
-    telemetryReporting_->writeUShortIntoArray(data, 40, batteryData_->highestCellTemperature);
+    Util::writeUShortIntoArray(data, 40, batteryData_->highestCellTemperature);
     data[42] = fitTwoSingleUChar(batteryData_->highestCellTemperatureCmuNumber, batteryData_->highestCellTemperatureCellNumber);
-    telemetryReporting_->writeUIntIntoArray(data, 43, batteryData_->voltage);
-    telemetryReporting_->writeUIntIntoArray(data, 47, batteryData_->current);
-    telemetryReporting_->writeUShortIntoArray(data, 51, batteryData_->fan0Speed);
-    telemetryReporting_->writeUShortIntoArray(data, 53, batteryData_->fan1Speed);
-    telemetryReporting_->writeUShortIntoArray(data, 55, batteryData_->fanContactors12VCurrentConsumption);
-    telemetryReporting_->writeUShortIntoArray(data, 57, batteryData_->cmu12VCurrentConsumption);
+    Util::writeUIntIntoArray(data, 43, batteryData_->voltage);
+    Util::writeUIntIntoArray(data, 47, batteryData_->current);
+    Util::writeUShortIntoArray(data, 51, batteryData_->fan0Speed);
+    Util::writeUShortIntoArray(data, 53, batteryData_->fan1Speed);
+    Util::writeUShortIntoArray(data, 55, batteryData_->fanContactors12VCurrentConsumption);
+    Util::writeUShortIntoArray(data, 57, batteryData_->cmu12VCurrentConsumption);
     bool BMSCanLockedOut[] = {batteryData_->bmsCanLockedOut};
-    telemetryReporting_->writeBoolsIntoArray(data, 59, BMSCanLockedOut, 1);
+    Util::writeBoolsIntoArray(data, 59, BMSCanLockedOut, 1);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x07)); // packet id
@@ -675,7 +676,7 @@ TEST_F(TelemetryReportingTest, sendLightsTest) // TODO create function which bui
                            lightsData_->rightSignal,
                            lightsData_->bmsStrobeLight
                           };
-    telemetryReporting_->writeBoolsIntoArray(data, 1, lightsStatus, 6);
+    Util::writeBoolsIntoArray(data, 1, lightsStatus, 6);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x0A)); // packet id
@@ -787,149 +788,6 @@ TEST_F(TelemetryReportingTest, addChecksumTest)
         telemetryReporting_->addChecksum(dataActual, length - CHECK_SUM_LENGTH);
         ASSERT_THAT(std::vector<unsigned char>(dataActual, dataActual + length),
                     ElementsAreArray(std::vector<unsigned char>(dataExpected, dataExpected + length)));
-    }
-}
-
-TEST_F(TelemetryReportingTest, writeBoolsIntoArrayTest)
-{
-    bool inSingleTrue[] = {true};
-    const std::vector<unsigned char> expctSingleTrue = {0x01};
-    bool inSingleFalse[] = {false};
-    const std::vector<unsigned char> expctSingleFalse = {0x00};
-    bool input4[] = {false, true, false, true};
-    const std::vector<unsigned char> expct4 = {0x0A};
-    bool input4inv[] = {true, false, true, false};
-    const std::vector<unsigned char> expct4inv = {0x05};
-    bool input8[] = {false, true, false, true, false, true, false, true};
-    const std::vector<unsigned char> expct8 = {0xAA};
-    bool input9[] = {false, true, false, true, false, true, false, true, true};
-    const std::vector<unsigned char> expct9 = {0xAA, 0x01};
-    bool inputsAllTrue[] = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
-    const std::vector<unsigned char> expctAllTrue = {0xFF, 0xFF};
-    bool inputsAllFalse[] = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
-    const std::vector<unsigned char> expctAllFalse = {0x00, 0x00};
-    const std::vector<std::tuple<bool*, int, std::vector<unsigned char>>> inputs =
-    {
-        std::make_tuple(inSingleTrue, sizeof(inSingleTrue) / sizeof(bool), expctSingleTrue),
-        std::make_tuple(inSingleFalse, sizeof(inSingleFalse) / sizeof(bool), expctSingleFalse),
-        std::make_tuple(input4, sizeof(input4) / sizeof(bool), expct4),
-        std::make_tuple(input4inv, sizeof(input4inv) / sizeof(bool), expct4inv),
-        std::make_tuple(input8, sizeof(input8) / sizeof(bool), expct8),
-        std::make_tuple(input9, sizeof(input9) / sizeof(bool), expct9),
-        std::make_tuple(inputsAllTrue, sizeof(inputsAllTrue) / sizeof(bool), expctAllTrue),
-        std::make_tuple(inputsAllFalse, sizeof(inputsAllFalse) / sizeof(bool), expctAllFalse)
-    };
-
-    for (std::vector<std::tuple<bool*, int, std::vector<unsigned char>>>::const_iterator it = inputs.begin(); it != inputs.end(); ++it)
-    {
-        const bool* input = std::get<0>(*it);
-        unsigned int actualLength = std::get<2>(*it).size();
-        unsigned char actual[actualLength];
-        telemetryReporting_->writeBoolsIntoArray(actual, 0, input, std::get<1>(*it));
-        // introduce vector wrapper for actual (workaround to get the matcher handle variable-length arrays)
-        std::vector<unsigned char> actual_wrapper(actual, actual + actualLength);
-        ASSERT_THAT(actual_wrapper, ElementsAreArray(std::get<2>(*it)));
-    }
-}
-
-TEST_F(TelemetryReportingTest, writeFloatIntoArrayTest)
-{
-    const std::vector<float> inputs = {42.1234, 0, 3512.341, 19921.213, -10.2, -42.32, -7, 12,
-                                       400, -66, -235.324, 8773.823, std::numeric_limits<float>::infinity(),
-                                       std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::epsilon(),
-                                       std::numeric_limits<float>::min(), std::numeric_limits<float>::max()
-                                      };
-
-    for (std::vector<float>::const_iterator it = inputs.begin(); it != inputs.end(); ++it)
-    {
-        const float input = *it;
-        char* p = ( char*)((void*)&input);
-        unsigned char actual[sizeof(float)];
-        telemetryReporting_->writeFloatIntoArray(actual, 0, input);
-        ASSERT_THAT(actual, ElementsAre(*p, *(p + 1), *(p + 2), *(p + 3)));
-    }
-}
-
-// test may fail if short size is smaller than 16 bit!!
-TEST_F(TelemetryReportingTest, writeShortIntoArrayTest)
-{
-    std::vector<short> inputs = {42, 3512, 19921, 12, 400, 66, 235, 8773,
-                                 12416, 3264, 12825, 6, 31210 , 24,
-                                 -42, -3512, -19921, -12, -400, -66, -235, -8773,
-                                 -12416, -3264, -12825, -6, -31210 , -24,
-                                 std::numeric_limits<short>::min() + 1, std::numeric_limits<short>::max() - 1,
-                                 std::numeric_limits<short>::min(), std::numeric_limits<short>::max()
-                                };
-    short pot2 = 1;
-
-    for (int i = 0; i < 16; i++)
-    {
-        inputs.push_back(pot2 - 1);
-        inputs.push_back(pot2);
-        pot2 *= 2;
-    }
-
-    for (std::vector<short>::const_iterator it = inputs.begin(); it != inputs.end(); ++it)
-    {
-        const short input = *it;
-        char* p = ( char*)((void*)&input);
-        unsigned char actual[sizeof(short)];
-        telemetryReporting_->writeShortIntoArray(actual, 0, input);
-        ASSERT_THAT(actual, ElementsAre(*p, *(p + 1)));
-    }
-}
-
-// test may fail if short size is smaller than 16 bit!!
-TEST_F(TelemetryReportingTest, writeUShortIntoArrayTest)
-{
-    std::vector<unsigned short> inputs = {42, 3512, 19921, 12, 400, 66, 235, 8773,
-                                          12416, 3264, 12825, 6, 51210 , 24,
-                                          std::numeric_limits<unsigned short>::min() + 1, std::numeric_limits<unsigned short>::max() - 1,
-                                          std::numeric_limits<unsigned short>::min(), std::numeric_limits<unsigned short>::max()
-                                         };
-    unsigned short pot2 = 1;
-
-    for (int i = 0; i < 16; i++)
-    {
-        inputs.push_back(pot2 - 1);
-        inputs.push_back(pot2);
-        pot2 *= 2;
-    }
-
-    for (std::vector<unsigned short>::const_iterator it = inputs.begin(); it != inputs.end(); ++it)
-    {
-        const unsigned short input = *it;
-        char* p = ( char*)((void*)&input);
-        unsigned char actual[sizeof(unsigned short)];
-        telemetryReporting_->writeUShortIntoArray(actual, 0, input);
-        ASSERT_THAT(actual, ElementsAre(*p, *(p + 1)));
-    }
-}
-
-// test may fail if uint size smaller than 32 bit!!
-TEST_F(TelemetryReportingTest, writeUIntIntoArrayTest)
-{
-    std::vector<unsigned int> inputs = {42, 3512, 19921, 12, 400, 66, 235, 8773,
-                                        1241632, 64128256, 5121024,
-                                        std::numeric_limits<unsigned int>::min() + 1, std::numeric_limits<unsigned int>::max() - 1,
-                                        std::numeric_limits<unsigned int>::min(), std::numeric_limits<unsigned int>::max()
-                                       };
-    unsigned int pot2 = 1;
-
-    for (int i = 0; i < 32; i++)
-    {
-        inputs.push_back(pot2 - 1);
-        inputs.push_back(pot2);
-        pot2 *= 2;
-    }
-
-    for (std::vector<unsigned int>::const_iterator it = inputs.begin(); it != inputs.end(); ++it)
-    {
-        const unsigned int input = *it;
-        char* p = ( char*)((void*)&input);
-        unsigned char actual[sizeof(unsigned int)];
-        telemetryReporting_->writeUIntIntoArray(actual, 0, input);
-        ASSERT_THAT(actual, ElementsAre(*p, *(p + 1), *(p + 2), *(p + 3)));
     }
 }
 
