@@ -28,7 +28,7 @@ void CommunicationService::setPeripheralSerialPort()
 
 void CommunicationService::setInternetConnection()
 {
-    //function stub
+    //TODO: Implement or replace this function to set up a connection with the server
 }
 
 void CommunicationService::sendSerialData(const unsigned char* packet, int packetLength)
@@ -36,9 +36,9 @@ void CommunicationService::sendSerialData(const unsigned char* packet, int packe
     outputPeripheral_->sendSerialData(packet, packetLength);
 }
 
-void CommunicationService::sendInternetData(const QByteArray & /*parameter name here*/)
+void CommunicationService::sendInternetData(const QByteArray & /*data*/)
 {
-    //function stub
+    //TODO: Implement or replace this function to send incoming data
 }
 
 
@@ -51,5 +51,5 @@ void CommunicationService::attemptSerialConnection()
 
 void CommunicationService::attemptInternetConnection()
 {
-    //function stub
+    //TODO: Implement or replace this function to try to connect to the server
 }
