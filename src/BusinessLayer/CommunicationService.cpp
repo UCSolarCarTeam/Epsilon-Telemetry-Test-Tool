@@ -17,7 +17,7 @@ CommunicationService::CommunicationService(View& view)
     : view_(view)
 {
     setPeripheralSerialPort();
-    connect(&view_, SIGNAL(attemptConnectionSignal()), this, SLOT(attemptConnection()));
+    connect(&view_, SIGNAL(attemptConnectionSignal()), this, SLOT(attemptSerialConnection()));
 }
 
 void CommunicationService::setPeripheralSerialPort()
@@ -40,7 +40,6 @@ void CommunicationService::sendInternetData(const QByteArray & /*data*/)
 {
     //TODO: Implement or replace this function to send incoming data
 }
-
 
 void CommunicationService::attemptSerialConnection()
 {

@@ -6,6 +6,7 @@
 #include <QString>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QDebug>
 
 #include "CcsDefines.h"
 #include "InternetReporting.h"
@@ -21,18 +22,7 @@
 #include "CommunicationService.h"
 #include "View.h"
 
-QJsonArray KeyMotor;
-QJsonObject MotorDetails0;
-QJsonObject MotorDetails1;
-QJsonObject DriverControls;
-QJsonArray MotorFaults;
-QJsonObject BatteryFaults;
-QJsonObject Battery;
-QJsonArray CMUArray;
-QJsonArray mPPTArray;
-QJsonObject lightsInfo;
-
-InternetReporting::InternetReporting(CommunicationService& commService,
+InternetReporting::InternetReporting(//CommunicationService& commService,
                                      const KeyMotorData& keyMotorData,
                                      const MotorDetailsData& motor0DetailsData,
                                      const MotorDetailsData& motor1DetailsData,
@@ -43,8 +33,8 @@ InternetReporting::InternetReporting(CommunicationService& commService,
                                      const CmuData& cmuData,
                                      const MpptData& mpptData,
                                      const LightsData& lightsData)
-    : communicationService_(commService)
-    , keyMotorData_(keyMotorData)
+    : //communicationService_(commService)
+    /*,*/ keyMotorData_(keyMotorData)
     , motor0DetailsData_(motor0DetailsData)
     , motor1DetailsData_(motor1DetailsData)
     , driverControlsData_(driverControlsData)
@@ -57,247 +47,260 @@ InternetReporting::InternetReporting(CommunicationService& commService,
 {
 }
 
-void InternetReporting::makeKeyMotor()
+QJsonArray InternetReporting::makeKeyMotor()
 {
-    KeyMotor = QJsonArray();
+    QJsonArray keyMotor;
 
-    QJsonObject KeyMotor0;
-    KeyMotor0.insert("Alive", keyMotorData_.motor0Alive);
-    KeyMotor0.insert("SetCurrent", keyMotorData_.motor0SetCurrent);
-    KeyMotor0.insert("SetVelocity", keyMotorData_.motor0SetVelocity);
-    KeyMotor0.insert("BusCurrent", keyMotorData_.motor0BusVoltage);
-    KeyMotor0.insert("BusVoltage", keyMotorData_.motor0BusVoltage);
-    KeyMotor0.insert("VehicleVelocity", keyMotorData_.motor0VehicleVelocity);
-    KeyMotor.push_back(KeyMotor0);
+    QJsonObject keyMotor0;
+    keyMotor0.insert("Alive", keyMotorData_.motor0Alive);
+    keyMotor0.insert("SetCurrent", keyMotorData_.motor0SetCurrent);
+    keyMotor0.insert("SetVelocity", keyMotorData_.motor0SetVelocity);
+    keyMotor0.insert("BusCurrent", keyMotorData_.motor0BusVoltage);
+    keyMotor0.insert("BusVoltage", keyMotorData_.motor0BusVoltage);
+    keyMotor0.insert("VehicleVelocity", keyMotorData_.motor0VehicleVelocity);
+    keyMotor.push_back(keyMotor0);
 
-    QJsonObject KeyMotor1;
-    KeyMotor1.insert("Alive", keyMotorData_.motor1Alive);
-    KeyMotor1.insert("SetCurrent", keyMotorData_.motor1SetCurrent);
-    KeyMotor1.insert("SetVelocity", keyMotorData_.motor1SetVelocity);
-    KeyMotor1.insert("BusCurrent", keyMotorData_.motor1BusVoltage);
-    KeyMotor1.insert("BusVoltage", keyMotorData_.motor1BusVoltage);
-    KeyMotor1.insert("VehicleVelocity", keyMotorData_.motor1VehicleVelocity);
-    KeyMotor.push_back(KeyMotor1);
+    QJsonObject keyMotor1;
+    keyMotor1.insert("Alive", keyMotorData_.motor1Alive);
+    keyMotor1.insert("SetCurrent", keyMotorData_.motor1SetCurrent);
+    keyMotor1.insert("SetVelocity", keyMotorData_.motor1SetVelocity);
+    keyMotor1.insert("BusCurrent", keyMotorData_.motor1BusVoltage);
+    keyMotor1.insert("BusVoltage", keyMotorData_.motor1BusVoltage);
+    keyMotor1.insert("VehicleVelocity", keyMotorData_.motor1VehicleVelocity);
+    keyMotor.push_back(keyMotor1);
 
+    return keyMotor;
 }
 
-void InternetReporting::makeMotorDetails(int n)
+QJsonObject InternetReporting::makeMotorDetails(int n)
 {
+    QJsonObject motorDetails;
+
     if(n == 0)
     {
-        MotorDetails0 = QJsonObject();
-        MotorDetails0.insert("PhaseCCurrent", motor0DetailsData_.phaseCCurrent);
-        MotorDetails0.insert("PhaseBCurrent", motor0DetailsData_.phaseBCurrent);
-        MotorDetails0.insert("MotorVoltageReal", motor0DetailsData_.MotorVoltageReal);
-        MotorDetails0.insert("MotorVoltageImaginary", motor0DetailsData_.MotorVoltageImaginary);
-        MotorDetails0.insert("MotorCurrentReal", motor0DetailsData_.MotorCurrentReal);
-        MotorDetails0.insert("MotorCurrentImaginary", motor0DetailsData_.MotorCurrentImaginary);
-        MotorDetails0.insert("BackEmfReal", motor0DetailsData_.BackEmfReal);
-        MotorDetails0.insert("VoltageRail15VSupply", motor0DetailsData_.RailSupply15V);
-        MotorDetails0.insert("VoltageRail3VSupply", motor0DetailsData_.RailSupply3V);
-        MotorDetails0.insert("VoltageRail1VSupply", motor0DetailsData_.RailSupply1V);
-        MotorDetails0.insert("HeatSinkTemp", motor0DetailsData_.heatSinkTemperature);
-        MotorDetails0.insert("MotorTemp", motor0DetailsData_.motorTemperature);
-        MotorDetails0.insert("DspBoardTemp", motor0DetailsData_.dspBoardTempearture);
-        MotorDetails0.insert("DcBusAmpHours", motor0DetailsData_.dcBusAmpHours);
-        MotorDetails0.insert("Odometer", motor0DetailsData_.odometer);
-        MotorDetails0.insert("Slipspeed", motor0DetailsData_.slipSpeed);
+        motorDetails.insert("PhaseCCurrent", motor0DetailsData_.phaseCCurrent);
+        motorDetails.insert("PhaseBCurrent", motor0DetailsData_.phaseBCurrent);
+        motorDetails.insert("MotorVoltageReal", motor0DetailsData_.MotorVoltageReal);
+        motorDetails.insert("MotorVoltageImaginary", motor0DetailsData_.MotorVoltageImaginary);
+        motorDetails.insert("MotorCurrentReal", motor0DetailsData_.MotorCurrentReal);
+        motorDetails.insert("MotorCurrentImaginary", motor0DetailsData_.MotorCurrentImaginary);
+        motorDetails.insert("BackEmfReal", motor0DetailsData_.BackEmfReal);
+        motorDetails.insert("VoltageRail15VSupply", motor0DetailsData_.RailSupply15V);
+        motorDetails.insert("VoltageRail3VSupply", motor0DetailsData_.RailSupply3V);
+        motorDetails.insert("VoltageRail1VSupply", motor0DetailsData_.RailSupply1V);
+        motorDetails.insert("HeatSinkTemp", motor0DetailsData_.heatSinkTemperature);
+        motorDetails.insert("MotorTemp", motor0DetailsData_.motorTemperature);
+        motorDetails.insert("DspBoardTemp", motor0DetailsData_.dspBoardTempearture);
+        motorDetails.insert("DcBusAmpHours", motor0DetailsData_.dcBusAmpHours);
+        motorDetails.insert("Odometer", motor0DetailsData_.odometer);
+        motorDetails.insert("Slipspeed", motor0DetailsData_.slipSpeed);
+
+        return motorDetails;
     }
 
 
-    if( n== 1)
+    else
     {
-        MotorDetails1 = QJsonObject();
-        MotorDetails1.insert("PhaseCCurrent", motor1DetailsData_.phaseCCurrent);
-        MotorDetails1.insert("PhaseBCurrent", motor1DetailsData_.phaseBCurrent);
-        MotorDetails1.insert("MotorVoltageReal", motor1DetailsData_.MotorVoltageReal);
-        MotorDetails1.insert("MotorVoltageImaginary", motor1DetailsData_.MotorVoltageImaginary);
-        MotorDetails1.insert("MotorCurrentReal", motor1DetailsData_.MotorCurrentReal);
-        MotorDetails1.insert("MotorCurrentImaginary", motor1DetailsData_.MotorCurrentImaginary);
-        MotorDetails1.insert("BackEmfReal", motor1DetailsData_.BackEmfReal);
-        MotorDetails1.insert("VoltageRail15VSupply", motor1DetailsData_.RailSupply15V);
-        MotorDetails1.insert("VoltageRail3VSupply", motor1DetailsData_.RailSupply3V);
-        MotorDetails1.insert("VoltageRail1VSupply", motor1DetailsData_.RailSupply1V);
-        MotorDetails1.insert("HeatSinkTemp", motor1DetailsData_.heatSinkTemperature);
-        MotorDetails1.insert("MotorTemp", motor1DetailsData_.motorTemperature);
-        MotorDetails1.insert("DspBoardTemp", motor1DetailsData_.dspBoardTempearture);
-        MotorDetails1.insert("DcBusAmpHours", motor1DetailsData_.dcBusAmpHours);
-        MotorDetails1.insert("Odometer", motor1DetailsData_.odometer);
-        MotorDetails1.insert("Slipspeed", motor1DetailsData_.slipSpeed);
+        motorDetails.insert("PhaseCCurrent", motor1DetailsData_.phaseCCurrent);
+        motorDetails.insert("PhaseBCurrent", motor1DetailsData_.phaseBCurrent);
+        motorDetails.insert("MotorVoltageReal", motor1DetailsData_.MotorVoltageReal);
+        motorDetails.insert("MotorVoltageImaginary", motor1DetailsData_.MotorVoltageImaginary);
+        motorDetails.insert("MotorCurrentReal", motor1DetailsData_.MotorCurrentReal);
+        motorDetails.insert("MotorCurrentImaginary", motor1DetailsData_.MotorCurrentImaginary);
+        motorDetails.insert("BackEmfReal", motor1DetailsData_.BackEmfReal);
+        motorDetails.insert("VoltageRail15VSupply", motor1DetailsData_.RailSupply15V);
+        motorDetails.insert("VoltageRail3VSupply", motor1DetailsData_.RailSupply3V);
+        motorDetails.insert("VoltageRail1VSupply", motor1DetailsData_.RailSupply1V);
+        motorDetails.insert("HeatSinkTemp", motor1DetailsData_.heatSinkTemperature);
+        motorDetails.insert("MotorTemp", motor1DetailsData_.motorTemperature);
+        motorDetails.insert("DspBoardTemp", motor1DetailsData_.dspBoardTempearture);
+        motorDetails.insert("DcBusAmpHours", motor1DetailsData_.dcBusAmpHours);
+        motorDetails.insert("Odometer", motor1DetailsData_.odometer);
+        motorDetails.insert("Slipspeed", motor1DetailsData_.slipSpeed);
+
+        return motorDetails;
     }
 }
 
-void InternetReporting::makeDriverControls()
+QJsonObject InternetReporting::makeDriverControls()
 {
-    DriverControls = QJsonObject();
+    QJsonObject driverControls;
 
-    DriverControls.insert("Alive", driverControlsData_.alive);
-    DriverControls.insert("HeadlightsOff", driverControlsData_.headlightsOff);
-    DriverControls.insert("HeadLightsLow", driverControlsData_.headlightsLow);
-    DriverControls.insert("HeadlightsHigh", driverControlsData_.headlightsHigh);
-    DriverControls.insert("SignalRight", driverControlsData_.signalRight);
-    DriverControls.insert("SignalLeft", driverControlsData_.signalLeft);
-    DriverControls.insert("Hazard", driverControlsData_.hazardLights);
-    DriverControls.insert("Interior", driverControlsData_.interiorLights);
-    DriverControls.insert("Aux", driverControlsData_.musicAux);
-    DriverControls.insert("VolumeUp", driverControlsData_.volumeUp);
-    DriverControls.insert("VolumeDown", driverControlsData_.volumeDown);
-    DriverControls.insert("NextSong", driverControlsData_.nextSong);
-    DriverControls.insert("PrevSong", driverControlsData_.prevSong);
-    DriverControls.insert("Acceleration", driverControlsData_.acceleration);
-    DriverControls.insert("RegenBraking", driverControlsData_.regenBraking);
-    DriverControls.insert("Brakes", driverControlsData_.brakes);
-    DriverControls.insert("Forward", driverControlsData_.forward);
-    DriverControls.insert("Reverse", driverControlsData_.reverse);
-    DriverControls.insert("PushToTalk", driverControlsData_.pushToTalk);
-    DriverControls.insert("Horn", driverControlsData_.horn);
-    DriverControls.insert("Reset", driverControlsData_.reset);
+    driverControls.insert("Alive", driverControlsData_.alive);
+    driverControls.insert("HeadlightsOff", driverControlsData_.headlightsOff);
+    driverControls.insert("HeadLightsLow", driverControlsData_.headlightsLow);
+    driverControls.insert("HeadlightsHigh", driverControlsData_.headlightsHigh);
+    driverControls.insert("SignalRight", driverControlsData_.signalRight);
+    driverControls.insert("SignalLeft", driverControlsData_.signalLeft);
+    driverControls.insert("Hazard", driverControlsData_.hazardLights);
+    driverControls.insert("Interior", driverControlsData_.interiorLights);
+    driverControls.insert("Aux", driverControlsData_.musicAux);
+    driverControls.insert("VolumeUp", driverControlsData_.volumeUp);
+    driverControls.insert("VolumeDown", driverControlsData_.volumeDown);
+    driverControls.insert("NextSong", driverControlsData_.nextSong);
+    driverControls.insert("PrevSong", driverControlsData_.prevSong);
+    driverControls.insert("Acceleration", driverControlsData_.acceleration);
+    driverControls.insert("RegenBraking", driverControlsData_.regenBraking);
+    driverControls.insert("Brakes", driverControlsData_.brakes);
+    driverControls.insert("Forward", driverControlsData_.forward);
+    driverControls.insert("Reverse", driverControlsData_.reverse);
+    driverControls.insert("PushToTalk", driverControlsData_.pushToTalk);
+    driverControls.insert("Horn", driverControlsData_.horn);
+    driverControls.insert("Reset", driverControlsData_.reset);
+
+    return driverControls;
 
 }
 
-void InternetReporting::makeMotorFaults()
+QJsonArray InternetReporting::makeMotorFaults()
 {
-    MotorFaults = QJsonArray();
+    QJsonArray motorFaults;
 
-    QJsonObject MotorFaults0;
+    QJsonObject motorFaults0;
 
-    QJsonObject ErrorFlags0;
-    ErrorFlags0.insert("MotorOverSpeed", motorFaultsData_.motor0OverSpeed);
-    ErrorFlags0.insert("SoftwareOverCurrent", motorFaultsData_.motor0SoftwareOverCurrent);
-    ErrorFlags0.insert("DcBusOverVoltage", motorFaultsData_.motor0DcBusOverVoltage);
-    ErrorFlags0.insert("BadMototPositionHallSequence", motorFaultsData_.motor0BadMootorPositionHallSequence);
-    ErrorFlags0.insert("WatchdogCausedLastReset", motorFaultsData_.motor0WatchdogCausedLastReset);
-    ErrorFlags0.insert("ConfigReadError", motorFaultsData_.motor0ConfigReadError);
-    ErrorFlags0.insert("Rail15VUnderVoltageLockOut", motorFaultsData_.motor0Rail15VUnderVoltageLockOut);
-    ErrorFlags0.insert("DesaturationFault", motorFaultsData_.motor0DesaturationFault);
-    MotorFaults0.insert("Error Flags", ErrorFlags0);
+    QJsonObject errorFlags0;
+    errorFlags0.insert("MotorOverSpeed", motorFaultsData_.motor0OverSpeed);
+    errorFlags0.insert("SoftwareOverCurrent", motorFaultsData_.motor0SoftwareOverCurrent);
+    errorFlags0.insert("DcBusOverVoltage", motorFaultsData_.motor0DcBusOverVoltage);
+    errorFlags0.insert("BadMototPositionHallSequence", motorFaultsData_.motor0BadMootorPositionHallSequence);
+    errorFlags0.insert("WatchdogCausedLastReset", motorFaultsData_.motor0WatchdogCausedLastReset);
+    errorFlags0.insert("ConfigReadError", motorFaultsData_.motor0ConfigReadError);
+    errorFlags0.insert("Rail15VUnderVoltageLockOut", motorFaultsData_.motor0Rail15VUnderVoltageLockOut);
+    errorFlags0.insert("DesaturationFault", motorFaultsData_.motor0DesaturationFault);
+    motorFaults0.insert("Error Flags", errorFlags0);
 
-    QJsonObject LimitFlags0;
-    LimitFlags0.insert("OutputVoltagePwm", motorFaultsData_.motor0OutputVoltagePwmLimit);
-    LimitFlags0.insert("MotorCurrent", motorFaultsData_.motor0MotorCurrentLimit);
-    LimitFlags0.insert("Velocity", motorFaultsData_.motor0VelocityLimit);
-    LimitFlags0.insert("BusCurrent", motorFaultsData_.motor0BusCurrentLimit);
-    LimitFlags0.insert("BusVoltageUpper", motorFaultsData_.motor0BusVoltageUpperLimit);
-    LimitFlags0.insert("BusVoltageLower", motorFaultsData_.motor0BusVoltageLowerLimit);
-    LimitFlags0.insert("IpmOrMotorTemperature", motorFaultsData_.motor0IpmOrMotorTemperatureLimit);
-    MotorFaults0.insert("LimitFlags", LimitFlags0);
+    QJsonObject limitFlags0;
+    limitFlags0.insert("OutputVoltagePwm", motorFaultsData_.motor0OutputVoltagePwmLimit);
+    limitFlags0.insert("MotorCurrent", motorFaultsData_.motor0MotorCurrentLimit);
+    limitFlags0.insert("Velocity", motorFaultsData_.motor0VelocityLimit);
+    limitFlags0.insert("BusCurrent", motorFaultsData_.motor0BusCurrentLimit);
+    limitFlags0.insert("BusVoltageUpper", motorFaultsData_.motor0BusVoltageUpperLimit);
+    limitFlags0.insert("BusVoltageLower", motorFaultsData_.motor0BusVoltageLowerLimit);
+    limitFlags0.insert("IpmOrMotorTemperature", motorFaultsData_.motor0IpmOrMotorTemperatureLimit);
+    motorFaults0.insert("LimitFlags", limitFlags0);
 
-    MotorFaults0.insert("RxErrorCount", motorFaultsData_.motor0RxErrorCount);
-    MotorFaults0.insert("TxErrorCount", motorFaultsData_.motor0TxErrorCount);
+    motorFaults0.insert("RxErrorCount", motorFaultsData_.motor0RxErrorCount);
+    motorFaults0.insert("TxErrorCount", motorFaultsData_.motor0TxErrorCount);
 
-    MotorFaults.push_back(MotorFaults0);
+    motorFaults.push_back(motorFaults0);
 
-    QJsonObject MotorFaults1;
+    QJsonObject motorFaults1;
 
-    QJsonObject ErrorFlags1;
-    ErrorFlags1.insert("MotorOverSpeed", motorFaultsData_.motor1OverSpeed);
-    ErrorFlags1.insert("SoftwareOverCurrent", motorFaultsData_.motor1SoftwareOverCurrent);
-    ErrorFlags1.insert("DcBusOverVoltage", motorFaultsData_.motor1DcBusOverVoltage);
-    ErrorFlags1.insert("BadMototPositionHallSequence", motorFaultsData_.motor1BadMootorPositionHallSequence);
-    ErrorFlags1.insert("WatchdogCausedLastReset", motorFaultsData_.motor1WatchdogCausedLastReset);
-    ErrorFlags1.insert("ConfigReadError", motorFaultsData_.motor1ConfigReadError);
-    ErrorFlags1.insert("Rail15VUnderVoltageLockOut", motorFaultsData_.motor1Rail15VUnderVoltageLockOut);
-    ErrorFlags1.insert("DesaturationFault", motorFaultsData_.motor1DesaturationFault);
-    MotorFaults1.insert("Error Flags", ErrorFlags1);
+    QJsonObject errorFlags1;
+    errorFlags1.insert("MotorOverSpeed", motorFaultsData_.motor1OverSpeed);
+    errorFlags1.insert("SoftwareOverCurrent", motorFaultsData_.motor1SoftwareOverCurrent);
+    errorFlags1.insert("DcBusOverVoltage", motorFaultsData_.motor1DcBusOverVoltage);
+    errorFlags1.insert("BadMototPositionHallSequence", motorFaultsData_.motor1BadMootorPositionHallSequence);
+    errorFlags1.insert("WatchdogCausedLastReset", motorFaultsData_.motor1WatchdogCausedLastReset);
+    errorFlags1.insert("ConfigReadError", motorFaultsData_.motor1ConfigReadError);
+    errorFlags1.insert("Rail15VUnderVoltageLockOut", motorFaultsData_.motor1Rail15VUnderVoltageLockOut);
+    errorFlags1.insert("DesaturationFault", motorFaultsData_.motor1DesaturationFault);
+    motorFaults1.insert("Error Flags", errorFlags1);
 
-    QJsonObject LimitFlags1;
-    LimitFlags1.insert("OutputVoltagePwm", motorFaultsData_.motor1OutputVoltagePwmLimit);
-    LimitFlags1.insert("MotorCurrent", motorFaultsData_.motor1MotorCurrentLimit);
-    LimitFlags1.insert("Velocity", motorFaultsData_.motor1VelocityLimit);
-    LimitFlags1.insert("BusCurrent", motorFaultsData_.motor1BusCurrentLimit);
-    LimitFlags1.insert("BusVoltageUpper", motorFaultsData_.motor1BusVoltageUpperLimit);
-    LimitFlags1.insert("BusVoltageLower", motorFaultsData_.motor1BusVoltageLowerLimit);
-    LimitFlags1.insert("IpmOrMotorTemperature", motorFaultsData_.motor1IpmOrMotorTemperatureLimit);
-    MotorFaults1.insert("LimitFlags", LimitFlags1);
+    QJsonObject limitFlags1;
+    limitFlags1.insert("OutputVoltagePwm", motorFaultsData_.motor1OutputVoltagePwmLimit);
+    limitFlags1.insert("MotorCurrent", motorFaultsData_.motor1MotorCurrentLimit);
+    limitFlags1.insert("Velocity", motorFaultsData_.motor1VelocityLimit);
+    limitFlags1.insert("BusCurrent", motorFaultsData_.motor1BusCurrentLimit);
+    limitFlags1.insert("BusVoltageUpper", motorFaultsData_.motor1BusVoltageUpperLimit);
+    limitFlags1.insert("BusVoltageLower", motorFaultsData_.motor1BusVoltageLowerLimit);
+    limitFlags1.insert("IpmOrMotorTemperature", motorFaultsData_.motor1IpmOrMotorTemperatureLimit);
+    motorFaults1.insert("LimitFlags", limitFlags1);
 
-    MotorFaults1.insert("RxErrorCount", motorFaultsData_.motor1RxErrorCount);
-    MotorFaults1.insert("TxErrorCount", motorFaultsData_.motor1TxErrorCount);
+    motorFaults1.insert("RxErrorCount", motorFaultsData_.motor1RxErrorCount);
+    motorFaults1.insert("TxErrorCount", motorFaultsData_.motor1TxErrorCount);
 
-    MotorFaults.push_back(MotorFaults1);
+    motorFaults.push_back(motorFaults1);
+
+    return motorFaults;
 }
 
-void InternetReporting::makeBatteryFaults()
+QJsonObject InternetReporting::makeBatteryFaults()
 {
-    BatteryFaults = QJsonObject();
+    QJsonObject batteryFaults;
 
-    BatteryFaults.insert("CellOverVoltage", batteryFaultsData_.cellOverVoltage);
-    BatteryFaults.insert("CellUnderVoltage", batteryFaultsData_.cellOverVoltage);
-    BatteryFaults.insert("CellOverTemp", batteryFaultsData_.cellOverTemperature);
-    BatteryFaults.insert("MeasurementUntrusted", batteryFaultsData_.measurementUntrusted);
-    BatteryFaults.insert("CMUCommTimeout", batteryFaultsData_.cmuCommTimeout);
-    BatteryFaults.insert("BMUSetupMode", batteryFaultsData_.bmuInSetupMode);
-    BatteryFaults.insert("CMUCANBusPowerStatus", batteryFaultsData_.cmuCanBusPowerStatus);
-    BatteryFaults.insert("PackIsolationFailure", batteryFaultsData_.packIsolationTestFailure);
-    BatteryFaults.insert("SoftwareOverCurrent", batteryFaultsData_.softwareOverCurrent);
-    BatteryFaults.insert("CAN12VSupplyLow", batteryFaultsData_.can12VSupplyLow);
-    BatteryFaults.insert("ContactorStuck", batteryFaultsData_.contactorStuck);
-    BatteryFaults.insert("CMUDetectedExtraCell", batteryFaultsData_.cmuDetectedExtraCellPresent);
+    batteryFaults.insert("CellOverVoltage", batteryFaultsData_.cellOverVoltage);
+    batteryFaults.insert("CellUnderVoltage", batteryFaultsData_.cellOverVoltage);
+    batteryFaults.insert("CellOverTemp", batteryFaultsData_.cellOverTemperature);
+    batteryFaults.insert("MeasurementUntrusted", batteryFaultsData_.measurementUntrusted);
+    batteryFaults.insert("CMUCommTimeout", batteryFaultsData_.cmuCommTimeout);
+    batteryFaults.insert("BMUSetupMode", batteryFaultsData_.bmuInSetupMode);
+    batteryFaults.insert("CMUCANBusPowerStatus", batteryFaultsData_.cmuCanBusPowerStatus);
+    batteryFaults.insert("PackIsolationFailure", batteryFaultsData_.packIsolationTestFailure);
+    batteryFaults.insert("SoftwareOverCurrent", batteryFaultsData_.softwareOverCurrent);
+    batteryFaults.insert("CAN12VSupplyLow", batteryFaultsData_.can12VSupplyLow);
+    batteryFaults.insert("ContactorStuck", batteryFaultsData_.contactorStuck);
+    batteryFaults.insert("CMUDetectedExtraCell", batteryFaultsData_.cmuDetectedExtraCellPresent);
+
+    return batteryFaults;
 }
 
-void InternetReporting::makeBattery()
+QJsonObject InternetReporting::makeBattery()
 {
 
-    Battery = QJsonObject();
+    QJsonObject battery;
 
-    Battery.insert("Alive", batteryData_.alive);
-    Battery.insert("PackSocAmpHours", batteryData_.packSocAmpHours);
-    Battery.insert("PackSocPercentage", batteryData_.packSocPercentage);
-    Battery.insert("PackBalanceSocAmpHours", batteryData_.packBalanceSoc);
-    Battery.insert("PackBalanceSocPercentage", batteryData_.packBalanceSocPercentage);
-    Battery.insert("ChargingCellVoltageError", batteryData_.chargingCellVoltageError);
-    Battery.insert("CellTempMargin", batteryData_.cellTemperatureMargin);
-    Battery.insert("DischargingCellVoltageError", batteryData_.dischargingCellVoltageError);
-    Battery.insert("TotalPackCapacity", batteryData_.totalPackCapacity);
-    Battery.insert("PrechargeContactor0DriverStatus", batteryData_.contactor0Status);
-    Battery.insert("PrechargeContactor1DriverStatus", batteryData_.contactor1Status);
-    Battery.insert("PrechargeContactor2DriverStatus", batteryData_.contactor2Status);
-    Battery.insert("PrechargeContactor0DriverError", batteryData_.contactor0Errorstatus);
-    Battery.insert("PrechargeContactor1DriverError", batteryData_.contactor1ErrorStatus);
-    Battery.insert("PrechargeContactor2DriverError", batteryData_.contactor2ErrorStatus);
-    Battery.insert("ContactorSupplyOK", batteryData_.contactor12VSupplyOk);
-    Battery.insert("PrechargeState", batteryData_.prechargeStateJSON);
-    Battery.insert("PrechargeTimerElapsed", batteryData_.prechargeTimerElapsed);
-    Battery.insert("PrechargeTimeCount", batteryData_.prechargeTimerCount);
+    battery.insert("Alive", batteryData_.alive);
+    battery.insert("PackSocAmpHours", batteryData_.packSocAmpHours);
+    battery.insert("PackSocPercentage", batteryData_.packSocPercentage);
+    battery.insert("PackBalanceSocAmpHours", batteryData_.packBalanceSoc);
+    battery.insert("PackBalanceSocPercentage", batteryData_.packBalanceSocPercentage);
+    battery.insert("ChargingCellVoltageError", batteryData_.chargingCellVoltageError);
+    battery.insert("CellTempMargin", batteryData_.cellTemperatureMargin);
+    battery.insert("DischargingCellVoltageError", batteryData_.dischargingCellVoltageError);
+    battery.insert("TotalPackCapacity", batteryData_.totalPackCapacity);
+    battery.insert("PrechargeContactor0DriverStatus", batteryData_.contactor0Status);
+    battery.insert("PrechargeContactor1DriverStatus", batteryData_.contactor1Status);
+    battery.insert("PrechargeContactor2DriverStatus", batteryData_.contactor2Status);
+    battery.insert("PrechargeContactor0DriverError", batteryData_.contactor0Errorstatus);
+    battery.insert("PrechargeContactor1DriverError", batteryData_.contactor1ErrorStatus);
+    battery.insert("PrechargeContactor2DriverError", batteryData_.contactor2ErrorStatus);
+    battery.insert("ContactorSupplyOK", batteryData_.contactor12VSupplyOk);
+    battery.insert("PrechargeState", batteryData_.prechargeStateJSON);
+    battery.insert("PrechargeTimerElapsed", batteryData_.prechargeTimerElapsed);
+    battery.insert("PrechargeTimeCount", batteryData_.prechargeTimerCount);
 
-    QJsonObject LowestCellVoltage;
-    LowestCellVoltage.insert("Voltage", batteryData_.lowestCellVoltage);
-    LowestCellVoltage.insert("CmuNumber", batteryData_.lowestCellVoltageCmuNumber);
-    LowestCellVoltage.insert("CellNumber", batteryData_.lowestCellVoltageCellNumber);
-    Battery.insert("LowestCellVoltage", LowestCellVoltage);
+    QJsonObject lowestCellVoltage;
+    lowestCellVoltage.insert("Voltage", batteryData_.lowestCellVoltage);
+    lowestCellVoltage.insert("CmuNumber", batteryData_.lowestCellVoltageCmuNumber);
+    lowestCellVoltage.insert("CellNumber", batteryData_.lowestCellVoltageCellNumber);
+    battery.insert("LowestCellVoltage", lowestCellVoltage);
 
-    QJsonObject LowestCellTemp;
-    LowestCellTemp.insert("Temp", batteryData_.lowestCellTemperature);
-    LowestCellTemp.insert("CmuNumber", batteryData_.lowestCellTemperatureCmuNumber);
-    LowestCellTemp.insert("CellNumber", batteryData_.lowestCellTemperatureCellNumber);
-    Battery.insert("LowestCellTemp", LowestCellTemp);
+    QJsonObject lowestCellTemp;
+    lowestCellTemp.insert("Temp", batteryData_.lowestCellTemperature);
+    lowestCellTemp.insert("CmuNumber", batteryData_.lowestCellTemperatureCmuNumber);
+    lowestCellTemp.insert("CellNumber", batteryData_.lowestCellTemperatureCellNumber);
+    battery.insert("LowestCellTemp", lowestCellTemp);
 
-    QJsonObject HighestCellVoltage;
-    HighestCellVoltage.insert("Voltage", batteryData_.highestCellVoltage);
-    HighestCellVoltage.insert("CmuNumber", batteryData_.highestCellVoltageCmuNumber);
-    HighestCellVoltage.insert("CellNumber", batteryData_.highestCellVoltageCellNumber);
-    Battery.insert("HighestCellVoltage", HighestCellVoltage);
+    QJsonObject highestCellVoltage;
+    highestCellVoltage.insert("Voltage", batteryData_.highestCellVoltage);
+    highestCellVoltage.insert("CmuNumber", batteryData_.highestCellVoltageCmuNumber);
+    highestCellVoltage.insert("CellNumber", batteryData_.highestCellVoltageCellNumber);
+    battery.insert("HighestCellVoltage", highestCellVoltage);
 
-    QJsonObject HighestCellTemp;
-    HighestCellTemp.insert("Temp", batteryData_.highestCellTemperature);
-    HighestCellTemp.insert("CmuNumber", batteryData_.highestCellTemperatureCmuNumber);
-    HighestCellTemp.insert("CellNumber", batteryData_.highestCellTemperatureCellNumber);
-    Battery.insert("HighestCellTemp", HighestCellTemp);
+    QJsonObject highestCellTemp;
+    highestCellTemp.insert("Temp", batteryData_.highestCellTemperature);
+    highestCellTemp.insert("CmuNumber", batteryData_.highestCellTemperatureCmuNumber);
+    highestCellTemp.insert("CellNumber", batteryData_.highestCellTemperatureCellNumber);
+    battery.insert("HighestCellTemp", highestCellTemp);
 
-    Battery.insert("Voltage", batteryData_.voltage);
-    Battery.insert("Current", batteryData_.current);
-    Battery.insert("Fan0Speed", batteryData_.fan0Speed);
-    Battery.insert("Fan1Speed", batteryData_.fan1Speed);
-    Battery.insert("FanContactorsCurrent", batteryData_.fanContactors12VCurrentConsumption);
-    Battery.insert("CmuCurrent", batteryData_.cmu12VCurrentConsumption);
+    battery.insert("Voltage", batteryData_.voltage);
+    battery.insert("Current", batteryData_.current);
+    battery.insert("Fan0Speed", batteryData_.fan0Speed);
+    battery.insert("Fan1Speed", batteryData_.fan1Speed);
+    battery.insert("FanContactorsCurrent", batteryData_.fanContactors12VCurrentConsumption);
+    battery.insert("CmuCurrent", batteryData_.cmu12VCurrentConsumption);
+
+    return battery;
 
 }
 
-void InternetReporting::makeCmu()
+QJsonArray InternetReporting::makeCmu()
 {
 
-    QJsonObject CMUinfo;
+    QJsonObject cMUInfo;
 
-    CMUArray = QJsonArray();
+    QJsonArray cMUArray;
 
     QJsonArray cellVoltageInfo;
     for (int i = 0; i < 8; i++)
@@ -305,9 +308,9 @@ void InternetReporting::makeCmu()
         cellVoltageInfo.push_back(cmuData_.cellVoltage[i]);
     }
 
-    CMUinfo.insert("Voltages", cellVoltageInfo);
+    cMUInfo.insert("Voltages", cellVoltageInfo);
 
-    CMUinfo.insert("PcbTemp", cmuData_.pcbTemperature);
+    cMUInfo.insert("PcbTemp", cmuData_.pcbTemperature);
 
     QJsonArray cellTemperatureInfo;
     for (int i = 0; i < 15; i++)
@@ -315,18 +318,20 @@ void InternetReporting::makeCmu()
         cellTemperatureInfo.push_back(cmuData_.cellTemperature[i]);
     }
 
-    CMUinfo.insert("CellTemps", cellTemperatureInfo);
+    cMUInfo.insert("CellTemps", cellTemperatureInfo);
 
     for(unsigned char i = 0; i < CcsDefines::CMU_COUNT; i++)
     {
-        CMUArray.push_back(CMUinfo);
+        cMUArray.push_back(cMUInfo);
     }
+
+    return cMUArray;
 
 }
 
-void InternetReporting::makeMppt()
+QJsonArray InternetReporting::makeMppt()
 {
-    mPPTArray = QJsonArray();
+    QJsonArray mPPTArray;
 
     QJsonObject mPPTInfo;
     mPPTInfo.insert("Alive", mpptData_.alive);
@@ -339,156 +344,50 @@ void InternetReporting::makeMppt()
     {
         mPPTArray.push_back(mPPTInfo);
     }
+
+    return mPPTArray;
 }
 
-void InternetReporting::makeLights()
+QJsonObject InternetReporting::makeLights()
 {
-    lightsInfo = QJsonObject();
+    QJsonObject lightsInfo;
     lightsInfo.insert("LowBeams", lightsData_.lowBeams);
     lightsInfo.insert("HighBeams", lightsData_.highBeams);
     lightsInfo.insert("Brakes", lightsData_.brakes);
     lightsInfo.insert("LeftSignal", lightsData_.leftSignal);
     lightsInfo.insert("RightSignal", lightsData_.rightSignal);
     lightsInfo.insert("BmsStrobeLight", lightsData_.bmsStrobeLight);
-}
 
-
-void InternetReporting::sendKeyMotor()
-{
-    makeKeyMotor();
-
-    QJsonDocument doc(KeyMotor);
-
-    QByteArray data = doc.toBinaryData();
-    communicationService_.sendInternetData(data);;
-}
-
-void InternetReporting::sendMotorDetails(int n)
-{
-    makeMotorDetails(n);
-
-    QJsonDocument doc;
-
-    if(n == 0)
-        doc = QJsonDocument(MotorDetails0);
-    if(n == 1)
-        doc = QJsonDocument(MotorDetails0);
-
-    QByteArray data = doc.toBinaryData();
-    communicationService_.sendInternetData(data);;
-}
-
-void InternetReporting::sendDriverControls()
-{
-    makeDriverControls();
-
-    QJsonDocument doc(DriverControls);
-
-    QByteArray data = doc.toBinaryData();
-    communicationService_.sendInternetData(data);
-}
-
-void InternetReporting::sendMotorFaults()
-{
-    makeMotorFaults();
-
-    QJsonDocument doc(MotorFaults);
-
-    QByteArray data = doc.toBinaryData();
-    communicationService_.sendInternetData(data);
-}
-
-void InternetReporting::sendBatteryFaults()
-{
-    makeBatteryFaults();
-
-    QJsonDocument doc(BatteryFaults);
-
-    QByteArray data = doc.toBinaryData();
-    communicationService_.sendInternetData(data);
-}
-
-void InternetReporting::sendBattery()
-{
-    makeBattery();
-
-    QJsonDocument doc(Battery);
-
-    QByteArray data = doc.toBinaryData();
-    communicationService_.sendInternetData(data);
-}
-
-void InternetReporting::sendCmu()
-{
-    makeCmu();
-
-    QJsonDocument doc(CMUArray);
-
-    QByteArray data = doc.toBinaryData();
-    communicationService_.sendInternetData(data);
-
-}
-
-void InternetReporting::sendMppt()
-{
-    makeMppt();
-
-    QJsonDocument doc(mPPTArray);
-
-    QByteArray data = doc.toBinaryData();
-    communicationService_.sendInternetData(data);
-
-}
-
-void InternetReporting::sendLights()
-{
-    makeLights();
-
-    QJsonDocument doc(lightsInfo);
-
-    QByteArray data = doc.toBinaryData();
-    communicationService_.sendInternetData(data);
-
+    return lightsInfo;
 }
 
 void InternetReporting::sendAll()
-{
-    makeKeyMotor();
-    makeMotorDetails(0);
-    makeMotorDetails(1);
-    makeDriverControls();
-    makeMotorFaults();
-    makeBatteryFaults();
-    makeBattery();
-    makeCmu();
-    makeMppt();
-    makeLights();
-
+{   
     QJsonObject obj;
     QDateTime date = date.currentDateTime();
     QString dateString = date.toString("yyyy-MM-dd hh:mm:ss.zzz");
 
-    QJsonArray MotorDetails;
-    MotorDetails.push_back(MotorDetails0);
-    MotorDetails.push_back(MotorDetails1);
+    QJsonArray motorDetails;
+    motorDetails.push_back(makeMotorDetails(0));
+    motorDetails.push_back(makeMotorDetails(1));
 
     obj.insert("PacketTitle", "UofC Solar Car Gen 5");
     obj.insert("TimeStamp", dateString);
-    obj.insert("KeyMotor", KeyMotor);
-    obj.insert("MotorDetails", MotorDetails);
-    obj.insert("DriverControls", DriverControls);
-    obj.insert("MotorFaults", MotorFaults);
-    obj.insert("BatteryFaults", BatteryFaults);
-    obj.insert("Battery", Battery);
-    obj.insert("CMU", CMUArray);
-    obj.insert("MPPT", mPPTArray);
-    obj.insert("Lights", lightsInfo);
+    obj.insert("KeyMotor", makeKeyMotor());
+    obj.insert("MotorDetails", motorDetails);
+    obj.insert("DriverControls", makeDriverControls());
+    obj.insert("MotorFaults", makeMotorFaults());
+    obj.insert("BatteryFaults", makeBatteryFaults());
+    obj.insert("Battery", makeBattery());
+    obj.insert("CMU", makeCmu());
+    obj.insert("MPPT", makeMppt());
+    obj.insert("Lights", makeLights());
 
     QJsonDocument doc(obj);
 
-    QByteArray data = doc.toBinaryData();
-    communicationService_.sendInternetData(data);
-
+    qDebug() << doc.toJson();
+    //QByteArray data = doc.toBinaryData();
+   // communicationService_.sendInternetData(data);
 }
 
 

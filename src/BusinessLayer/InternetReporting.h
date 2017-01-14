@@ -12,14 +12,15 @@ class LightsData;
 class MotorDetailsData;
 class MotorFaultsData;
 class MpptData;
+class View;
 class QIODevice;
-class CommunicationService;
+//class CommunicationService;
 
 class InternetReporting : public QObject
 {
     Q_OBJECT
 public:
-    InternetReporting(CommunicationService& commService,
+    InternetReporting(//CommunicationService& commService,
                       const KeyMotorData& keyMotorData_,
                       const MotorDetailsData& motor0DetailsData_,
                       const MotorDetailsData& motor1DetailsData_,
@@ -31,31 +32,22 @@ public:
                       const MpptData& mpptData_,
                       const LightsData& lightsData_);
 
-private slots:
-    void sendKeyMotor();
-    void sendMotorDetails(int n);
-    void sendDriverControls();
-    void sendMotorFaults();
-    void sendBatteryFaults();
-    void sendBattery();
-    void sendCmu();
-    void sendMppt();
-    void sendLights();
+public : //private slots:
     void sendAll();
 
 private:
-    void makeKeyMotor();
-    void makeMotorDetails(int n);
-    void makeDriverControls();
-    void makeMotorFaults();
-    void makeBatteryFaults();
-    void makeBattery();
-    void makeCmu();
-    void makeMppt();
-    void makeLights();
+    QJsonArray makeKeyMotor();
+    QJsonObject makeMotorDetails(int n);
+    QJsonObject makeDriverControls();
+    QJsonArray makeMotorFaults();
+    QJsonObject makeBatteryFaults();
+    QJsonObject makeBattery();
+    QJsonArray makeCmu();
+    QJsonArray makeMppt();
+    QJsonObject makeLights();
 
 private:
-    CommunicationService& communicationService_;
+    //CommunicationService& communicationService_;
     const KeyMotorData& keyMotorData_;
     const MotorDetailsData& motor0DetailsData_;
     const MotorDetailsData& motor1DetailsData_;
