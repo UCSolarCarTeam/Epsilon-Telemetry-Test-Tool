@@ -8,10 +8,9 @@
     Some or all of these functions may or may not be used
     in the actual implementation.
 --------------------------------------------------------*/
-InternetPeripheral::InternetPeripheral(/*parameter here*/)
+InternetPeripheral::InternetPeripheral()
 {
-    //constructor
-    //function stub
+    //TODO: Implement a constructor
 }
 
 
@@ -19,19 +18,19 @@ InternetPeripheral::~InternetPeripheral()
 {
 }
 
-void InternetPeripheral::setParameters(QStringList /*parameters*/)
+void InternetPeripheral::setParameters(QStringList /*params*/)
 {
-   //function stub
+   //TODO: Implement or replace this function to set up parameters
 }
 
 
 bool InternetPeripheral::attemptConnection()
 {
-    //function stub
+    //TODO: Implement or replace this function to attempt connection to a server
     return true;
 }
 
-void InternetPeripheral::sendInternetData(const QByteArray & /*JSON data in a byte array*/)
+void InternetPeripheral::sendInternetData(const QByteArray & /*data*/)
 {
-    //function stub
+    //TODO: Implement or replace this function to send data to the server
 }

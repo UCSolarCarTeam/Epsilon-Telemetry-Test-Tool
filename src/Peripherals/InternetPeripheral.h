@@ -9,12 +9,11 @@ class QByteArray;
 class InternetPeripheral : public I_CommPeripheral
 {
 public:
-    InternetPeripheral(/* parameters here */);
+    InternetPeripheral();
     virtual ~InternetPeripheral();
     bool attemptConnection();
-    //Sets the port name to parameters[0]
-    void setParameters(QStringList /*parameters*/);
-    void sendInternetData(const QByteArray & /*JSON data in byte array*/);
+    void setParameters(QStringList /*params*/);
+    void sendInternetData(const QByteArray & /*data*/);
 
 private:
 
