@@ -6,7 +6,6 @@
 #include <QString>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QDebug>
 
 #include "CcsDefines.h"
 #include "InternetReporting.h"
@@ -22,7 +21,7 @@
 #include "CommunicationService.h"
 #include "View.h"
 
-InternetReporting::InternetReporting(//CommunicationService& commService,
+InternetReporting::InternetReporting(CommunicationService& commService,
                                      const KeyMotorData& keyMotorData,
                                      const MotorDetailsData& motor0DetailsData,
                                      const MotorDetailsData& motor1DetailsData,
@@ -33,8 +32,8 @@ InternetReporting::InternetReporting(//CommunicationService& commService,
                                      const CmuData& cmuData,
                                      const MpptData& mpptData,
                                      const LightsData& lightsData)
-    : //communicationService_(commService)
-    /*,*/ keyMotorData_(keyMotorData)
+    : communicationService_(commService)
+    , keyMotorData_(keyMotorData)
     , motor0DetailsData_(motor0DetailsData)
     , motor1DetailsData_(motor1DetailsData)
     , driverControlsData_(driverControlsData)
@@ -384,10 +383,8 @@ void InternetReporting::sendAll()
     obj.insert("Lights", makeLights());
 
     QJsonDocument doc(obj);
-
-    qDebug() << doc.toJson();
-    //QByteArray data = doc.toBinaryData();
-   // communicationService_.sendInternetData(data);
+    QByteArray data = doc.toBinaryData();
+    communicationService_.sendInternetData(data);
 }
 
 
