@@ -2,20 +2,20 @@
 
 #include <QIODevice>
 
-#include <CcsDefines.h>
-#include <CrcCalculator.h>
-#include <TelemetryReporting.h>
-#include <BatteryData.h>
-#include <BatteryFaultsData.h>
-#include <CmuData.h>
-#include <DriverControlsData.h>
-#include <KeyMotorData.h>
-#include <LightsData.h>
-#include <MotorDetailsData.h>
-#include <MotorFaultsData.h>
-#include <MpptData.h>
-#include <CommunicationService.h>
-#include <View.h>
+#include "CcsDefines.h"
+#include "CrcCalculator.h"
+#include "TelemetryReporting.h"
+#include "BatteryData.h"
+#include "BatteryFaultsData.h"
+#include "CmuData.h"
+#include "DriverControlsData.h"
+#include "KeyMotorData.h"
+#include "LightsData.h"
+#include "MotorDetailsData.h"
+#include "MotorFaultsData.h"
+#include "MpptData.h"
+#include "CommunicationService.h"
+#include "View.h"
 
 union DataUnion
 {
@@ -29,19 +29,19 @@ namespace
 {
 // Refer to https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=0
 // These lengths only include the data. Not the checksum
-const int KEY_MOTOR_LENGTH = 43;
-const int MOTOR_DETAILS_LENGTH = 69;
-const int DRIVER_CONTROLS_LENGTH = 10;
-const int MOTOR_FAULTS_LENGTH = 9;
-const int BATTERY_FAULTS_LENGTH = 3;
-const int BATTERY_LENGTH = 60;
-const int CMU_LENGTH = 50;
-const int MPPT_LENGTH = 10;
-const int LIGHTS_LENGTH = 2;
+    const int KEY_MOTOR_LENGTH = 43;
+    const int MOTOR_DETAILS_LENGTH = 69;
+    const int DRIVER_CONTROLS_LENGTH = 10;
+    const int MOTOR_FAULTS_LENGTH = 9;
+    const int BATTERY_FAULTS_LENGTH = 3;
+    const int BATTERY_LENGTH = 60;
+    const int CMU_LENGTH = 50;
+    const int MPPT_LENGTH = 10;
+    const int LIGHTS_LENGTH = 2;
 
-const unsigned int CHECKSUM_LENGTH = 2;
-const unsigned int FRAMING_LENGTH_INCREASE = 2;
-const unsigned char TERMINATING_BYTE = 0x00;
+    const unsigned int CHECKSUM_LENGTH = 2;
+    const unsigned int FRAMING_LENGTH_INCREASE = 2;
+    const unsigned char TERMINATING_BYTE = 0x00;
 }
 
 TelemetryReporting::TelemetryReporting(CommunicationService& commService,
@@ -87,9 +87,7 @@ void TelemetryReporting::sendKeyMotor()
 {
     const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
-
     packetPayload[0] = CcsDefines::KEY_MOTOR_PKG_ID;
-
     bool motor0AliveArray[] = {keyMotorData_.motor0Alive};
     writeBoolsIntoArray(packetPayload, 1, motor0AliveArray, 1);
     writeFloatIntoArray(packetPayload, 2, keyMotorData_.motor0SetCurrent);
@@ -97,7 +95,6 @@ void TelemetryReporting::sendKeyMotor()
     writeFloatIntoArray(packetPayload, 10, keyMotorData_.motor0BusCurrent);
     writeFloatIntoArray(packetPayload, 14, keyMotorData_.motor0BusVoltage);
     writeFloatIntoArray(packetPayload, 18, keyMotorData_.motor0VehicleVelocity);
-
     bool motor1AliveArray[] = {keyMotorData_.motor1Alive};
     writeBoolsIntoArray(packetPayload, 22, motor1AliveArray, 1);
     writeFloatIntoArray(packetPayload, 23, keyMotorData_.motor1SetCurrent);
@@ -105,7 +102,6 @@ void TelemetryReporting::sendKeyMotor()
     writeFloatIntoArray(packetPayload, 31, keyMotorData_.motor1BusCurrent);
     writeFloatIntoArray(packetPayload, 35, keyMotorData_.motor1BusVoltage);
     writeFloatIntoArray(packetPayload, 39, keyMotorData_.motor1VehicleVelocity);
-
     addChecksum(packetPayload, KEY_MOTOR_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
@@ -117,11 +113,15 @@ void TelemetryReporting::sendMotorDetails(int n)
     const unsigned int unframedPacketLength = MOTOR_DETAILS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
 
-    if(n == 0) {
-      packetPayload[0] = CcsDefines::MOTOR_DETAILS_0_PKG_ID;
-    } else {
-      packetPayload[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
+    if (n == 0)
+    {
+        packetPayload[0] = CcsDefines::MOTOR_DETAILS_0_PKG_ID;
     }
+    else
+    {
+        packetPayload[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
+    }
+
     writeFloatIntoArray(packetPayload, 1, motor0DetailsData_.phaseCCurrent);
     writeFloatIntoArray(packetPayload, 5, motor0DetailsData_.phaseBCurrent);
     writeFloatIntoArray(packetPayload, 9, motor0DetailsData_.MotorVoltageReal);
@@ -139,7 +139,6 @@ void TelemetryReporting::sendMotorDetails(int n)
     writeFloatIntoArray(packetPayload, 57, motor0DetailsData_.dcBusAmpHours);
     writeFloatIntoArray(packetPayload, 61, motor0DetailsData_.odometer);
     writeFloatIntoArray(packetPayload, 65, motor0DetailsData_.slipSpeed);
-
     addChecksum(packetPayload, MOTOR_DETAILS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
@@ -150,7 +149,6 @@ void TelemetryReporting::sendDriverControls()
 {
     const unsigned int unframedPacketLength = DRIVER_CONTROLS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
-
     packetPayload[0] = CcsDefines::DRIVER_CONTROLS_PKG_ID;
     bool aliveArray[] = {driverControlsData_.alive};
     writeBoolsIntoArray(packetPayload, 1, aliveArray, 1);
@@ -180,7 +178,6 @@ void TelemetryReporting::sendDriverControls()
                             driverControlsData_.reset
                            };
     writeBoolsIntoArray(packetPayload, 8, controlsArray, 6);
-
     addChecksum(packetPayload, DRIVER_CONTROLS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
@@ -191,9 +188,7 @@ void TelemetryReporting::sendMotorFaults()
 {
     const unsigned int unframedPacketLength = MOTOR_FAULTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
-
     packetPayload[0] = CcsDefines::MOTOR_FAULTS_PKG_ID;
-
     bool motor0FaultsArray[] = {motorFaultsData_.motor0OverSpeed,
                                 motorFaultsData_.motor0SoftwareOverCurrent,
                                 motorFaultsData_.motor0DcBusOverVoltage,
@@ -236,7 +231,6 @@ void TelemetryReporting::sendMotorFaults()
     packetPayload[6] = motorFaultsData_.motor0TxErrorCount;
     packetPayload[7] = motorFaultsData_.motor1RxErrorCount;
     packetPayload[8] = motorFaultsData_.motor1TxErrorCount;
-
     addChecksum(packetPayload, MOTOR_FAULTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
@@ -247,7 +241,6 @@ void TelemetryReporting::sendBatteryFaults()
 {
     const unsigned int unframedPacketLength = BATTERY_FAULTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
-
     packetPayload[0] = CcsDefines::BATTERY_FAULTS_PKG_ID;
     bool batteryFaultsArray[] = {batteryFaultsData_.cellOverVoltage,
                                  batteryFaultsData_.cellUnderVoltage,
@@ -264,7 +257,6 @@ void TelemetryReporting::sendBatteryFaults()
                                  batteryFaultsData_.cmuDetectedExtraCellPresent
                                 };
     writeBoolsIntoArray(packetPayload, 1, batteryFaultsArray, 13);
-
     addChecksum(packetPayload, BATTERY_FAULTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
@@ -275,7 +267,6 @@ void TelemetryReporting::sendBattery()
 {
     const unsigned int unframedPacketLength = BATTERY_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
-
     packetPayload[0] = CcsDefines::BATTERY_PKG_ID;
     bool aliveArray[] = {batteryData_.alive};
     writeBoolsIntoArray(packetPayload, 1, aliveArray, 1);
@@ -320,7 +311,6 @@ void TelemetryReporting::sendBattery()
     writeUShortIntoArray(packetPayload, 57, batteryData_.cmu12VCurrentConsumption);
     bool lockedOutArray[] = {batteryData_.bmsCanLockedOut};
     writeBoolsIntoArray(packetPayload, 59, lockedOutArray, 1);
-
     addChecksum(packetPayload, BATTERY_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
@@ -331,15 +321,17 @@ void TelemetryReporting::sendCmu()
 {
     const unsigned int unframedPacketLength = CMU_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
-
     packetPayload[0] = CcsDefines::CMU_PKG_ID;
     int cmuVoltageBaseIndex = 2;
+
     for (int i = 0; i < 8; i++)
     {
         writeUShortIntoArray(packetPayload, cmuVoltageBaseIndex + (i * 2), cmuData_.cellVoltage[i]);
     }
+
     writeUShortIntoArray(packetPayload, 18, cmuData_.pcbTemperature);
     int cmuTemperatureBaseIndex = 20;
+
     for (int i = 0; i < 15; i++)
     {
         writeUShortIntoArray(packetPayload, cmuTemperatureBaseIndex + (i * 2), cmuData_.cellTemperature[i]);
@@ -348,7 +340,6 @@ void TelemetryReporting::sendCmu()
     for (unsigned char i = 0; i < CcsDefines::CMU_COUNT; i++)
     {
         packetPayload[1] = i;
-
         addChecksum(packetPayload, CMU_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
         unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
@@ -360,7 +351,6 @@ void TelemetryReporting::sendMppt()
 {
     const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
-
     packetPayload[0] = CcsDefines::KEY_MOTOR_PKG_ID;
     writeUShortIntoArray(packetPayload, 2, mpptData_.arrayVoltage);
     writeUShortIntoArray(packetPayload, 4, mpptData_.arrayCurrent);
@@ -372,7 +362,6 @@ void TelemetryReporting::sendMppt()
         unsigned char mpptPacketPayload[unframedPacketLength];
         std::memcpy(mpptPacketPayload, packetPayload, unframedPacketLength);
         mpptPacketPayload[1] = i;
-
         addChecksum(mpptPacketPayload, KEY_MOTOR_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
         unsigned int packetLength = frameData(mpptPacketPayload, unframedPacketLength, packet);
@@ -384,7 +373,6 @@ void TelemetryReporting::sendLights()
 {
     const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
-
     packetPayload[0] = CcsDefines::KEY_MOTOR_PKG_ID;
     bool lightsArray[] = {lightsData_.lowBeams,
                           lightsData_.highBeams,
@@ -394,7 +382,6 @@ void TelemetryReporting::sendLights()
                           lightsData_.bmsStrobeLight
                          };
     writeBoolsIntoArray(packetPayload, 1, lightsArray, 6);
-
     addChecksum(packetPayload, KEY_MOTOR_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
@@ -446,14 +433,17 @@ unsigned int TelemetryReporting::stuffData(const unsigned char* dataToEncode, un
         {
             *encodedData++ = *dataToEncode;
             code++;
+
             if (code == 0xFF)
             {
                 FINISH_BLOCK(code);
                 lengthOfEncodedData++;
             }
         }
+
         dataToEncode++;
     }
+
     FINISH_BLOCK(code);
     return lengthOfEncodedData;
 }
@@ -503,6 +493,7 @@ void TelemetryReporting::writeBoolsIntoArray(unsigned char* data, int index, con
             index++;
             data[index] = 0;
         }
+
         if (values[i])
         {
             data[index] += 1 << (i % 8);

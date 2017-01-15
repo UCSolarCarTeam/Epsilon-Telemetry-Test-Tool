@@ -1,9 +1,10 @@
+#include <QIODevice>
+#include <QSerialPort>
+#include <QStringList>
 #include "CommunicationService.h"
 #include "View.h"
 #include "I_CommPeripheral.h"
 #include "SerialPortPeripheral.h"
-#include "QIODevice"
-#include "QSerialPort"
 
 /*--------------------------------------------------------
                 Communication Service
@@ -12,7 +13,7 @@
 --------------------------------------------------------*/
 
 CommunicationService::CommunicationService(View& view)
-:view_(view)
+    : view_(view)
 {
     setPeripheralSerialPort();
     connect(&view_, SIGNAL(attemptConnectionSignal()), this, SLOT(attemptConnection()));
@@ -24,7 +25,7 @@ void CommunicationService::setPeripheralSerialPort()
     outputPeripheral_ = new SerialPortPeripheral(*outputDevice_);
 }
 
-void CommunicationService::sendData(const unsigned char *packet, int packetLength)
+void CommunicationService::sendData(const unsigned char* packet, int packetLength)
 {
     outputPeripheral_->sendData(packet, packetLength);
 }
