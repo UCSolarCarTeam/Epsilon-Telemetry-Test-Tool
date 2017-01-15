@@ -4,14 +4,90 @@
 #include <vector>
 
 #include "Util.h"
+#include "TestUtils.h"
 
+using TestUtils::expectCobsCorrect;
+using TestUtils::appendChecksum;
 using ::testing::ElementsAre;
 using ::testing::ElementsAreArray;
 
-class UtilTest: public ::testing::Test {
-};
+/*
+ * Tests if Consistent Overhead Byte Stuffing (COBS) is working as intended
+ */
+TEST(UtilTest, COBSTest)
+{
+    unsigned char nullArrayInput[] = {0x00};
+    unsigned char nullArrayExpected[] = {0x01, 0x01, 0x00};
+    expectCobsCorrect(nullArrayInput, nullArrayExpected, 1);
+    unsigned char input1[] = {0x00, 0x00};
+    unsigned char expected1[] = {0x01, 0x01, 0x01, 0x00};
+    expectCobsCorrect(input1, expected1, 2);
+    unsigned char input2[] = {0x11, 0x22, 0x00, 0x33};
+    unsigned char expected2[] = {0x03, 0x11, 0x22, 0x02, 0x33, 0x00};
+    expectCobsCorrect(input2, expected2, 4);
+    unsigned char input3[] = {0x11, 0x22, 0x33, 0x44};
+    unsigned char expected3[] = {0x05, 0x11, 0x22, 0x33, 0x44, 0x00};
+    expectCobsCorrect(input3, expected3, 4);
+    unsigned char input4[] = {0x11, 0x00, 0x00, 0x00};
+    unsigned char expected4[] = {0x02, 0x11, 0x01, 0x01, 0x01, 0x00};
+    expectCobsCorrect(input4, expected4, 4);
+    const unsigned int MAX_COBS_PACKAGE_LENGTH = 254;
+    unsigned char inputAlmostMax[MAX_COBS_PACKAGE_LENGTH - 1];
+    unsigned char expectedAlmostMax[MAX_COBS_PACKAGE_LENGTH + 1];
 
-TEST_F(UtilTest, writeBoolsIntoArrayTest)
+    for (unsigned char i = 0; i < MAX_COBS_PACKAGE_LENGTH - 1; ++i)
+    {
+        inputAlmostMax[i] = i + 1;
+        expectedAlmostMax[i + 1] = i + 1;
+    }
+
+    expectedAlmostMax[0] = 0xFE;
+    expectedAlmostMax[MAX_COBS_PACKAGE_LENGTH] = 0x00;
+    expectCobsCorrect(inputAlmostMax, expectedAlmostMax, MAX_COBS_PACKAGE_LENGTH - 1);
+    unsigned char inputMax[MAX_COBS_PACKAGE_LENGTH];
+    unsigned char expectedMax[MAX_COBS_PACKAGE_LENGTH + 2];
+
+    for (unsigned char i = 0; i < MAX_COBS_PACKAGE_LENGTH; ++i)
+    {
+        inputMax[i] = i + 1;
+        expectedMax[i + 1] = i + 1;
+    }
+
+    expectedMax[0] = 0xFF;
+    expectedMax[MAX_COBS_PACKAGE_LENGTH + 1] = 0x00;
+    expectCobsCorrect(inputMax, expectedMax, MAX_COBS_PACKAGE_LENGTH); // TODO this one fails. can probably be fixed by removing line 452 from TelemetryReporting.cpp
+    // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // TODO WHAT HAPPENS IF THE Distance to the first zero is more than 254 bytes?? (our packages are smaller...)
+    // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+}
+
+/*
+ * This test tests if the checksum is correctly appended. It does not test the checksum calculation itself.
+ */
+TEST(UtilTest, addChecksumTest)
+{
+    const unsigned char numberOfTestRuns = 42;
+
+    for (unsigned char i = 0; i < numberOfTestRuns; i++)
+    {
+        const unsigned int length = i + 16;
+        unsigned char dataExpected[length];
+        unsigned char dataActual[length];
+
+        for (unsigned char c = 0; c < length; c++)
+        {
+            dataActual[c] = c + i;
+            dataExpected[c] = c + i;
+        }
+
+        appendChecksum(dataExpected, length);
+        Util::addChecksum(dataActual, length - Util::CHECKSUM_LENGTH);
+        ASSERT_THAT(std::vector<unsigned char>(dataActual, dataActual + length),
+                    ElementsAreArray(std::vector<unsigned char>(dataExpected, dataExpected + length)));
+    }
+}
+
+TEST(UtilTest, writeBoolsIntoArrayTest)
 {
 	bool inSingleTrue[] = {true};
 	const std::vector<unsigned char> expctSingleTrue = {0x01};
@@ -53,7 +129,7 @@ TEST_F(UtilTest, writeBoolsIntoArrayTest)
 	}
 }
 
-TEST_F(UtilTest, writeFloatIntoArrayTest)
+TEST(UtilTest, writeFloatIntoArrayTest)
 {
 	const std::vector<float> inputs = {42.1234, 0, 3512.341, 19921.213, -10.2, -42.32, -7, 12,
 			400, -66, -235.324, 8773.823, std::numeric_limits<float>::infinity(),
@@ -72,7 +148,7 @@ TEST_F(UtilTest, writeFloatIntoArrayTest)
 }
 
 // test may fail if short size is smaller than 16 bit!!
-TEST_F(UtilTest, writeShortIntoArrayTest)
+TEST(UtilTest, writeShortIntoArrayTest)
 {
 	std::vector<short> inputs = {42, 3512, 19921, 12, 400, 66, 235, 8773,
 			12416, 3264, 12825, 6, 31210 , 24,
@@ -101,7 +177,7 @@ TEST_F(UtilTest, writeShortIntoArrayTest)
 }
 
 // test may fail if short size is smaller than 16 bit!!
-TEST_F(UtilTest, writeUShortIntoArrayTest)
+TEST(UtilTest, writeUShortIntoArrayTest)
 {
 	std::vector<unsigned short> inputs = {42, 3512, 19921, 12, 400, 66, 235, 8773,
 			12416, 3264, 12825, 6, 51210 , 24,
@@ -128,7 +204,7 @@ TEST_F(UtilTest, writeUShortIntoArrayTest)
 }
 
 // test may fail if uint size smaller than 32 bit!!
-TEST_F(UtilTest, writeUIntIntoArrayTest)
+TEST(UtilTest, writeUIntIntoArrayTest)
 {
 	std::vector<unsigned int> inputs = {42, 3512, 19921, 12, 400, 66, 235, 8773,
 			1241632, 64128256, 5121024,

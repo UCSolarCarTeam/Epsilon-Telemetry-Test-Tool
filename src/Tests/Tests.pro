@@ -21,10 +21,12 @@ PRE_TARGETDEPS += \
 
 HEADERS += \
     BusinessLayer/MockCommunicationService.h \
+    BusinessLayer/TestUtils.h \
 
 
 SOURCES += \
     testmain.cpp \
+    BusinessLayer/TestUtils.cpp \
     BusinessLayer/TelemetryReportingTest.cpp \
     BusinessLayer/UtilTest.cpp \
 

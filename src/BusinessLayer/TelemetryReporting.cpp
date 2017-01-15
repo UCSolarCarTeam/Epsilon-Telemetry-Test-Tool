@@ -3,7 +3,6 @@
 #include <QIODevice>
 
 #include <CcsDefines.h>
-#include <CrcCalculator.h>
 #include <TelemetryReporting.h>
 #include <BatteryData.h>
 #include <BatteryFaultsData.h>
@@ -31,10 +30,6 @@ namespace
     const int CMU_LENGTH = 50;
     const int MPPT_LENGTH = 10;
     const int LIGHTS_LENGTH = 2;
-
-    const unsigned int CHECKSUM_LENGTH = 2;
-    const unsigned int FRAMING_LENGTH_INCREASE = 2;
-    const unsigned char TERMINATING_BYTE = 0x00;
 }
 
 using namespace Util;
@@ -404,62 +399,4 @@ void TelemetryReporting::sendAll()
     sendCmu();
     sendMppt();
     sendLights();
-}
-
-unsigned int TelemetryReporting::frameData(const unsigned char* dataToEncode, unsigned long length, unsigned char* frameData)
-{
-    unsigned int lengthOfFramedData = stuffData(dataToEncode, length, frameData);
-    frameData[lengthOfFramedData++] = TERMINATING_BYTE;
-    return lengthOfFramedData;
-}
-
-#define FINISH_BLOCK(X) \
-{\
-   *code_ptr = (X); \
-   code_ptr = encodedData++; \
-   code = 0x01; \
-}
-
-/*
- * TODO This method can only encode arbitrary data (parameter dataToEncode) if it's length is smaller or equal to 253.
- * Note that the maximal possible message length supported by the COBS encoding would be 254. So don't send messages longer than 253.
- */
-unsigned int TelemetryReporting::stuffData(const unsigned char* dataToEncode, unsigned long length, unsigned char* encodedData)
-{
-    unsigned int lengthOfEncodedData = length + 1;
-    const unsigned char* end = dataToEncode + length;
-    unsigned char* code_ptr = encodedData++;
-    unsigned char code = 0x01;
-
-    while (dataToEncode < end)
-    {
-        if (*dataToEncode == 0)
-        {
-            FINISH_BLOCK(code);
-        }
-        else
-        {
-            *encodedData++ = *dataToEncode;
-            code++;
-
-            if (code == 0xFF)
-            {
-                FINISH_BLOCK(code);
-                lengthOfEncodedData++;	// TODO maybe artifact. Prevents correct encoding of message with length of 254 bytes
-            }
-        }
-
-        dataToEncode++;
-    }
-
-    FINISH_BLOCK(code);
-    return lengthOfEncodedData;
-}
-#undef FINISH_BLOCK
-
-void TelemetryReporting::addChecksum(unsigned char* data, unsigned int length)
-{
-    unsigned short crc16 = CrcCalculator::calculateCrc16(data, length);
-    data[length] = static_cast<unsigned char>(0xFF & crc16);
-    data[length + 1] = static_cast<unsigned char>(0xFF & (crc16 >> 8));
 }
