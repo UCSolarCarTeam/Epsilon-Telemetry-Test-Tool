@@ -44,5 +44,7 @@ script:
     - "! (astyle *.h *.cpp -r --dry-run --options=astylerc --exclude=googletest | grep formatted)"
     # maybe not needed but still good practise
     - sudo mv /usr/bin/g++_depr /usr/bin/g++
+    # execute the actual tests
+    ./build/tests/runTestSuite 
 
 language: cpp
