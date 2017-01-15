@@ -40,18 +40,18 @@ using ::TestUtils::appendChecksum;
 
 namespace
 {
-	const unsigned int CHECK_SUM_LENGTH = 2;
-	const unsigned int COBS_ADDITIONAL_FRAME_DATA_SIZE = 2;
+    const unsigned int CHECK_SUM_LENGTH = 2;
+    const unsigned int COBS_ADDITIONAL_FRAME_DATA_SIZE = 2;
 
-	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_KEY_MOTOR = 47;
-	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS = 73;
-	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS = 13;
-	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 13;
-	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 7;
-	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 64;
-	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_CMU = 54;
-	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
-	const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 6;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_KEY_MOTOR = 47;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS = 73;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS = 13;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 13;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 7;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 64;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_CMU = 54;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 6;
 }
 
 
@@ -128,7 +128,7 @@ protected:
 
         for (int i = 0; i < numCellTemperatureFields; i++)
         {
-        	Util::writeUShortIntoArray(data, cmuCellTemperatureOffset + (i * 2), cmuData_->cellTemperature[i]);
+            Util::writeUShortIntoArray(data, cmuCellTemperatureOffset + (i * 2), cmuData_->cellTemperature[i]);
         }
     }
 
@@ -246,8 +246,8 @@ TEST_F(TelemetryReportingTest, sendKeyMotorTest) // TODO create function which b
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x01)); // packet id
-    const unsigned char aliveBitMotor0Enconding = keyMotorData_->motor0Alive? 0x01 : 0x00;
-    const unsigned char aliveBitMotor1Enconding = keyMotorData_->motor1Alive? 0x01 : 0x00;
+    const unsigned char aliveBitMotor0Enconding = keyMotorData_->motor0Alive ? 0x01 : 0x00;
+    const unsigned char aliveBitMotor1Enconding = keyMotorData_->motor1Alive ? 0x01 : 0x00;
     ASSERT_THAT(data[1], Eq(aliveBitMotor0Enconding));
     ASSERT_THAT(data[22], Eq(aliveBitMotor1Enconding));
 

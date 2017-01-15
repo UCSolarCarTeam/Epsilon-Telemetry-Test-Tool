@@ -3,14 +3,14 @@
 
 namespace Util
 {
-union DataUnion
-{
-	float floatData;
-	short shortData[2];
-	unsigned short uShortData[2];
-	char charData[4];
-	unsigned int uIntData;
-};
+    union DataUnion
+    {
+        float floatData;
+        short shortData[2];
+        unsigned short uShortData[2];
+        char charData[4];
+        unsigned int uIntData;
+    };
 
 }
 
