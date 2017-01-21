@@ -16,10 +16,7 @@ before_install:
     - cd src
 
 install:
-    # it seems as currently the redirect to the latest version is buggy when using wget (always windows version delivered)
-    #- wget 'https://sourceforge.net/projects/astyle/files/latest/download'
-    # workaround hard code to newest linux version
-    - wget "https://sourceforge.net/projects/astyle/files/astyle/astyle%202.06/astyle_2.06_linux.tar.gz/download"
+    - wget 'https://s3-us-west-2.amazonaws.com/ucsolarteam.hostedfiles/download'
     - tar -zxvf download
     - (cd astyle/build/gcc && make release && sudo make install)
     - rm astyle -rf
