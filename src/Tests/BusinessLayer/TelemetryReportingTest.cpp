@@ -302,7 +302,7 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function whi
     EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacket0AsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
-    view->sendMotor0Details();
+    view->sendMotorDetails(0);
 
     // create payload for motor 1 details
     data[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
@@ -332,7 +332,7 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function whi
     EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacket1AsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
-    view->sendMotor1Details();
+    view->sendMotorDetails(1);
 }
 
 /*

@@ -55,6 +55,7 @@ private slots:
     void sendAll();
 
 private:
+
     I_CommunicationService& communicationService_;
     const KeyMotorData& keyMotorData_;
     const MotorDetailsData& motor0DetailsData_;

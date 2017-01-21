@@ -61,8 +61,7 @@ TelemetryReporting::TelemetryReporting(I_CommunicationService& commService,
 {
     //Connect slots to View Signals
     connect(&view_, SIGNAL(sendKeyMotor()), this, SLOT(sendKeyMotor()));
-    connect(&view_, SIGNAL(sendMotor0Details()), this, SLOT(sendMotor0Details()));
-    connect(&view_, SIGNAL(sendMotor1Details()), this, SLOT(sendMotor1Details()));
+    connect(&view_, SIGNAL(sendMotorDetails(int)), this, SLOT(sendMotorDetails(int)));
     connect(&view_, SIGNAL(sendDriverControls()), this, SLOT(sendDriverControls()));
     connect(&view_, SIGNAL(sendMotorFaults()), this, SLOT(sendMotorFaults()));
     connect(&view_, SIGNAL(sendBatteryFaults()), this, SLOT(sendBatteryFaults()));
