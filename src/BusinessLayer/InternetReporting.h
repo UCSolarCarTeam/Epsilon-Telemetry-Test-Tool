@@ -21,16 +21,16 @@ class InternetReporting : public QObject
     Q_OBJECT
 public:
     InternetReporting(CommunicationService& commService,
-                      const KeyMotorData& keyMotorData_,
-                      const MotorDetailsData& motor0DetailsData_,
-                      const MotorDetailsData& motor1DetailsData_,
-                      const DriverControlsData& driverControlsData_,
-                      const MotorFaultsData& motorFaultsData_,
-                      const BatteryFaultsData& batteryFaultsData_,
-                      const BatteryData& batteryData_,
-                      const CmuData& cmuData_,
-                      const MpptData& mpptData_,
-                      const LightsData& lightsData_);
+                         const KeyMotorData& keyMotorData_,
+                         const MotorDetailsData& motor0DetailsData_,
+                         const MotorDetailsData& motor1DetailsData_,
+                         const DriverControlsData& driverControlsData_,
+                         const MotorFaultsData& motorFaultsData_,
+                         const BatteryFaultsData& batteryFaultsData_,
+                         const BatteryData& batteryData_,
+                         const CmuData& cmuData_,
+                         const MpptData& mpptData_,
+                         const LightsData& lightsData_);
 
 private slots:
     void sendAll();
