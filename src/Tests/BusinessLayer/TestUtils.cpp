@@ -19,9 +19,9 @@ void TestUtils::expectCobsCorrect(unsigned char* input, unsigned char* expected,
     unsigned char encodedArray[expectedArrayLength];
     Util::frameData(input, inputLength, encodedArray);
 
-    if(Matches(Not(ElementsAreArray(std::vector<unsigned char>(expected, expected + expectedArrayLength))))(std::vector<unsigned char>(encodedArray, encodedArray + expectedArrayLength)))
+    if (Matches(Not(ElementsAreArray(std::vector<unsigned char>(expected, expected + expectedArrayLength))))(std::vector<unsigned char>(encodedArray, encodedArray + expectedArrayLength)))
     {
-    	std::cout << COUT_HEX(encodedArray[inputLength]) << " " << COUT_HEX(encodedArray[inputLength + 1]) << std::endl;
+        std::cout << COUT_HEX(encodedArray[inputLength]) << " " << COUT_HEX(encodedArray[inputLength + 1]) << std::endl;
     }
 
     EXPECT_THAT(std::vector<unsigned char>(encodedArray, encodedArray + expectedArrayLength),
