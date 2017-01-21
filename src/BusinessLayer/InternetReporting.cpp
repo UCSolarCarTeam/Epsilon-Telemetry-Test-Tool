@@ -50,7 +50,6 @@ InternetReporting::InternetReporting(CommunicationService& commService,
 QJsonArray InternetReporting::makeKeyMotor()
 {
     QJsonArray keyMotor;
-
     QJsonObject keyMotor0;
     keyMotor0.insert("Alive", keyMotorData_.motor0Alive);
     keyMotor0.insert("SetCurrent", keyMotorData_.motor0SetCurrent);
@@ -59,7 +58,6 @@ QJsonArray InternetReporting::makeKeyMotor()
     keyMotor0.insert("BusVoltage", keyMotorData_.motor0BusVoltage);
     keyMotor0.insert("VehicleVelocity", keyMotorData_.motor0VehicleVelocity);
     keyMotor.push_back(keyMotor0);
-
     QJsonObject keyMotor1;
     keyMotor1.insert("Alive", keyMotorData_.motor1Alive);
     keyMotor1.insert("SetCurrent", keyMotorData_.motor1SetCurrent);
@@ -94,7 +92,6 @@ QJsonObject InternetReporting::makeMotorDetails(int n)
         motorDetails.insert("Odometer", motor0DetailsData_.odometer);
         motorDetails.insert("Slipspeed", motor0DetailsData_.slipSpeed);
     }
-
     else
     {
         motorDetails.insert("PhaseCCurrent", motor1DetailsData_.phaseCCurrent);
@@ -114,6 +111,7 @@ QJsonObject InternetReporting::makeMotorDetails(int n)
         motorDetails.insert("Odometer", motor1DetailsData_.odometer);
         motorDetails.insert("Slipspeed", motor1DetailsData_.slipSpeed);
     }
+
     return motorDetails;
 }
 
@@ -142,7 +140,6 @@ QJsonObject InternetReporting::makeDriverControls()
     driverControls.insert("Horn", driverControlsData_.horn);
     driverControls.insert("Reset", driverControlsData_.reset);
     return driverControls;
-
 }
 
 QJsonArray InternetReporting::makeMotorFaults()
@@ -150,7 +147,6 @@ QJsonArray InternetReporting::makeMotorFaults()
     QJsonArray motorFaults;
     QJsonObject motorFaults0;
     QJsonObject motorFaults1;
-
     QJsonObject errorFlags0;
     errorFlags0.insert("MotorOverSpeed", motorFaultsData_.motor0OverSpeed);
     errorFlags0.insert("SoftwareOverCurrent", motorFaultsData_.motor0SoftwareOverCurrent);
@@ -161,7 +157,6 @@ QJsonArray InternetReporting::makeMotorFaults()
     errorFlags0.insert("Rail15VUnderVoltageLockOut", motorFaultsData_.motor0Rail15VUnderVoltageLockOut);
     errorFlags0.insert("DesaturationFault", motorFaultsData_.motor0DesaturationFault);
     motorFaults0.insert("Error Flags", errorFlags0);
-
     QJsonObject limitFlags0;
     limitFlags0.insert("OutputVoltagePwm", motorFaultsData_.motor0OutputVoltagePwmLimit);
     limitFlags0.insert("MotorCurrent", motorFaultsData_.motor0MotorCurrentLimit);
@@ -170,12 +165,10 @@ QJsonArray InternetReporting::makeMotorFaults()
     limitFlags0.insert("BusVoltageUpper", motorFaultsData_.motor0BusVoltageUpperLimit);
     limitFlags0.insert("BusVoltageLower", motorFaultsData_.motor0BusVoltageLowerLimit);
     limitFlags0.insert("IpmOrMotorTemperature", motorFaultsData_.motor0IpmOrMotorTemperatureLimit);
-
     motorFaults0.insert("LimitFlags", limitFlags0);
     motorFaults0.insert("RxErrorCount", motorFaultsData_.motor0RxErrorCount);
     motorFaults0.insert("TxErrorCount", motorFaultsData_.motor0TxErrorCount);
     motorFaults.push_back(motorFaults0);
-
     QJsonObject errorFlags1;
     errorFlags1.insert("MotorOverSpeed", motorFaultsData_.motor1OverSpeed);
     errorFlags1.insert("SoftwareOverCurrent", motorFaultsData_.motor1SoftwareOverCurrent);
@@ -186,7 +179,6 @@ QJsonArray InternetReporting::makeMotorFaults()
     errorFlags1.insert("Rail15VUnderVoltageLockOut", motorFaultsData_.motor1Rail15VUnderVoltageLockOut);
     errorFlags1.insert("DesaturationFault", motorFaultsData_.motor1DesaturationFault);
     motorFaults1.insert("Error Flags", errorFlags1);
-
     QJsonObject limitFlags1;
     limitFlags1.insert("OutputVoltagePwm", motorFaultsData_.motor1OutputVoltagePwmLimit);
     limitFlags1.insert("MotorCurrent", motorFaultsData_.motor1MotorCurrentLimit);
@@ -195,7 +187,6 @@ QJsonArray InternetReporting::makeMotorFaults()
     limitFlags1.insert("BusVoltageUpper", motorFaultsData_.motor1BusVoltageUpperLimit);
     limitFlags1.insert("BusVoltageLower", motorFaultsData_.motor1BusVoltageLowerLimit);
     limitFlags1.insert("IpmOrMotorTemperature", motorFaultsData_.motor1IpmOrMotorTemperatureLimit);
-
     motorFaults1.insert("LimitFlags", limitFlags1);
     motorFaults1.insert("RxErrorCount", motorFaultsData_.motor1RxErrorCount);
     motorFaults1.insert("TxErrorCount", motorFaultsData_.motor1TxErrorCount);
@@ -278,13 +269,15 @@ QJsonArray InternetReporting::makeCmu()
     QJsonArray cmu;
     QJsonArray cellVoltageInfo;
     QJsonArray cellTemperatureInfo;
+    int cellVoltageEntries = 8;
+    int cellTemperatureEntries = 15;
 
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < cellVoltageEntries; i++)
     {
         cellVoltageInfo.push_back(cmuData_.cellVoltage[i]);
     }
 
-    for (int i = 0; i < 15; i++)
+    for (int i = 0; i < cellTemperatureEntries; i++)
     {
         cellTemperatureInfo.push_back(cmuData_.cellTemperature[i]);
     }
