@@ -6,7 +6,6 @@
 #include <SerialPortPeripheral.h>
 #include <InternetPeripheral.h>
 
-class I_CommPeripheral;
 class View;
 class QIODevice;
 

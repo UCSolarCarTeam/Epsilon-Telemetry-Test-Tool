@@ -3,7 +3,6 @@
 #include <QStringList>
 #include "CommunicationService.h"
 #include "View.h"
-#include "I_CommPeripheral.h"
 #include "SerialPortPeripheral.h"
 #include "InternetPeripheral.h"
 
