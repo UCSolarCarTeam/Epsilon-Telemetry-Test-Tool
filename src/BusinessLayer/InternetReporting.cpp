@@ -243,30 +243,25 @@ QJsonObject InternetReporting::makeBattery()
     battery.insert("PrechargeState", batteryData_.prechargeStateJSON);
     battery.insert("PrechargeTimerElapsed", batteryData_.prechargeTimerElapsed);
     battery.insert("PrechargeTimeCount", batteryData_.prechargeTimerCount);
-
     QJsonObject lowestCellVoltage;
     lowestCellVoltage.insert("Voltage", batteryData_.lowestCellVoltage);
     lowestCellVoltage.insert("CmuNumber", batteryData_.lowestCellVoltageCmuNumber);
     lowestCellVoltage.insert("CellNumber", batteryData_.lowestCellVoltageCellNumber);
     battery.insert("LowestCellVoltage", lowestCellVoltage);
-
     QJsonObject lowestCellTemp;
     lowestCellTemp.insert("Temp", batteryData_.lowestCellTemperature);
     lowestCellTemp.insert("CmuNumber", batteryData_.lowestCellTemperatureCmuNumber);
     lowestCellTemp.insert("CellNumber", batteryData_.lowestCellTemperatureCellNumber);
     battery.insert("LowestCellTemp", lowestCellTemp);
-
     QJsonObject highestCellVoltage;
     highestCellVoltage.insert("Voltage", batteryData_.highestCellVoltage);
     highestCellVoltage.insert("CmuNumber", batteryData_.highestCellVoltageCmuNumber);
     highestCellVoltage.insert("CellNumber", batteryData_.highestCellVoltageCellNumber);
     battery.insert("HighestCellVoltage", highestCellVoltage);
-
     QJsonObject highestCellTemp;
     highestCellTemp.insert("Temp", batteryData_.highestCellTemperature);
     highestCellTemp.insert("CmuNumber", batteryData_.highestCellTemperatureCmuNumber);
     highestCellTemp.insert("CellNumber", batteryData_.highestCellTemperatureCellNumber);
-
     battery.insert("HighestCellTemp", highestCellTemp);
     battery.insert("Voltage", batteryData_.voltage);
     battery.insert("Current", batteryData_.current);
@@ -275,42 +270,40 @@ QJsonObject InternetReporting::makeBattery()
     battery.insert("FanContactorsCurrent", batteryData_.fanContactors12VCurrentConsumption);
     battery.insert("CmuCurrent", batteryData_.cmu12VCurrentConsumption);
     return battery;
-
 }
 
 QJsonArray InternetReporting::makeCmu()
 {
     QJsonObject cmuInfo;
     QJsonArray cmu;
-
     QJsonArray cellVoltageInfo;
+    QJsonArray cellTemperatureInfo;
+
     for (int i = 0; i < 8; i++)
     {
         cellVoltageInfo.push_back(cmuData_.cellVoltage[i]);
     }
 
-    cmuInfo.insert("Voltages", cellVoltageInfo);
-    cmuInfo.insert("PcbTemp", cmuData_.pcbTemperature);
-
-    QJsonArray cellTemperatureInfo;
     for (int i = 0; i < 15; i++)
     {
         cellTemperatureInfo.push_back(cmuData_.cellTemperature[i]);
     }
 
+    cmuInfo.insert("Voltages", cellVoltageInfo);
+    cmuInfo.insert("PcbTemp", cmuData_.pcbTemperature);
     cmuInfo.insert("CellTemps", cellTemperatureInfo);
 
     for(unsigned char i = 0; i < CcsDefines::CMU_COUNT; i++)
     {
         cmu.push_back(cmuInfo);
     }
+
     return cmu;
 }
 
 QJsonArray InternetReporting::makeMppt()
 {
     QJsonArray mppt;
-
     QJsonObject mpptInfo;
     mpptInfo.insert("Alive", mpptData_.alive);
     mpptInfo.insert("ArrayVoltage", mpptData_.arrayVoltage);
@@ -322,6 +315,7 @@ QJsonArray InternetReporting::makeMppt()
     {
         mppt.push_back(mpptInfo);
     }
+
     return mppt;
 }
 
@@ -342,11 +336,9 @@ void InternetReporting::sendAll()
     QJsonObject obj;
     QDateTime date = date.currentDateTime();
     QString dateString = date.toString("yyyy-MM-dd hh:mm:ss.zzz");
-
     QJsonArray motorDetails;
     motorDetails.push_back(makeMotorDetails(0));
     motorDetails.push_back(makeMotorDetails(1));
-
     obj.insert("PacketTitle", "UofC Solar Car Gen 5");
     obj.insert("TimeStamp", dateString);
     obj.insert("KeyMotor", makeKeyMotor());
@@ -358,7 +350,6 @@ void InternetReporting::sendAll()
     obj.insert("CMU", makeCmu());
     obj.insert("MPPT", makeMppt());
     obj.insert("Lights", makeLights());
-
     QJsonDocument doc(obj);
     QByteArray data = doc.toBinaryData();
     communicationService_.sendInternetData(data);
