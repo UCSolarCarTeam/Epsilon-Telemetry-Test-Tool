@@ -256,7 +256,9 @@ TEST_F(TelemetryReportingTest, sendKeyMotorTest) // TODO create function which b
     // check call
     const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
     EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
-    telemetryReporting_->sendKeyMotor();
+
+    // actually call the method under test through qt's signal/slot mechanism
+    view->sendKeyMotor();
 }
 
 /*
@@ -268,7 +270,7 @@ TEST_F(TelemetryReportingTest, sendKeyMotorTest) // TODO create function which b
  */
 TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
-    // create payload
+    // create payload for motor 0 details
     const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS;
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
     unsigned char data[payloadLength];
@@ -298,7 +300,11 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function whi
     // check call
     const auto expectedPacket0AsArg = Args<0, 1>(ElementsAreArray(expectedPacket0, expectedPackageLength));
     EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacket0AsArg).Times(1);
-    telemetryReporting_->sendMotorDetails(0);
+
+    // actually call the method under test through qt's signal/slot mechanism
+    view->sendMotor0Details();
+
+    // create payload for motor 1 details
     data[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
     Util::writeFloatIntoArray(data, 1, motor1DetailsData_->phaseCCurrent);
     Util::writeFloatIntoArray(data, 5, motor1DetailsData_->phaseBCurrent);
@@ -324,7 +330,9 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function whi
     Util::frameData(data, payloadLength, expectedPacket1);
     const auto expectedPacket1AsArg = Args<0, 1>(ElementsAreArray(expectedPacket1, expectedPackageLength));
     EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacket1AsArg).Times(1);
-    telemetryReporting_->sendMotorDetails(1);
+
+    // actually call the method under test through qt's signal/slot mechanism
+    view->sendMotor1Details();
 }
 
 /*
@@ -377,7 +385,9 @@ TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function w
     // check call
     const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
     EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
-    telemetryReporting_->sendDriverControls();
+
+    // actually call the method under test through qt's signal/slot mechanism
+    view->sendDriverControls();
 }
 
 /*
@@ -444,7 +454,9 @@ TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function whic
     // check call
     const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
     EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
-    telemetryReporting_->sendMotorFaults();
+
+    // actually call the method under test through qt's signal/slot mechanism
+    view->sendMotorFaults();
 }
 
 /*
@@ -484,7 +496,9 @@ TEST_F(TelemetryReportingTest, sendBatteryFaultsTest) // TODO create function wh
     // check call
     const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
     EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
-    telemetryReporting_->sendBatteryFaults();
+
+    // actually call the method under test through qt's signal/slot mechanism
+    view->sendBatteryFaults();
 }
 
 /*
@@ -550,7 +564,9 @@ TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which bu
     // check call
     const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
     EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
-    telemetryReporting_->sendBattery();
+
+    // actually call the method under test through qt's signal/slot mechanism
+    view->sendBattery();
 }
 
 /*
@@ -582,8 +598,8 @@ TEST_F(TelemetryReportingTest, sendCmuTest)
         EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
     }
 
-    // check call
-    telemetryReporting_->sendCmu();
+    // actually call the method under test through qt's signal/slot mechanism
+    view->sendCmu();
 }
 
 /*
@@ -628,8 +644,8 @@ TEST_F(TelemetryReportingTest, sendMpptTest)
             EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
         }
 
-        // check call
-        telemetryReporting_->sendMppt();
+        // actually call the method under test through qt's signal/slot mechanism
+        view->sendMppt();
     }
 }
 
@@ -669,7 +685,9 @@ TEST_F(TelemetryReportingTest, sendLightsTest) // TODO create function which bui
     // check call
     const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
     EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
-    telemetryReporting_->sendLights();
+
+    // actually call the method under test through qt's signal/slot mechanism
+    view->sendLights();
 }
 
 /*
@@ -690,7 +708,9 @@ TEST_F(TelemetryReportingTest, sendAllTest)
     EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_CMU)).With(Args<0, 1>(packageIdIs(8))).Times(CcsDefines::CMU_COUNT);
     EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_MPPT)).With(Args<0, 1>(packageIdIs(9))).Times(CcsDefines::MPPT_COUNT);
     EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS)).With(Args<0, 1>(packageIdIs(10))).Times(1);
-    telemetryReporting_->sendAll();
+
+    // actually call the method under test through qt's signal/slot mechanism
+    view->sendAll();
 }
 
 
