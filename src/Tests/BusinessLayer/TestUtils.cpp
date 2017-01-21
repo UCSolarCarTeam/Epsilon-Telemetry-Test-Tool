@@ -6,6 +6,8 @@
 #include "Util.h"
 #include "CrcCalculator.h"
 
+using ::testing::Not;
+using ::testing::Matches;
 using ::testing::ElementsAre;
 using ::testing::ElementsAreArray;
 
@@ -16,7 +18,12 @@ void TestUtils::expectCobsCorrect(unsigned char* input, unsigned char* expected,
     const unsigned int expectedArrayLength = inputLength + 2;
     unsigned char encodedArray[expectedArrayLength];
     Util::frameData(input, inputLength, encodedArray);
-    std::cout << COUT_HEX(encodedArray[inputLength]) << " " << COUT_HEX(encodedArray[inputLength + 1]) << std::endl;
+
+    if(Matches(Not(ElementsAreArray(std::vector<unsigned char>(expected, expected + expectedArrayLength))))(std::vector<unsigned char>(encodedArray, encodedArray + expectedArrayLength)))
+    {
+    	std::cout << COUT_HEX(encodedArray[inputLength]) << " " << COUT_HEX(encodedArray[inputLength + 1]) << std::endl;
+    }
+
     EXPECT_THAT(std::vector<unsigned char>(encodedArray, encodedArray + expectedArrayLength),
                 ElementsAreArray(std::vector<unsigned char>(expected, expected + expectedArrayLength)));
 }
