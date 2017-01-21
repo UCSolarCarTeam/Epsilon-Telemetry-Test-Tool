@@ -29,7 +29,6 @@ HEADERS  += \
     UILayer/Window.h \
     ViewLayer/View.h \
     Peripherals/SerialPortPeripheral.h \
-    Peripherals/I_CommPeripheral.h \
     BusinessLayer/InternetReporting.h \
     BusinessLayer/SerialReporting.h \
     Peripherals/InternetPeripheral.h

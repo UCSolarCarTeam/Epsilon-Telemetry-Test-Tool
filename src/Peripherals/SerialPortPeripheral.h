@@ -1,7 +1,5 @@
 #pragma once
 
-#include "I_CommPeripheral.h"
-
 class QStringList;
 class QSerialPort;
 
