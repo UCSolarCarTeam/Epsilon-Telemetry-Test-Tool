@@ -5,7 +5,7 @@
 class QStringList;
 class QByteArray;
 
-class InternetPeripheral : public I_CommPeripheral
+class InternetPeripheral
 {
 public:
     InternetPeripheral();

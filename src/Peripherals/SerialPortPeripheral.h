@@ -5,7 +5,7 @@
 class QStringList;
 class QSerialPort;
 
-class SerialPortPeripheral : public I_CommPeripheral
+class SerialPortPeripheral
 {
 public:
     SerialPortPeripheral(QSerialPort& serialPort);
