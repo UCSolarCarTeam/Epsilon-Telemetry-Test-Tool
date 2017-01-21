@@ -30,8 +30,10 @@ unsigned int Util::frameData(const unsigned char* dataToEncode, unsigned long le
 
 
 /*
- * TODO This method can only encode arbitrary data (parameter dataToEncode) if it's length is smaller or equal to 253.
- * Note that the maximal possible message length supported by the COBS encoding would be 254. So don't send messages longer than 253.
+ * This method can only encode arbitrary data (parameter dataToEncode) if it's length is smaller or equal to 254.
+ * Before a recent change (see comment in the implementation of the method) the longest possible message was even
+ * shorter (limit at 253 bytes) than the maximal possible message length supported by the COBS encoding which is 254.
+ * If unexpected problems occur, a fall back to the old 253 bytes limited version is recommended to ensure proper function!
  */
 unsigned int Util::stuffData(const unsigned char* dataToEncode, unsigned long length, unsigned char* encodedData)
 {
@@ -54,7 +56,7 @@ unsigned int Util::stuffData(const unsigned char* dataToEncode, unsigned long le
             if (code == 0xFF)
             {
                 FINISH_BLOCK(code);
-                lengthOfEncodedData++;	// TODO maybe artifact. Prevents correct encoding of message with length of 254 bytes
+                //lengthOfEncodedData++;	// TODO probably artifact. If executed prevents correct encoding of message with length of 254 bytes
             }
         }
 
