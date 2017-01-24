@@ -1,12 +1,18 @@
 sudo: required
 
+compiler: gcc
+
+env: COMPILER=g++-4.8
+
 before_install:
     - sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
     - sudo apt-add-repository -y ppa:beineri/opt-qt542
     - sudo apt-get -qq update
-    - sudo apt-get -qq install g++-4.8 libc6-i386 qt54tools qt54svg qt54webkit qt54serialport
+    - sudo apt-get -qq install $COMPILER libc6-i386 qt54tools qt54svg qt54webkit qt54serialport
+    - export CXX=$COMPILER
     - PATH="/opt/qt54/bin:$PATH"
     - qt54-env.sh
+    - mkdir -p build/.lib/
     - cd src
 
 install:
@@ -14,11 +20,28 @@ install:
     - tar -zxvf download
     - (cd astyle/build/gcc && make release && sudo make install)
     - rm astyle -rf
+    - git clone https://github.com/google/googletest.git
+    - cd googletest
+    - sudo cp -r googletest/include/gtest /usr/local/include
+    - sudo cp -r googlemock/include/gmock /usr/local/include
+    - g++ -isystem googletest/include/ -Igoogletest -isystem googlemock/include/ -Igooglemock -pthread -c googlemock/src/gmock-all.cc
+    - g++ -isystem googletest/include/ -Igoogletest -isystem googlemock/include/ -Igooglemock -pthread -c googletest/src/gtest-all.cc
+    - ar -rv libgmock.a gtest-all.o gmock-all.o
+    - cp libgmock.a ../../build/.lib/
+    - cd ..
 
 script:
+    - sudo mv /usr/bin/g++ /usr/bin/g++_depr
+    - sudo ln -s $(which $CXX) /usr/bin/g++
+    - $CXX --version
+    - g++ --version
     - qmake
     - make
     - cd ..
-    - "! (astyle *.h *.cpp -r --dry-run --options=astylerc | grep formatted)"
+    - "! (astyle *.h *.cpp -r --dry-run --options=astylerc --exclude=googletest | grep formatted)"
+    # maybe not needed but still good practise
+    - sudo mv /usr/bin/g++_depr /usr/bin/g++
+    # execute the actual tests using xvfb to avoid problems with qt (QXcbConnection: Could not connect to display)
+    - xvfb-run ./build/tests/runTestSuite 
 
 language: cpp

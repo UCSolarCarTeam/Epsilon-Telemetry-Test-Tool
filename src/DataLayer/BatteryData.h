@@ -35,6 +35,8 @@ struct BatteryData
         , highestCellTemperature(42)
         , highestCellTemperatureCmuNumber(3)
         , highestCellTemperatureCellNumber(4)
+        , voltage(240)
+        , current(1200)
         , fan0Speed(43)
         , fan1Speed(44)
         , fanContactors12VCurrentConsumption(45)
@@ -84,6 +86,8 @@ struct BatteryData
     unsigned short highestCellTemperature;
     unsigned char highestCellTemperatureCmuNumber;
     unsigned char highestCellTemperatureCellNumber;
+    unsigned int voltage;
+    unsigned int current;
     unsigned short fan0Speed;
     unsigned short fan1Speed;
     unsigned short fanContactors12VCurrentConsumption;

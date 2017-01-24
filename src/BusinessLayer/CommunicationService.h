@@ -1,6 +1,7 @@
 #pragma once
 
-#include <QObject>
+#include "I_CommunicationService.h"
+
 #include <QSerialPort>
 #include <SerialPortPeripheral.h>
 
@@ -8,9 +9,9 @@ class I_CommPeripheral;
 class View;
 class QIODevice;
 
-class CommunicationService : public QObject
+class CommunicationService : public I_CommunicationService
 {
-    Q_OBJECT
+
 public:
     CommunicationService(View& view);
     void sendData(const unsigned char* packet, int packetLength);
