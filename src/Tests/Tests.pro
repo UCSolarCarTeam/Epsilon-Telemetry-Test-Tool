@@ -27,8 +27,8 @@ HEADERS += \
 SOURCES += \
     testmain.cpp \
     BusinessLayer/TestUtils.cpp \
-    BusinessLayer/TelemetryReportingTest.cpp \
     BusinessLayer/UtilTest.cpp \
+    BusinessLayer/SerialReportingTest.cpp
 
 
 !win32 {
