@@ -11,7 +11,7 @@ namespace
     const int NUMBER_OF_MPPTS = 7;
 }
 
-View::View()
+View::View() : signalMapper(this)
 {
     window_ = new Window();
     //Connect slots to UI
@@ -19,10 +19,13 @@ View::View()
                      this, SIGNAL(attemptConnectionSignal()));
     window_->connect(&(window_->getSendKeyMotorButton()), SIGNAL(clicked()),
                      this, SIGNAL(sendKeyMotor()));
-    window_->connect(&(window_->getSendMotor0DetailsButton()), SIGNAL(clicked()),
-                     this, SIGNAL(sendMotor0Details()));
-    window_->connect(&(window_->getSendMotor1DetailsButton()), SIGNAL(clicked()),
-                     this, SIGNAL(sendMotor1Details()));
+
+    connect(&(window_->getSendMotor0DetailsButton()), SIGNAL(clicked()), &signalMapper, SLOT(map()));
+    connect(&(window_->getSendMotor1DetailsButton()), SIGNAL(clicked()), &signalMapper, SLOT(map()));
+    signalMapper.setMapping(&(window_->getSendMotor0DetailsButton()), 0);
+    signalMapper.setMapping(&(window_->getSendMotor1DetailsButton()), 1);
+    connect(&signalMapper, SIGNAL(mapped(int)), this, SIGNAL(sendMotorDetails(int)));
+
     window_->connect(&(window_->getSendDriverControlsButton()), SIGNAL(clicked()),
                      this, SIGNAL(sendDriverControls()));
     window_->connect(&(window_->getSendMotorFaultsButton()), SIGNAL(clicked()),

@@ -14,13 +14,13 @@ class MotorFaultsData;
 class MpptData;
 class View;
 class QIODevice;
-class CommunicationService;
+class I_CommunicationService;
 
 class InternetReporting : public QObject
 {
     Q_OBJECT
 public:
-    InternetReporting(CommunicationService& commService,
+    InternetReporting(I_CommunicationService& commService,
                          const KeyMotorData& keyMotorData_,
                          const MotorDetailsData& motor0DetailsData_,
                          const MotorDetailsData& motor1DetailsData_,
@@ -47,7 +47,7 @@ private:
     QJsonObject makeLights();
 
 private:
-    CommunicationService& communicationService_;
+    I_CommunicationService& communicationService_;
     const KeyMotorData& keyMotorData_;
     const MotorDetailsData& motor0DetailsData_;
     const MotorDetailsData& motor1DetailsData_;

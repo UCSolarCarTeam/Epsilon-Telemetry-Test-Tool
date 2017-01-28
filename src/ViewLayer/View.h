@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QSignalMapper>
 
 class QSerialPort;
 class Window;
@@ -17,8 +18,7 @@ signals:
     void attemptConnectionSignal();
     void differentModeSelectedSignal();
     void sendKeyMotor();
-    void sendMotor0Details();
-    void sendMotor1Details();
+    void sendMotorDetails(int n);
     void sendDriverControls();
     void sendMotorFaults();
     void sendBatteryFaults();
@@ -30,4 +30,5 @@ signals:
 
 private:
     Window* window_;
+    QSignalMapper signalMapper;
 };

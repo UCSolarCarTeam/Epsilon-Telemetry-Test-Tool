@@ -1,48 +1,11 @@
-! include( common.pri ) {
-    error( "Couldn't find the common.pri file!" )
-}
+TEMPLATE = subdirs
+CONFIG += ordered static
 
-QT += widgets
-QT += network
-TEMPLATE = app
-TARGET = telemTestApp
-INCLUDEPATH = BusinessLayer \
-    DataLayer \
-    UILayer \
+SUBDIRS = \
+    BusinessLayer \
     ViewLayer \
-    Peripherals
+    UILayer \
+    Peripherals \
+    Tests \
+    TelemTestToolMain
 
-HEADERS  += \
-    TestApplication.h \
-    BusinessLayer/CrcCalculator.h \
-    BusinessLayer/CommunicationService.h \
-    DataLayer/BatteryData.h \
-    DataLayer/BatteryFaultsData.h \
-    DataLayer/CcsDefines.h \
-    DataLayer/CmuData.h \
-    DataLayer/DriverControlsData.h \
-    DataLayer/KeyMotorData.h \
-    DataLayer/LightsData.h \
-    DataLayer/MotorDetailsData.h \
-    DataLayer/MotorFaultsData.h \
-    DataLayer/MpptData.h \
-    UILayer/Window.h \
-    ViewLayer/View.h \
-    Peripherals/SerialPortPeripheral.h \
-    BusinessLayer/InternetReporting.h \
-    BusinessLayer/SerialReporting.h \
-    Peripherals/InternetPeripheral.h \
-    BusinessLayer/Util.h
-
-SOURCES += \
-    main.cpp \
-    TestApplication.cpp \
-    BusinessLayer/CrcCalculator.cpp \
-    BusinessLayer/CommunicationService.cpp \
-    UILayer/Window.cpp \
-    ViewLayer/View.cpp \
-    Peripherals/SerialPortPeripheral.cpp \
-    BusinessLayer/InternetReporting.cpp \
-    BusinessLayer/SerialReporting.cpp \
-    Peripherals/InternetPeripheral.cpp \
-    BusinessLayer/Util.cpp

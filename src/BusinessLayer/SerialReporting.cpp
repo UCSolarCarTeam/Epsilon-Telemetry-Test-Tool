@@ -3,7 +3,7 @@
 #include <QIODevice>
 
 #include <CcsDefines.h>
-#include <CommunicationService.h>
+#include <I_CommunicationService.h>
 #include <SerialReporting.h>
 #include <BatteryData.h>
 #include <BatteryFaultsData.h>
@@ -34,7 +34,7 @@ namespace
 
 using namespace Util;
 
-SerialReporting::SerialReporting(CommunicationService& commService,
+SerialReporting::SerialReporting(I_CommunicationService& commService,
                                        const KeyMotorData& keyMotorData,
                                        const MotorDetailsData& motor0DetailsData,
                                        const MotorDetailsData& motor1DetailsData,

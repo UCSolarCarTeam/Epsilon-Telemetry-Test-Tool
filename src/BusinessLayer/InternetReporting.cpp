@@ -18,10 +18,10 @@
 #include "MotorDetailsData.h"
 #include "MotorFaultsData.h"
 #include "MpptData.h"
-#include "CommunicationService.h"
+#include "I_CommunicationService.h"
 #include "View.h"
 
-InternetReporting::InternetReporting(CommunicationService& commService,
+InternetReporting::InternetReporting(I_CommunicationService& commService,
                                      const KeyMotorData& keyMotorData,
                                      const MotorDetailsData& motor0DetailsData,
                                      const MotorDetailsData& motor1DetailsData,
