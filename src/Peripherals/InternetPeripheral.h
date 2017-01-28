@@ -10,5 +10,5 @@ public:
     virtual ~InternetPeripheral();
     bool attemptConnection();
     void setParameters(QStringList parameters);
-    void sendInternetData(const QByteArray &data);
+    void sendInternetData(const QByteArray& data);
 };

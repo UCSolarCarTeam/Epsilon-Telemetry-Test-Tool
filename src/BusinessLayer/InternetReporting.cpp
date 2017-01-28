@@ -73,7 +73,7 @@ QJsonObject InternetReporting::makeMotorDetails(int n)
 {
     QJsonObject motorDetails;
 
-    if(n == 0)
+    if (n == 0)
     {
         motorDetails.insert("PhaseCCurrent", motor0DetailsData_.phaseCCurrent);
         motorDetails.insert("PhaseBCurrent", motor0DetailsData_.phaseBCurrent);
@@ -286,7 +286,7 @@ QJsonArray InternetReporting::makeCmu()
     cmuInfo.insert("PcbTemp", cmuData_.pcbTemperature);
     cmuInfo.insert("CellTemps", cellTemperatureInfo);
 
-    for(unsigned char i = 0; i < CcsDefines::CMU_COUNT; i++)
+    for (unsigned char i = 0; i < CcsDefines::CMU_COUNT; i++)
     {
         cmu.push_back(cmuInfo);
     }
@@ -304,7 +304,7 @@ QJsonArray InternetReporting::makeMppt()
     mpptInfo.insert("BatteryVoltage", mpptData_.batteryVoltage);
     mpptInfo.insert("Temperature", mpptData_.temperature);
 
-    for(unsigned char i = 0; i < CcsDefines::MPPT_COUNT; i++)
+    for (unsigned char i = 0; i < CcsDefines::MPPT_COUNT; i++)
     {
         mppt.push_back(mpptInfo);
     }
@@ -325,7 +325,7 @@ QJsonObject InternetReporting::makeLights()
 }
 
 void InternetReporting::sendAll()
-{   
+{
     QJsonObject obj;
     QDateTime date = date.currentDateTime();
     QString dateString = date.toString("yyyy-MM-dd hh:mm:ss.zzz");

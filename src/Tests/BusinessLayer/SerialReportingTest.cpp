@@ -101,7 +101,7 @@ protected:
                                   *mpptData_,
                                   *lightsData_,
                                   *view
-                                                        ));
+                                                     ));
     }
 
     inline unsigned char fitTwoSingleUChar(unsigned char bit0To3, unsigned char bit4To7) const

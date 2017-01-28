@@ -35,17 +35,17 @@ namespace
 using namespace Util;
 
 SerialReporting::SerialReporting(I_CommunicationService& commService,
-                                       const KeyMotorData& keyMotorData,
-                                       const MotorDetailsData& motor0DetailsData,
-                                       const MotorDetailsData& motor1DetailsData,
-                                       const DriverControlsData& driverControlsData,
-                                       const MotorFaultsData& motorFaultsData,
-                                       const BatteryFaultsData& batteryFaultsData,
-                                       const BatteryData& batteryData,
-                                       const CmuData& cmuData,
-                                       const MpptData& mpptData,
-                                       const LightsData& lightsData,
-                                       View& view)
+                                 const KeyMotorData& keyMotorData,
+                                 const MotorDetailsData& motor0DetailsData,
+                                 const MotorDetailsData& motor1DetailsData,
+                                 const DriverControlsData& driverControlsData,
+                                 const MotorFaultsData& motorFaultsData,
+                                 const BatteryFaultsData& batteryFaultsData,
+                                 const BatteryData& batteryData,
+                                 const CmuData& cmuData,
+                                 const MpptData& mpptData,
+                                 const LightsData& lightsData,
+                                 View& view)
     : communicationService_(commService)
     , keyMotorData_(keyMotorData)
     , motor0DetailsData_(motor0DetailsData)
