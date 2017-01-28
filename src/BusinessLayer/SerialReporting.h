@@ -35,26 +35,27 @@ public:
 
 private slots:
     void sendKeyMotor();
+
     void sendMotorDetails(int n);
+
     void sendDriverControls();
+
     void sendMotorFaults();
+
     void sendBatteryFaults();
+
     void sendBattery();
+
     void sendCmu();
+
     void sendMppt();
+
     void sendLights();
+
     void sendAll();
 
 private:
-    unsigned int frameData(const unsigned char* dataToEncode, unsigned long length, unsigned char* frameData);
-    unsigned int stuffData(const unsigned char* dataToEncode, unsigned long length, unsigned char* encodedData);
-    void addChecksum(unsigned char* data, unsigned int length);
-    void writeFloatIntoArray(unsigned char* data, int index, const float& value);
-    void writeShortIntoArray(unsigned char* data, int index, const short& value);
-    void writeUShortIntoArray(unsigned char* data, int index, const unsigned short& value);
-    void writeBoolsIntoArray(unsigned char* data, int index, const bool values[], int numValues);
 
-private:
     CommunicationService& communicationService_;
     const KeyMotorData& keyMotorData_;
     const MotorDetailsData& motor0DetailsData_;
