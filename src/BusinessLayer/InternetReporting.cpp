@@ -254,8 +254,8 @@ QJsonObject InternetReporting::makeBattery()
     highestCellTemp.insert("CmuNumber", batteryData_.highestCellTemperatureCmuNumber);
     highestCellTemp.insert("CellNumber", batteryData_.highestCellTemperatureCellNumber);
     battery.insert("HighestCellTemp", highestCellTemp);
-    battery.insert("Voltage", (double)batteryData_.voltage);
-    battery.insert("Current", (double)batteryData_.current);
+    battery.insert("Voltage", (qint64)batteryData_.voltage);
+    battery.insert("Current", (qint64)batteryData_.current);
     battery.insert("Fan0Speed", batteryData_.fan0Speed);
     battery.insert("Fan1Speed", batteryData_.fan1Speed);
     battery.insert("FanContactorsCurrent", batteryData_.fanContactors12VCurrentConsumption);
