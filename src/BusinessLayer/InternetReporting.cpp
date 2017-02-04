@@ -1,10 +1,10 @@
 #include <cstring>
 
 #include <QDateTime>
+#include <QIODevice>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QIODevice>
 #include <QString>
 
 #include "BatteryData.h"

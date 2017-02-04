@@ -2,19 +2,19 @@
 
 #include <QApplication>
 #include <QScopedPointer>
-#include "SerialReporting.h"
+#include "BatteryData.h"
+#include "BatteryFaultsData.h"
+#include "CmuData.h"
+#include "CommunicationService.h"
+#include "DriverControlsData.h"
 #include "InternetReporting.h"
 #include "KeyMotorData.h"
-#include "MotorDetailsData.h"
-#include "DriverControlsData.h"
-#include "MotorFaultsData.h"
-#include "BatteryFaultsData.h"
-#include "BatteryData.h"
-#include "CmuData.h"
-#include "MpptData.h"
 #include "LightsData.h"
+#include "MotorDetailsData.h"
+#include "MotorFaultsData.h"
+#include "MpptData.h"
+#include "SerialReporting.h"
 #include "View.h"
-#include "CommunicationService.h"
 
 class TestApplication : public QApplication
 {

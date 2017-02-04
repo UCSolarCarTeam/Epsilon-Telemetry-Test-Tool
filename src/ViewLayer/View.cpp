@@ -1,6 +1,6 @@
 #include <QLabel>
-#include <QPushButton>
 #include <QLineEdit>
+#include <QPushButton>
 #include "View.h"
 #include "Window.h"
 

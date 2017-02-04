@@ -5,20 +5,20 @@
 #include <vector>
 #include <tuple>
 
-#include "KeyMotorData.h"
-#include "MotorDetailsData.h"
-#include "DriverControlsData.h"
-#include "MotorFaultsData.h"
 #include "BatteryFaultsData.h"
 #include "BatteryData.h"
 #include "CmuData.h"
-#include "MpptData.h"
+#include "DriverControlsData.h"
+#include "KeyMotorData.h"
 #include "LightsData.h"
-#include "View.h"
-#include "SerialReporting.h"
 #include "MockCommunicationService.h"
-#include "Util.h"
+#include "MotorDetailsData.h"
+#include "MotorFaultsData.h"
+#include "MpptData.h"
+#include "SerialReporting.h"
 #include "TestUtils.h"
+#include "Util.h"
+#include "View.h"
 
 #include "CcsDefines.h"
 #include "CrcCalculator.h"

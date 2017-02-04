@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "Util.h"
 #include "TestUtils.h"
+#include "Util.h"
 
 using TestUtils::expectCobsCorrect;
 using TestUtils::appendChecksum;
