@@ -1,24 +1,24 @@
 #include <cstring>
 
-#include <QIODevice>
 #include <QDateTime>
 #include <QJsonArray>
-#include <QString>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QIODevice>
+#include <QString>
 
-#include "CcsDefines.h"
-#include "InternetReporting.h"
 #include "BatteryData.h"
 #include "BatteryFaultsData.h"
+#include "CcsDefines.h"
 #include "CmuData.h"
 #include "DriverControlsData.h"
+#include "I_CommunicationService.h"
+#include "InternetReporting.h"
 #include "KeyMotorData.h"
 #include "LightsData.h"
 #include "MotorDetailsData.h"
 #include "MotorFaultsData.h"
 #include "MpptData.h"
-#include "I_CommunicationService.h"
 #include "View.h"
 
 InternetReporting::InternetReporting(I_CommunicationService& commService,

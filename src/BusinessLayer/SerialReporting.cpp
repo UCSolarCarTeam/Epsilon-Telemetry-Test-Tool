@@ -3,19 +3,19 @@
 #include <QIODevice>
 
 #include <CcsDefines.h>
-#include <I_CommunicationService.h>
-#include <SerialReporting.h>
 #include <BatteryData.h>
 #include <BatteryFaultsData.h>
 #include <CmuData.h>
 #include <DriverControlsData.h>
+#include <I_CommunicationService.h>
 #include <KeyMotorData.h>
 #include <LightsData.h>
 #include <MotorDetailsData.h>
 #include <MotorFaultsData.h>
 #include <MpptData.h>
-#include <View.h>
+#include <SerialReporting.h>
 #include <Util.h>
+#include <View.h>
 
 namespace
 {

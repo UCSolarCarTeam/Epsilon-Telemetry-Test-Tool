@@ -1,11 +1,11 @@
 #pragma once
 
 #include "I_CommunicationService.h"
+#include "InternetPeripheral.h"
+#include "SerialPortPeripheral.h"
 
-#include <QSerialPort>
 #include <QByteArray>
-#include <SerialPortPeripheral.h>
-#include <InternetPeripheral.h>
+#include <QSerialPort>
 
 class View;
 class QIODevice;

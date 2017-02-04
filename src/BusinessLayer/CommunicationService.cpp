@@ -2,9 +2,9 @@
 #include <QSerialPort>
 #include <QStringList>
 #include "CommunicationService.h"
-#include "View.h"
-#include "SerialPortPeripheral.h"
 #include "InternetPeripheral.h"
+#include "SerialPortPeripheral.h"
+#include "View.h"
 
 /*--------------------------------------------------------
                 Communication Service
