@@ -9,7 +9,8 @@ DESTDIR = ../../build/.lib
 
 HEADERS += \
     $$PWD/SerialPortPeripheral.h \
-    $$PWD/I_CommPeripheral.h
+    $$PWD/InternetPeripheral.h \
 
 SOURCES += \
     $$PWD/SerialPortPeripheral.cpp \
+    $$PWD/InternetPeripheral.cpp \

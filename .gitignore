@@ -4,3 +4,5 @@ Makefile
 .tags*
 release
 *.pro.user
+*.save
+build*

@@ -2,9 +2,9 @@
 #include <QSerialPort>
 #include <QStringList>
 #include "CommunicationService.h"
-#include "View.h"
-#include "I_CommPeripheral.h"
+#include "InternetPeripheral.h"
 #include "SerialPortPeripheral.h"
+#include "View.h"
 
 /*--------------------------------------------------------
                 Communication Service
@@ -16,23 +16,39 @@ CommunicationService::CommunicationService(View& view)
     : view_(view)
 {
     setPeripheralSerialPort();
-    connect(&view_, SIGNAL(attemptConnectionSignal()), this, SLOT(attemptConnection()));
+    connect(&view_, SIGNAL(attemptConnectionSignal()), this, SLOT(attemptSerialConnection()));
 }
 
 void CommunicationService::setPeripheralSerialPort()
 {
     outputDevice_ = new QSerialPort();
-    outputPeripheral_ = new SerialPortPeripheral(*outputDevice_);
+    serialPeripheral_ = new SerialPortPeripheral(*outputDevice_);
 }
 
-void CommunicationService::sendData(const unsigned char* packet, int packetLength)
+void CommunicationService::setInternetConnection()
 {
-    outputPeripheral_->sendData(packet, packetLength);
+    //TODO: Implement or replace this function to set up a connection with the server
 }
 
-void CommunicationService::attemptConnection()
+void CommunicationService::sendSerialData(const unsigned char* packet, int packetLength)
+{
+    serialPeripheral_->sendSerialData(packet, packetLength);
+}
+
+void CommunicationService::sendInternetData(const QByteArray& data)
+{
+    Q_UNUSED(data);
+    //TODO: Implement or replace this function to send incoming data
+}
+
+void CommunicationService::attemptSerialConnection()
 {
     QStringList paramList = (QStringList() << view_.getCommunicationPort());
-    outputPeripheral_->setParameters(paramList);
-    view_.setConnectionStatus(outputPeripheral_->attemptConnection());
+    serialPeripheral_->setParameters(paramList);
+    view_.setConnectionStatus(serialPeripheral_->attemptConnection());
+}
+
+void CommunicationService::attemptInternetConnection()
+{
+    //TODO: Implement or replace this function to try to connect to the server
 }

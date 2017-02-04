@@ -16,22 +16,22 @@ class I_CommunicationService;
 class QIODevice;
 class View;
 
-class TelemetryReporting : public QObject
+class SerialReporting : public QObject
 {
     Q_OBJECT
 public:
-    TelemetryReporting(I_CommunicationService& commService,
-                       const KeyMotorData& keyMotorData_,
-                       const MotorDetailsData& motor0DetailsData_,
-                       const MotorDetailsData& motor1DetailsData_,
-                       const DriverControlsData& driverControlsData_,
-                       const MotorFaultsData& motorFaultsData_,
-                       const BatteryFaultsData& batteryFaultsData_,
-                       const BatteryData& batteryData_,
-                       const CmuData& cmuData_,
-                       const MpptData& mpptData_,
-                       const LightsData& lightsData_,
-                       View& view);
+    SerialReporting(I_CommunicationService& commService,
+                    const KeyMotorData& keyMotorData_,
+                    const MotorDetailsData& motor0DetailsData_,
+                    const MotorDetailsData& motor1DetailsData_,
+                    const DriverControlsData& driverControlsData_,
+                    const MotorFaultsData& motorFaultsData_,
+                    const BatteryFaultsData& batteryFaultsData_,
+                    const BatteryData& batteryData_,
+                    const CmuData& cmuData_,
+                    const MpptData& mpptData_,
+                    const LightsData& lightsData_,
+                    View& view);
 
 private slots:
     void sendKeyMotor();
@@ -55,7 +55,6 @@ private slots:
     void sendAll();
 
 private:
-
     I_CommunicationService& communicationService_;
     const KeyMotorData& keyMotorData_;
     const MotorDetailsData& motor0DetailsData_;

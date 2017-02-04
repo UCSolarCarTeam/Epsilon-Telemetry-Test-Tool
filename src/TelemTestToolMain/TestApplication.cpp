@@ -14,18 +14,29 @@ TestApplication::TestApplication(int& argc, char** argv)
     , lightsData_(new LightsData())
     , view_(new View())
     , communicationService_(new CommunicationService(*view_))
-    , telemetryReporting_(new TelemetryReporting(*communicationService_,
-                          *keyMotorData_,
-                          *motor0DetailsData_,
-                          *motor1DetailsData_,
-                          *driverControlsData_,
-                          *motorFaultsData_,
-                          *batteryFaultsData_,
-                          *batteryData_,
-                          *cmuData_,
-                          *mpptData_,
-                          *lightsData_,
-                          *view_))
+    , serialReporting_(new SerialReporting(*communicationService_,
+                                           *keyMotorData_,
+                                           *motor0DetailsData_,
+                                           *motor1DetailsData_,
+                                           *driverControlsData_,
+                                           *motorFaultsData_,
+                                           *batteryFaultsData_,
+                                           *batteryData_,
+                                           *cmuData_,
+                                           *mpptData_,
+                                           *lightsData_,
+                                           *view_))
+    , internetReporting_(new InternetReporting(*communicationService_,
+                         *keyMotorData_,
+                         *motor0DetailsData_,
+                         *motor1DetailsData_,
+                         *driverControlsData_,
+                         *motorFaultsData_,
+                         *batteryFaultsData_,
+                         *batteryData_,
+                         *cmuData_,
+                         *mpptData_,
+                         *lightsData_))
 {
 }
 

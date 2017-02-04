@@ -3,19 +3,19 @@
 #include <QIODevice>
 
 #include <CcsDefines.h>
-#include <TelemetryReporting.h>
 #include <BatteryData.h>
 #include <BatteryFaultsData.h>
 #include <CmuData.h>
 #include <DriverControlsData.h>
+#include <I_CommunicationService.h>
 #include <KeyMotorData.h>
 #include <LightsData.h>
 #include <MotorDetailsData.h>
 #include <MotorFaultsData.h>
 #include <MpptData.h>
-#include <I_CommunicationService.h>
-#include <View.h>
+#include <SerialReporting.h>
 #include <Util.h>
+#include <View.h>
 
 namespace
 {
@@ -34,18 +34,18 @@ namespace
 
 using namespace Util;
 
-TelemetryReporting::TelemetryReporting(I_CommunicationService& commService,
-                                       const KeyMotorData& keyMotorData,
-                                       const MotorDetailsData& motor0DetailsData,
-                                       const MotorDetailsData& motor1DetailsData,
-                                       const DriverControlsData& driverControlsData,
-                                       const MotorFaultsData& motorFaultsData,
-                                       const BatteryFaultsData& batteryFaultsData,
-                                       const BatteryData& batteryData,
-                                       const CmuData& cmuData,
-                                       const MpptData& mpptData,
-                                       const LightsData& lightsData,
-                                       View& view)
+SerialReporting::SerialReporting(I_CommunicationService& commService,
+                                 const KeyMotorData& keyMotorData,
+                                 const MotorDetailsData& motor0DetailsData,
+                                 const MotorDetailsData& motor1DetailsData,
+                                 const DriverControlsData& driverControlsData,
+                                 const MotorFaultsData& motorFaultsData,
+                                 const BatteryFaultsData& batteryFaultsData,
+                                 const BatteryData& batteryData,
+                                 const CmuData& cmuData,
+                                 const MpptData& mpptData,
+                                 const LightsData& lightsData,
+                                 View& view)
     : communicationService_(commService)
     , keyMotorData_(keyMotorData)
     , motor0DetailsData_(motor0DetailsData)
@@ -72,7 +72,7 @@ TelemetryReporting::TelemetryReporting(I_CommunicationService& commService,
     connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
 }
 
-void TelemetryReporting::sendKeyMotor()
+void SerialReporting::sendKeyMotor()
 {
     const unsigned int unframedPacketLength = KEY_MOTOR_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -94,10 +94,10 @@ void TelemetryReporting::sendKeyMotor()
     addChecksum(packetPayload, KEY_MOTOR_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
+    communicationService_.sendSerialData(packet, packetLength);
 }
 
-void TelemetryReporting::sendMotorDetails(int n)
+void SerialReporting::sendMotorDetails(int n)
 {
     const unsigned int unframedPacketLength = MOTOR_DETAILS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -131,10 +131,10 @@ void TelemetryReporting::sendMotorDetails(int n)
     addChecksum(packetPayload, MOTOR_DETAILS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
+    communicationService_.sendSerialData(packet, packetLength);
 }
 
-void TelemetryReporting::sendDriverControls()
+void SerialReporting::sendDriverControls()
 {
     const unsigned int unframedPacketLength = DRIVER_CONTROLS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -170,10 +170,10 @@ void TelemetryReporting::sendDriverControls()
     addChecksum(packetPayload, DRIVER_CONTROLS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
+    communicationService_.sendSerialData(packet, packetLength);
 }
 
-void TelemetryReporting::sendMotorFaults()
+void SerialReporting::sendMotorFaults()
 {
     const unsigned int unframedPacketLength = MOTOR_FAULTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -223,10 +223,10 @@ void TelemetryReporting::sendMotorFaults()
     addChecksum(packetPayload, MOTOR_FAULTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
+    communicationService_.sendSerialData(packet, packetLength);
 }
 
-void TelemetryReporting::sendBatteryFaults()
+void SerialReporting::sendBatteryFaults()
 {
     const unsigned int unframedPacketLength = BATTERY_FAULTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -249,10 +249,10 @@ void TelemetryReporting::sendBatteryFaults()
     addChecksum(packetPayload, BATTERY_FAULTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
+    communicationService_.sendSerialData(packet, packetLength);
 }
 
-void TelemetryReporting::sendBattery()
+void SerialReporting::sendBattery()
 {
     const unsigned int unframedPacketLength = BATTERY_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -305,10 +305,10 @@ void TelemetryReporting::sendBattery()
     addChecksum(packetPayload, BATTERY_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
+    communicationService_.sendSerialData(packet, packetLength);
 }
 
-void TelemetryReporting::sendCmu()
+void SerialReporting::sendCmu()
 {
     const unsigned int unframedPacketLength = CMU_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -334,11 +334,11 @@ void TelemetryReporting::sendCmu()
         addChecksum(packetPayload, CMU_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
         unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-        communicationService_.sendData(packet, packetLength);
+        communicationService_.sendSerialData(packet, packetLength);
     }
 }
 
-void TelemetryReporting::sendMppt()
+void SerialReporting::sendMppt()
 {
     const unsigned int unframedPacketLength = MPPT_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -363,11 +363,11 @@ void TelemetryReporting::sendMppt()
         addChecksum(mpptPacketPayload, MPPT_LENGTH);
         unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
         unsigned int packetLength = frameData(mpptPacketPayload, unframedPacketLength, packet);
-        communicationService_.sendData(packet, packetLength);
+        communicationService_.sendSerialData(packet, packetLength);
     }
 }
 
-void TelemetryReporting::sendLights()
+void SerialReporting::sendLights()
 {
     const unsigned int unframedPacketLength = LIGHTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
@@ -383,10 +383,10 @@ void TelemetryReporting::sendLights()
     addChecksum(packetPayload, LIGHTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendData(packet, packetLength);
+    communicationService_.sendSerialData(packet, packetLength);
 }
 
-void TelemetryReporting::sendAll()
+void SerialReporting::sendAll()
 {
     sendKeyMotor();
     sendMotorDetails(0);

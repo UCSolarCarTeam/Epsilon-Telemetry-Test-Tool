@@ -8,5 +8,6 @@ class MockCommunicationService : public I_CommunicationService
 {
 
 public:
-    MOCK_METHOD2(sendData, void(const unsigned char* packet, int packetLength));
+    MOCK_METHOD2(sendSerialData, void(const unsigned char* packet, int packetLength));
+    MOCK_METHOD1(sendInternetData, void(const QByteArray& data));
 };

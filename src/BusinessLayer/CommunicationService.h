@@ -1,11 +1,12 @@
 #pragma once
 
 #include "I_CommunicationService.h"
+#include "InternetPeripheral.h"
+#include "SerialPortPeripheral.h"
 
+#include <QByteArray>
 #include <QSerialPort>
-#include <SerialPortPeripheral.h>
 
-class I_CommPeripheral;
 class View;
 class QIODevice;
 
@@ -14,16 +15,20 @@ class CommunicationService : public I_CommunicationService
 
 public:
     CommunicationService(View& view);
-    void sendData(const unsigned char* packet, int packetLength);
+    void sendSerialData(const unsigned char* packet, int packetLength);
+    void sendInternetData(const QByteArray& data);
 
 private:
     void setPeripheralSerialPort();
+    void setInternetConnection();
 
 public slots:
-    void attemptConnection();
+    void attemptSerialConnection();
+    void attemptInternetConnection();
 
 private:
     View& view_;
     QSerialPort* outputDevice_;
-    I_CommPeripheral* outputPeripheral_;
+    SerialPortPeripheral* serialPeripheral_;
+    InternetPeripheral* internetPeripheral_;
 };

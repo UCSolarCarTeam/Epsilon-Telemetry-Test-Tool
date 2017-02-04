@@ -1,11 +1,9 @@
 #pragma once
 
-#include "I_CommPeripheral.h"
-
 class QStringList;
 class QSerialPort;
 
-class SerialPortPeripheral : public I_CommPeripheral
+class SerialPortPeripheral
 {
 public:
     SerialPortPeripheral(QSerialPort& serialPort);
@@ -13,7 +11,7 @@ public:
     bool attemptConnection();
     //Sets the port name to parameters[0]
     void setParameters(QStringList parameters);
-    void sendData(const unsigned char* data, int length);
+    void sendSerialData(const unsigned char* data, int length);
 
 private:
     QSerialPort& serialPort_;

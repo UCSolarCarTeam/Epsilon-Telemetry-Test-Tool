@@ -131,4 +131,3 @@ void Util::writeBoolsIntoArray(unsigned char* data, int index, const bool values
         }
     }
 }
-

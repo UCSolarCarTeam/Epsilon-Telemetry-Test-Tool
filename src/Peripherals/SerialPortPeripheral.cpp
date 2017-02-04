@@ -25,7 +25,7 @@ void SerialPortPeripheral::setParameters(QStringList parameters)
     serialPort_.setPortName(parameters.at(0));
 }
 
-void SerialPortPeripheral::sendData(const unsigned char* data, int length)
+void SerialPortPeripheral::sendSerialData(const unsigned char* data, int length)
 {
     for (int i = 0; i < length; ++i)
     {
@@ -44,3 +44,4 @@ bool SerialPortPeripheral::attemptConnection()
         return false;
     }
 }
+

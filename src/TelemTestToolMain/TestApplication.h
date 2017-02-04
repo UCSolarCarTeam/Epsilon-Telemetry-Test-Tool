@@ -2,18 +2,19 @@
 
 #include <QApplication>
 #include <QScopedPointer>
-#include "TelemetryReporting.h"
-#include "KeyMotorData.h"
-#include "MotorDetailsData.h"
-#include "DriverControlsData.h"
-#include "MotorFaultsData.h"
-#include "BatteryFaultsData.h"
 #include "BatteryData.h"
+#include "BatteryFaultsData.h"
 #include "CmuData.h"
-#include "MpptData.h"
-#include "LightsData.h"
-#include "View.h"
 #include "CommunicationService.h"
+#include "DriverControlsData.h"
+#include "InternetReporting.h"
+#include "KeyMotorData.h"
+#include "LightsData.h"
+#include "MotorDetailsData.h"
+#include "MotorFaultsData.h"
+#include "MpptData.h"
+#include "SerialReporting.h"
+#include "View.h"
 
 class TestApplication : public QApplication
 {
@@ -35,5 +36,6 @@ private:
     QScopedPointer<LightsData> lightsData_;
     QScopedPointer<View> view_;
     QScopedPointer<CommunicationService> communicationService_;
-    QScopedPointer<TelemetryReporting> telemetryReporting_;
+    QScopedPointer<SerialReporting> serialReporting_;
+    QScopedPointer<InternetReporting> internetReporting_;
 };

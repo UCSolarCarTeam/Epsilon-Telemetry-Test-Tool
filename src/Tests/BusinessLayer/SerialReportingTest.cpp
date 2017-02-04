@@ -5,20 +5,20 @@
 #include <vector>
 #include <tuple>
 
-#include "KeyMotorData.h"
-#include "MotorDetailsData.h"
-#include "DriverControlsData.h"
-#include "MotorFaultsData.h"
 #include "BatteryFaultsData.h"
 #include "BatteryData.h"
 #include "CmuData.h"
-#include "MpptData.h"
+#include "DriverControlsData.h"
+#include "KeyMotorData.h"
 #include "LightsData.h"
-#include "View.h"
-#include "TelemetryReporting.h"
 #include "MockCommunicationService.h"
-#include "Util.h"
+#include "MotorDetailsData.h"
+#include "MotorFaultsData.h"
+#include "MpptData.h"
+#include "SerialReporting.h"
 #include "TestUtils.h"
+#include "Util.h"
+#include "View.h"
 
 #include "CcsDefines.h"
 #include "CrcCalculator.h"
@@ -55,7 +55,7 @@ namespace
 }
 
 
-class TelemetryReportingTest : public ::testing::Test
+class SerialReportingTest : public ::testing::Test
 {
 
 protected:
@@ -73,7 +73,7 @@ protected:
     QScopedPointer<LightsData> lightsData_;
     QScopedPointer<View> view;
 
-    QScopedPointer<TelemetryReporting> telemetryReporting_;
+    QScopedPointer<SerialReporting> telemetryReporting_;
 
     virtual void SetUp()
     {
@@ -89,7 +89,7 @@ protected:
         mpptData_.reset(new MpptData());
         lightsData_.reset(new LightsData());
         view.reset(new View());
-        telemetryReporting_.reset(new TelemetryReporting(*communicationService_,
+        telemetryReporting_.reset(new SerialReporting(*communicationService_,
                                   *keyMotorData_,
                                   *motor0DetailsData_,
                                   *motor1DetailsData_,
@@ -101,7 +101,7 @@ protected:
                                   *mpptData_,
                                   *lightsData_,
                                   *view
-                                                        ));
+                                                     ));
     }
 
     inline unsigned char fitTwoSingleUChar(unsigned char bit0To3, unsigned char bit4To7) const
@@ -152,7 +152,7 @@ protected:
     class PackageIdMatcher : public MatcherInterface<std::tuple<const unsigned char*, int>>
     {
     public:
-        explicit PackageIdMatcher(unsigned char expectedId, TelemetryReportingTest& containingTest)
+        explicit PackageIdMatcher(unsigned char expectedId, SerialReportingTest& containingTest)
             : expectedId_(expectedId), containingTest_(containingTest) {}
 
         virtual bool MatchAndExplain(std::tuple<const unsigned char*, int> input, /* has to contain at least 2 elements! */
@@ -201,7 +201,7 @@ protected:
 
     private:
         const unsigned char expectedId_;
-        const TelemetryReportingTest& containingTest_;
+        const SerialReportingTest& containingTest_;
     };
 
     inline Matcher<std::tuple<const unsigned char*, int>> packageIdIs(unsigned char expectedId)
@@ -222,7 +222,7 @@ protected:
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendKeyMotorTest) // TODO create function which build the actual package to create more test cases in a easy way ...
+TEST_F(SerialReportingTest, sendKeyMotorTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
     // prepare payload
     const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_KEY_MOTOR;
@@ -255,7 +255,7 @@ TEST_F(TelemetryReportingTest, sendKeyMotorTest) // TODO create function which b
     Util::frameData(data, payloadLength, expectedPacket);
     // check call
     const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
     view->sendKeyMotor();
@@ -268,7 +268,7 @@ TEST_F(TelemetryReportingTest, sendKeyMotorTest) // TODO create function which b
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
+TEST_F(SerialReportingTest, sendMotorDetailsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
     // create payload for motor 0 details
     const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS;
@@ -299,7 +299,7 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function whi
     Util::frameData(data, payloadLength, expectedPacket0);
     // check call
     const auto expectedPacket0AsArg = Args<0, 1>(ElementsAreArray(expectedPacket0, expectedPackageLength));
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacket0AsArg).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacket0AsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
     view->sendMotorDetails(0);
@@ -329,7 +329,7 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function whi
     unsigned char expectedPacket1[expectedPackageLength];
     Util::frameData(data, payloadLength, expectedPacket1);
     const auto expectedPacket1AsArg = Args<0, 1>(ElementsAreArray(expectedPacket1, expectedPackageLength));
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacket1AsArg).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacket1AsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
     view->sendMotorDetails(1);
@@ -342,7 +342,7 @@ TEST_F(TelemetryReportingTest, sendMotorDetailsTest) // TODO create function whi
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
+TEST_F(SerialReportingTest, sendDriverControlsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
     // prepare payload
     const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS;
@@ -384,7 +384,7 @@ TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function w
     Util::frameData(data, payloadLength, expectedPacket);
     // check call
     const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
     view->sendDriverControls();
@@ -397,7 +397,7 @@ TEST_F(TelemetryReportingTest, sendDriverControlsTest) // TODO create function w
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
+TEST_F(SerialReportingTest, sendMotorFaultsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
     // prepare payload
     const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS;
@@ -453,7 +453,7 @@ TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function whic
     Util::frameData(data, payloadLength, expectedPacket);
     // check call
     const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
     view->sendMotorFaults();
@@ -466,7 +466,7 @@ TEST_F(TelemetryReportingTest, sendMotorFaultsTest) // TODO create function whic
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendBatteryFaultsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
+TEST_F(SerialReportingTest, sendBatteryFaultsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
     // prepare payload
     const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS;
@@ -495,7 +495,7 @@ TEST_F(TelemetryReportingTest, sendBatteryFaultsTest) // TODO create function wh
     Util::frameData(data, payloadLength, expectedPacket);
     // check call
     const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
     view->sendBatteryFaults();
@@ -508,7 +508,7 @@ TEST_F(TelemetryReportingTest, sendBatteryFaultsTest) // TODO create function wh
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which build the actual package to create more test cases in a easy way ...
+TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
     // prepare payload
     const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_BATTERY;
@@ -563,7 +563,7 @@ TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which bu
     Util::frameData(data, payloadLength, expectedPacket);
     // check call
     const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
     view->sendBattery();
@@ -576,7 +576,7 @@ TEST_F(TelemetryReportingTest, sendBatteryTest) // TODO create function which bu
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendCmuTest)
+TEST_F(SerialReportingTest, sendCmuTest)
 {
     // prepare payload
     const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_CMU;
@@ -595,7 +595,7 @@ TEST_F(TelemetryReportingTest, sendCmuTest)
         ASSERT_THAT(data[1], Eq(i)); // cmu number
         Util::frameData(data, payloadLength, expectedPacket[i]);
         const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket[i], expectedPackageLength));
-        EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
+        EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
     }
 
     // actually call the method under test through qt's signal/slot mechanism
@@ -609,7 +609,7 @@ TEST_F(TelemetryReportingTest, sendCmuTest)
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendMpptTest)
+TEST_F(SerialReportingTest, sendMpptTest)
 {
     // prepare payload
     const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_MPPT;
@@ -641,7 +641,7 @@ TEST_F(TelemetryReportingTest, sendMpptTest)
 
             Util::frameData(data, payloadLength, expectedPacket[i]);
             const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket[i], expectedPackageLength));
-            EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
+            EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
         }
 
         // actually call the method under test through qt's signal/slot mechanism
@@ -656,7 +656,7 @@ TEST_F(TelemetryReportingTest, sendMpptTest)
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendLightsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
+TEST_F(SerialReportingTest, sendLightsTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
     // prepare payload
     const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS;
@@ -684,7 +684,7 @@ TEST_F(TelemetryReportingTest, sendLightsTest) // TODO create function which bui
     Util::frameData(data, payloadLength, expectedPacket);
     // check call
     const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
-    EXPECT_CALL(*communicationService_, sendData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
     view->sendLights();
@@ -696,18 +696,18 @@ TEST_F(TelemetryReportingTest, sendLightsTest) // TODO create function which bui
  * The actual methods, stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-TEST_F(TelemetryReportingTest, sendAllTest)
+TEST_F(SerialReportingTest, sendAllTest)
 {
-    EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_KEY_MOTOR)).With(Args<0, 1>(packageIdIs(1))).Times(1);
-    EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS)).With(Args<0, 1>(packageIdIs(2))).Times(1);
-    EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS)).With(Args<0, 1>(packageIdIs(3))).Times(1);
-    EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS)).With(Args<0, 1>(packageIdIs(4))).Times(1);
-    EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS)).With(Args<0, 1>(packageIdIs(5))).Times(1);
-    EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS)).With(Args<0, 1>(packageIdIs(6))).Times(1);
-    EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_BATTERY)).With(Args<0, 1>(packageIdIs(7))).Times(1);
-    EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_CMU)).With(Args<0, 1>(packageIdIs(8))).Times(CcsDefines::CMU_COUNT);
-    EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_MPPT)).With(Args<0, 1>(packageIdIs(9))).Times(CcsDefines::MPPT_COUNT);
-    EXPECT_CALL(*communicationService_, sendData(_, EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS)).With(Args<0, 1>(packageIdIs(10))).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_KEY_MOTOR)).With(Args<0, 1>(packageIdIs(1))).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS)).With(Args<0, 1>(packageIdIs(2))).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS)).With(Args<0, 1>(packageIdIs(3))).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS)).With(Args<0, 1>(packageIdIs(4))).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS)).With(Args<0, 1>(packageIdIs(5))).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS)).With(Args<0, 1>(packageIdIs(6))).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_BATTERY)).With(Args<0, 1>(packageIdIs(7))).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_CMU)).With(Args<0, 1>(packageIdIs(8))).Times(CcsDefines::CMU_COUNT);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_MPPT)).With(Args<0, 1>(packageIdIs(9))).Times(CcsDefines::MPPT_COUNT);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS)).With(Args<0, 1>(packageIdIs(10))).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
     view->sendAll();

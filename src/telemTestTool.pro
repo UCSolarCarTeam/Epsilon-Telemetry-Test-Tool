@@ -8,3 +8,4 @@ SUBDIRS = \
     Peripherals \
     Tests \
     TelemTestToolMain
+

@@ -3,8 +3,8 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include "Util.h"
 #include "CrcCalculator.h"
+#include "Util.h"
 
 using ::testing::Not;
 using ::testing::Matches;
