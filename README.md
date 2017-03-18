@@ -25,7 +25,7 @@ The two ports /dev/pts/2 and /dev/pts/3 are now connected.
 ## Testing
 The telemetry test tool uses googletest and googlemock,so the gmock and gtest header files need to be in your include path /usr/local/include or /usr/include.
 
-You must compile the library that has the definitions yourself.
+If you do not already have the library, you will need to compile it yourself.
 Meaning you need a `libgmock.a` archive file in the test directory in order to compile the tests.
 
 To create a `libgmock.a` file in a Linux system follow these instructions in an arbitrary dir.
@@ -45,7 +45,7 @@ To create a `libgmock.a` file in a Linux system follow these instructions in an 
 5. Collect both the resulting .o files into an archive file:
     `ar -rv libgmock.a gtest-all.o gmock-all.o`
 
-Congratulations! You now have a `libgmock.a` archive file.
-Create a `build/.lib` directory using `mkdir -p Location of your local Test Tool repository/build/.lib` and then place the `libmock.a` archive file in the new `build/.lib/` directory and you should be good to go.
+You should now have a `libgmock.a` archive file.
+Create a `build/.lib` directory using `mkdir -p Location_of_your_local_Test Tool_repository/build/.lib` and then place the `libmock.a` archive file in the new `build/.lib/` directory and you should be good to go.
 Use `ls -a` to show all hidden files.
 
