@@ -95,4 +95,71 @@ struct BatteryData
     unsigned short fanContactors12VCurrentConsumption;
     unsigned short cmu12VCurrentConsumption;
     bool bmsCanLockedOut;
+
+    /*
+     BatteryData()
+        : alive(true)
+        , bmsRelayStatus(1)
+        , populatedCells(2)
+        , inputVoltage12V(12.33f)
+        , fanVoltage(12.33f)
+        , packCurrent(33.33f)
+        , packStateOfCharge(88)
+        , packAmpHours(32.33f)
+        , packDepthOfDischarge(77)
+        , highTemperature(60)
+        , highThermistorId(1)
+        , lowTemperature(44)
+        , lowThermistorId(2)
+        , averageTemperature(52)
+        , internalTemperature(55)
+        . fanSpeed(43)
+        , requestedFanSpeed(45)
+        , lowCellVoltage(10)
+        , lowCellVoltageId(0)
+        , highCellVoltage(14)
+        , highCellVoltageId(1)
+        , averageCellVoltage(12)
+        , prechargeState(PrechargeState::EnablePack)
+        , prechargeStateJSON("Enable Pack")
+        , auxVoltage(13)
+        , auxBmsAlive(true)
+    {}
+
+    enum PrechargeState
+    {
+        Idle = 0,
+        Precharge = 1,
+        Measure = 2,
+        EnablePack = 3,
+        Run = 4,
+    };
+
+    bool alive;
+    unsigned char bmsRelayStatus;
+    unsinged char populatedCells;
+    float inputVoltage12V;
+    float fanVoltage;
+    float packCurrent;
+    float packStateOfCharge;
+    float packAmphours;
+    float packDepthOfDischarge;
+    unsigned char highTemperature;
+    unsigned char highThermistorId;
+    unsigned char lowTemperature;
+    unsigned char lowThermistorId;
+    unsigned char averageTemperature;
+    unsigned char internalTemperature;
+    unsigned char fanSpeed;
+    unsigned char requestedFanSpeed;
+    unsigned short int lowCellVoltage;
+    unsigned char lowCellVoltageId;
+    unsigned short int highCellVoltage;
+    unsigned char highCellVoltageId;
+    unsigned short int averageCellVoltage;
+    PrechargeState prechargeState;
+    const char* prechargeStateJSON;
+    unsigned char auxVoltage;
+    unsigned char auxBmsAlive;
+  */
 };
