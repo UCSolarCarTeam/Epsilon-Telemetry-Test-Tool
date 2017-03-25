@@ -99,7 +99,14 @@ struct BatteryData
     /*
      BatteryData()
         : alive(true)
-        , bmsRelayStatus(1)
+        , dischargeRelayEnabled(true)
+        , chargeRelayEnabled(false)
+        , chargerSafetyEnabled(true)
+        , malfunctionIndicatorActive(true)
+        , multiPurposeInputSignalStatus(true)
+        , alwaysOnSignalStatus(false)
+        , isReadySignalStatus(true)
+        , isChargingSignalStatus(true)
         , populatedCells(2)
         , inputVoltage12V(12.33f)
         , fanVoltage(12.33f)
@@ -136,7 +143,14 @@ struct BatteryData
     };
 
     bool alive;
-    unsigned char bmsRelayStatus;
+    bool dischargeRelayEnabled;
+    bool chargeRelayEnabled;
+    bool chargerSafetyEnabled;
+    bool malfunctionIndicatorActive;
+    bool multiPurposeInputSignalStatus;
+    bool alwaysOnSignalStatus;
+    bool isReadySignalStatus;
+    bool isChargingSignalStatus;
     unsinged char populatedCells;
     float inputVoltage12V;
     float fanVoltage;
