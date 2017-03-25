@@ -7,7 +7,6 @@
 
 #include "BatteryFaultsData.h"
 #include "BatteryData.h"
-#include "CmuData.h"
 #include "DriverControlsData.h"
 #include "KeyMotorData.h"
 #include "LightsData.h"
@@ -49,7 +48,6 @@ namespace
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 13;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 7;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 64;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_CMU = 54;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 6;
 }
@@ -68,7 +66,6 @@ protected:
     QScopedPointer<MotorFaultsData> motorFaultsData_;
     QScopedPointer<BatteryFaultsData> batteryFaultsData_;
     QScopedPointer<BatteryData> batteryData_;
-    QScopedPointer<CmuData> cmuData_;
     QScopedPointer<MpptData> mpptData_;
     QScopedPointer<LightsData> lightsData_;
     QScopedPointer<View> view;
@@ -85,7 +82,6 @@ protected:
         motorFaultsData_.reset(new MotorFaultsData());
         batteryFaultsData_.reset(new BatteryFaultsData());
         batteryData_.reset(new BatteryData());
-        cmuData_.reset(new CmuData());
         mpptData_.reset(new MpptData());
         lightsData_.reset(new LightsData());
         view.reset(new View());
@@ -97,7 +93,6 @@ protected:
                                   *motorFaultsData_,
                                   *batteryFaultsData_,
                                   *batteryData_,
-                                  *cmuData_,
                                   *mpptData_,
                                   *lightsData_,
                                   *view
@@ -108,28 +103,6 @@ protected:
     {
         unsigned char ret = (bit4To7 << 4) | (bit0To3 & 0x0F);
         return ret;
-    }
-
-    void fillCmuData(unsigned char* data) const
-    {
-        data[0] = CcsDefines::CMU_PKG_ID;
-        data[1] = cmuData_->cmuNumber;
-        const int cmuCellVoltageOffset = 2;
-        const int numCellVoltageFields = 8;
-
-        for (int i = 0; i < numCellVoltageFields; ++i)
-        {
-            Util::writeShortIntoArray(data, cmuCellVoltageOffset + (i * 2), cmuData_->cellVoltage[i]);
-        }
-
-        Util::writeUShortIntoArray(data, 18, cmuData_->pcbTemperature);
-        const int cmuCellTemperatureOffset = 20;
-        const int numCellTemperatureFields = 15;
-
-        for (int i = 0; i < numCellTemperatureFields; i++)
-        {
-            Util::writeUShortIntoArray(data, cmuCellTemperatureOffset + (i * 2), cmuData_->cellTemperature[i]);
-        }
     }
 
     void fillMpptData(unsigned char* data) const
@@ -570,39 +543,6 @@ TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build
 }
 
 /*
- * This test tests for the correct structure of the sendCmu package as defined in
- * https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=782574835
- *
- * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
- * separately.
- */
-TEST_F(SerialReportingTest, sendCmuTest)
-{
-    // prepare payload
-    const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_CMU;
-    const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
-    unsigned char expectedPacket[CcsDefines::CMU_COUNT][expectedPackageLength];
-
-    for (unsigned char i = 0; i < CcsDefines::CMU_COUNT; i++)
-    {
-        unsigned char data[payloadLength];
-        cmuData_->cmuNumber = i;
-        // build actual package
-        fillCmuData(data);
-        appendChecksum(data, payloadLength);
-        // do some additional data checks
-        ASSERT_THAT(data[0], Eq(0x08)); // packet id
-        ASSERT_THAT(data[1], Eq(i)); // cmu number
-        Util::frameData(data, payloadLength, expectedPacket[i]);
-        const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket[i], expectedPackageLength));
-        EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
-    }
-
-    // actually call the method under test through qt's signal/slot mechanism
-    view->sendCmu();
-}
-
-/*
  * This test tests for the correct structure of the sendMppt package as defined in
  * https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=782574835
  *
@@ -705,7 +645,6 @@ TEST_F(SerialReportingTest, sendAllTest)
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS)).With(Args<0, 1>(packageIdIs(5))).Times(1);
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS)).With(Args<0, 1>(packageIdIs(6))).Times(1);
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_BATTERY)).With(Args<0, 1>(packageIdIs(7))).Times(1);
-    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_CMU)).With(Args<0, 1>(packageIdIs(8))).Times(CcsDefines::CMU_COUNT);
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_MPPT)).With(Args<0, 1>(packageIdIs(9))).Times(CcsDefines::MPPT_COUNT);
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS)).With(Args<0, 1>(packageIdIs(10))).Times(1);
 

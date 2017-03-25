@@ -5,7 +5,6 @@
 #include <CcsDefines.h>
 #include <BatteryData.h>
 #include <BatteryFaultsData.h>
-#include <CmuData.h>
 #include <DriverControlsData.h>
 #include <I_CommunicationService.h>
 #include <KeyMotorData.h>
@@ -27,7 +26,6 @@ namespace
     const int MOTOR_FAULTS_LENGTH = 9;
     const int BATTERY_FAULTS_LENGTH = 3;
     const int BATTERY_LENGTH = 60;
-    const int CMU_LENGTH = 50;
     const int MPPT_LENGTH = 10;
     const int LIGHTS_LENGTH = 2;
 }
@@ -42,7 +40,6 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
                                  const MotorFaultsData& motorFaultsData,
                                  const BatteryFaultsData& batteryFaultsData,
                                  const BatteryData& batteryData,
-                                 const CmuData& cmuData,
                                  const MpptData& mpptData,
                                  const LightsData& lightsData,
                                  View& view)
@@ -54,7 +51,6 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
     , motorFaultsData_(motorFaultsData)
     , batteryFaultsData_(batteryFaultsData)
     , batteryData_(batteryData)
-    , cmuData_(cmuData)
     , mpptData_(mpptData)
     , lightsData_(lightsData)
     , view_(view)
@@ -66,7 +62,6 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
     connect(&view_, SIGNAL(sendMotorFaults()), this, SLOT(sendMotorFaults()));
     connect(&view_, SIGNAL(sendBatteryFaults()), this, SLOT(sendBatteryFaults()));
     connect(&view_, SIGNAL(sendBattery()), this, SLOT(sendBattery()));
-    connect(&view_, SIGNAL(sendCmu()), this, SLOT(sendCmu()));
     connect(&view_, SIGNAL(sendMppt()), this, SLOT(sendMppt()));
     connect(&view_, SIGNAL(sendLights()), this, SLOT(sendLights()));
     connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
@@ -308,36 +303,6 @@ void SerialReporting::sendBattery()
     communicationService_.sendSerialData(packet, packetLength);
 }
 
-void SerialReporting::sendCmu()
-{
-    const unsigned int unframedPacketLength = CMU_LENGTH + CHECKSUM_LENGTH;
-    unsigned char packetPayload[unframedPacketLength];
-    packetPayload[0] = CcsDefines::CMU_PKG_ID;
-    const int cmuVoltageBaseIndex = 2;
-
-    for (int i = 0; i < 8; i++)
-    {
-        writeShortIntoArray(packetPayload, cmuVoltageBaseIndex + (i * 2), cmuData_.cellVoltage[i]);
-    }
-
-    writeUShortIntoArray(packetPayload, 18, cmuData_.pcbTemperature);
-    const int cmuTemperatureBaseIndex = 20;
-
-    for (int i = 0; i < 15; i++)
-    {
-        writeUShortIntoArray(packetPayload, cmuTemperatureBaseIndex + (i * 2), cmuData_.cellTemperature[i]);
-    }
-
-    for (unsigned char i = 0; i < CcsDefines::CMU_COUNT; i++)
-    {
-        packetPayload[1] = i;
-        addChecksum(packetPayload, CMU_LENGTH);
-        unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-        unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-        communicationService_.sendSerialData(packet, packetLength);
-    }
-}
-
 void SerialReporting::sendMppt()
 {
     const unsigned int unframedPacketLength = MPPT_LENGTH + CHECKSUM_LENGTH;
@@ -395,7 +360,6 @@ void SerialReporting::sendAll()
     sendMotorFaults();
     sendBatteryFaults();
     sendBattery();
-    sendCmu();
     sendMppt();
     sendLights();
 }

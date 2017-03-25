@@ -7,7 +7,6 @@
 namespace
 {
     const int BAUDRATE = 9600;
-    const int NUMBER_OF_CMUS = 4;
     const int NUMBER_OF_MPPTS = 7;
 }
 
@@ -34,8 +33,6 @@ View::View() : signalMapper(this)
                      this, SIGNAL(sendBatteryFaults()));
     window_->connect(&(window_->getSendBatteryButton()), SIGNAL(clicked()),
                      this, SIGNAL(sendBattery()));
-    window_->connect(&(window_->getSendCmuButton()), SIGNAL(clicked()),
-                     this, SIGNAL(sendCmu()));
     window_->connect(&(window_->getSendMpptButton()), SIGNAL(clicked()),
                      this, SIGNAL(sendMppt()));
     window_->connect(&(window_->getSendLightsButton()), SIGNAL(clicked()),

@@ -5,7 +5,6 @@
 
 class BatteryData;
 class BatteryFaultsData;
-class CmuData;
 class DriverControlsData;
 class KeyMotorData;
 class LightsData;
@@ -28,7 +27,6 @@ public:
                     const MotorFaultsData& motorFaultsData_,
                     const BatteryFaultsData& batteryFaultsData_,
                     const BatteryData& batteryData_,
-                    const CmuData& cmuData_,
                     const MpptData& mpptData_,
                     const LightsData& lightsData_,
                     View& view);
@@ -46,8 +44,6 @@ private slots:
 
     void sendBattery();
 
-    void sendCmu();
-
     void sendMppt();
 
     void sendLights();
@@ -63,7 +59,6 @@ private:
     const MotorFaultsData& motorFaultsData_;
     const BatteryFaultsData& batteryFaultsData_;
     const BatteryData& batteryData_;
-    const CmuData& cmuData_;
     const MpptData& mpptData_;
     const LightsData& lightsData_;
     View& view_;

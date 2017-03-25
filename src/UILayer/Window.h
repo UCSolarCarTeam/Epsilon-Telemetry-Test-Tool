@@ -25,7 +25,6 @@ public:
     QPushButton& getSendMotorFaultsButton();
     QPushButton& getSendBatteryFaultsButton();
     QPushButton& getSendBatteryButton();
-    QPushButton& getSendCmuButton();
     QPushButton& getSendMpptButton();
     QPushButton& getSendLightsButton();
     QPushButton& getSendAllButton();
@@ -45,7 +44,6 @@ private:
     QPushButton* sendMotorFaultsButton_;
     QPushButton* sendBatteryFaultsButton_;
     QPushButton* sendBatteryButton_;
-    QPushButton* sendCmuButton_;
     QPushButton* sendMpptButton_;
     QPushButton* sendLightsButton_;
     QPushButton* sendAllButton_;
