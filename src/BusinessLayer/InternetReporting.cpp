@@ -27,7 +27,7 @@ InternetReporting::InternetReporting(I_CommunicationService& commService,
                                      const DriverControlsData& driverControlsData,
                                      const MotorFaultsData& motorFaultsData,
                                      const BatteryFaultsData& batteryFaultsData,
-                                     const BatteryData& batteryData, 
+                                     const BatteryData& batteryData,
                                      const MpptData& mpptData,
                                      const LightsData& lightsData)
     : communicationService_(commService)
