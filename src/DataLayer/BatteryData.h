@@ -175,5 +175,5 @@ struct BatteryData
     const char* prechargeStateJSON;
     unsigned char auxVoltage;
     unsigned char auxBmsAlive;
-  */
+    */
 };

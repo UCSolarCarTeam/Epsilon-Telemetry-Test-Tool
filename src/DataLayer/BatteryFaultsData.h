@@ -84,5 +84,5 @@ struct BatteryFaultsData
     bool cclReducedTemperature;
     bool cclReducedHighCellVoltage;
     bool cclReducelACLimit;
-  */
+    */
 };
