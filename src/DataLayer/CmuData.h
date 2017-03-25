@@ -1,5 +1,6 @@
 #pragma once
 
+//TODO: Delete all references to CMUs
 struct CmuData
 {
     CmuData()
