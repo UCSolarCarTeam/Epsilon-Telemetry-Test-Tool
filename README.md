@@ -23,12 +23,12 @@ The code above returns:
 The two ports /dev/pts/2 and /dev/pts/3 are now connected.
 
 ## Testing
-The telemetry test tool uses googletest and googlemock,so the gmock and gtest header files need to be in your include path /usr/local/include or /usr/include.
+The telemetry test tool uses googletest and googlemock,so the gmock and gtest header files need to be in your include path `/usr/local/include` or `/usr/include`.
 
 If you do not already have the library, you will need to compile it yourself.
 Meaning you need a `libgmock.a` archive file in the test directory in order to compile the tests.
 
-To create a `libgmock.a` file in a Linux system follow these instructions in an arbitrary dir.
+To create a `libgmock.a` file in a Linux system, follow these instructions in an arbitrary dir.
 
 1. Get the googletest and googlemock source code:
     `git clone https://github.com/google/googletest.git`
