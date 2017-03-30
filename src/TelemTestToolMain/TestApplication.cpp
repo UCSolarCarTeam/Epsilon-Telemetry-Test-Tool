@@ -9,7 +9,6 @@ TestApplication::TestApplication(int& argc, char** argv)
     , motorFaultsData_(new MotorFaultsData())
     , batteryFaultsData_(new BatteryFaultsData())
     , batteryData_(new BatteryData())
-    , cmuData_(new CmuData())
     , mpptData_(new MpptData())
     , lightsData_(new LightsData())
     , view_(new View())
@@ -22,7 +21,6 @@ TestApplication::TestApplication(int& argc, char** argv)
                                            *motorFaultsData_,
                                            *batteryFaultsData_,
                                            *batteryData_,
-                                           *cmuData_,
                                            *mpptData_,
                                            *lightsData_,
                                            *view_))
@@ -34,7 +32,6 @@ TestApplication::TestApplication(int& argc, char** argv)
                          *motorFaultsData_,
                          *batteryFaultsData_,
                          *batteryData_,
-                         *cmuData_,
                          *mpptData_,
                          *lightsData_))
 {

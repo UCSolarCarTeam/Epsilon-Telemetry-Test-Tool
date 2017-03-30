@@ -5,7 +5,6 @@
 
 class BatteryData;
 class BatteryFaultsData;
-class CmuData;
 class DriverControlsData;
 class KeyMotorData;
 class LightsData;
@@ -28,7 +27,6 @@ public:
                       const MotorFaultsData& motorFaultsData_,
                       const BatteryFaultsData& batteryFaultsData_,
                       const BatteryData& batteryData_,
-                      const CmuData& cmuData_,
                       const MpptData& mpptData_,
                       const LightsData& lightsData_);
 
@@ -42,7 +40,6 @@ private:
     QJsonArray makeMotorFaults();
     QJsonObject makeBatteryFaults();
     QJsonObject makeBattery();
-    QJsonArray makeCmu();
     QJsonArray makeMppt();
     QJsonObject makeLights();
 
@@ -55,7 +52,6 @@ private:
     const MotorFaultsData& motorFaultsData_;
     const BatteryFaultsData& batteryFaultsData_;
     const BatteryData& batteryData_;
-    const CmuData& cmuData_;
     const MpptData& mpptData_;
     const LightsData& lightsData_;
 };

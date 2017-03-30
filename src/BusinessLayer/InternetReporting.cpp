@@ -10,7 +10,6 @@
 #include "BatteryData.h"
 #include "BatteryFaultsData.h"
 #include "CcsDefines.h"
-#include "CmuData.h"
 #include "DriverControlsData.h"
 #include "I_CommunicationService.h"
 #include "InternetReporting.h"
@@ -29,7 +28,6 @@ InternetReporting::InternetReporting(I_CommunicationService& commService,
                                      const MotorFaultsData& motorFaultsData,
                                      const BatteryFaultsData& batteryFaultsData,
                                      const BatteryData& batteryData,
-                                     const CmuData& cmuData,
                                      const MpptData& mpptData,
                                      const LightsData& lightsData)
     : communicationService_(commService)
@@ -40,7 +38,6 @@ InternetReporting::InternetReporting(I_CommunicationService& commService,
     , motorFaultsData_(motorFaultsData)
     , batteryFaultsData_(batteryFaultsData)
     , batteryData_(batteryData)
-    , cmuData_(cmuData)
     , mpptData_(mpptData)
     , lightsData_(lightsData)
 {
@@ -263,37 +260,6 @@ QJsonObject InternetReporting::makeBattery()
     return battery;
 }
 
-QJsonArray InternetReporting::makeCmu()
-{
-    QJsonObject cmuInfo;
-    QJsonArray cmu;
-    QJsonArray cellVoltageInfo;
-    QJsonArray cellTemperatureInfo;
-    int cellVoltageEntries = 8;
-    int cellTemperatureEntries = 15;
-
-    for (int i = 0; i < cellVoltageEntries; i++)
-    {
-        cellVoltageInfo.push_back(cmuData_.cellVoltage[i]);
-    }
-
-    for (int i = 0; i < cellTemperatureEntries; i++)
-    {
-        cellTemperatureInfo.push_back(cmuData_.cellTemperature[i]);
-    }
-
-    cmuInfo.insert("Voltages", cellVoltageInfo);
-    cmuInfo.insert("PcbTemp", cmuData_.pcbTemperature);
-    cmuInfo.insert("CellTemps", cellTemperatureInfo);
-
-    for (unsigned char i = 0; i < CcsDefines::CMU_COUNT; i++)
-    {
-        cmu.push_back(cmuInfo);
-    }
-
-    return cmu;
-}
-
 QJsonArray InternetReporting::makeMppt()
 {
     QJsonArray mppt;
@@ -340,7 +306,6 @@ void InternetReporting::sendAll()
     obj.insert("MotorFaults", makeMotorFaults());
     obj.insert("BatteryFaults", makeBatteryFaults());
     obj.insert("Battery", makeBattery());
-    obj.insert("CMU", makeCmu());
     obj.insert("MPPT", makeMppt());
     obj.insert("Lights", makeLights());
     QJsonDocument doc(obj);
