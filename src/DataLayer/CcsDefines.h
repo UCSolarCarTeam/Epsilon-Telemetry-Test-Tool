@@ -10,12 +10,9 @@ namespace CcsDefines
     const unsigned char MOTOR_FAULTS_PKG_ID = 5;
     const unsigned char BATTERY_FAULTS_PKG_ID = 6;
     const unsigned char BATTERY_PKG_ID = 7;
-    const unsigned char CMU_PKG_ID = 8;		//TODO:Delete all references to CMUs
     const unsigned char MPPT_PKG_ID = 9;
     const unsigned char LIGHTS_PKG_ID = 10;
-
     const int MPPT_COUNT = 3;
-    const int CMU_COUNT = 4;				//TODO:Delete all references to CMUs
 
     // Control parameters
     // Wavesculptor 22 requires velocity in RPM

@@ -4,7 +4,6 @@
 #include <QScopedPointer>
 #include "BatteryData.h"
 #include "BatteryFaultsData.h"
-#include "CmuData.h"
 #include "CommunicationService.h"
 #include "DriverControlsData.h"
 #include "InternetReporting.h"
@@ -31,7 +30,6 @@ private:
     QScopedPointer<MotorFaultsData> motorFaultsData_;
     QScopedPointer<BatteryFaultsData> batteryFaultsData_;
     QScopedPointer<BatteryData> batteryData_;
-    QScopedPointer<CmuData> cmuData_;
     QScopedPointer<MpptData> mpptData_;
     QScopedPointer<LightsData> lightsData_;
     QScopedPointer<View> view_;

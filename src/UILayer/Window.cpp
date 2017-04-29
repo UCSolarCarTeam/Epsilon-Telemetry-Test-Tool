@@ -34,7 +34,6 @@ void Window::setupUi()
     sendMotorFaultsButton_ = new QPushButton("Send Motor Faults", this);
     sendBatteryFaultsButton_ = new QPushButton("Send Battery Faults", this);
     sendBatteryButton_ = new QPushButton("Send Battery", this);
-    sendCmuButton_ = new QPushButton("Send CMUs", this);
     sendMpptButton_ = new QPushButton("Send MPPTs", this);
     sendLightsButton_ = new QPushButton("Send Lights", this);
     sendAllButton_ = new QPushButton("Send All", this);
@@ -48,7 +47,6 @@ void Window::setupUi()
     layout->addRow(sendMotorFaultsButton_);
     layout->addRow(sendBatteryFaultsButton_);
     layout->addRow(sendBatteryButton_);
-    layout->addRow(sendCmuButton_);
     layout->addRow(sendMpptButton_);
     layout->addRow(sendLightsButton_);
     layout->addRow(sendAllButton_);
@@ -104,11 +102,6 @@ QPushButton& Window::getSendBatteryFaultsButton()
 QPushButton& Window::getSendBatteryButton()
 {
     return *sendBatteryButton_;
-}
-
-QPushButton& Window::getSendCmuButton()
-{
-    return *sendCmuButton_;
 }
 
 QPushButton& Window::getSendMpptButton()

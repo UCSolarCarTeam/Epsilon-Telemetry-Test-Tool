@@ -23,7 +23,6 @@ signals:
     void sendMotorFaults();
     void sendBatteryFaults();
     void sendBattery();
-    void sendCmu();
     void sendMppt();
     void sendLights();
     void sendAll();
