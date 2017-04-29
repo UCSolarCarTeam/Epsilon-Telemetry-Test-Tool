@@ -28,8 +28,6 @@ namespace
     const int BATTERY_LENGTH = 60;
     const int MPPT_LENGTH = 10;
     const int LIGHTS_LENGTH = 2;
-
-    const bool NO_DATA = 0;
 }
 
 using namespace Util;
@@ -229,45 +227,45 @@ void SerialReporting::sendBatteryFaults()
     unsigned char packetPayload[unframedPacketLength];
     packetPayload[0] = CcsDefines::BATTERY_FAULTS_PKG_ID;
     bool errorFlagsArray[] = {batteryFaultsData_.internalCommFault,
-                                 batteryFaultsData_.internalConversionFault,
-                                 batteryFaultsData_.weakCellFault,
-                                 batteryFaultsData_.lowCellVoltageFault,
-                                 batteryFaultsData_.openWiringFault,
-                                 batteryFaultsData_.currentSensorFault,
-                                 batteryFaultsData_.packVoltageSensorFault,
-                                 batteryFaultsData_.weakPackFault,
-                                 batteryFaultsData_.voltageRedundancyFault,
-                                 batteryFaultsData_.fanMonitorFault,
-                                 batteryFaultsData_.thermistorFault,
-                                 batteryFaultsData_.canbusCommsFault,
-                                 batteryFaultsData_.alwaysOnSupplyFault,
-                                 batteryFaultsData_.highVoltageIsolationFault,
-                                 batteryFaultsData_.powerSupplyFault,
-                                 batteryFaultsData_.chargeLimitFault,
-                                 batteryFaultsData_.dischargeLimitFault,
-                                 batteryFaultsData_.chargerSafetyRelayFault,
-                                 batteryFaultsData_.internalMemFault,
-                                 batteryFaultsData_.internalThermistorFault,
-                                 batteryFaultsData_.internalLogicFault
-                                };
+                              batteryFaultsData_.internalConversionFault,
+                              batteryFaultsData_.weakCellFault,
+                              batteryFaultsData_.lowCellVoltageFault,
+                              batteryFaultsData_.openWiringFault,
+                              batteryFaultsData_.currentSensorFault,
+                              batteryFaultsData_.packVoltageSensorFault,
+                              batteryFaultsData_.weakPackFault,
+                              batteryFaultsData_.voltageRedundancyFault,
+                              batteryFaultsData_.fanMonitorFault,
+                              batteryFaultsData_.thermistorFault,
+                              batteryFaultsData_.canbusCommsFault,
+                              batteryFaultsData_.alwaysOnSupplyFault,
+                              batteryFaultsData_.highVoltageIsolationFault,
+                              batteryFaultsData_.powerSupplyFault,
+                              batteryFaultsData_.chargeLimitFault,
+                              batteryFaultsData_.dischargeLimitFault,
+                              batteryFaultsData_.chargerSafetyRelayFault,
+                              batteryFaultsData_.internalMemFault,
+                              batteryFaultsData_.internalThermistorFault,
+                              batteryFaultsData_.internalLogicFault
+                             };
     writeBoolsIntoArray(packetPayload, 1, errorFlagsArray, 21);
     bool limitFlagsArray[] = {batteryFaultsData_.dclReducedLowSoc,
-                                 batteryFaultsData_.dclReducedHighCellResist,
-                                 batteryFaultsData_.dclReducedDueToTemp,
-                                 batteryFaultsData_.dclReducedLowCellVoltage,
-                                 batteryFaultsData_.dclReducedLowPackVoltage,
-                                 NO_DATA,
-                                 batteryFaultsData_.dclCclReducedVoltageFailsafe,
-                                 batteryFaultsData_.dclCclReducedCommsFailsafe,
-                                 NO_DATA,
-                                 batteryFaultsData_.cclReducedHighSoc,
-                                 batteryFaultsData_.cclReducedHighCellResist,
-                                 batteryFaultsData_.cclReducedDueToTemp,
-                                 batteryFaultsData_.cclReducedHighCellVoltage,
-                                 batteryFaultsData_.cclReducedHighPackVoltage,
-                                 batteryFaultsData_.cclReducedChargerLatch,
-                                 batteryFaultsData_.cclReducedACLimit
-                                };
+                              batteryFaultsData_.dclReducedHighCellResist,
+                              batteryFaultsData_.dclReducedDueToTemp,
+                              batteryFaultsData_.dclReducedLowCellVoltage,
+                              batteryFaultsData_.dclReducedLowPackVoltage,
+                              CcsDefines::NO_DATA,
+                              batteryFaultsData_.dclCclReducedVoltageFailsafe,
+                              batteryFaultsData_.dclCclReducedCommsFailsafe,
+                              CcsDefines::NO_DATA,
+                              batteryFaultsData_.cclReducedHighSoc,
+                              batteryFaultsData_.cclReducedHighCellResist,
+                              batteryFaultsData_.cclReducedDueToTemp,
+                              batteryFaultsData_.cclReducedHighCellVoltage,
+                              batteryFaultsData_.cclReducedHighPackVoltage,
+                              batteryFaultsData_.cclReducedChargerLatch,
+                              batteryFaultsData_.cclReducedACLimit
+                             };
     writeBoolsIntoArray(packetPayload, 5, limitFlagsArray, 16);
     addChecksum(packetPayload, BATTERY_FAULTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
@@ -283,13 +281,13 @@ void SerialReporting::sendBattery()
     bool aliveArray[] = {batteryData_.alive};
     writeBoolsIntoArray(packetPayload, 1, aliveArray, 1);
     bool bmsRelayStatusArray[] = {batteryData_.dischargeRelayEnabled,
-                                     batteryData_.chargeRelayEnabled,
-                                     batteryData_.chargerSafetyEnabled,
-                                     batteryData_.malfunctionIndicatorActive,
-                                     batteryData_.multiPurposeInputSignalStatus,
-                                     batteryData_.alwaysOnSignalStatus,
-                                     batteryData_.isReadySignalStatus,
-                                     batteryData_.isChargingSignalStatus
+                                  batteryData_.chargeRelayEnabled,
+                                  batteryData_.chargerSafetyEnabled,
+                                  batteryData_.malfunctionIndicatorActive,
+                                  batteryData_.multiPurposeInputSignalStatus,
+                                  batteryData_.alwaysOnSignalStatus,
+                                  batteryData_.isReadySignalStatus,
+                                  batteryData_.isChargingSignalStatus
                                  };
     writeBoolsIntoArray(packetPayload, 2, bmsRelayStatusArray, 8);
     packetPayload[3] = batteryData_.populatedCells;

@@ -446,21 +446,47 @@ TEST_F(SerialReportingTest, sendBatteryFaultsTest) // TODO create function which
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
     unsigned char data[payloadLength];
     data[0] = CcsDefines::BATTERY_FAULTS_PKG_ID;
-    bool errorFlags[] = { batteryFaultsData_->cellOverVoltage,
-                          batteryFaultsData_->cellUnderVoltage,
-                          batteryFaultsData_->cellOverTemperature,
-                          batteryFaultsData_->measurementUntrusted,
-                          batteryFaultsData_->cmuCommTimeout,
-                          batteryFaultsData_->vehicleCommTimeout,
-                          batteryFaultsData_->bmuInSetupMode,
-                          batteryFaultsData_->cmuCanBusPowerStatus,
-                          batteryFaultsData_->packIsolationTestFailure,
-                          batteryFaultsData_->softwareOverCurrent,
-                          batteryFaultsData_->can12VSupplyLow,
-                          batteryFaultsData_->contactorStuck,
-                          batteryFaultsData_->cmuDetectedExtraCellPresent
-                        };
-    Util::writeBoolsIntoArray(data, 1, errorFlags, 13);
+    bool errorFlagsArray[] = {batteryFaultsData_ ->internalCommFault,
+                              batteryFaultsData_ ->internalConversionFault,
+                              batteryFaultsData_->weakCellFault,
+                              batteryFaultsData_->lowCellVoltageFault,
+                              batteryFaultsData_->openWiringFault,
+                              batteryFaultsData_->currentSensorFault,
+                              batteryFaultsData_->packVoltageSensorFault,
+                              batteryFaultsData_->weakPackFault,
+                              batteryFaultsData_->voltageRedundancyFault,
+                              batteryFaultsData_->fanMonitorFault,
+                              batteryFaultsData_->thermistorFault,
+                              batteryFaultsData_->canbusCommsFault,
+                              batteryFaultsData_->alwaysOnSupplyFault,
+                              batteryFaultsData_->highVoltageIsolationFault,
+                              batteryFaultsData_->powerSupplyFault,
+                              batteryFaultsData_->chargeLimitFault,
+                              batteryFaultsData_->dischargeLimitFault,
+                              batteryFaultsData_->chargerSafetyRelayFault,
+                              batteryFaultsData_->internalMemFault,
+                              batteryFaultsData_->internalThermistorFault,
+                              batteryFaultsData_->internalLogicFault
+                             };
+    Util::writeBoolsIntoArray(data, 1, errorFlagsArray, 21);
+    bool limitFlagsArray[] = {batteryFaultsData_->dclReducedLowSoc,
+                              batteryFaultsData_->dclReducedHighCellResist,
+                              batteryFaultsData_->dclReducedDueToTemp,
+                              batteryFaultsData_->dclReducedLowCellVoltage,
+                              batteryFaultsData_->dclReducedLowPackVoltage,
+                              CcsDefines::NO_DATA,
+                              batteryFaultsData_->dclCclReducedVoltageFailsafe,
+                              batteryFaultsData_->dclCclReducedCommsFailsafe,
+                              CcsDefines::NO_DATA,
+                              batteryFaultsData_->cclReducedHighSoc,
+                              batteryFaultsData_->cclReducedHighCellResist,
+                              batteryFaultsData_->cclReducedDueToTemp,
+                              batteryFaultsData_->cclReducedHighCellVoltage,
+                              batteryFaultsData_->cclReducedHighPackVoltage,
+                              batteryFaultsData_->cclReducedChargerLatch,
+                              batteryFaultsData_->cclReducedACLimit
+                             };
+    Util::writeBoolsIntoArray(data, 5, limitFlagsArray, 16);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x06)); // packet id
@@ -488,47 +514,43 @@ TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
     unsigned char data[payloadLength];
     data[0] = CcsDefines::BATTERY_PKG_ID;
-    bool bmuAlive[] = { batteryData_->alive};
-    Util::writeBoolsIntoArray(data, 1, bmuAlive, 1);
-    Util::writeFloatIntoArray(data, 2, batteryData_->packSocAmpHours);
-    Util::writeFloatIntoArray(data, 6, batteryData_->packSocPercentage);
-    Util::writeFloatIntoArray(data, 10, batteryData_->packBalanceSoc);
-    Util::writeFloatIntoArray(data, 14, batteryData_->packBalanceSocPercentage);
-    Util::writeUShortIntoArray(data, 18, batteryData_->chargingCellVoltageError);
-    Util::writeUShortIntoArray(data, 20, batteryData_->cellTemperatureMargin);
-    Util::writeUShortIntoArray(data, 22, batteryData_->dischargingCellVoltageError);
-    Util::writeUShortIntoArray(data, 24, batteryData_->totalPackCapacity);
-    bool PrechargeContactorDriverStatus[] = { batteryData_->contactor0Errorstatus,
-                                              batteryData_->contactor1ErrorStatus,
-                                              batteryData_->contactor0Status,
-                                              batteryData_->contactor1Status,
-                                              batteryData_->contactor12VSupplyOk,
-                                              batteryData_->contactor2ErrorStatus,
-                                              batteryData_->contactor2Status
-                                            };
-    Util::writeBoolsIntoArray(data, 26, PrechargeContactorDriverStatus, 7);
-    data[27] = (unsigned char) batteryData_->prechargeState;
-    bool PrechargeTimerElapsed[] = { batteryData_->prechargeTimerElapsed,
-                                     batteryData_->prechargeTimerNotElapsed
-                                   };
-    Util::writeBoolsIntoArray(data, 28, PrechargeTimerElapsed, 2);
-    Util::writeUShortIntoArray(data, 29, batteryData_->prechargeTimerCount);
-    Util::writeUShortIntoArray(data, 31, batteryData_->lowestCellVoltage);
-    data[33] = fitTwoSingleUChar(batteryData_->lowestCellVoltageCmuNumber, batteryData_->lowestCellVoltageCellNumber);
-    Util::writeUShortIntoArray(data, 34, batteryData_->highestCellVoltage);
-    data[36] = fitTwoSingleUChar(batteryData_->highestCellVoltageCmuNumber, batteryData_->highestCellVoltageCellNumber);
-    Util::writeUShortIntoArray(data, 37, batteryData_->lowestCellTemperature);
-    data[39] = fitTwoSingleUChar(batteryData_->lowestCellTemperatureCmuNumber, batteryData_->lowestCellTemperatureCellNumber);
-    Util::writeUShortIntoArray(data, 40, batteryData_->highestCellTemperature);
-    data[42] = fitTwoSingleUChar(batteryData_->highestCellTemperatureCmuNumber, batteryData_->highestCellTemperatureCellNumber);
-    Util::writeUIntIntoArray(data, 43, batteryData_->voltage);
-    Util::writeUIntIntoArray(data, 47, batteryData_->current);
-    Util::writeUShortIntoArray(data, 51, batteryData_->fan0Speed);
-    Util::writeUShortIntoArray(data, 53, batteryData_->fan1Speed);
-    Util::writeUShortIntoArray(data, 55, batteryData_->fanContactors12VCurrentConsumption);
-    Util::writeUShortIntoArray(data, 57, batteryData_->cmu12VCurrentConsumption);
-    bool BMSCanLockedOut[] = {batteryData_->bmsCanLockedOut};
-    Util::writeBoolsIntoArray(data, 59, BMSCanLockedOut, 1);
+    bool aliveArray[] = {batteryData_->alive};
+    Util::writeBoolsIntoArray(data, 1, aliveArray, 1);
+    bool bmsRelayStatusArray[] = {batteryData_->dischargeRelayEnabled,
+                                  batteryData_->chargeRelayEnabled,
+                                  batteryData_->chargerSafetyEnabled,
+                                  batteryData_->malfunctionIndicatorActive,
+                                  batteryData_->multiPurposeInputSignalStatus,
+                                  batteryData_->alwaysOnSignalStatus,
+                                  batteryData_->isReadySignalStatus,
+                                  batteryData_->isChargingSignalStatus
+                                 };
+    Util::writeBoolsIntoArray(data, 2, bmsRelayStatusArray, 8);
+    data[3] = batteryData_->populatedCells;
+    Util::writeFloatIntoArray(data, 4, batteryData_->inputVoltage12V);
+    Util::writeFloatIntoArray(data, 8, batteryData_->fanVoltage);
+    Util::writeFloatIntoArray(data, 12, batteryData_->packCurrent);
+    Util::writeFloatIntoArray(data, 16, batteryData_->packVoltage);
+    Util::writeFloatIntoArray(data, 20, batteryData_->packStateOfCharge);
+    Util::writeFloatIntoArray(data, 24, batteryData_->packAmpHours);
+    Util::writeFloatIntoArray(data, 28, batteryData_->packDepthOfDischarge);
+    data[32] = batteryData_->highTemperature;
+    data[33] = batteryData_->highThermistorId;
+    data[34] = batteryData_->lowTemperature;
+    data[35] = batteryData_->lowThermistorId;
+    data[36] = batteryData_->averageTemperature;
+    data[37] = batteryData_->internalTemperature;
+    data[38] = batteryData_->fanSpeed;
+    data[39] = batteryData_->requestedFanSpeed;
+    Util::writeUShortIntoArray(data, 40, batteryData_->lowCellVoltage);
+    data[42] = batteryData_->lowCellVoltageId;
+    Util::writeUShortIntoArray(data, 43, batteryData_->highCellVoltage);
+    data[46] = batteryData_->highCellVoltageId;
+    Util::writeUShortIntoArray(data, 47, batteryData_->averageCellVoltage);
+    data[49] = (unsigned char)batteryData_->prechargeState;
+    data[50] = batteryData_->auxVoltage;
+    bool auxBmsaliveArray[] = {batteryData_->auxBmsAlive};
+    Util::writeBoolsIntoArray(data, 51, auxBmsaliveArray, 1);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x07)); // packet id

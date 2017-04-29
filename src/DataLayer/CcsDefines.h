@@ -29,4 +29,7 @@ namespace CcsDefines
     // These number masks out all the errors that don't really matter
     const unsigned int MAJOR_BMU_ERROR_MASK = 0x1C37;
     const unsigned int MAJOR_MC_ERROR_MASK = 0xFF;
+
+    //No data
+    const bool NO_DATA = 0;
 }

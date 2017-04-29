@@ -2,7 +2,7 @@
 
 struct BatteryData
 {
-     BatteryData()
+    BatteryData()
         : alive(true)
         , dischargeRelayEnabled(true)
         , chargeRelayEnabled(false)
