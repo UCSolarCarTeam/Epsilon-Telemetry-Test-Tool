@@ -25,7 +25,7 @@ namespace
     const int DRIVER_CONTROLS_LENGTH = 9;
     const int MOTOR_FAULTS_LENGTH = 9;
     const int BATTERY_FAULTS_LENGTH = 3;
-    const int BATTERY_LENGTH = 60;
+    const int BATTERY_LENGTH = 52;
     const int MPPT_LENGTH = 10;
     const int LIGHTS_LENGTH = 2;
 }

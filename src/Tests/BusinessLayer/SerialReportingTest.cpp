@@ -47,7 +47,7 @@ namespace
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS = 13;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 13;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 7;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 64;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 56;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 6;
 }
