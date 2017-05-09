@@ -8,7 +8,7 @@ CONFIG += staticlib
 DESTDIR = ../../build/.lib
 
 HEADERS += \
-    $$PWD/Window.h
+    $$PWD/SerialWindow.h
 
 SOURCES += \
-    $$PWD/Window.cpp
+    $$PWD/SerialWindow.cpp

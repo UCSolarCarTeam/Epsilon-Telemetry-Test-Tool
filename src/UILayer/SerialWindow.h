@@ -1,18 +1,17 @@
 #pragma once
 
-#include <QMainWindow>
+#include <QWidget>
 
 class QPushButton;
-class QComboBox;
 class QLineEdit;
 class QLabel;
 
-class Window : public QMainWindow
+class SerialWindow : public QWidget
 {
     Q_OBJECT
 public:
-    Window();
-    virtual ~Window();
+    SerialWindow();
+    virtual ~SerialWindow();
 
 public:
     QPushButton& getConnectButton();

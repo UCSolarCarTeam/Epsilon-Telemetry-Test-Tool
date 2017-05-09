@@ -1,8 +1,8 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
-#include "View.h"
-#include "Window.h"
+#include "SerialView.h"
+#include "SerialWindow.h"
 
 namespace
 {
@@ -10,9 +10,9 @@ namespace
     const int NUMBER_OF_MPPTS = 7;
 }
 
-View::View() : signalMapper(this)
+SerialView::SerialView() : signalMapper(this)
 {
-    window_ = new Window();
+    window_ = new SerialWindow();
     //Connect slots to UI
     window_->connect(&(window_->getConnectButton()), SIGNAL(clicked()),
                      this, SIGNAL(attemptConnectionSignal()));
@@ -41,7 +41,7 @@ View::View() : signalMapper(this)
                      this, SIGNAL(sendAll()));
 }
 
-void View::setConnectionStatus(bool connectionStatus)
+void SerialView::setConnectionStatus(bool connectionStatus)
 {
     if (connectionStatus)
     {
@@ -53,7 +53,7 @@ void View::setConnectionStatus(bool connectionStatus)
     }
 }
 
-QString View::getCommunicationPort()
+QString SerialView::getCommunicationPort()
 {
     return window_->getComPortLineEdit().text();
 }

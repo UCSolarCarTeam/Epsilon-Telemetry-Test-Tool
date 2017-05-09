@@ -4,13 +4,13 @@
 #include <QSignalMapper>
 
 class QSerialPort;
-class Window;
+class SerialWindow;
 
-class View : public QObject
+class SerialView : public QObject
 {
     Q_OBJECT
 public:
-    View();
+    SerialView();
     void setConnectionStatus(bool connectionStatus);
     QString getCommunicationPort();
 
@@ -28,6 +28,6 @@ signals:
     void sendAll();
 
 private:
-    Window* window_;
+    SerialWindow* window_;
     QSignalMapper signalMapper;
 };

@@ -18,7 +18,6 @@
 #include "MotorDetailsData.h"
 #include "MotorFaultsData.h"
 #include "MpptData.h"
-#include "View.h"
 
 InternetReporting::InternetReporting(I_CommunicationService& commService,
                                      const KeyMotorData& keyMotorData,

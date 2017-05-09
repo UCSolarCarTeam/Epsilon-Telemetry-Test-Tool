@@ -17,7 +17,7 @@
 #include "SerialReporting.h"
 #include "TestUtils.h"
 #include "Util.h"
-#include "View.h"
+#include "SerialView.h"
 
 #include "CcsDefines.h"
 #include "CrcCalculator.h"
@@ -68,7 +68,7 @@ protected:
     QScopedPointer<BatteryData> batteryData_;
     QScopedPointer<MpptData> mpptData_;
     QScopedPointer<LightsData> lightsData_;
-    QScopedPointer<View> view;
+    QScopedPointer<SerialView> view;
 
     QScopedPointer<SerialReporting> telemetryReporting_;
 
@@ -84,7 +84,7 @@ protected:
         batteryData_.reset(new BatteryData());
         mpptData_.reset(new MpptData());
         lightsData_.reset(new LightsData());
-        view.reset(new View());
+        view.reset(new SerialView());
         telemetryReporting_.reset(new SerialReporting(*communicationService_,
                                   *keyMotorData_,
                                   *motor0DetailsData_,
