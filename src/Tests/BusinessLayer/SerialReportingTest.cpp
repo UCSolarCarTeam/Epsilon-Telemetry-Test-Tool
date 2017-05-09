@@ -489,7 +489,12 @@ TEST_F(SerialReportingTest, sendBatteryFaultsTest) // TODO create function which
     Util::writeBoolsIntoArray(data, 5, limitFlagsArray, 16);
     appendChecksum(data, payloadLength);
     // do some additional data checks
+    // checking that the data members before and after the NO_DATA is correct
     ASSERT_THAT(data[0], Eq(0x06)); // packet id
+    ASSERT_THAT(((data[5] & 0x10) == 0x10), batteryFaultsData_->dclReducedLowPackVoltage);
+    ASSERT_THAT(((data[5] & 0x40) == 0x40), batteryFaultsData_->dclCclReducedVoltageFailsafe);
+    ASSERT_THAT(((data[5] & 0x80) == 0x80), batteryFaultsData_->dclCclReducedCommsFailsafe);
+    ASSERT_THAT(((data[6] & 0x02) == 0x02), batteryFaultsData_->cclReducedHighSoc);
     unsigned char expectedPacket[expectedPackageLength];
     Util::frameData(data, payloadLength, expectedPacket);
     // check call

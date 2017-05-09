@@ -30,6 +30,6 @@ namespace CcsDefines
     const unsigned int MAJOR_BMU_ERROR_MASK = 0x1C37;
     const unsigned int MAJOR_MC_ERROR_MASK = 0xFF;
 
-    //No data
+    //This is used as a filler in the BatteryFaultsData limit flags array for entries that do not contain any data
     const bool NO_DATA = 0;
 }
