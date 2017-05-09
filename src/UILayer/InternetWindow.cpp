@@ -11,9 +11,8 @@
 
 InternetWindow::InternetWindow()
 {
-    setWindowTitle("Telem Test Program");
+    setWindowTitle("Internet");
     setupUi();
-    show();
 }
 
 InternetWindow::~InternetWindow()
@@ -22,7 +21,6 @@ InternetWindow::~InternetWindow()
 
 void InternetWindow::setupUi()
 {
-    QWidget* mainWidget = new QWidget(this);
     QFormLayout* layout = new QFormLayout;
     connectButton_ = new QPushButton("Connect", this);
     ipAddressLineEdit_ = new QLineEdit("localhost", this);
@@ -34,7 +32,7 @@ void InternetWindow::setupUi()
     layout->addRow(portLineEdit_);
     layout->addRow(connectionStatusLabel_);
     layout->addRow(sendAllButton_);
-    mainWidget->setLayout(layout);
+    setLayout(layout);
 }
 
 QPushButton& InternetWindow::getConnectButton()

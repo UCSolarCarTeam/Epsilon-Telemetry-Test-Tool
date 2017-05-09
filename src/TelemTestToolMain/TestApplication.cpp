@@ -11,8 +11,11 @@ TestApplication::TestApplication(int& argc, char** argv)
     , batteryData_(new BatteryData())
     , mpptData_(new MpptData())
     , lightsData_(new LightsData())
-    , internetView_(new InternetView())
-    , serialView_(new SerialView())
+    , internetWindow_(new InternetWindow())
+    , serialWindow_(new SerialWindow())
+    , internetView_(new InternetView(internetWindow_.data()))
+    , serialView_(new SerialView(serialWindow_.data()))
+    , window_(new Window(QList<QWidget*> {serialWindow_.data(), internetWindow_.data()}))
     , communicationService_(new CommunicationService(*serialView_))
     , serialReporting_(new SerialReporting(*communicationService_,
                                            *keyMotorData_,

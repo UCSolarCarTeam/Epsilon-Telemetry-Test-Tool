@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
-CONFIG += ordered static
+CONFIG += ordered static c++11
 
 SUBDIRS = \
     BusinessLayer \

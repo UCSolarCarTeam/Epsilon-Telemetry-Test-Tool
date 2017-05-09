@@ -10,7 +10,7 @@ class InternetView : public QObject
 {
     Q_OBJECT
 public:
-    InternetView();
+    InternetView(InternetWindow* window);
     void setConnectionStatus(bool connectionStatus);
     QString getPort();
     QString getIpAddress();
@@ -20,6 +20,6 @@ signals:
     void sendAll();
 
 private:
-    InternetWindow* window_;
     QSignalMapper signalMapper;
+    InternetWindow* window_;
 };

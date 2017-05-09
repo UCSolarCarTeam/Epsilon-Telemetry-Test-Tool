@@ -10,7 +10,9 @@ namespace
     const int NUMBER_OF_MPPTS = 7;
 }
 
-InternetView::InternetView() : signalMapper(this)
+InternetView::InternetView(InternetWindow* window) 
+: signalMapper(this)
+, window_(window)
 {
     window_ = new InternetWindow();
     //Connect slots to UI

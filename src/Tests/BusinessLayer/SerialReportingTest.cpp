@@ -18,6 +18,7 @@
 #include "TestUtils.h"
 #include "Util.h"
 #include "SerialView.h"
+#include "SerialWindow.h"
 
 #include "CcsDefines.h"
 #include "CrcCalculator.h"
@@ -84,7 +85,7 @@ protected:
         batteryData_.reset(new BatteryData());
         mpptData_.reset(new MpptData());
         lightsData_.reset(new LightsData());
-        view.reset(new SerialView());
+        view.reset(new SerialView(new SerialWindow()));
         telemetryReporting_.reset(new SerialReporting(*communicationService_,
                                   *keyMotorData_,
                                   *motor0DetailsData_,

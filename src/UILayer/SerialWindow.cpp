@@ -11,9 +11,8 @@
 
 SerialWindow::SerialWindow()
 {
-    setWindowTitle("Telem Test Program");
+    setWindowTitle("Serial");
     setupUi();
-    show();
 }
 
 SerialWindow::~SerialWindow()
@@ -22,7 +21,6 @@ SerialWindow::~SerialWindow()
 
 void SerialWindow::setupUi()
 {
-    QWidget* mainWidget = new QWidget(this);
     QFormLayout* layout = new QFormLayout;
     connectButton_ = new QPushButton("Connect", this);
     comPortLineEdit_ = new QLineEdit("/dev/ttyUSB0", this);
@@ -50,7 +48,7 @@ void SerialWindow::setupUi()
     layout->addRow(sendMpptButton_);
     layout->addRow(sendLightsButton_);
     layout->addRow(sendAllButton_);
-    mainWidget->setLayout(layout);
+    setLayout(layout);
 }
 
 QPushButton& SerialWindow::getConnectButton()

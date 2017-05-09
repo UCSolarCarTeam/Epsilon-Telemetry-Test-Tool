@@ -14,7 +14,7 @@ LIBS += -L../../build/.lib -lBusinessLayer -lViewLayer -lUILayer -lgmock
     error( "Couldn't find the common.pri file!" )
 }
 
-INCLUDEPATH += ../DataLayer/ ../ViewLayer/ ../BusinessLayer/
+INCLUDEPATH += ../DataLayer/ ../ViewLayer/ ../BusinessLayer/ ../UILayer/
 
 PRE_TARGETDEPS += \
    ../../build/.lib/*

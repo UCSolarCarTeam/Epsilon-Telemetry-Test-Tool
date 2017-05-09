@@ -10,9 +10,10 @@ namespace
     const int NUMBER_OF_MPPTS = 7;
 }
 
-SerialView::SerialView() : signalMapper(this)
+SerialView::SerialView(SerialWindow* window) 
+: signalMapper(this)
+, window_(window)
 {
-    window_ = new SerialWindow();
     //Connect slots to UI
     window_->connect(&(window_->getConnectButton()), SIGNAL(clicked()),
                      this, SIGNAL(attemptConnectionSignal()));
