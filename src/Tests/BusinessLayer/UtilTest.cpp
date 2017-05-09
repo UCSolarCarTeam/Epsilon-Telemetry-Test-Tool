@@ -151,9 +151,9 @@ TEST(UtilTest, writeFloatIntoArrayTest)
 TEST(UtilTest, writeShortIntoArrayTest)
 {
     std::vector<short> inputs = {42, 3512, 19921, 12, 400, 66, 235, 8773,
-                                 12416, 3264, 12825, 6, 31210 , 24,
+                                 12416, 3264, 12825, 6, 31210, 24,
                                  -42, -3512, -19921, -12, -400, -66, -235, -8773,
-                                 -12416, -3264, -12825, -6, -31210 , -24,
+                                 -12416, -3264, -12825, -6, -31210, -24,
                                  std::numeric_limits<short>::min() + 1, std::numeric_limits<short>::max() - 1,
                                  std::numeric_limits<short>::min(), std::numeric_limits<short>::max()
                                 };
@@ -180,7 +180,7 @@ TEST(UtilTest, writeShortIntoArrayTest)
 TEST(UtilTest, writeUShortIntoArrayTest)
 {
     std::vector<unsigned short> inputs = {42, 3512, 19921, 12, 400, 66, 235, 8773,
-                                          12416, 3264, 12825, 6, 51210 , 24,
+                                          12416, 3264, 12825, 6, 51210, 24,
                                           std::numeric_limits<unsigned short>::min() + 1, std::numeric_limits<unsigned short>::max() - 1,
                                           std::numeric_limits<unsigned short>::min(), std::numeric_limits<unsigned short>::max()
                                          };
