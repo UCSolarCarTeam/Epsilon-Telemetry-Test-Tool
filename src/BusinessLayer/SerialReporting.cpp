@@ -14,7 +14,7 @@
 #include <MpptData.h>
 #include <SerialReporting.h>
 #include <Util.h>
-#include <View.h>
+#include <SerialView.h>
 
 namespace
 {
@@ -42,7 +42,7 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
                                  const BatteryData& batteryData,
                                  const MpptData& mpptData,
                                  const LightsData& lightsData,
-                                 View& view)
+                                 SerialView& view)
     : communicationService_(commService)
     , keyMotorData_(keyMotorData)
     , motor0DetailsData_(motor0DetailsData)
@@ -55,7 +55,7 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
     , lightsData_(lightsData)
     , view_(view)
 {
-    //Connect slots to View Signals
+    //Connect slots to SerialView Signals
     connect(&view_, SIGNAL(sendKeyMotor()), this, SLOT(sendKeyMotor()));
     connect(&view_, SIGNAL(sendMotorDetails(int)), this, SLOT(sendMotorDetails(int)));
     connect(&view_, SIGNAL(sendDriverControls()), this, SLOT(sendDriverControls()));

@@ -4,7 +4,7 @@
 #include "CommunicationService.h"
 #include "InternetPeripheral.h"
 #include "SerialPortPeripheral.h"
-#include "View.h"
+#include "SerialView.h"
 
 /*--------------------------------------------------------
                 Communication Service
@@ -12,7 +12,7 @@
     specified otherwise.
 --------------------------------------------------------*/
 
-CommunicationService::CommunicationService(View& view)
+CommunicationService::CommunicationService(SerialView& view)
     : view_(view)
 {
     setPeripheralSerialPort();

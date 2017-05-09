@@ -7,20 +7,20 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QScopedPointer>
-#include "Window.h"
+#include "SerialWindow.h"
 
-Window::Window()
+SerialWindow::SerialWindow()
 {
     setWindowTitle("Telem Test Program");
     setupUi();
     show();
 }
 
-Window::~Window()
+SerialWindow::~SerialWindow()
 {
 }
 
-void Window::setupUi()
+void SerialWindow::setupUi()
 {
     QWidget* mainWidget = new QWidget(this);
     QFormLayout* layout = new QFormLayout;
@@ -51,70 +51,70 @@ void Window::setupUi()
     layout->addRow(sendLightsButton_);
     layout->addRow(sendAllButton_);
     mainWidget->setLayout(layout);
-    setCentralWidget(mainWidget);
+    mainWidget->show();
 }
 
-QPushButton& Window::getConnectButton()
+QPushButton& SerialWindow::getConnectButton()
 {
     return *connectButton_;
 }
 
-QLineEdit& Window::getComPortLineEdit()
+QLineEdit& SerialWindow::getComPortLineEdit()
 {
     return *comPortLineEdit_;
 }
 
-QLabel& Window::getConnectionStatusLabel()
+QLabel& SerialWindow::getConnectionStatusLabel()
 {
     return *connectionStatusLabel_;
 }
 
-QPushButton& Window::getSendKeyMotorButton()
+QPushButton& SerialWindow::getSendKeyMotorButton()
 {
     return *sendKeyMotorButton_;
 }
 
-QPushButton& Window::getSendMotor0DetailsButton()
+QPushButton& SerialWindow::getSendMotor0DetailsButton()
 {
     return *sendMotor0DetailsButton_;
 }
 
-QPushButton& Window::getSendMotor1DetailsButton()
+QPushButton& SerialWindow::getSendMotor1DetailsButton()
 {
     return *sendMotor1DetailsButton_;
 }
 
-QPushButton& Window::getSendDriverControlsButton()
+QPushButton& SerialWindow::getSendDriverControlsButton()
 {
     return *sendDriverControlsButton_;
 }
 
-QPushButton& Window::getSendMotorFaultsButton()
+QPushButton& SerialWindow::getSendMotorFaultsButton()
 {
     return *sendMotorFaultsButton_;
 }
 
-QPushButton& Window::getSendBatteryFaultsButton()
+QPushButton& SerialWindow::getSendBatteryFaultsButton()
 {
     return *sendBatteryFaultsButton_;
 }
 
-QPushButton& Window::getSendBatteryButton()
+QPushButton& SerialWindow::getSendBatteryButton()
 {
     return *sendBatteryButton_;
 }
 
-QPushButton& Window::getSendMpptButton()
+QPushButton& SerialWindow::getSendMpptButton()
 {
     return *sendMpptButton_;
 }
 
-QPushButton& Window::getSendLightsButton()
+QPushButton& SerialWindow::getSendLightsButton()
 {
     return *sendLightsButton_;
 }
 
-QPushButton& Window::getSendAllButton()
+QPushButton& SerialWindow::getSendAllButton()
 {
     return *sendAllButton_;
 }

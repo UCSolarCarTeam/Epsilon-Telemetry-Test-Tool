@@ -11,8 +11,8 @@ TestApplication::TestApplication(int& argc, char** argv)
     , batteryData_(new BatteryData())
     , mpptData_(new MpptData())
     , lightsData_(new LightsData())
-    , view_(new View())
-    , communicationService_(new CommunicationService(*view_))
+    , serialView_(new SerialView())
+    , communicationService_(new CommunicationService(*serialView_))
     , serialReporting_(new SerialReporting(*communicationService_,
                                            *keyMotorData_,
                                            *motor0DetailsData_,
@@ -23,7 +23,7 @@ TestApplication::TestApplication(int& argc, char** argv)
                                            *batteryData_,
                                            *mpptData_,
                                            *lightsData_,
-                                           *view_))
+                                           *serialView_))
     , internetReporting_(new InternetReporting(*communicationService_,
                          *keyMotorData_,
                          *motor0DetailsData_,
