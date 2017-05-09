@@ -13,6 +13,7 @@
 #include "MotorFaultsData.h"
 #include "MpptData.h"
 #include "SerialReporting.h"
+#include "InternetView.h"
 #include "SerialView.h"
 
 class TestApplication : public QApplication
@@ -32,6 +33,7 @@ private:
     QScopedPointer<BatteryData> batteryData_;
     QScopedPointer<MpptData> mpptData_;
     QScopedPointer<LightsData> lightsData_;
+    QScopedPointer<InternetView> internetView_;
     QScopedPointer<SerialView> serialView_;
     QScopedPointer<CommunicationService> communicationService_;
     QScopedPointer<SerialReporting> serialReporting_;

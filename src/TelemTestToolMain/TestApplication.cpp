@@ -11,6 +11,7 @@ TestApplication::TestApplication(int& argc, char** argv)
     , batteryData_(new BatteryData())
     , mpptData_(new MpptData())
     , lightsData_(new LightsData())
+    , internetView_(new InternetView())
     , serialView_(new SerialView())
     , communicationService_(new CommunicationService(*serialView_))
     , serialReporting_(new SerialReporting(*communicationService_,

@@ -16,7 +16,6 @@ public:
 
 signals:
     void attemptConnectionSignal();
-    void differentModeSelectedSignal();
     void sendKeyMotor();
     void sendMotorDetails(int n);
     void sendDriverControls();
