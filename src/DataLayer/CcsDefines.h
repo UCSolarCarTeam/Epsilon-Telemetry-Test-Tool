@@ -12,7 +12,6 @@ namespace CcsDefines
     const unsigned char BATTERY_PKG_ID = 7;
     const unsigned char MPPT_PKG_ID = 9;
     const unsigned char LIGHTS_PKG_ID = 10;
-
     const int MPPT_COUNT = 3;
 
     // Control parameters
@@ -30,4 +29,7 @@ namespace CcsDefines
     // These number masks out all the errors that don't really matter
     const unsigned int MAJOR_BMU_ERROR_MASK = 0x1C37;
     const unsigned int MAJOR_MC_ERROR_MASK = 0xFF;
+
+    //This is used as a filler in the BatteryFaultsData limit flags array for entries that do not contain any data
+    const bool NO_DATA = 0;
 }
