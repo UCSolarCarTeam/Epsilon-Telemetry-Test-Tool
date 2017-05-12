@@ -13,7 +13,7 @@ class MotorFaultsData;
 class MpptData;
 class I_CommunicationService;
 class QIODevice;
-class View;
+class SerialView;
 
 class SerialReporting : public QObject
 {
@@ -29,7 +29,7 @@ public:
                     const BatteryData& batteryData_,
                     const MpptData& mpptData_,
                     const LightsData& lightsData_,
-                    View& view);
+                    SerialView& view);
 
 private slots:
     void sendKeyMotor();
@@ -61,5 +61,5 @@ private:
     const BatteryData& batteryData_;
     const MpptData& mpptData_;
     const LightsData& lightsData_;
-    View& view_;
+    SerialView& view_;
 };

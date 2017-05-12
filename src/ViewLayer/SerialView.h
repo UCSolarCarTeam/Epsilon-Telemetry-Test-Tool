@@ -4,19 +4,18 @@
 #include <QSignalMapper>
 
 class QSerialPort;
-class Window;
+class SerialWindow;
 
-class View : public QObject
+class SerialView : public QObject
 {
     Q_OBJECT
 public:
-    View();
+    SerialView(SerialWindow* window);
     void setConnectionStatus(bool connectionStatus);
     QString getCommunicationPort();
 
 signals:
     void attemptConnectionSignal();
-    void differentModeSelectedSignal();
     void sendKeyMotor();
     void sendMotorDetails(int n);
     void sendDriverControls();
@@ -28,6 +27,6 @@ signals:
     void sendAll();
 
 private:
-    Window* window_;
     QSignalMapper signalMapper;
+    SerialWindow* window_;
 };

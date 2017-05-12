@@ -12,7 +12,7 @@ PRE_TARGETDEPS += \
 TARGET = telemTestApp
 DESTDIR = ../../build
 
-INCLUDEPATH += ../DataLayer/ ../ViewLayer/ ../Peripherals/ ../BusinessLayer/ 
+INCLUDEPATH += ../DataLayer/ ../ViewLayer/ ../Peripherals/ ../BusinessLayer/ ../UILayer/
 
 HEADERS  += \
     $$PWD/TestApplication.h \

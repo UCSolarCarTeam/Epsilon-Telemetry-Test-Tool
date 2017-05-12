@@ -10,7 +10,9 @@ INCLUDEPATH += ../UILayer/ $$PWD/
 DESTDIR = ../../build/.lib
 
 HEADERS += \
-    $$PWD/View.h
+    $$PWD/InternetView.h \
+    $$PWD/SerialView.h
 
 SOURCES += \
-    $$PWD/View.cpp
+    $$PWD/InternetView.cpp \
+    $$PWD/SerialView.cpp

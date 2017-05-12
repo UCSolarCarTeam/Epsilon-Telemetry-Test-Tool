@@ -7,14 +7,14 @@
 #include <QByteArray>
 #include <QSerialPort>
 
-class View;
+class SerialView;
 class QIODevice;
 
 class CommunicationService : public I_CommunicationService
 {
 
 public:
-    CommunicationService(View& view);
+    CommunicationService(SerialView& view);
     void sendSerialData(const unsigned char* packet, int packetLength);
     void sendInternetData(const QByteArray& data);
 
@@ -27,7 +27,7 @@ public slots:
     void attemptInternetConnection();
 
 private:
-    View& view_;
+    SerialView& view_;
     QSerialPort* outputDevice_;
     SerialPortPeripheral* serialPeripheral_;
     InternetPeripheral* internetPeripheral_;
