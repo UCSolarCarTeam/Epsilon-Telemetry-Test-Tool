@@ -1,20 +1,18 @@
 #include <cstring>
 
-#include <QIODevice>
-
-#include <CcsDefines.h>
-#include <BatteryData.h>
-#include <BatteryFaultsData.h>
-#include <DriverControlsData.h>
-#include <I_CommunicationService.h>
-#include <KeyMotorData.h>
-#include <LightsData.h>
-#include <MotorDetailsData.h>
-#include <MotorFaultsData.h>
-#include <MpptData.h>
-#include <SerialReporting.h>
-#include <Util.h>
-#include <SerialView.h>
+#include "CcsDefines.h"
+#include "BatteryData.h"
+#include "BatteryFaultsData.h"
+#include "DriverControlsData.h"
+#include "I_CommunicationService.h"
+#include "KeyMotorData.h"
+#include "LightsData.h"
+#include "MotorDetailsData.h"
+#include "MotorFaultsData.h"
+#include "MpptData.h"
+#include "SerialReporting.h"
+#include "Util.h"
+#include "SerialView.h"
 
 namespace
 {

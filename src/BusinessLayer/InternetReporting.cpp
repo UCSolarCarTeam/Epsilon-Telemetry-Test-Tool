@@ -1,9 +1,6 @@
-#include <cstring>
-
 #include <QDateTime>
-#include <QIODevice>
 #include <QJsonArray>
-#include <QJsonDocument>
+#include <QJsonDocument>    
 #include <QJsonObject>
 #include <QString>
 
@@ -13,6 +10,7 @@
 #include "DriverControlsData.h"
 #include "I_CommunicationService.h"
 #include "InternetReporting.h"
+#include "InternetView.h"
 #include "KeyMotorData.h"
 #include "LightsData.h"
 #include "MotorDetailsData.h"
@@ -28,7 +26,9 @@ InternetReporting::InternetReporting(I_CommunicationService& commService,
                                      const BatteryFaultsData& batteryFaultsData,
                                      const BatteryData& batteryData,
                                      const MpptData& mpptData,
-                                     const LightsData& lightsData)
+                                     const LightsData& lightsData,
+                                     InternetView& view)
+
     : communicationService_(commService)
     , keyMotorData_(keyMotorData)
     , motor0DetailsData_(motor0DetailsData)
@@ -39,8 +39,9 @@ InternetReporting::InternetReporting(I_CommunicationService& commService,
     , batteryData_(batteryData)
     , mpptData_(mpptData)
     , lightsData_(lightsData)
+    , view_(view)
 {
-    //TODO: Connect this class to a view (user interface)
+    connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
 }
 
 QJsonArray InternetReporting::makeKeyMotor()

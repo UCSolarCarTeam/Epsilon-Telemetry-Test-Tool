@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QObject>
-#include <initializer_list>
 
 class BatteryData;
 class BatteryFaultsData;
@@ -11,9 +10,8 @@ class LightsData;
 class MotorDetailsData;
 class MotorFaultsData;
 class MpptData;
-class View;
-class QIODevice;
 class I_CommunicationService;
+class InternetView;
 
 class InternetReporting : public QObject
 {
@@ -28,7 +26,9 @@ public:
                       const BatteryFaultsData& batteryFaultsData_,
                       const BatteryData& batteryData_,
                       const MpptData& mpptData_,
-                      const LightsData& lightsData_);
+                      const LightsData& lightsData_,
+                      InternetView& view);
+
 
 private slots:
     void sendAll();
@@ -54,4 +54,5 @@ private:
     const BatteryData& batteryData_;
     const MpptData& mpptData_;
     const LightsData& lightsData_;
+    InternetView& view_;
 };

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QObject>
-#include <initializer_list>
 
 class BatteryData;
 class BatteryFaultsData;
@@ -12,7 +11,6 @@ class MotorDetailsData;
 class MotorFaultsData;
 class MpptData;
 class I_CommunicationService;
-class QIODevice;
 class SerialView;
 
 class SerialReporting : public QObject
@@ -33,21 +31,13 @@ public:
 
 private slots:
     void sendKeyMotor();
-
     void sendMotorDetails(int n);
-
     void sendDriverControls();
-
     void sendMotorFaults();
-
     void sendBatteryFaults();
-
     void sendBattery();
-
     void sendMppt();
-
     void sendLights();
-
     void sendAll();
 
 private:

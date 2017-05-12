@@ -40,7 +40,8 @@ TestApplication::TestApplication(int& argc, char** argv)
                      *batteryFaultsData_,
                      *batteryData_,
                      *mpptData_,
-                     *lightsData_))
+                     *lightsData_,
+                     *internetView_))
 {
 }
 
