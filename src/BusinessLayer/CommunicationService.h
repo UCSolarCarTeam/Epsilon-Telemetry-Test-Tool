@@ -8,27 +8,24 @@
 #include <QSerialPort>
 
 class SerialView;
+class InternetView;
 class QIODevice;
 
 class CommunicationService : public I_CommunicationService
 {
 
 public:
-    CommunicationService(SerialView& view);
+    CommunicationService(SerialView& serialView, InternetView& internetView);
     void sendSerialData(const unsigned char* packet, int packetLength);
-    void sendInternetData(const QByteArray& data);
-
-private:
-    void setPeripheralSerialPort();
-    void setInternetConnection();
+    void sendInternetData(const QString& data);
 
 public slots:
     void attemptSerialConnection();
     void attemptInternetConnection();
 
 private:
-    SerialView& view_;
-    QSerialPort* outputDevice_;
+    SerialView& serialView_;
+    InternetView& internetView_;
     SerialPortPeripheral* serialPeripheral_;
     InternetPeripheral* internetPeripheral_;
 };

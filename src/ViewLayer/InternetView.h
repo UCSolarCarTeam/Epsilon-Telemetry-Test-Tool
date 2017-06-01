@@ -3,7 +3,6 @@
 #include <QObject>
 #include <QSignalMapper>
 
-class QInternetPort;
 class InternetWindow;
 
 class InternetView : public QObject
@@ -12,14 +11,15 @@ class InternetView : public QObject
 public:
     InternetView(InternetWindow* window);
     void setConnectionStatus(bool connectionStatus);
-    QString getPort();
     QString getIpAddress();
+    unsigned short getPort();
+    QString getExchangeName();
+    QString getRoutingKey();
 
 signals:
     void attemptConnectionSignal();
     void sendAll();
 
 private:
-    QSignalMapper signalMapper;
     InternetWindow* window_;
 };

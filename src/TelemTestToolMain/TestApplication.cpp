@@ -19,7 +19,7 @@ TestApplication::TestApplication(int& argc, char** argv)
 {
     serialWindow_.data(), internetWindow_.data()
 }))
-, communicationService_(new CommunicationService(*serialView_))
+, communicationService_(new CommunicationService(*serialView_, *internetView_))
 , serialReporting_(new SerialReporting(*communicationService_,
                                        *keyMotorData_,
                                        *motor0DetailsData_,

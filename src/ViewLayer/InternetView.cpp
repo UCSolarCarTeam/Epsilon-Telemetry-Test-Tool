@@ -1,8 +1,11 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSpinBox>
 #include "InternetView.h"
 #include "InternetWindow.h"
+
+#include <QDebug>
 
 namespace
 {
@@ -11,10 +14,8 @@ namespace
 }
 
 InternetView::InternetView(InternetWindow* window)
-    : signalMapper(this)
-    , window_(window)
+    : window_(window)
 {
-    window_ = new InternetWindow();
     //Connect slots to UI
     window_->connect(&(window_->getConnectButton()), SIGNAL(clicked()),
                      this, SIGNAL(attemptConnectionSignal()));
@@ -39,8 +40,17 @@ QString InternetView::getIpAddress()
     return window_->getIpAddressLineEdit().text();
 }
 
-QString InternetView::getPort()
+unsigned short InternetView::getPort()
 {
-    return window_->getPortLineEdit().text();
+    return window_->getPortSpinBox().value();
 }
 
+QString InternetView::getExchangeName()
+{
+    return window_->getExchangeNameLineEdit().text();
+}
+
+QString InternetView::getRoutingKey()
+{
+    return window_->getRoutingKeyLineEdit().text();
+}

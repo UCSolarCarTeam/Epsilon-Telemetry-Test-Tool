@@ -1,5 +1,3 @@
-#include <QSerialPort>
-#include <QStringList>
 #include "SerialPortPeripheral.h"
 
 namespace
@@ -8,20 +6,9 @@ namespace
     const int NUMBER_OF_MPPTS = 7;
 }
 
-SerialPortPeripheral::SerialPortPeripheral(QSerialPort& serialPort)
-    : serialPort_(serialPort)
+SerialPortPeripheral::SerialPortPeripheral()
 {
     serialPort_.setBaudRate(BAUDRATE);
-}
-
-
-SerialPortPeripheral::~SerialPortPeripheral()
-{
-}
-
-void SerialPortPeripheral::setParameters(QStringList parameters)
-{
-    serialPort_.setPortName(parameters.at(0));
 }
 
 void SerialPortPeripheral::sendSerialData(const unsigned char* data, int length)
@@ -32,8 +19,9 @@ void SerialPortPeripheral::sendSerialData(const unsigned char* data, int length)
     }
 }
 
-bool SerialPortPeripheral::attemptConnection()
+bool SerialPortPeripheral::attemptConnection(QString portname)
 {
+    serialPort_.setPortName(portname);
     if (serialPort_.open(QIODevice::ReadWrite))
     {
         return true;

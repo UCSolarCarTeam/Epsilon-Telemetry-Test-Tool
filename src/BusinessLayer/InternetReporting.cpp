@@ -326,8 +326,8 @@ void InternetReporting::sendAll()
     obj.insert("MPPT", makeMppt());
     obj.insert("Lights", makeLights());
     QJsonDocument doc(obj);
-    QByteArray data = doc.toBinaryData();
-    communicationService_.sendInternetData(data);
+    QByteArray data = doc.toJson(QJsonDocument::Compact);
+    communicationService_.sendInternetData(QString(data));
 }
 
 
