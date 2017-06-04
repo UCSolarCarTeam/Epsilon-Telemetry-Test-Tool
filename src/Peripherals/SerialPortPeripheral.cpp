@@ -22,6 +22,7 @@ void SerialPortPeripheral::sendSerialData(const unsigned char* data, int length)
 bool SerialPortPeripheral::attemptConnection(QString portname)
 {
     serialPort_.setPortName(portname);
+
     if (serialPort_.open(QIODevice::ReadWrite))
     {
         return true;

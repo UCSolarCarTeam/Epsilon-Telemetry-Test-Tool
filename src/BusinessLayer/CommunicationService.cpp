@@ -37,6 +37,6 @@ void CommunicationService::attemptSerialConnection()
 void CommunicationService::attemptInternetConnection()
 {
     internetView_.setConnectionStatus(internetPeripheral_.attemptConnection(
-        internetView_.getIpAddress(), internetView_.getPort()));
+                                          internetView_.getIpAddress(), internetView_.getPort()));
     qDebug() << "CommunicationService::attemptInternetConnection";
 }

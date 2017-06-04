@@ -66,9 +66,9 @@ protected:
 TEST_F(InternetReportingTest, packetTitleTest)
 {
 
-	const auto expected = "UofC Solar Car Gen 5";
+    const auto expected = "UofC Solar Car Gen 5";
     EXPECT_CALL(*communicationService_, sendInternetData(expectedPackageLength))
-    	.With(expectedPacketAsArg).Times(1);
+    .With(expectedPacketAsArg).Times(1);
 
-    view->sendAll();    	
+    view->sendAll();
 }

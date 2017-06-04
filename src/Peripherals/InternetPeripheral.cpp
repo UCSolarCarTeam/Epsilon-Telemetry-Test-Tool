@@ -27,6 +27,7 @@ bool InternetPeripheral::attemptConnection(QString ipAddress, unsigned short por
     {
         return false;
     }
+
     return true;
 }
 
@@ -39,11 +40,11 @@ void InternetPeripheral::sendInternetData(
     {
         return; // TODO add error message
     }
- 
+
     AmqpClient::BasicMessage::ptr_t msg = AmqpClient::BasicMessage::Create(data.toStdString());
 
     channel_->BasicPublish(
         exchangeName.toStdString(),
         routingKey.toStdString(),
-        msg, false, false); 
+        msg, false, false);
 }

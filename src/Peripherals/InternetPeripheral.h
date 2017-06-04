@@ -12,14 +12,14 @@ public:
     InternetPeripheral();
     virtual ~InternetPeripheral();
     bool attemptConnection(
-	    QString ipAddress,
-	    unsigned short port);
+        QString ipAddress,
+        unsigned short port);
     void sendInternetData(
-    	const QString exchangeName,
-    	const QString routingKey,
-    	const QString& data);
+        const QString exchangeName,
+        const QString routingKey,
+        const QString& data);
 
 private:
-	AmqpClient::Channel::ptr_t channel_;
+    AmqpClient::Channel::ptr_t channel_;
     std::string queueName_;
 };
