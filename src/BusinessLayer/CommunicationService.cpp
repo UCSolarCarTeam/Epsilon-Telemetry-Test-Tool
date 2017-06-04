@@ -24,7 +24,7 @@ void CommunicationService::sendSerialData(const unsigned char* packet, int packe
 
 void CommunicationService::sendInternetData(const QString& data)
 {
-    internetPeripheral_->sendInternetData(
+    internetPeripheral_.sendInternetData(
         internetView_.getExchangeName(),
         internetView_.getRoutingKey(),
         data);
@@ -37,7 +37,7 @@ void CommunicationService::attemptSerialConnection()
 
 void CommunicationService::attemptInternetConnection()
 {
-    internetView_.setConnectionStatus(internetPeripheral_->attemptConnection(
+    internetView_.setConnectionStatus(internetPeripheral_.attemptConnection(
         internetView_.getIpAddress(), internetView_.getPort()));
     qDebug() << "CommunicationService::attemptInternetConnection";
 }

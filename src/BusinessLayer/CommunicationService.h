@@ -27,5 +27,5 @@ private:
     SerialView& serialView_;
     InternetView& internetView_;
     SerialPortPeripheral* serialPeripheral_;
-    InternetPeripheral* internetPeripheral_;
+    InternetPeripheral internetPeripheral_;
 };
