@@ -26,6 +26,6 @@ public slots:
 private:
     SerialView& serialView_;
     InternetView& internetView_;
-    SerialPortPeripheral* serialPeripheral_;
+    SerialPortPeripheral serialPeripheral_;
     InternetPeripheral internetPeripheral_;
 };

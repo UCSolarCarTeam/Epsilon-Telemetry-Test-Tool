@@ -12,14 +12,13 @@ CommunicationService::CommunicationService(SerialView& serialView, InternetView&
     : serialView_(serialView)
     , internetView_(internetView)
 {
-    serialPeripheral_ = new SerialPortPeripheral();
     connect(&serialView_, SIGNAL(attemptConnectionSignal()), this, SLOT(attemptSerialConnection()));
     connect(&internetView_, SIGNAL(attemptConnectionSignal()), this, SLOT(attemptInternetConnection()));
 }
 
 void CommunicationService::sendSerialData(const unsigned char* packet, int packetLength)
 {
-    serialPeripheral_->sendSerialData(packet, packetLength);
+    serialPeripheral_.sendSerialData(packet, packetLength);
 }
 
 void CommunicationService::sendInternetData(const QString& data)
@@ -32,7 +31,7 @@ void CommunicationService::sendInternetData(const QString& data)
 
 void CommunicationService::attemptSerialConnection()
 {
-    serialView_.setConnectionStatus(serialPeripheral_->attemptConnection(serialView_.getCommunicationPort()));
+    serialView_.setConnectionStatus(serialPeripheral_.attemptConnection(serialView_.getCommunicationPort()));
 }
 
 void CommunicationService::attemptInternetConnection()

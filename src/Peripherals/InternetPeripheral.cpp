@@ -1,5 +1,4 @@
 #include "InternetPeripheral.h"
-#include <QDebug>
 /*--------------------------------------------------------
                 Internet Peripheral
     Suggested function stubs for the internet peripheral
@@ -20,20 +19,14 @@ InternetPeripheral::~InternetPeripheral()
 
 bool InternetPeripheral::attemptConnection(QString ipAddress, unsigned short port)
 {
-    qDebug() << "InternetPeripheral::attemptConnection 0";
-
     try
     {
-        qDebug() << ipAddress;
-        qDebug() << port;
         channel_ = AmqpClient::Channel::Create(ipAddress.toStdString(), port);
     }
     catch (AmqpClient::AmqpException::exception&)
     {
-        qDebug() << "catch";
         return false;
     }
-    qDebug() << "end";
     return true;
 }
 
@@ -42,10 +35,15 @@ void InternetPeripheral::sendInternetData(
     const QString routingKey,
     const QString& data)
 {
+    if (channel_ == NULL)
+    {
+        return; // TODO add error message
+    }
+ 
     AmqpClient::BasicMessage::ptr_t msg = AmqpClient::BasicMessage::Create(data.toStdString());
 
     channel_->BasicPublish(
         exchangeName.toStdString(),
         routingKey.toStdString(),
-        msg, true, true); 
+        msg, false, false); 
 }
