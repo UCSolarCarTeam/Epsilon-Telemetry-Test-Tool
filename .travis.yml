@@ -8,7 +8,7 @@ before_install:
     - sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
     - sudo apt-add-repository -y ppa:beineri/opt-qt542
     - sudo apt-get -qq update
-    - sudo apt-get -qq install $COMPILER libc6-i386 qt54tools qt54svg qt54webkit qt54serialport
+    - sudo apt-get -qq install $COMPILER libc6-i386 qt54tools qt54svg qt54webkit qt54serialport libboost-chrono1.48-dev libboost-system1.48-dev
     - export CXX=$COMPILER
     - PATH="/opt/qt54/bin:$PATH"
     - qt54-env.sh
@@ -29,6 +29,24 @@ install:
     - ar -rv libgmock.a gtest-all.o gmock-all.o
     - cp libgmock.a ../../build/.lib/
     - cd ..
+    - git clone https://github.com/alanxz/rabbitmq-c
+    - cd rabbitmq-c
+    - sudo cp librabbitmq/*.h /usr/local/include/
+    - mkdir build && cd build
+    - cmake ..
+    - cmake --build .
+    - sudo cp librabbitmq/librabbitmq.a /usr/local/lib/
+    - sudo cp librabbitmq/*.so* /usr/local/lib/
+    - cd ../..
+    - git clone https://github.com/alanxz/SimpleAmqpClient
+    - cd SimpleAmqpClient
+    - mkdir build && cd build
+    - cmake -DRabbitmqc_INCLUDE_DIR=../../rabbitmq-c/librabbitmq -DRabbitmqc_LIBRARY=../../rabbitmq-c/build/librabbitmq ..
+    - make
+    - sudo mkdir /usr/local/include/SimpleAmqpClient
+    - sudo cp *.so* /usr/local/lib/
+    - sudo cp ../src/SimpleAmqpClient/*.h /usr/local/include/SimpleAmqpClient/
+    - cd ../..
 
 script:
     - sudo mv /usr/bin/g++ /usr/bin/g++_depr

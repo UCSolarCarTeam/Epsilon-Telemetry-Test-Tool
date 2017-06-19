@@ -1,6 +1,6 @@
 #include <QDateTime>
 #include <QJsonArray>
-#include <QJsonDocument>    
+#include <QJsonDocument>
 #include <QJsonObject>
 #include <QString>
 
@@ -326,7 +326,7 @@ void InternetReporting::sendAll()
     obj.insert("MPPT", makeMppt());
     obj.insert("Lights", makeLights());
     QJsonDocument doc(obj);
-    QByteArray data = doc.toBinaryData();
+    QByteArray data = doc.toJson(QJsonDocument::Compact);
     communicationService_.sendInternetData(data);
 }
 

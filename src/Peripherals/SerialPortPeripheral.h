@@ -1,18 +1,15 @@
 #pragma once
 
-class QStringList;
-class QSerialPort;
+#include <QSerialPort>
 
 class SerialPortPeripheral
 {
 public:
-    SerialPortPeripheral(QSerialPort& serialPort);
-    virtual ~SerialPortPeripheral();
-    bool attemptConnection();
-    //Sets the port name to parameters[0]
-    void setParameters(QStringList parameters);
+    SerialPortPeripheral();
+    virtual ~SerialPortPeripheral() {}
+    bool attemptConnection(QString portname);
     void sendSerialData(const unsigned char* data, int length);
 
 private:
-    QSerialPort& serialPort_;
+    QSerialPort serialPort_;
 };

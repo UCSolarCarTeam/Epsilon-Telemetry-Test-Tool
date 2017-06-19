@@ -1,6 +1,4 @@
-#include <QStringList>
 #include "InternetPeripheral.h"
-
 /*--------------------------------------------------------
                 Internet Peripheral
     Suggested function stubs for the internet peripheral
@@ -9,8 +7,8 @@
     in the actual implementation.
 --------------------------------------------------------*/
 InternetPeripheral::InternetPeripheral()
+    : channel_()
 {
-    //TODO: Implement a constructor
 }
 
 
@@ -18,21 +16,35 @@ InternetPeripheral::~InternetPeripheral()
 {
 }
 
-void InternetPeripheral::setParameters(QStringList parameters)
-{
-    Q_UNUSED(parameters);
-    //TODO: Implement or replace this function to set up parameters
-}
 
-
-bool InternetPeripheral::attemptConnection()
+bool InternetPeripheral::attemptConnection(QString ipAddress, unsigned short port)
 {
-    //TODO: Implement or replace this function to attempt connection to a server
+    try
+    {
+        channel_ = AmqpClient::Channel::Create(ipAddress.toStdString(), port);
+    }
+    catch (AmqpClient::AmqpException::exception&)
+    {
+        return false;
+    }
+
     return true;
 }
 
-void InternetPeripheral::sendInternetData(const QByteArray& data)
+void InternetPeripheral::sendInternetData(
+    const QString exchangeName,
+    const QString routingKey,
+    const QByteArray& data)
 {
-    Q_UNUSED(data);
-    //TODO: Implement or replace this function to send data to the server
+    if (channel_ == NULL)
+    {
+        return; // TODO add error message
+    }
+
+    AmqpClient::BasicMessage::ptr_t msg = AmqpClient::BasicMessage::Create(data.toStdString());
+
+    channel_->BasicPublish(
+        exchangeName.toStdString(),
+        routingKey.toStdString(),
+        msg, false, false);
 }

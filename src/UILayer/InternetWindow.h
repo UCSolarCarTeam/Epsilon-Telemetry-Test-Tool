@@ -5,6 +5,7 @@
 class QPushButton;
 class QLineEdit;
 class QLabel;
+class QSpinBox;
 
 class InternetWindow : public QWidget
 {
@@ -16,7 +17,9 @@ public:
 public:
     QPushButton& getConnectButton();
     QLineEdit& getIpAddressLineEdit();
-    QLineEdit& getPortLineEdit();
+    QSpinBox& getPortSpinBox();
+    QLineEdit& getExchangeNameLineEdit();
+    QLineEdit& getRoutingKeyLineEdit();
     QLabel& getConnectionStatusLabel();
     QPushButton& getSendAllButton();
     void setConnectionStatusText(QString);
@@ -27,7 +30,9 @@ private:
 private:
     QPushButton* connectButton_;
     QLineEdit* ipAddressLineEdit_;
-    QLineEdit* portLineEdit_;
+    QSpinBox* portSpinBox_;
+    QLineEdit* exchangeNameLineEdit_;
+    QLineEdit* routingKeyLineEdit_;
     QLabel* connectionStatusLabel_;
     QPushButton* sendAllButton_;
 };

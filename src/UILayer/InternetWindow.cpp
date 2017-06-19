@@ -3,9 +3,8 @@
 #include <QFormLayout>
 #include <QLabel>
 #include <QPushButton>
-#include <QSerialPort>
 #include <QLineEdit>
-#include <QComboBox>
+#include <QSpinBox>
 #include <QScopedPointer>
 #include "InternetWindow.h"
 
@@ -23,13 +22,27 @@ void InternetWindow::setupUi()
 {
     QFormLayout* layout = new QFormLayout;
     connectButton_ = new QPushButton("Connect", this);
+    QLabel* ipAddressLabel = new QLabel("Ip Address", this);
     ipAddressLineEdit_ = new QLineEdit("localhost", this);
-    portLineEdit_ = new QLineEdit("9000", this);
+    QLabel* portSpinLabel = new QLabel("Port Spin", this);
+    portSpinBox_ = new QSpinBox(this);
+    portSpinBox_->setRange(0, 65535);
+    portSpinBox_->setValue(5672);
+    QLabel* exchangeNameLabel = new QLabel("Exchange Name", this);
+    exchangeNameLineEdit_ = new QLineEdit("", this);
+    QLabel* routingKeyLabel = new QLabel("Routing Key", this);
+    routingKeyLineEdit_ = new QLineEdit("", this);
     connectionStatusLabel_ = new QLabel("Not connected", this);
     sendAllButton_ = new QPushButton("Send All", this);
     layout->addRow(connectButton_);
+    layout->addRow(ipAddressLabel);
     layout->addRow(ipAddressLineEdit_);
-    layout->addRow(portLineEdit_);
+    layout->addRow(portSpinLabel);
+    layout->addRow(portSpinBox_);
+    layout->addRow(exchangeNameLabel);
+    layout->addRow(exchangeNameLineEdit_);
+    layout->addRow(routingKeyLabel);
+    layout->addRow(routingKeyLineEdit_);
     layout->addRow(connectionStatusLabel_);
     layout->addRow(sendAllButton_);
     setLayout(layout);
@@ -40,9 +53,19 @@ QPushButton& InternetWindow::getConnectButton()
     return *connectButton_;
 }
 
-QLineEdit& InternetWindow::getPortLineEdit()
+QSpinBox& InternetWindow::getPortSpinBox()
 {
-    return *portLineEdit_;
+    return *portSpinBox_;
+}
+
+QLineEdit& InternetWindow::getExchangeNameLineEdit()
+{
+    return *exchangeNameLineEdit_;
+}
+
+QLineEdit& InternetWindow::getRoutingKeyLineEdit()
+{
+    return *routingKeyLineEdit_;
 }
 
 QLineEdit& InternetWindow::getIpAddressLineEdit()
