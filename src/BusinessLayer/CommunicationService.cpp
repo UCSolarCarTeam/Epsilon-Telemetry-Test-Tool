@@ -6,8 +6,6 @@
 #include "SerialView.h"
 #include "InternetView.h"
 
-#include <QDebug>
-
 CommunicationService::CommunicationService(SerialView& serialView, InternetView& internetView)
     : serialView_(serialView)
     , internetView_(internetView)
@@ -38,5 +36,4 @@ void CommunicationService::attemptInternetConnection()
 {
     internetView_.setConnectionStatus(internetPeripheral_.attemptConnection(
                                           internetView_.getIpAddress(), internetView_.getPort()));
-    qDebug() << "CommunicationService::attemptInternetConnection";
 }
