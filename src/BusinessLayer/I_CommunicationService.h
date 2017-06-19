@@ -11,7 +11,7 @@ public:
     virtual ~I_CommunicationService() {}
 
     virtual void sendSerialData(const unsigned char* packet, int packetLength) = 0;
-    virtual void sendInternetData(const QString& data) = 0;
+    virtual void sendInternetData(const QByteArray& data) = 0;
 
 public slots:
     virtual void attemptSerialConnection() = 0;

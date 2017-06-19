@@ -17,7 +17,7 @@ class CommunicationService : public I_CommunicationService
 public:
     CommunicationService(SerialView& serialView, InternetView& internetView);
     void sendSerialData(const unsigned char* packet, int packetLength);
-    void sendInternetData(const QString& data);
+    void sendInternetData(const QByteArray& data);
 
 public slots:
     void attemptSerialConnection();

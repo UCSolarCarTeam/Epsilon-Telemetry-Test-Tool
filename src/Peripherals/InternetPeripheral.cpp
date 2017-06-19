@@ -34,7 +34,7 @@ bool InternetPeripheral::attemptConnection(QString ipAddress, unsigned short por
 void InternetPeripheral::sendInternetData(
     const QString exchangeName,
     const QString routingKey,
-    const QString& data)
+    const QByteArray& data)
 {
     if (channel_ == NULL)
     {

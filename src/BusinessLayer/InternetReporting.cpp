@@ -327,7 +327,7 @@ void InternetReporting::sendAll()
     obj.insert("Lights", makeLights());
     QJsonDocument doc(obj);
     QByteArray data = doc.toJson(QJsonDocument::Compact);
-    communicationService_.sendInternetData(QString(data));
+    communicationService_.sendInternetData(data);
 }
 
 

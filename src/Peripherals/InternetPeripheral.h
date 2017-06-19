@@ -17,7 +17,7 @@ public:
     void sendInternetData(
         const QString exchangeName,
         const QString routingKey,
-        const QString& data);
+        const QByteArray& data);
 
 private:
     AmqpClient::Channel::ptr_t channel_;

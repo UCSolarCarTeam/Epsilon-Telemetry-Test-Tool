@@ -21,7 +21,7 @@ void CommunicationService::sendSerialData(const unsigned char* packet, int packe
     serialPeripheral_.sendSerialData(packet, packetLength);
 }
 
-void CommunicationService::sendInternetData(const QString& data)
+void CommunicationService::sendInternetData(const QByteArray& data)
 {
     internetPeripheral_.sendInternetData(
         internetView_.getExchangeName(),
