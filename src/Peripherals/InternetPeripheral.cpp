@@ -1,4 +1,5 @@
 #include "InternetPeripheral.h"
+#include <QDebug>
 /*--------------------------------------------------------
                 Internet Peripheral
     Suggested function stubs for the internet peripheral
@@ -23,8 +24,9 @@ bool InternetPeripheral::attemptConnection(QString ipAddress, unsigned short por
     {
         channel_ = AmqpClient::Channel::Create(ipAddress.toStdString(), port);
     }
-    catch (AmqpClient::AmqpException::exception&)
+    catch (AmqpClient::AmqpException::exception& exception)
     {
+        qDebug() << exception.what(); // TODO propagate error message up to UI
         return false;
     }
 
