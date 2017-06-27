@@ -26,7 +26,7 @@ bool InternetPeripheral::attemptConnection(QString ipAddress, unsigned short por
     }
     catch (AmqpClient::AmqpException::exception& exception)
     {
-        qDebug() << exception.what();
+        qDebug() << exception.what(); // TODO propagate error message up to UI
         return false;
     }
 
