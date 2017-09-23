@@ -43,14 +43,14 @@ namespace
     const unsigned int CHECK_SUM_LENGTH = 2;
     const unsigned int COBS_ADDITIONAL_FRAME_DATA_SIZE = 2;
 
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_KEY_MOTOR = 43;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS = 69;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS = 9;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 9;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 7;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 51;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 10;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 3;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_KEY_MOTOR = 47;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS = 73;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS = 13;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 13;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 11;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 55;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 7;
 }
 
 
