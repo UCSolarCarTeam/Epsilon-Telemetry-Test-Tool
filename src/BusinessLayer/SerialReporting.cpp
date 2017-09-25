@@ -18,14 +18,14 @@ namespace
 {
 // Refer to https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=0
 // These lengths only include the data. Not the checksum
-    const int KEY_MOTOR_LENGTH = 47;
-    const int MOTOR_DETAILS_LENGTH = 73;
-    const int DRIVER_CONTROLS_LENGTH = 13;
-    const int MOTOR_FAULTS_LENGTH = 13;
-    const int BATTERY_FAULTS_LENGTH = 11;
-    const int BATTERY_LENGTH = 55;
-    const int MPPT_LENGTH = 14;
-    const int LIGHTS_LENGTH = 7;
+    const int KEY_MOTOR_LENGTH = 43;
+    const int MOTOR_DETAILS_LENGTH = 69;
+    const int DRIVER_CONTROLS_LENGTH = 9;
+    const int MOTOR_FAULTS_LENGTH = 9;
+    const int BATTERY_FAULTS_LENGTH = 3;
+    const int BATTERY_LENGTH = 52;
+    const int MPPT_LENGTH = 10;
+    const int LIGHTS_LENGTH = 2;
 }
 
 using namespace Util;
