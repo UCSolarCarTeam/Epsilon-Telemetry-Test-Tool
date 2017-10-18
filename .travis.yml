@@ -8,7 +8,7 @@ before_install:
     - sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
     - sudo apt-add-repository -y ppa:beineri/opt-qt551-trusty
     - sudo apt-get -qq update
-    - sudo apt-get -qq install $COMPILER libc6-i386 qt55tools qt55svg qt55webkit qt55serialport libboost-chrono1.48-dev libboost-system1.48-dev
+    - sudo apt-get -qq install $COMPILER libc6-i386 qt55tools qt55svg qt55webkit-examples qt55serialport libboost-chrono1.48-dev libboost-system1.48-dev
     - export CXX=$COMPILER
     - PATH="/opt/qt55/bin:$PATH"
     - qt55-env.sh
