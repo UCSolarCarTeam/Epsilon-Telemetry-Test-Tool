@@ -551,11 +551,11 @@ TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build
     Util::writeUShortIntoArray(data, 40, batteryData_->lowCellVoltage);
     data[42] = batteryData_->lowCellVoltageId;
     Util::writeUShortIntoArray(data, 43, batteryData_->highCellVoltage);
-    data[46] = batteryData_->highCellVoltageId;
-    Util::writeUShortIntoArray(data, 47, batteryData_->averageCellVoltage);
-    data[49] = (unsigned char)batteryData_->prechargeState;
-    data[50] = batteryData_->auxVoltage;
-    bool auxBmsaliveArray[] = {batteryData_->auxBmsAlive};
+    data[45] = batteryData_->highCellVoltageId;
+    Util::writeUShortIntoArray(data, 46, batteryData_->averageCellVoltage);
+    data[48] = batteryData_->prechargeState;
+    data[49] = (unsigned char)batteryData_->auxVoltage;
+    bool auxBmsaliveArray[] = {data, 50, batteryData_->auxBmsAlive};
     Util::writeBoolsIntoArray(data, 51, auxBmsaliveArray, 1);
     appendChecksum(data, payloadLength);
     // do some additional data checks
@@ -631,6 +631,7 @@ TEST_F(SerialReportingTest, sendLightsTest) // TODO create function which build 
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
     unsigned char data[payloadLength];
     data[0] = CcsDefines::LIGHTS_PKG_ID;
+    data[1] = CcsDefines::LIGHTS_ALIVE;
     bool lightsStatus[] = {lightsData_->lowBeams,
                            lightsData_->highBeams,
                            lightsData_->brakes,
