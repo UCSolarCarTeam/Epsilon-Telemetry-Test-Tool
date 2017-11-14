@@ -651,7 +651,7 @@ TEST_F(SerialReportingTest, sendLightsTest) // TODO create function which build 
     ASSERT_THAT(((data[1] & 0x20) == 0x20), lightsData_->bmsStrobeLight);
     unsigned char expectedPacket[expectedPackageLength];
     Util::frameData(data, payloadLength, expectedPacket);
-    // check call
+    //check call
     const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
     EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
