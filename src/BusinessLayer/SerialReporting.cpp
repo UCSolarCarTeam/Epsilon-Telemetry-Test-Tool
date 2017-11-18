@@ -307,11 +307,11 @@ void SerialReporting::sendBattery()
     writeUShortIntoArray(packetPayload, 40, batteryData_.lowCellVoltage);
     packetPayload[42] = batteryData_.lowCellVoltageId;
     writeUShortIntoArray(packetPayload, 43, batteryData_.highCellVoltage);
-    packetPayload[46] = batteryData_.highCellVoltageId;
-    writeUShortIntoArray(packetPayload, 47, batteryData_.averageCellVoltage);
-    packetPayload[49] = (unsigned char)batteryData_.prechargeState;
-    packetPayload[50] = batteryData_.auxVoltage;
-    bool auxBmsaliveArray[] = {batteryData_.auxBmsAlive};
+    packetPayload[45] = batteryData_.highCellVoltageId;
+    writeUShortIntoArray(packetPayload, 46, batteryData_.averageCellVoltage);
+    packetPayload[48] = (unsigned char)batteryData_.prechargeState;
+    packetPayload[49] = batteryData_.auxVoltage;
+    bool auxBmsaliveArray[] = {packetPayLoad, 50,batteryData_.auxBmsAlive};
     writeBoolsIntoArray(packetPayload, 51, auxBmsaliveArray, 1);
     addChecksum(packetPayload, BATTERY_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
@@ -353,6 +353,7 @@ void SerialReporting::sendLights()
     const unsigned int unframedPacketLength = LIGHTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
     packetPayload[0] = CcsDefines::LIGHTS_PKG_ID;
+    packetPayLoad[1] = CcsDefines::LIGHTS_ALIVE;
     bool lightsArray[] = {lightsData_.lowBeams,
                           lightsData_.highBeams,
                           lightsData_.brakes,
