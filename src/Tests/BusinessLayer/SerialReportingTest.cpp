@@ -631,7 +631,8 @@ TEST_F(SerialReportingTest, sendLightsTest) // TODO create function which build 
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
     unsigned char data[payloadLength];
     data[0] = CcsDefines::LIGHTS_PKG_ID;
-    data[1] = CcsDefines::LIGHTS_ALIVE;
+    bool lightsAliveArray[] = {lightsData_->alive};
+    Util::writeBoolsIntoArray(data, 1, lightsAliveArray, 1);
     bool lightsStatus[] = {lightsData_->lowBeams,
                            lightsData_->highBeams,
                            lightsData_->brakes,
