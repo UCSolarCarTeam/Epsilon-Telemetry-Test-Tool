@@ -3,7 +3,8 @@
 struct LightsData
 {
     LightsData()
-        : lowBeams(true)
+        : alive(true)
+        , lowBeams(true)
         , highBeams(false)
         , brakes(true)
         , leftSignal(false)
@@ -11,6 +12,7 @@ struct LightsData
         , bmsStrobeLight(false)
     {}
 
+    bool alive;
     bool lowBeams;
     bool highBeams;
     bool brakes;
