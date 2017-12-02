@@ -311,8 +311,8 @@ void SerialReporting::sendBattery()
     writeUShortIntoArray(packetPayload, 46, batteryData_.averageCellVoltage);
     packetPayload[48] = (unsigned char)batteryData_.prechargeState;
     packetPayload[49] = batteryData_.auxVoltage;
-    bool auxBmsaliveArray[] = {packetPayload, 50,batteryData_.auxBmsAlive};
-    writeBoolsIntoArray(packetPayload, 51, auxBmsaliveArray, 1);
+    bool auxBmsAliveArray[] = {batteryData_.auxBmsAlive};
+    writeBoolsIntoArray(packetPayload, 50, auxBmsAliveArray, 1);
     addChecksum(packetPayload, BATTERY_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
