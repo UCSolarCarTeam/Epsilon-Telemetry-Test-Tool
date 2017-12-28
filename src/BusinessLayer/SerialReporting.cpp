@@ -264,7 +264,7 @@ void SerialReporting::sendBatteryFaults()
                               batteryFaultsData_.cclReducedChargerLatch,
                               batteryFaultsData_.cclReducedACLimit
                              };
-    writeBoolsIntoArray(packetPayload, 5, limitFlagsArray, 16);
+    writeBoolsIntoArray(packetPayload, 4, limitFlagsArray, 16);
     addChecksum(packetPayload, BATTERY_FAULTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
