@@ -555,8 +555,8 @@ TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build
     Util::writeUShortIntoArray(data, 46, batteryData_->averageCellVoltage);
     data[48] = batteryData_->prechargeState;
     data[49] = (unsigned char)batteryData_->auxVoltage;
-    bool auxBmsaliveArray[] = {data, 50, batteryData_->auxBmsAlive};
-    Util::writeBoolsIntoArray(data, 51, auxBmsaliveArray, 1);
+    bool auxBmsAliveArray[] = {batteryData_->auxBmsAlive};
+    Util::writeBoolsIntoArray(data, 50, auxBmsAliveArray, 1);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x07)); // packet id
