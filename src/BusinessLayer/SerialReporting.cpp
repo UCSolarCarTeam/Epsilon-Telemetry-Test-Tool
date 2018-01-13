@@ -22,7 +22,7 @@ namespace
     const int MOTOR_DETAILS_LENGTH = 69;
     const int DRIVER_CONTROLS_LENGTH = 9;
     const int MOTOR_FAULTS_LENGTH = 9;
-    const int BATTERY_FAULTS_LENGTH = 7;
+    const int BATTERY_FAULTS_LENGTH = 6;
     const int BATTERY_LENGTH = 51;
     const int MPPT_LENGTH = 10;
     const int LIGHTS_LENGTH = 3;
@@ -264,7 +264,7 @@ void SerialReporting::sendBatteryFaults()
                               batteryFaultsData_.cclReducedChargerLatch,
                               batteryFaultsData_.cclReducedACLimit
                              };
-    writeBoolsIntoArray(packetPayload, 5, limitFlagsArray, 16);
+    writeBoolsIntoArray(packetPayload, 4, limitFlagsArray, 16);
     addChecksum(packetPayload, BATTERY_FAULTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);

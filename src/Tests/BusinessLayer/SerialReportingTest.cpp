@@ -47,7 +47,7 @@ namespace
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS = 73;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS = 13;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 13;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 11;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 10;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 55;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 7;
@@ -487,15 +487,15 @@ TEST_F(SerialReportingTest, sendBatteryFaultsTest) // TODO create function which
                               batteryFaultsData_->cclReducedChargerLatch,
                               batteryFaultsData_->cclReducedACLimit
                              };
-    Util::writeBoolsIntoArray(data, 5, limitFlagsArray, 16);
+    Util::writeBoolsIntoArray(data, 4, limitFlagsArray, 16);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     // checking that the data members before and after the NO_DATA is correct
     ASSERT_THAT(data[0], Eq(0x06)); // packet id
-    ASSERT_THAT(((data[5] & 0x10) == 0x10), batteryFaultsData_->dclReducedLowPackVoltage);
-    ASSERT_THAT(((data[5] & 0x40) == 0x40), batteryFaultsData_->dclCclReducedVoltageFailsafe);
-    ASSERT_THAT(((data[5] & 0x80) == 0x80), batteryFaultsData_->dclCclReducedCommsFailsafe);
-    ASSERT_THAT(((data[6] & 0x02) == 0x02), batteryFaultsData_->cclReducedHighSoc);
+    ASSERT_THAT(((data[4] & 0x10) == 0x10), batteryFaultsData_->dclReducedLowPackVoltage);
+    ASSERT_THAT(((data[4] & 0x40) == 0x40), batteryFaultsData_->dclCclReducedVoltageFailsafe);
+    ASSERT_THAT(((data[4] & 0x80) == 0x80), batteryFaultsData_->dclCclReducedCommsFailsafe);
+    ASSERT_THAT(((data[5] & 0x02) == 0x02), batteryFaultsData_->cclReducedHighSoc);
     unsigned char expectedPacket[expectedPackageLength];
     Util::frameData(data, payloadLength, expectedPacket);
     // check call
