@@ -262,7 +262,7 @@ TEST_F(SerialReportingTest, sendMotorDetailsTest) // TODO create function which 
     Util::writeFloatIntoArray(data, 41, motor0DetailsData_->RailSupply1V);
     Util::writeFloatIntoArray(data, 45, motor0DetailsData_->heatSinkTemperature);
     Util::writeFloatIntoArray(data, 49, motor0DetailsData_->motorTemperature);
-    Util::writeFloatIntoArray(data, 53, motor0DetailsData_->dspBoardTempearture);
+    Util::writeFloatIntoArray(data, 53, motor0DetailsData_->dspBoardTemperature);
     Util::writeFloatIntoArray(data, 57, motor0DetailsData_->dcBusAmpHours);
     Util::writeFloatIntoArray(data, 61, motor0DetailsData_->odometer);
     Util::writeFloatIntoArray(data, 65, motor0DetailsData_->slipSpeed);
@@ -293,7 +293,7 @@ TEST_F(SerialReportingTest, sendMotorDetailsTest) // TODO create function which 
     Util::writeFloatIntoArray(data, 41, motor1DetailsData_->RailSupply1V);
     Util::writeFloatIntoArray(data, 45, motor1DetailsData_->heatSinkTemperature);
     Util::writeFloatIntoArray(data, 49, motor1DetailsData_->motorTemperature);
-    Util::writeFloatIntoArray(data, 53, motor1DetailsData_->dspBoardTempearture);
+    Util::writeFloatIntoArray(data, 53, motor1DetailsData_->dspBoardTemperature);
     Util::writeFloatIntoArray(data, 57, motor1DetailsData_->dcBusAmpHours);
     Util::writeFloatIntoArray(data, 61, motor1DetailsData_->odometer);
     Util::writeFloatIntoArray(data, 65, motor1DetailsData_->slipSpeed);
@@ -328,19 +328,18 @@ TEST_F(SerialReportingTest, sendDriverControlsTest) // TODO create function whic
     bool lightsInputs[] = { driverControlsData_->headlightsOff,
                             driverControlsData_->headlightsLow,
                             driverControlsData_->headlightsHigh,
-                            driverControlsData_->signalLeft,
                             driverControlsData_->signalRight,
+                            driverControlsData_->signalLeft,
                             driverControlsData_->hazardLights,
                             driverControlsData_->interiorLights
                           };
     Util::writeBoolsIntoArray(data, 2, lightsInputs, 7);
-    bool musicInputs[] = { driverControlsData_->musicAux,
-                           driverControlsData_->volumeUp,
+    bool musicInputs[] = { driverControlsData_->volumeUp,
                            driverControlsData_->volumeDown,
                            driverControlsData_->nextSong,
                            driverControlsData_->prevSong
                          };
-    Util::writeBoolsIntoArray(data, 3, musicInputs, 5);
+    Util::writeBoolsIntoArray(data, 3, musicInputs, 4);
     Util::writeUShortIntoArray(data, 4, driverControlsData_->acceleration);
     Util::writeUShortIntoArray(data, 6, driverControlsData_->regenBraking);
     bool driverInputs[] = { driverControlsData_->brakes,
@@ -348,9 +347,10 @@ TEST_F(SerialReportingTest, sendDriverControlsTest) // TODO create function whic
                             driverControlsData_->reverse,
                             driverControlsData_->pushToTalk,
                             driverControlsData_->horn,
-                            driverControlsData_->reset
+                            driverControlsData_->reset,
+                            driverControlsData_->aux
                           };
-    Util::writeBoolsIntoArray(data, 8, driverInputs, 6);
+    Util::writeBoolsIntoArray(data, 8, driverInputs, 7);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x04)); // packet id
@@ -381,7 +381,7 @@ TEST_F(SerialReportingTest, sendMotorFaultsTest) // TODO create function which b
     bool motor0ErrorFlags[] = { motorFaultsData_->motor0OverSpeed,
                                 motorFaultsData_->motor0SoftwareOverCurrent,
                                 motorFaultsData_->motor0DcBusOverVoltage,
-                                motorFaultsData_->motor0BadMootorPositionHallSequence,
+                                motorFaultsData_->motor0BadMotorPositionHallSequence,
                                 motorFaultsData_->motor0WatchdogCausedLastReset,
                                 motorFaultsData_->motor0ConfigReadError,
                                 motorFaultsData_->motor0Rail15VUnderVoltageLockOut,
@@ -391,7 +391,7 @@ TEST_F(SerialReportingTest, sendMotorFaultsTest) // TODO create function which b
     bool motor1ErrorFlags[] = { motorFaultsData_->motor1OverSpeed,
                                 motorFaultsData_->motor1SoftwareOverCurrent,
                                 motorFaultsData_->motor1DcBusOverVoltage,
-                                motorFaultsData_->motor1BadMootorPositionHallSequence,
+                                motorFaultsData_->motor1BadMotorPositionHallSequence,
                                 motorFaultsData_->motor1WatchdogCausedLastReset,
                                 motorFaultsData_->motor1ConfigReadError,
                                 motorFaultsData_->motor1Rail15VUnderVoltageLockOut,
@@ -640,16 +640,17 @@ TEST_F(SerialReportingTest, sendLightsTest) // TODO create function which build 
                            lightsData_->rightSignal,
                            lightsData_->bmsStrobeLight
                           };
-    Util::writeBoolsIntoArray(data, 1, lightsStatus, 6);
+    Util::writeBoolsIntoArray(data, 2, lightsStatus, 6);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x0A)); // packet id
-    ASSERT_THAT(((data[1] & 0x01) == 0x01), lightsData_->lowBeams);
-    ASSERT_THAT(((data[1] & 0x02) == 0x02), lightsData_->highBeams);
-    ASSERT_THAT(((data[1] & 0x04) == 0x04), lightsData_->brakes);
-    ASSERT_THAT(((data[1] & 0x08) == 0x08), lightsData_->leftSignal);
-    ASSERT_THAT(((data[1] & 0x10) == 0x10), lightsData_->rightSignal);
-    ASSERT_THAT(((data[1] & 0x20) == 0x20), lightsData_->bmsStrobeLight);
+    ASSERT_THAT(((data[1] & 0x01) == 0x01), lightsData_->alive);
+    ASSERT_THAT(((data[2] & 0x01) == 0x01), lightsData_->lowBeams);
+    ASSERT_THAT(((data[2] & 0x02) == 0x02), lightsData_->highBeams);
+    ASSERT_THAT(((data[2] & 0x04) == 0x04), lightsData_->brakes);
+    ASSERT_THAT(((data[2] & 0x08) == 0x08), lightsData_->leftSignal);
+    ASSERT_THAT(((data[2] & 0x10) == 0x10), lightsData_->rightSignal);
+    ASSERT_THAT(((data[2] & 0x20) == 0x20), lightsData_->bmsStrobeLight);
     unsigned char expectedPacket[expectedPackageLength];
     Util::frameData(data, payloadLength, expectedPacket);
     //check call

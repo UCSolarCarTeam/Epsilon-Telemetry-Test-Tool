@@ -16,7 +16,7 @@ struct MotorDetailsData
         , RailSupply1V(19.91f)
         , heatSinkTemperature(20.02f)
         , motorTemperature(21.12f)
-        , dspBoardTempearture(22.22f)
+        , dspBoardTemperature(22.22f)
         , dcBusAmpHours(23.32f)
         , odometer(24.42f)
         , slipSpeed(25.52f)
@@ -35,7 +35,7 @@ struct MotorDetailsData
     float RailSupply1V;
     float heatSinkTemperature;
     float motorTemperature;
-    float dspBoardTempearture;
+    float dspBoardTemperature;
     float dcBusAmpHours;
     float odometer;
     float slipSpeed;

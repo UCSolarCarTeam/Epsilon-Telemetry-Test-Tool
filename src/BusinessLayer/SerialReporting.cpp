@@ -117,7 +117,7 @@ void SerialReporting::sendMotorDetails(int n)
     writeFloatIntoArray(packetPayload, 41, motor0DetailsData_.RailSupply1V);
     writeFloatIntoArray(packetPayload, 45, motor0DetailsData_.heatSinkTemperature);
     writeFloatIntoArray(packetPayload, 49, motor0DetailsData_.motorTemperature);
-    writeFloatIntoArray(packetPayload, 53, motor0DetailsData_.dspBoardTempearture);
+    writeFloatIntoArray(packetPayload, 53, motor0DetailsData_.dspBoardTemperature);
     writeFloatIntoArray(packetPayload, 57, motor0DetailsData_.dcBusAmpHours);
     writeFloatIntoArray(packetPayload, 61, motor0DetailsData_.odometer);
     writeFloatIntoArray(packetPayload, 65, motor0DetailsData_.slipSpeed);
@@ -137,19 +137,18 @@ void SerialReporting::sendDriverControls()
     bool lightsArray[] = {driverControlsData_.headlightsOff,
                           driverControlsData_.headlightsLow,
                           driverControlsData_.headlightsHigh,
-                          driverControlsData_.signalLeft,
                           driverControlsData_.signalRight,
+                          driverControlsData_.signalLeft,
                           driverControlsData_.hazardLights,
                           driverControlsData_.interiorLights
                          };
     writeBoolsIntoArray(packetPayload, 2, lightsArray, 7);
-    bool musicArray[] = {driverControlsData_.musicAux,
-                         driverControlsData_.volumeUp,
+    bool musicArray[] = {driverControlsData_.volumeUp,
                          driverControlsData_.volumeDown,
                          driverControlsData_.nextSong,
                          driverControlsData_.prevSong
                         };
-    writeBoolsIntoArray(packetPayload, 3, musicArray, 5);
+    writeBoolsIntoArray(packetPayload, 3, musicArray, 4);
     writeUShortIntoArray(packetPayload, 4, driverControlsData_.acceleration);
     writeUShortIntoArray(packetPayload, 6, driverControlsData_.regenBraking);
     bool controlsArray[] = {driverControlsData_.brakes,
@@ -157,9 +156,10 @@ void SerialReporting::sendDriverControls()
                             driverControlsData_.reverse,
                             driverControlsData_.pushToTalk,
                             driverControlsData_.horn,
-                            driverControlsData_.reset
+                            driverControlsData_.reset,
+                            driverControlsData_.aux
                            };
-    writeBoolsIntoArray(packetPayload, 8, controlsArray, 6);
+    writeBoolsIntoArray(packetPayload, 8, controlsArray, 7);
     addChecksum(packetPayload, DRIVER_CONTROLS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
@@ -174,7 +174,7 @@ void SerialReporting::sendMotorFaults()
     bool motor0FaultsArray[] = {motorFaultsData_.motor0OverSpeed,
                                 motorFaultsData_.motor0SoftwareOverCurrent,
                                 motorFaultsData_.motor0DcBusOverVoltage,
-                                motorFaultsData_.motor0BadMootorPositionHallSequence,
+                                motorFaultsData_.motor0BadMotorPositionHallSequence,
                                 motorFaultsData_.motor0WatchdogCausedLastReset,
                                 motorFaultsData_.motor0ConfigReadError,
                                 motorFaultsData_.motor0Rail15VUnderVoltageLockOut,
@@ -184,7 +184,7 @@ void SerialReporting::sendMotorFaults()
     bool motor1FaultsArray[] = {motorFaultsData_.motor1OverSpeed,
                                 motorFaultsData_.motor1SoftwareOverCurrent,
                                 motorFaultsData_.motor1DcBusOverVoltage,
-                                motorFaultsData_.motor1BadMootorPositionHallSequence,
+                                motorFaultsData_.motor1BadMotorPositionHallSequence,
                                 motorFaultsData_.motor1WatchdogCausedLastReset,
                                 motorFaultsData_.motor1ConfigReadError,
                                 motorFaultsData_.motor1Rail15VUnderVoltageLockOut,
@@ -362,7 +362,7 @@ void SerialReporting::sendLights()
                           lightsData_.rightSignal,
                           lightsData_.bmsStrobeLight
                          };
-    writeBoolsIntoArray(packetPayload, 1, lightsArray, 6);
+    writeBoolsIntoArray(packetPayload, 2, lightsArray, 6);
     addChecksum(packetPayload, LIGHTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);

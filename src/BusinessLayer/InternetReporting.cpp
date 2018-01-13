@@ -84,7 +84,7 @@ QJsonObject InternetReporting::makeMotorDetails(int n)
         motorDetails.insert("VoltageRail1VSupply", motor0DetailsData_.RailSupply1V);
         motorDetails.insert("HeatSinkTemp", motor0DetailsData_.heatSinkTemperature);
         motorDetails.insert("MotorTemp", motor0DetailsData_.motorTemperature);
-        motorDetails.insert("DspBoardTemp", motor0DetailsData_.dspBoardTempearture);
+        motorDetails.insert("DspBoardTemp", motor0DetailsData_.dspBoardTemperature);
         motorDetails.insert("DcBusAmpHours", motor0DetailsData_.dcBusAmpHours);
         motorDetails.insert("Odometer", motor0DetailsData_.odometer);
         motorDetails.insert("SlipSpeed", motor0DetailsData_.slipSpeed);
@@ -103,7 +103,7 @@ QJsonObject InternetReporting::makeMotorDetails(int n)
         motorDetails.insert("VoltageRail1VSupply", motor1DetailsData_.RailSupply1V);
         motorDetails.insert("HeatSinkTemp", motor1DetailsData_.heatSinkTemperature);
         motorDetails.insert("MotorTemp", motor1DetailsData_.motorTemperature);
-        motorDetails.insert("DspBoardTemp", motor1DetailsData_.dspBoardTempearture);
+        motorDetails.insert("DspBoardTemp", motor1DetailsData_.dspBoardTemperature);
         motorDetails.insert("DcBusAmpHours", motor1DetailsData_.dcBusAmpHours);
         motorDetails.insert("Odometer", motor1DetailsData_.odometer);
         motorDetails.insert("SlipSpeed", motor1DetailsData_.slipSpeed);
@@ -123,7 +123,6 @@ QJsonObject InternetReporting::makeDriverControls()
     driverControls.insert("SignalLeft", driverControlsData_.signalLeft);
     driverControls.insert("Hazard", driverControlsData_.hazardLights);
     driverControls.insert("Interior", driverControlsData_.interiorLights);
-    driverControls.insert("Aux", driverControlsData_.musicAux);
     driverControls.insert("VolumeUp", driverControlsData_.volumeUp);
     driverControls.insert("VolumeDown", driverControlsData_.volumeDown);
     driverControls.insert("NextSong", driverControlsData_.nextSong);
@@ -136,6 +135,7 @@ QJsonObject InternetReporting::makeDriverControls()
     driverControls.insert("PushToTalk", driverControlsData_.pushToTalk);
     driverControls.insert("Horn", driverControlsData_.horn);
     driverControls.insert("Reset", driverControlsData_.reset);
+    driverControls.insert("Aux", driverControlsData_.aux);
     return driverControls;
 }
 
@@ -148,7 +148,7 @@ QJsonArray InternetReporting::makeMotorFaults()
     errorFlags0.insert("MotorOverSpeed", motorFaultsData_.motor0OverSpeed);
     errorFlags0.insert("SoftwareOverCurrent", motorFaultsData_.motor0SoftwareOverCurrent);
     errorFlags0.insert("DcBusOverVoltage", motorFaultsData_.motor0DcBusOverVoltage);
-    errorFlags0.insert("BadMotorPositionHallSequence", motorFaultsData_.motor0BadMootorPositionHallSequence);
+    errorFlags0.insert("BadMotorPositionHallSequence", motorFaultsData_.motor0BadMotorPositionHallSequence);
     errorFlags0.insert("WatchdogCausedLastReset", motorFaultsData_.motor0WatchdogCausedLastReset);
     errorFlags0.insert("ConfigReadError", motorFaultsData_.motor0ConfigReadError);
     errorFlags0.insert("Rail15VUnderVoltageLockOut", motorFaultsData_.motor0Rail15VUnderVoltageLockOut);
@@ -170,7 +170,7 @@ QJsonArray InternetReporting::makeMotorFaults()
     errorFlags1.insert("MotorOverSpeed", motorFaultsData_.motor1OverSpeed);
     errorFlags1.insert("SoftwareOverCurrent", motorFaultsData_.motor1SoftwareOverCurrent);
     errorFlags1.insert("DcBusOverVoltage", motorFaultsData_.motor1DcBusOverVoltage);
-    errorFlags1.insert("BadMotorPositionHallSequence", motorFaultsData_.motor1BadMootorPositionHallSequence);
+    errorFlags1.insert("BadMotorPositionHallSequence", motorFaultsData_.motor1BadMotorPositionHallSequence);
     errorFlags1.insert("WatchdogCausedLastReset", motorFaultsData_.motor1WatchdogCausedLastReset);
     errorFlags1.insert("ConfigReadError", motorFaultsData_.motor1ConfigReadError);
     errorFlags1.insert("Rail15VUnderVoltageLockOut", motorFaultsData_.motor1Rail15VUnderVoltageLockOut);

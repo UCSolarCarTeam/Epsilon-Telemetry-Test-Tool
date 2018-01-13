@@ -11,7 +11,6 @@ struct DriverControlsData
         , signalRight(false)
         , hazardLights(true)
         , interiorLights(false)
-        , musicAux(true)
         , volumeUp(false)
         , volumeDown(true)
         , nextSong(false)
@@ -22,6 +21,7 @@ struct DriverControlsData
         , pushToTalk(true)
         , horn(false)
         , reset(true)
+        , aux(true)
         , acceleration(26)
         , regenBraking(27)
     {}
@@ -34,7 +34,6 @@ struct DriverControlsData
     bool signalRight;
     bool hazardLights;
     bool interiorLights;
-    bool musicAux;
     bool volumeUp;
     bool volumeDown;
     bool nextSong;
@@ -45,6 +44,7 @@ struct DriverControlsData
     bool pushToTalk;
     bool horn;
     bool reset;
+    bool aux;
     unsigned short acceleration;
     unsigned short regenBraking;
 };
