@@ -362,7 +362,7 @@ void SerialReporting::sendLights()
                           lightsData_.rightSignal,
                           lightsData_.bmsStrobeLight
                          };
-    writeBoolsIntoArray(packetPayload, 1, lightsArray, 6);
+    writeBoolsIntoArray(packetPayload, 2, lightsArray, 6);
     addChecksum(packetPayload, LIGHTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);

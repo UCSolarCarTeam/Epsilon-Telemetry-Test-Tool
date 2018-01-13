@@ -640,16 +640,17 @@ TEST_F(SerialReportingTest, sendLightsTest) // TODO create function which build 
                            lightsData_->rightSignal,
                            lightsData_->bmsStrobeLight
                           };
-    Util::writeBoolsIntoArray(data, 1, lightsStatus, 6);
+    Util::writeBoolsIntoArray(data, 2, lightsStatus, 6);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x0A)); // packet id
-    ASSERT_THAT(((data[1] & 0x01) == 0x01), lightsData_->lowBeams);
-    ASSERT_THAT(((data[1] & 0x02) == 0x02), lightsData_->highBeams);
-    ASSERT_THAT(((data[1] & 0x04) == 0x04), lightsData_->brakes);
-    ASSERT_THAT(((data[1] & 0x08) == 0x08), lightsData_->leftSignal);
-    ASSERT_THAT(((data[1] & 0x10) == 0x10), lightsData_->rightSignal);
-    ASSERT_THAT(((data[1] & 0x20) == 0x20), lightsData_->bmsStrobeLight);
+    ASSERT_THAT(((data[1] & 0x01) == 0x01), lightsData_->alive);
+    ASSERT_THAT(((data[2] & 0x01) == 0x01), lightsData_->lowBeams);
+    ASSERT_THAT(((data[2] & 0x02) == 0x02), lightsData_->highBeams);
+    ASSERT_THAT(((data[2] & 0x04) == 0x04), lightsData_->brakes);
+    ASSERT_THAT(((data[2] & 0x08) == 0x08), lightsData_->leftSignal);
+    ASSERT_THAT(((data[2] & 0x10) == 0x10), lightsData_->rightSignal);
+    ASSERT_THAT(((data[2] & 0x20) == 0x20), lightsData_->bmsStrobeLight);
     unsigned char expectedPacket[expectedPackageLength];
     Util::frameData(data, payloadLength, expectedPacket);
     //check call
