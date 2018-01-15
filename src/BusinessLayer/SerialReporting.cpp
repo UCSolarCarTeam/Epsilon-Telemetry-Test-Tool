@@ -19,7 +19,7 @@ namespace
 // Refer to https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=0
 // These lengths only include the data. Not the checksum
     const int KEY_MOTOR_LENGTH = 43;
-    const int MOTOR_DETAILS_LENGTH = 69;
+    const int MOTOR_DETAILS_LENGTH = 65;
     const int DRIVER_CONTROLS_LENGTH = 9;
     const int MOTOR_FAULTS_LENGTH = 9;
     const int BATTERY_FAULTS_LENGTH = 6;
@@ -111,16 +111,15 @@ void SerialReporting::sendMotorDetails(int n)
     writeFloatIntoArray(packetPayload, 17, motor0DetailsData_.MotorCurrentReal);
     writeFloatIntoArray(packetPayload, 21, motor0DetailsData_.MotorCurrentImaginary);
     writeFloatIntoArray(packetPayload, 25, motor0DetailsData_.BackEmf);
-    writeFloatIntoArray(packetPayload, 29, motor0DetailsData_.BackEmfImaginary);
-    writeFloatIntoArray(packetPayload, 33, motor0DetailsData_.RailSupply15V);
-    writeFloatIntoArray(packetPayload, 37, motor0DetailsData_.RailSupply3V);
-    writeFloatIntoArray(packetPayload, 41, motor0DetailsData_.RailSupply1V);
-    writeFloatIntoArray(packetPayload, 45, motor0DetailsData_.heatSinkTemperature);
-    writeFloatIntoArray(packetPayload, 49, motor0DetailsData_.motorTemperature);
-    writeFloatIntoArray(packetPayload, 53, motor0DetailsData_.dspBoardTemperature);
-    writeFloatIntoArray(packetPayload, 57, motor0DetailsData_.dcBusAmpHours);
-    writeFloatIntoArray(packetPayload, 61, motor0DetailsData_.odometer);
-    writeFloatIntoArray(packetPayload, 65, motor0DetailsData_.slipSpeed);
+    writeFloatIntoArray(packetPayload, 29, motor0DetailsData_.RailSupply15V);
+    writeFloatIntoArray(packetPayload, 33, motor0DetailsData_.RailSupply3V);
+    writeFloatIntoArray(packetPayload, 37, motor0DetailsData_.RailSupply1V);
+    writeFloatIntoArray(packetPayload, 41, motor0DetailsData_.heatSinkTemperature);
+    writeFloatIntoArray(packetPayload, 45, motor0DetailsData_.motorTemperature);
+    writeFloatIntoArray(packetPayload, 49, motor0DetailsData_.dspBoardTemperature);
+    writeFloatIntoArray(packetPayload, 53, motor0DetailsData_.dcBusAmpHours);
+    writeFloatIntoArray(packetPayload, 57, motor0DetailsData_.odometer);
+    writeFloatIntoArray(packetPayload, 61, motor0DetailsData_.slipSpeed);
     addChecksum(packetPayload, MOTOR_DETAILS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
