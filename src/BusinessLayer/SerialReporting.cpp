@@ -22,10 +22,10 @@ namespace
     const int MOTOR_DETAILS_LENGTH = 69;
     const int DRIVER_CONTROLS_LENGTH = 9;
     const int MOTOR_FAULTS_LENGTH = 9;
-    const int BATTERY_FAULTS_LENGTH = 3;
-    const int BATTERY_LENGTH = 52;
+    const int BATTERY_FAULTS_LENGTH = 6;
+    const int BATTERY_LENGTH = 51;
     const int MPPT_LENGTH = 10;
-    const int LIGHTS_LENGTH = 2;
+    const int LIGHTS_LENGTH = 3;
 }
 
 using namespace Util;
@@ -264,7 +264,7 @@ void SerialReporting::sendBatteryFaults()
                               batteryFaultsData_.cclReducedChargerLatch,
                               batteryFaultsData_.cclReducedACLimit
                              };
-    writeBoolsIntoArray(packetPayload, 5, limitFlagsArray, 16);
+    writeBoolsIntoArray(packetPayload, 4, limitFlagsArray, 16);
     addChecksum(packetPayload, BATTERY_FAULTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
@@ -307,12 +307,12 @@ void SerialReporting::sendBattery()
     writeUShortIntoArray(packetPayload, 40, batteryData_.lowCellVoltage);
     packetPayload[42] = batteryData_.lowCellVoltageId;
     writeUShortIntoArray(packetPayload, 43, batteryData_.highCellVoltage);
-    packetPayload[46] = batteryData_.highCellVoltageId;
-    writeUShortIntoArray(packetPayload, 47, batteryData_.averageCellVoltage);
-    packetPayload[49] = (unsigned char)batteryData_.prechargeState;
-    packetPayload[50] = batteryData_.auxVoltage;
-    bool auxBmsaliveArray[] = {batteryData_.auxBmsAlive};
-    writeBoolsIntoArray(packetPayload, 51, auxBmsaliveArray, 1);
+    packetPayload[45] = batteryData_.highCellVoltageId;
+    writeUShortIntoArray(packetPayload, 46, batteryData_.averageCellVoltage);
+    packetPayload[48] = (unsigned char)batteryData_.prechargeState;
+    packetPayload[49] = batteryData_.auxVoltage;
+    bool auxBmsAliveArray[] = {batteryData_.auxBmsAlive};
+    writeBoolsIntoArray(packetPayload, 50, auxBmsAliveArray, 1);
     addChecksum(packetPayload, BATTERY_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
@@ -353,6 +353,8 @@ void SerialReporting::sendLights()
     const unsigned int unframedPacketLength = LIGHTS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
     packetPayload[0] = CcsDefines::LIGHTS_PKG_ID;
+    bool lightsAliveArray[] = {lightsData_.alive};
+    writeBoolsIntoArray(packetPayload, 1, lightsAliveArray, 1);
     bool lightsArray[] = {lightsData_.lowBeams,
                           lightsData_.highBeams,
                           lightsData_.brakes,
@@ -360,7 +362,7 @@ void SerialReporting::sendLights()
                           lightsData_.rightSignal,
                           lightsData_.bmsStrobeLight
                          };
-    writeBoolsIntoArray(packetPayload, 1, lightsArray, 6);
+    writeBoolsIntoArray(packetPayload, 2, lightsArray, 6);
     addChecksum(packetPayload, LIGHTS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);

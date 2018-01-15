@@ -47,10 +47,10 @@ namespace
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS = 73;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS = 13;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 13;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 7;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 56;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 10;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 55;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 6;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 7;
 }
 
 
@@ -487,15 +487,15 @@ TEST_F(SerialReportingTest, sendBatteryFaultsTest) // TODO create function which
                               batteryFaultsData_->cclReducedChargerLatch,
                               batteryFaultsData_->cclReducedACLimit
                              };
-    Util::writeBoolsIntoArray(data, 5, limitFlagsArray, 16);
+    Util::writeBoolsIntoArray(data, 4, limitFlagsArray, 16);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     // checking that the data members before and after the NO_DATA is correct
     ASSERT_THAT(data[0], Eq(0x06)); // packet id
-    ASSERT_THAT(((data[5] & 0x10) == 0x10), batteryFaultsData_->dclReducedLowPackVoltage);
-    ASSERT_THAT(((data[5] & 0x40) == 0x40), batteryFaultsData_->dclCclReducedVoltageFailsafe);
-    ASSERT_THAT(((data[5] & 0x80) == 0x80), batteryFaultsData_->dclCclReducedCommsFailsafe);
-    ASSERT_THAT(((data[6] & 0x02) == 0x02), batteryFaultsData_->cclReducedHighSoc);
+    ASSERT_THAT(((data[4] & 0x10) == 0x10), batteryFaultsData_->dclReducedLowPackVoltage);
+    ASSERT_THAT(((data[4] & 0x40) == 0x40), batteryFaultsData_->dclCclReducedVoltageFailsafe);
+    ASSERT_THAT(((data[4] & 0x80) == 0x80), batteryFaultsData_->dclCclReducedCommsFailsafe);
+    ASSERT_THAT(((data[5] & 0x02) == 0x02), batteryFaultsData_->cclReducedHighSoc);
     unsigned char expectedPacket[expectedPackageLength];
     Util::frameData(data, payloadLength, expectedPacket);
     // check call
@@ -551,12 +551,12 @@ TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build
     Util::writeUShortIntoArray(data, 40, batteryData_->lowCellVoltage);
     data[42] = batteryData_->lowCellVoltageId;
     Util::writeUShortIntoArray(data, 43, batteryData_->highCellVoltage);
-    data[46] = batteryData_->highCellVoltageId;
-    Util::writeUShortIntoArray(data, 47, batteryData_->averageCellVoltage);
-    data[49] = (unsigned char)batteryData_->prechargeState;
-    data[50] = batteryData_->auxVoltage;
-    bool auxBmsaliveArray[] = {batteryData_->auxBmsAlive};
-    Util::writeBoolsIntoArray(data, 51, auxBmsaliveArray, 1);
+    data[45] = batteryData_->highCellVoltageId;
+    Util::writeUShortIntoArray(data, 46, batteryData_->averageCellVoltage);
+    data[48] = batteryData_->prechargeState;
+    data[49] = (unsigned char)batteryData_->auxVoltage;
+    bool auxBmsAliveArray[] = {batteryData_->auxBmsAlive};
+    Util::writeBoolsIntoArray(data, 50, auxBmsAliveArray, 1);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x07)); // packet id
@@ -631,6 +631,8 @@ TEST_F(SerialReportingTest, sendLightsTest) // TODO create function which build 
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
     unsigned char data[payloadLength];
     data[0] = CcsDefines::LIGHTS_PKG_ID;
+    bool lightsAliveArray[] = {lightsData_->alive};
+    Util::writeBoolsIntoArray(data, 1, lightsAliveArray, 1);
     bool lightsStatus[] = {lightsData_->lowBeams,
                            lightsData_->highBeams,
                            lightsData_->brakes,
@@ -638,19 +640,20 @@ TEST_F(SerialReportingTest, sendLightsTest) // TODO create function which build 
                            lightsData_->rightSignal,
                            lightsData_->bmsStrobeLight
                           };
-    Util::writeBoolsIntoArray(data, 1, lightsStatus, 6);
+    Util::writeBoolsIntoArray(data, 2, lightsStatus, 6);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x0A)); // packet id
-    ASSERT_THAT(((data[1] & 0x01) == 0x01), lightsData_->lowBeams);
-    ASSERT_THAT(((data[1] & 0x02) == 0x02), lightsData_->highBeams);
-    ASSERT_THAT(((data[1] & 0x04) == 0x04), lightsData_->brakes);
-    ASSERT_THAT(((data[1] & 0x08) == 0x08), lightsData_->leftSignal);
-    ASSERT_THAT(((data[1] & 0x10) == 0x10), lightsData_->rightSignal);
-    ASSERT_THAT(((data[1] & 0x20) == 0x20), lightsData_->bmsStrobeLight);
+    ASSERT_THAT(((data[1] & 0x01) == 0x01), lightsData_->alive);
+    ASSERT_THAT(((data[2] & 0x01) == 0x01), lightsData_->lowBeams);
+    ASSERT_THAT(((data[2] & 0x02) == 0x02), lightsData_->highBeams);
+    ASSERT_THAT(((data[2] & 0x04) == 0x04), lightsData_->brakes);
+    ASSERT_THAT(((data[2] & 0x08) == 0x08), lightsData_->leftSignal);
+    ASSERT_THAT(((data[2] & 0x10) == 0x10), lightsData_->rightSignal);
+    ASSERT_THAT(((data[2] & 0x20) == 0x20), lightsData_->bmsStrobeLight);
     unsigned char expectedPacket[expectedPackageLength];
     Util::frameData(data, payloadLength, expectedPacket);
-    // check call
+    //check call
     const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
     EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
