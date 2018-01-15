@@ -9,7 +9,7 @@ struct MotorDetailsData
         , MotorVoltageImaginary(14.41f)
         , MotorCurrentReal(13.13f)
         , MotorCurrentImaginary(14.14f)
-        , BackEmfReal(15.51f)
+        , BackEmf(15.51f)
         , BackEmfImaginary(16.61f)
         , RailSupply15V(17.71f)
         , RailSupply3V(18.81f)
@@ -28,7 +28,7 @@ struct MotorDetailsData
     float MotorVoltageImaginary;
     float MotorCurrentReal;
     float MotorCurrentImaginary;
-    float BackEmfReal;
+    float BackEmf;
     float BackEmfImaginary;
     float RailSupply15V;
     float RailSupply3V;

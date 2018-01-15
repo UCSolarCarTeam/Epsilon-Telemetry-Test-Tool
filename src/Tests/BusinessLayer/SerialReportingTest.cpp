@@ -255,7 +255,7 @@ TEST_F(SerialReportingTest, sendMotorDetailsTest) // TODO create function which 
     Util::writeFloatIntoArray(data, 13, motor0DetailsData_->MotorVoltageImaginary);
     Util::writeFloatIntoArray(data, 17, motor0DetailsData_->MotorCurrentReal);
     Util::writeFloatIntoArray(data, 21, motor0DetailsData_->MotorCurrentImaginary);
-    Util::writeFloatIntoArray(data, 25, motor0DetailsData_->BackEmfReal);
+    Util::writeFloatIntoArray(data, 25, motor0DetailsData_->BackEmf);
     Util::writeFloatIntoArray(data, 29, motor0DetailsData_->BackEmfImaginary);
     Util::writeFloatIntoArray(data, 33, motor0DetailsData_->RailSupply15V);
     Util::writeFloatIntoArray(data, 37, motor0DetailsData_->RailSupply3V);
@@ -286,7 +286,7 @@ TEST_F(SerialReportingTest, sendMotorDetailsTest) // TODO create function which 
     Util::writeFloatIntoArray(data, 13, motor1DetailsData_->MotorVoltageImaginary);
     Util::writeFloatIntoArray(data, 17, motor1DetailsData_->MotorCurrentReal);
     Util::writeFloatIntoArray(data, 21, motor1DetailsData_->MotorCurrentImaginary);
-    Util::writeFloatIntoArray(data, 25, motor1DetailsData_->BackEmfReal);
+    Util::writeFloatIntoArray(data, 25, motor1DetailsData_->BackEmf);
     Util::writeFloatIntoArray(data, 29, motor1DetailsData_->BackEmfImaginary);
     Util::writeFloatIntoArray(data, 33, motor1DetailsData_->RailSupply15V);
     Util::writeFloatIntoArray(data, 37, motor1DetailsData_->RailSupply3V);

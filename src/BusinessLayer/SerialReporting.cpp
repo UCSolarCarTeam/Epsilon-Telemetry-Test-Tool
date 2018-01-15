@@ -110,7 +110,7 @@ void SerialReporting::sendMotorDetails(int n)
     writeFloatIntoArray(packetPayload, 13, motor0DetailsData_.MotorVoltageImaginary);
     writeFloatIntoArray(packetPayload, 17, motor0DetailsData_.MotorCurrentReal);
     writeFloatIntoArray(packetPayload, 21, motor0DetailsData_.MotorCurrentImaginary);
-    writeFloatIntoArray(packetPayload, 25, motor0DetailsData_.BackEmfReal);
+    writeFloatIntoArray(packetPayload, 25, motor0DetailsData_.BackEmf);
     writeFloatIntoArray(packetPayload, 29, motor0DetailsData_.BackEmfImaginary);
     writeFloatIntoArray(packetPayload, 33, motor0DetailsData_.RailSupply15V);
     writeFloatIntoArray(packetPayload, 37, motor0DetailsData_.RailSupply3V);

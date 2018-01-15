@@ -78,7 +78,7 @@ QJsonObject InternetReporting::makeMotorDetails(int n)
         motorDetails.insert("MotorVoltageImaginary", motor0DetailsData_.MotorVoltageImaginary);
         motorDetails.insert("MotorCurrentReal", motor0DetailsData_.MotorCurrentReal);
         motorDetails.insert("MotorCurrentImaginary", motor0DetailsData_.MotorCurrentImaginary);
-        motorDetails.insert("BackEmfReal", motor0DetailsData_.BackEmfReal);
+        motorDetails.insert("BackEmf", motor0DetailsData_.BackEmf);
         motorDetails.insert("VoltageRail15VSupply", motor0DetailsData_.RailSupply15V);
         motorDetails.insert("VoltageRail3VSupply", motor0DetailsData_.RailSupply3V);
         motorDetails.insert("VoltageRail1VSupply", motor0DetailsData_.RailSupply1V);
@@ -97,7 +97,7 @@ QJsonObject InternetReporting::makeMotorDetails(int n)
         motorDetails.insert("MotorVoltageImaginary", motor1DetailsData_.MotorVoltageImaginary);
         motorDetails.insert("MotorCurrentReal", motor1DetailsData_.MotorCurrentReal);
         motorDetails.insert("MotorCurrentImaginary", motor1DetailsData_.MotorCurrentImaginary);
-        motorDetails.insert("BackEmfReal", motor1DetailsData_.BackEmfReal);
+        motorDetails.insert("BackEmf", motor1DetailsData_.BackEmf);
         motorDetails.insert("VoltageRail15VSupply", motor1DetailsData_.RailSupply15V);
         motorDetails.insert("VoltageRail3VSupply", motor1DetailsData_.RailSupply3V);
         motorDetails.insert("VoltageRail1VSupply", motor1DetailsData_.RailSupply1V);
@@ -202,7 +202,7 @@ QJsonObject InternetReporting::makeBatteryFaults()
     errorFlags.insert("OpenWiringFault", batteryFaultsData_.openWiringFault);
     errorFlags.insert("CurrentSensorFault", batteryFaultsData_.currentSensorFault);
     errorFlags.insert("PackVoltageSensorFault", batteryFaultsData_.packVoltageSensorFault);
-    errorFlags.insert("WeakPackFault", batteryFaultsData_.voltageRedundancyFault);
+    errorFlags.insert("WeakPackFault", batteryFaultsData_.weakPackFault);
     errorFlags.insert("VoltageRedundancyFault", batteryFaultsData_.voltageRedundancyFault);
     errorFlags.insert("FanMonitorFault", batteryFaultsData_.fanMonitorFault);
     errorFlags.insert("ThermistorFault", batteryFaultsData_.thermistorFault);
