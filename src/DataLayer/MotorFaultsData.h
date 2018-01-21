@@ -6,7 +6,7 @@ struct MotorFaultsData
         : motor0OverSpeed(true)
         , motor0SoftwareOverCurrent(false)
         , motor0DcBusOverVoltage(true)
-        , motor0BadMootorPositionHallSequence(true)
+        , motor0BadMotorPositionHallSequence(true)
         , motor0WatchdogCausedLastReset(false)
         , motor0ConfigReadError(true)
         , motor0Rail15VUnderVoltageLockOut(false)
@@ -23,7 +23,7 @@ struct MotorFaultsData
         , motor1OverSpeed(true)
         , motor1SoftwareOverCurrent(false)
         , motor1DcBusOverVoltage(true)
-        , motor1BadMootorPositionHallSequence(false)
+        , motor1BadMotorPositionHallSequence(false)
         , motor1WatchdogCausedLastReset(true)
         , motor1ConfigReadError(false)
         , motor1Rail15VUnderVoltageLockOut(true)
@@ -42,7 +42,7 @@ struct MotorFaultsData
     bool motor0OverSpeed;
     bool motor0SoftwareOverCurrent;
     bool motor0DcBusOverVoltage;
-    bool motor0BadMootorPositionHallSequence;
+    bool motor0BadMotorPositionHallSequence;
     bool motor0WatchdogCausedLastReset;
     bool motor0ConfigReadError;
     bool motor0Rail15VUnderVoltageLockOut;
@@ -60,7 +60,7 @@ struct MotorFaultsData
     bool motor1OverSpeed;
     bool motor1SoftwareOverCurrent;
     bool motor1DcBusOverVoltage;
-    bool motor1BadMootorPositionHallSequence;
+    bool motor1BadMotorPositionHallSequence;
     bool motor1WatchdogCausedLastReset;
     bool motor1ConfigReadError;
     bool motor1Rail15VUnderVoltageLockOut;

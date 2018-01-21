@@ -44,7 +44,7 @@ namespace
     const unsigned int COBS_ADDITIONAL_FRAME_DATA_SIZE = 2;
 
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_KEY_MOTOR = 47;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS = 73;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_DETAILS = 69;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS = 13;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 13;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 10;
@@ -255,17 +255,16 @@ TEST_F(SerialReportingTest, sendMotorDetailsTest) // TODO create function which 
     Util::writeFloatIntoArray(data, 13, motor0DetailsData_->MotorVoltageImaginary);
     Util::writeFloatIntoArray(data, 17, motor0DetailsData_->MotorCurrentReal);
     Util::writeFloatIntoArray(data, 21, motor0DetailsData_->MotorCurrentImaginary);
-    Util::writeFloatIntoArray(data, 25, motor0DetailsData_->BackEmfReal);
-    Util::writeFloatIntoArray(data, 29, motor0DetailsData_->BackEmfImaginary);
-    Util::writeFloatIntoArray(data, 33, motor0DetailsData_->RailSupply15V);
-    Util::writeFloatIntoArray(data, 37, motor0DetailsData_->RailSupply3V);
-    Util::writeFloatIntoArray(data, 41, motor0DetailsData_->RailSupply1V);
-    Util::writeFloatIntoArray(data, 45, motor0DetailsData_->heatSinkTemperature);
-    Util::writeFloatIntoArray(data, 49, motor0DetailsData_->motorTemperature);
-    Util::writeFloatIntoArray(data, 53, motor0DetailsData_->dspBoardTempearture);
-    Util::writeFloatIntoArray(data, 57, motor0DetailsData_->dcBusAmpHours);
-    Util::writeFloatIntoArray(data, 61, motor0DetailsData_->odometer);
-    Util::writeFloatIntoArray(data, 65, motor0DetailsData_->slipSpeed);
+    Util::writeFloatIntoArray(data, 25, motor0DetailsData_->BackEmf);
+    Util::writeFloatIntoArray(data, 29, motor0DetailsData_->RailSupply15V);
+    Util::writeFloatIntoArray(data, 33, motor0DetailsData_->RailSupply3V);
+    Util::writeFloatIntoArray(data, 37, motor0DetailsData_->RailSupply1V);
+    Util::writeFloatIntoArray(data, 41, motor0DetailsData_->heatSinkTemperature);
+    Util::writeFloatIntoArray(data, 45, motor0DetailsData_->motorTemperature);
+    Util::writeFloatIntoArray(data, 49, motor0DetailsData_->dspBoardTemperature);
+    Util::writeFloatIntoArray(data, 53, motor0DetailsData_->dcBusAmpHours);
+    Util::writeFloatIntoArray(data, 57, motor0DetailsData_->odometer);
+    Util::writeFloatIntoArray(data, 61, motor0DetailsData_->slipSpeed);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x02)); // packet id
@@ -286,17 +285,16 @@ TEST_F(SerialReportingTest, sendMotorDetailsTest) // TODO create function which 
     Util::writeFloatIntoArray(data, 13, motor1DetailsData_->MotorVoltageImaginary);
     Util::writeFloatIntoArray(data, 17, motor1DetailsData_->MotorCurrentReal);
     Util::writeFloatIntoArray(data, 21, motor1DetailsData_->MotorCurrentImaginary);
-    Util::writeFloatIntoArray(data, 25, motor1DetailsData_->BackEmfReal);
-    Util::writeFloatIntoArray(data, 29, motor1DetailsData_->BackEmfImaginary);
-    Util::writeFloatIntoArray(data, 33, motor1DetailsData_->RailSupply15V);
-    Util::writeFloatIntoArray(data, 37, motor1DetailsData_->RailSupply3V);
-    Util::writeFloatIntoArray(data, 41, motor1DetailsData_->RailSupply1V);
-    Util::writeFloatIntoArray(data, 45, motor1DetailsData_->heatSinkTemperature);
-    Util::writeFloatIntoArray(data, 49, motor1DetailsData_->motorTemperature);
-    Util::writeFloatIntoArray(data, 53, motor1DetailsData_->dspBoardTempearture);
-    Util::writeFloatIntoArray(data, 57, motor1DetailsData_->dcBusAmpHours);
-    Util::writeFloatIntoArray(data, 61, motor1DetailsData_->odometer);
-    Util::writeFloatIntoArray(data, 65, motor1DetailsData_->slipSpeed);
+    Util::writeFloatIntoArray(data, 25, motor1DetailsData_->BackEmf);
+    Util::writeFloatIntoArray(data, 29, motor1DetailsData_->RailSupply15V);
+    Util::writeFloatIntoArray(data, 33, motor1DetailsData_->RailSupply3V);
+    Util::writeFloatIntoArray(data, 37, motor1DetailsData_->RailSupply1V);
+    Util::writeFloatIntoArray(data, 41, motor1DetailsData_->heatSinkTemperature);
+    Util::writeFloatIntoArray(data, 45, motor1DetailsData_->motorTemperature);
+    Util::writeFloatIntoArray(data, 49, motor1DetailsData_->dspBoardTemperature);
+    Util::writeFloatIntoArray(data, 53, motor1DetailsData_->dcBusAmpHours);
+    Util::writeFloatIntoArray(data, 57, motor1DetailsData_->odometer);
+    Util::writeFloatIntoArray(data, 61, motor1DetailsData_->slipSpeed);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x03)); // packet id
@@ -328,19 +326,18 @@ TEST_F(SerialReportingTest, sendDriverControlsTest) // TODO create function whic
     bool lightsInputs[] = { driverControlsData_->headlightsOff,
                             driverControlsData_->headlightsLow,
                             driverControlsData_->headlightsHigh,
-                            driverControlsData_->signalLeft,
                             driverControlsData_->signalRight,
+                            driverControlsData_->signalLeft,
                             driverControlsData_->hazardLights,
                             driverControlsData_->interiorLights
                           };
     Util::writeBoolsIntoArray(data, 2, lightsInputs, 7);
-    bool musicInputs[] = { driverControlsData_->musicAux,
-                           driverControlsData_->volumeUp,
+    bool musicInputs[] = { driverControlsData_->volumeUp,
                            driverControlsData_->volumeDown,
                            driverControlsData_->nextSong,
                            driverControlsData_->prevSong
                          };
-    Util::writeBoolsIntoArray(data, 3, musicInputs, 5);
+    Util::writeBoolsIntoArray(data, 3, musicInputs, 4);
     Util::writeUShortIntoArray(data, 4, driverControlsData_->acceleration);
     Util::writeUShortIntoArray(data, 6, driverControlsData_->regenBraking);
     bool driverInputs[] = { driverControlsData_->brakes,
@@ -348,9 +345,10 @@ TEST_F(SerialReportingTest, sendDriverControlsTest) // TODO create function whic
                             driverControlsData_->reverse,
                             driverControlsData_->pushToTalk,
                             driverControlsData_->horn,
-                            driverControlsData_->reset
+                            driverControlsData_->reset,
+                            driverControlsData_->aux
                           };
-    Util::writeBoolsIntoArray(data, 8, driverInputs, 6);
+    Util::writeBoolsIntoArray(data, 8, driverInputs, 7);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x04)); // packet id
@@ -381,7 +379,7 @@ TEST_F(SerialReportingTest, sendMotorFaultsTest) // TODO create function which b
     bool motor0ErrorFlags[] = { motorFaultsData_->motor0OverSpeed,
                                 motorFaultsData_->motor0SoftwareOverCurrent,
                                 motorFaultsData_->motor0DcBusOverVoltage,
-                                motorFaultsData_->motor0BadMootorPositionHallSequence,
+                                motorFaultsData_->motor0BadMotorPositionHallSequence,
                                 motorFaultsData_->motor0WatchdogCausedLastReset,
                                 motorFaultsData_->motor0ConfigReadError,
                                 motorFaultsData_->motor0Rail15VUnderVoltageLockOut,
@@ -391,7 +389,7 @@ TEST_F(SerialReportingTest, sendMotorFaultsTest) // TODO create function which b
     bool motor1ErrorFlags[] = { motorFaultsData_->motor1OverSpeed,
                                 motorFaultsData_->motor1SoftwareOverCurrent,
                                 motorFaultsData_->motor1DcBusOverVoltage,
-                                motorFaultsData_->motor1BadMootorPositionHallSequence,
+                                motorFaultsData_->motor1BadMotorPositionHallSequence,
                                 motorFaultsData_->motor1WatchdogCausedLastReset,
                                 motorFaultsData_->motor1ConfigReadError,
                                 motorFaultsData_->motor1Rail15VUnderVoltageLockOut,
