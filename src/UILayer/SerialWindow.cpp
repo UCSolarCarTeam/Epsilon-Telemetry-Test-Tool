@@ -35,6 +35,16 @@ void SerialWindow::setupUi()
     sendMpptButton_ = new QPushButton("Send MPPTs", this);
     sendLightsButton_ = new QPushButton("Send Lights", this);
     sendAllButton_ = new QPushButton("Send All", this);
+    sendKeyMotorButton_->setEnabled(false);
+    sendMotor0DetailsButton_->setEnabled(false);
+    sendMotor1DetailsButton_->setEnabled(false);
+    sendDriverControlsButton_->setEnabled(false);
+    sendMotorFaultsButton_->setEnabled(false);
+    sendBatteryFaultsButton_->setEnabled(false);
+    sendBatteryButton_->setEnabled(false);
+    sendMpptButton_->setEnabled(false);
+    sendLightsButton_->setEnabled(false);
+    sendAllButton_->setEnabled(false);
     layout->addRow(connectButton_);
     layout->addRow(comPortLineEdit_);
     layout->addRow(connectionStatusLabel_);

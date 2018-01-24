@@ -34,6 +34,7 @@ void InternetWindow::setupUi()
     routingKeyLineEdit_ = new QLineEdit("", this);
     connectionStatusLabel_ = new QLabel("Not connected", this);
     sendAllButton_ = new QPushButton("Send All", this);
+    sendAllButton_->setEnabled(false);
     layout->addRow(connectButton_);
     layout->addRow(ipAddressLabel);
     layout->addRow(ipAddressLineEdit_);

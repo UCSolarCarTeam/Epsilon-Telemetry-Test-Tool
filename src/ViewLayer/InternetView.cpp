@@ -34,6 +34,7 @@ void InternetView::setConnectionStatus(bool connectionStatus)
             window_->getPortSpinBox().setEnabled(false);
             window_->getExchangeNameLineEdit().setEnabled(false);
             window_->getRoutingKeyLineEdit().setEnabled(false);
+            window_->getSendAllButton().setEnabled(true);
         }
         else
         {
@@ -43,6 +44,8 @@ void InternetView::setConnectionStatus(bool connectionStatus)
             window_->getPortSpinBox().setEnabled(true);
             window_->getExchangeNameLineEdit().setEnabled(true);
             window_->getRoutingKeyLineEdit().setEnabled(true);
+            window_->getSendAllButton().setEnabled(false);
+
         }
     }
     else
