@@ -50,13 +50,14 @@ void SerialView::setConnectionStatus(bool connectionStatus)
         {
             window_->getConnectionStatusLabel().setText("Connected");
             window_->getConnectButton().setText("Disconnect");
-            window_->getConnectionStatusLabel().setEnabled(false);
+            window_->getComPortLineEdit().setEnabled(false);
         }
         else
         {
             window_->getConnectionStatusLabel().setText("Disconnected");
             window_->getConnectButton().setText("Connect");
-            window_->getConnectionStatusLabel().setEnabled(true);
+            window_->getComPortLineEdit().setEnabled(true);
+
         }
     }
     else
