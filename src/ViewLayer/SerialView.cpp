@@ -46,7 +46,18 @@ void SerialView::setConnectionStatus(bool connectionStatus)
 {
     if (connectionStatus)
     {
-        window_->getConnectionStatusLabel().setText("Connected");
+        if (window_->getConnectButton().text() == "Connect")
+        {
+            window_->getConnectionStatusLabel().setText("Connected");
+            window_->getConnectButton().setText("Disconnect");
+            window_->getConnectionStatusLabel().setEnabled(false);
+        }
+        else
+        {
+            window_->getConnectionStatusLabel().setText("Disconnected");
+            window_->getConnectButton().setText("Connect");
+            window_->getConnectionStatusLabel().setEnabled(true);
+        }
     }
     else
     {

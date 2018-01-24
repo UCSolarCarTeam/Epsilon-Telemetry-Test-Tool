@@ -26,7 +26,24 @@ void InternetView::setConnectionStatus(bool connectionStatus)
 {
     if (connectionStatus)
     {
-        window_->getConnectionStatusLabel().setText("Connected");
+        if (window_->getConnectButton().text() == "Connect")
+        {
+            window_->getConnectionStatusLabel().setText("Connected");
+            window_->getConnectButton().setText("Disconnect");
+            window_->getIpAddressLineEdit().setEnabled(false);
+            window_->getPortSpinBox().setEnabled(false);
+            window_->getExchangeNameLineEdit().setEnabled(false);
+            window_->getRoutingKeyLineEdit().setEnabled(false);
+        }
+        else
+        {
+            window_->getConnectionStatusLabel().setText("Disconnected");
+            window_->getConnectButton().setText("Connect");
+            window_->getIpAddressLineEdit().setEnabled(true);
+            window_->getPortSpinBox().setEnabled(true);
+            window_->getExchangeNameLineEdit().setEnabled(true);
+            window_->getRoutingKeyLineEdit().setEnabled(true);
+        }
     }
     else
     {
