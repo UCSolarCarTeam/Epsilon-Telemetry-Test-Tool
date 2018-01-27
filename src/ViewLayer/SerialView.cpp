@@ -50,6 +50,7 @@ void SerialView::setConnectionStatus(bool connectionStatus)
         {
             window_->getConnectionStatusLabel().setText("Connected");
             window_->getConnectButton().setText("Disconnect");
+            window_->getComPortLineEdit().setEnabled(false);
             window_->getSendKeyMotorButton().setEnabled(true);
             window_->getSendMotor0DetailsButton().setEnabled(true);
             window_->getSendMotor1DetailsButton().setEnabled(true);
@@ -65,7 +66,7 @@ void SerialView::setConnectionStatus(bool connectionStatus)
         {
             window_->getConnectionStatusLabel().setText("Disconnected");
             window_->getConnectButton().setText("Connect");
-            window_->getComPortLineEdit().setEnabled(false);
+            window_->getComPortLineEdit().setEnabled(true);
             window_->getSendKeyMotorButton().setEnabled(false);
             window_->getSendMotor0DetailsButton().setEnabled(false);
             window_->getSendMotor1DetailsButton().setEnabled(false);
