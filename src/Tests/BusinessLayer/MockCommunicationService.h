@@ -12,5 +12,6 @@ public:
     MOCK_METHOD1(sendInternetData, void(const QByteArray& data));
 
     MOCK_METHOD0(attemptSerialConnection, void());
+    MOCK_METHOD0(attemptSerialDisconnection, void());
     MOCK_METHOD0(attemptInternetConnection, void());
 };

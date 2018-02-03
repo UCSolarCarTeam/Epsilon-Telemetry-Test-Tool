@@ -21,6 +21,7 @@ public:
 
 public slots:
     void attemptSerialConnection();
+    void attemptSerialDisconnection();
     void attemptInternetConnection();
 
 private:

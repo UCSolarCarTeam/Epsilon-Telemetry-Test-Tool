@@ -17,6 +17,8 @@ SerialView::SerialView(SerialWindow* window)
     //Connect slots to UI
     window_->connect(&(window_->getConnectButton()), SIGNAL(clicked()),
                      this, SIGNAL(attemptConnectionSignal()));
+    window_->connect(&(window_->getDisconnectButton()), SIGNAL(clicked()),
+                     this, SIGNAL(attemptDisconnectionSignal()));
     window_->connect(&(window_->getSendKeyMotorButton()), SIGNAL(clicked()),
                      this, SIGNAL(sendKeyMotor()));
 
@@ -46,42 +48,49 @@ void SerialView::setConnectionStatus(bool connectionStatus)
 {
     if (connectionStatus)
     {
-        if (window_->getConnectButton().text() == "Connect")
-        {
-            window_->getConnectionStatusLabel().setText("Connected");
-            window_->getConnectButton().setText("Disconnect");
-            window_->getComPortLineEdit().setEnabled(false);
-            window_->getSendKeyMotorButton().setEnabled(true);
-            window_->getSendMotor0DetailsButton().setEnabled(true);
-            window_->getSendMotor1DetailsButton().setEnabled(true);
-            window_->getSendDriverControlsButton().setEnabled(true);
-            window_->getSendMotorFaultsButton().setEnabled(true);
-            window_->getSendBatteryFaultsButton().setEnabled(true);
-            window_->getSendBatteryButton().setEnabled(true);
-            window_->getSendMpptButton().setEnabled(true);
-            window_->getSendLightsButton().setEnabled(true);
-            window_->getSendAllButton().setEnabled(true);
-        }
-        else
-        {
-            window_->getConnectionStatusLabel().setText("Disconnected");
-            window_->getConnectButton().setText("Connect");
-            window_->getComPortLineEdit().setEnabled(true);
-            window_->getSendKeyMotorButton().setEnabled(false);
-            window_->getSendMotor0DetailsButton().setEnabled(false);
-            window_->getSendMotor1DetailsButton().setEnabled(false);
-            window_->getSendDriverControlsButton().setEnabled(false);
-            window_->getSendMotorFaultsButton().setEnabled(false);
-            window_->getSendBatteryFaultsButton().setEnabled(false);
-            window_->getSendBatteryButton().setEnabled(false);
-            window_->getSendMpptButton().setEnabled(false);
-            window_->getSendLightsButton().setEnabled(false);
-            window_->getSendAllButton().setEnabled(false);
-        }
+        window_->getConnectionStatusLabel().setText("Connected");
+        window_->getConnectButton().setEnabled(false);
+        window_->getDisconnectButton().setEnabled(true);
+        window_->getComPortLineEdit().setEnabled(false);
+        window_->getSendKeyMotorButton().setEnabled(true);
+        window_->getSendMotor0DetailsButton().setEnabled(true);
+        window_->getSendMotor1DetailsButton().setEnabled(true);
+        window_->getSendDriverControlsButton().setEnabled(true);
+        window_->getSendMotorFaultsButton().setEnabled(true);
+        window_->getSendBatteryFaultsButton().setEnabled(true);
+        window_->getSendBatteryButton().setEnabled(true);
+        window_->getSendMpptButton().setEnabled(true);
+        window_->getSendLightsButton().setEnabled(true);
+        window_->getSendAllButton().setEnabled(true);
     }
     else
     {
         window_->getConnectionStatusLabel().setText("Connection Failed.");
+    }
+}
+
+void SerialView::setDisconnectionStatus(bool connectionStatus)
+{
+    if (!connectionStatus)
+    {
+        window_->getConnectionStatusLabel().setText("Disconnected");
+        window_->getConnectButton().setEnabled(true);
+        window_->getDisconnectButton().setEnabled(false);
+        window_->getComPortLineEdit().setEnabled(true);
+        window_->getSendKeyMotorButton().setEnabled(false);
+        window_->getSendMotor0DetailsButton().setEnabled(false);
+        window_->getSendMotor1DetailsButton().setEnabled(false);
+        window_->getSendDriverControlsButton().setEnabled(false);
+        window_->getSendMotorFaultsButton().setEnabled(false);
+        window_->getSendBatteryFaultsButton().setEnabled(false);
+        window_->getSendBatteryButton().setEnabled(false);
+        window_->getSendMpptButton().setEnabled(false);
+        window_->getSendLightsButton().setEnabled(false);
+        window_->getSendAllButton().setEnabled(false);
+    }
+    else
+    {
+        window_->getConnectionStatusLabel().setText("Disconnection Failed.");
     }
 }
 

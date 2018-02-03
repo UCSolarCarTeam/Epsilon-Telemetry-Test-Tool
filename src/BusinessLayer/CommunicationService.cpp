@@ -11,6 +11,7 @@ CommunicationService::CommunicationService(SerialView& serialView, InternetView&
     , internetView_(internetView)
 {
     connect(&serialView_, SIGNAL(attemptConnectionSignal()), this, SLOT(attemptSerialConnection()));
+    connect(&serialView_, SIGNAL(attemptDisconnectionSignal()), this, SLOT(attemptSerialDisconnection()));
     connect(&internetView_, SIGNAL(attemptConnectionSignal()), this, SLOT(attemptInternetConnection()));
 }
 
@@ -30,6 +31,11 @@ void CommunicationService::sendInternetData(const QByteArray& data)
 void CommunicationService::attemptSerialConnection()
 {
     serialView_.setConnectionStatus(serialPeripheral_.attemptConnection(serialView_.getCommunicationPort()));
+}
+
+void CommunicationService::attemptSerialDisconnection()
+{
+    serialView_.setDisconnectionStatus(serialPeripheral_.attemptDisconnection(serialView_.getCommunicationPort()));
 }
 
 void CommunicationService::attemptInternetConnection()

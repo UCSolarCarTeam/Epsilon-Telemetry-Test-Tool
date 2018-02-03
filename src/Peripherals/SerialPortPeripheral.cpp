@@ -33,3 +33,16 @@ bool SerialPortPeripheral::attemptConnection(QString portname)
     }
 }
 
+bool SerialPortPeripheral::attemptDisconnection(QString portname)
+{
+    serialPort_.setPortName(portname);
+    if (serialPort_.isOpen())
+    {
+        serialPort_.close();
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}

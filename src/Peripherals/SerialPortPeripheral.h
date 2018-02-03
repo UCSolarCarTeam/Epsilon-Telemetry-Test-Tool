@@ -8,6 +8,7 @@ public:
     SerialPortPeripheral();
     virtual ~SerialPortPeripheral() {}
     bool attemptConnection(QString portname);
+    bool attemptDisconnection(QString portname);
     void sendSerialData(const unsigned char* data, int length);
 
 private:
