@@ -15,10 +15,8 @@
 #include "SerialReporting.h"
 #include "InternetView.h"
 #include "SerialView.h"
-#include "PacketView.h"
 #include "InternetWindow.h"
 #include "SerialWindow.h"
-#include "PacketWindow.h"
 #include "Window.h"
 
 class TestApplication : public QApplication
@@ -40,10 +38,8 @@ private:
     QScopedPointer<LightsData> lightsData_;
     QScopedPointer<InternetWindow> internetWindow_;
     QScopedPointer<SerialWindow> serialWindow_;
-    QScopedPointer<PacketWindow> packetWindow_;
     QScopedPointer<InternetView> internetView_;
     QScopedPointer<SerialView> serialView_;
-    QScopedPointer<PacketView> packetView_;
     QScopedPointer<Window> window_;
     QScopedPointer<CommunicationService> communicationService_;
     QScopedPointer<SerialReporting> serialReporting_;
