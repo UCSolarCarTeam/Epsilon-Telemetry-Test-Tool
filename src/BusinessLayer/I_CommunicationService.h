@@ -17,6 +17,7 @@ public slots:
     virtual void attemptSerialConnection() = 0;
     virtual void attemptSerialDisconnection() = 0;
     virtual void attemptInternetConnection() = 0;
+    virtual void attemptInternetDisconnection() = 0;
 };
 
 

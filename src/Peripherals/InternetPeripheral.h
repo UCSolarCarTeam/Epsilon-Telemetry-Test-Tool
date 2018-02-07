@@ -14,8 +14,9 @@ public:
     bool attemptConnection(
         QString ipAddress,
         unsigned short port);
+    bool attemptDisconnection();
     void sendInternetData(
-        const QString exchangeName,
+        const QString exFhangeName,
         const QString routingKey,
         const QByteArray& data);
 

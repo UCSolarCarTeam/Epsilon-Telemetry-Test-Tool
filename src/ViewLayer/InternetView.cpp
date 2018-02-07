@@ -18,18 +18,21 @@ InternetView::InternetView(InternetWindow* window)
     //Connect slots to UI
     window_->connect(&(window_->getConnectButton()), SIGNAL(clicked()),
                      this, SIGNAL(attemptConnectionSignal()));
+    window_->connect(&(window_->getDisconnectButton()), SIGNAL(clicked()),
+                     this, SIGNAL(attemptDisconnectionSignal()));
     window_->connect(&(window_->getSendAllButton()), SIGNAL(clicked()),
                      this, SIGNAL(sendAll()));
 }
 
-void InternetView::setConnectionStatus(bool connectionStatus)
+void InternetView::setConnectionStatus(bool connectionStatus, int n)
 {
     if (connectionStatus)
     {
-        if (window_->getConnectButton().text() == "Connect")
+        if (n == 1)
         {
             window_->getConnectionStatusLabel().setText("Connected");
-            window_->getConnectButton().setText("Disconnect");
+            window_->getConnectButton().setEnabled(false);
+            window_->getDisconnectButton().setEnabled(true);
             window_->getIpAddressLineEdit().setEnabled(false);
             window_->getPortSpinBox().setEnabled(false);
             window_->getExchangeNameLineEdit().setEnabled(false);
@@ -39,18 +42,26 @@ void InternetView::setConnectionStatus(bool connectionStatus)
         else
         {
             window_->getConnectionStatusLabel().setText("Disconnected");
-            window_->getConnectButton().setText("Connect");
+            window_->getConnectButton().setEnabled(true);
+            window_->getDisconnectButton().setEnabled(false);
             window_->getIpAddressLineEdit().setEnabled(true);
             window_->getPortSpinBox().setEnabled(true);
             window_->getExchangeNameLineEdit().setEnabled(true);
             window_->getRoutingKeyLineEdit().setEnabled(true);
             window_->getSendAllButton().setEnabled(false);
-
         }
     }
     else
     {
-        window_->getConnectionStatusLabel().setText("Connection Failed.");
+        if (n == 1)
+        {
+            window_->getConnectionStatusLabel().setText("Connection Failed.");
+
+        }
+        else
+        {
+            window_->getConnectionStatusLabel().setText("Disconnection Failed.");
+        }
     }
 }
 

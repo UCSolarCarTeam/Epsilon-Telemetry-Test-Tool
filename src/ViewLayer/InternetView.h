@@ -10,7 +10,7 @@ class InternetView : public QObject
     Q_OBJECT
 public:
     InternetView(InternetWindow* window);
-    void setConnectionStatus(bool connectionStatus);
+    void setConnectionStatus(bool connectionStatus, int n);
     QString getIpAddress();
     unsigned short getPort();
     QString getExchangeName();
@@ -18,6 +18,7 @@ public:
 
 signals:
     void attemptConnectionSignal();
+    void attemptDisconnectionSignal();
     void sendAll();
 
 private:

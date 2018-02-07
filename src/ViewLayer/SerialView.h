@@ -11,8 +11,7 @@ class SerialView : public QObject
     Q_OBJECT
 public:
     SerialView(SerialWindow* window);
-    void setConnectionStatus(bool connectionStatus);
-    void setDisconnectionStatus(bool connectionStatus);
+    void setConnectionStatus(bool connectionStatus, int n);
     QString getCommunicationPort();
 
 signals:
