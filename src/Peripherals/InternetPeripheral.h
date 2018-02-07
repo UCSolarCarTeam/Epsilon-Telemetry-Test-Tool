@@ -16,7 +16,7 @@ public:
         unsigned short port);
     bool attemptDisconnection();
     void sendInternetData(
-        const QString exFhangeName,
+        const QString exchangeName,
         const QString routingKey,
         const QByteArray& data);
 
