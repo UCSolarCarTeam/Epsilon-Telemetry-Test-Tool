@@ -31,20 +31,20 @@ void CommunicationService::sendInternetData(const QByteArray& data)
 
 void CommunicationService::attemptSerialConnection()
 {
-    serialView_.setConnectionStatus(serialPeripheral_.attemptConnection(serialView_.getCommunicationPort()), 1);
+    serialView_.setConnectionStatus(serialPeripheral_.attemptConnection(serialView_.getCommunicationPort()), true);
 }
 
 void CommunicationService::attemptSerialDisconnection()
 {
-    serialView_.setConnectionStatus(serialPeripheral_.attemptDisconnection(), 0);
+    serialView_.setConnectionStatus(serialPeripheral_.attemptDisconnection(), false);
 }
 
 void CommunicationService::attemptInternetConnection()
 {
     internetView_.setConnectionStatus(internetPeripheral_.attemptConnection(
-                                          internetView_.getIpAddress(), internetView_.getPort()), 1);
+                                          internetView_.getIpAddress(), internetView_.getPort()), true);
 }
 void CommunicationService::attemptInternetDisconnection()
 {
-    internetView_.setConnectionStatus(internetPeripheral_.attemptDisconnection(), 0);
+    internetView_.setConnectionStatus(internetPeripheral_.attemptDisconnection(), false);
 }

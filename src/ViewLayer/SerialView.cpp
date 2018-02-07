@@ -44,11 +44,11 @@ SerialView::SerialView(SerialWindow* window)
                      this, SIGNAL(sendAll()));
 }
 
-void SerialView::setConnectionStatus(bool connectionStatus, int n)
+void SerialView::setConnectionStatus(bool connectionStatus, bool attemptToConnect)
 {
     if (connectionStatus)
     {
-        if (n == 1)
+        if (attemptToConnect)
         {
             window_->getConnectionStatusLabel().setText("Connected");
             window_->getConnectButton().setEnabled(false);
@@ -85,7 +85,7 @@ void SerialView::setConnectionStatus(bool connectionStatus, int n)
     }
     else
     {
-        if (n == 1)
+        if (attemptToConnect)
         {
             window_->getConnectionStatusLabel().setText("Connection Failed.");
         }

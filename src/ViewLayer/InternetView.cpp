@@ -24,11 +24,11 @@ InternetView::InternetView(InternetWindow* window)
                      this, SIGNAL(sendAll()));
 }
 
-void InternetView::setConnectionStatus(bool connectionStatus, int n)
+void InternetView::setConnectionStatus(bool connectionStatus, bool attemptToConnect)
 {
     if (connectionStatus)
     {
-        if (n == 1)
+        if (attemptToConnect)
         {
             window_->getConnectionStatusLabel().setText("Connected");
             window_->getConnectButton().setEnabled(false);
@@ -53,7 +53,7 @@ void InternetView::setConnectionStatus(bool connectionStatus, int n)
     }
     else
     {
-        if (n == 1)
+        if (attemptToConnect)
         {
             window_->getConnectionStatusLabel().setText("Connection Failed.");
 
