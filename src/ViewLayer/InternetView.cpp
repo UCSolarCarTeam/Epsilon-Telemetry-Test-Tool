@@ -56,7 +56,6 @@ void InternetView::setConnectionStatus(bool connectionStatus, bool attemptToConn
         if (attemptToConnect)
         {
             window_->getConnectionStatusLabel().setText("Connection Failed.");
-
         }
         else
         {
