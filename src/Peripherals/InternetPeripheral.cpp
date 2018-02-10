@@ -29,8 +29,20 @@ bool InternetPeripheral::attemptConnection(QString ipAddress, unsigned short por
         qDebug() << exception.what(); // TODO propagate error message up to UI
         return false;
     }
-
     return true;
+}
+
+bool InternetPeripheral::attemptDisconnection()
+{
+    if (channel_ != NULL)
+    {
+        channel_ = NULL;
+        return true;
+    }
+   else
+    {
+        return false;
+    }
 }
 
 void InternetPeripheral::sendInternetData(

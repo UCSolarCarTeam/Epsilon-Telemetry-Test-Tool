@@ -69,11 +69,11 @@ CrcCalculator::~CrcCalculator()
 {
 }
 
-unsigned short CrcCalculator::calculateCrc16(unsigned char* input, int lenght)
+unsigned short CrcCalculator::calculateCrc16(unsigned char* input, int length)
 {
     unsigned short crc16 = START;
 
-    while (lenght-- != 0)
+    while (length-- != 0)
     {
         unsigned short tableValue = crc16table[(crc16 ^ *input++) & 0xff];
         crc16 = tableValue ^ (crc16 >> 8);

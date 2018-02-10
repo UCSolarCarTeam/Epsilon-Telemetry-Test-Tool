@@ -23,6 +23,7 @@ void SerialWindow::setupUi()
 {
     QFormLayout* layout = new QFormLayout;
     connectButton_ = new QPushButton("Connect", this);
+    disconnectButton_ = new QPushButton("Disconnect", this);
     comPortLineEdit_ = new QLineEdit("/dev/ttyUSB0", this);
     connectionStatusLabel_ = new QLabel("Not connected", this);
     sendKeyMotorButton_ = new QPushButton("Send Key Motor", this);
@@ -35,7 +36,19 @@ void SerialWindow::setupUi()
     sendMpptButton_ = new QPushButton("Send MPPTs", this);
     sendLightsButton_ = new QPushButton("Send Lights", this);
     sendAllButton_ = new QPushButton("Send All", this);
+    disconnectButton_->setEnabled(false);
+    sendKeyMotorButton_->setEnabled(false);
+    sendMotor0DetailsButton_->setEnabled(false);
+    sendMotor1DetailsButton_->setEnabled(false);
+    sendDriverControlsButton_->setEnabled(false);
+    sendMotorFaultsButton_->setEnabled(false);
+    sendBatteryFaultsButton_->setEnabled(false);
+    sendBatteryButton_->setEnabled(false);
+    sendMpptButton_->setEnabled(false);
+    sendLightsButton_->setEnabled(false);
+    sendAllButton_->setEnabled(false);
     layout->addRow(connectButton_);
+    layout->addRow(disconnectButton_);
     layout->addRow(comPortLineEdit_);
     layout->addRow(connectionStatusLabel_);
     layout->addRow(sendKeyMotorButton_);
@@ -54,6 +67,11 @@ void SerialWindow::setupUi()
 QPushButton& SerialWindow::getConnectButton()
 {
     return *connectButton_;
+}
+
+QPushButton& SerialWindow::getDisconnectButton()
+{
+    return *disconnectButton_;
 }
 
 QLineEdit& SerialWindow::getComPortLineEdit()
