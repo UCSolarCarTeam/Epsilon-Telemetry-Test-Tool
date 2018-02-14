@@ -11,11 +11,12 @@ class SerialView : public QObject
     Q_OBJECT
 public:
     SerialView(SerialWindow* window);
-    void setConnectionStatus(bool connectionStatus);
+    void setConnectionStatus(bool connectionStatus, bool attemptToConnect);
     QString getCommunicationPort();
 
 signals:
     void attemptConnectionSignal();
+    void attemptDisconnectionSignal();
     void sendKeyMotor();
     void sendMotorDetails(int n);
     void sendDriverControls();

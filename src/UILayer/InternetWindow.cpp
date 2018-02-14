@@ -22,6 +22,7 @@ void InternetWindow::setupUi()
 {
     QFormLayout* layout = new QFormLayout;
     connectButton_ = new QPushButton("Connect", this);
+    disconnectButton_ = new QPushButton("Disconnect", this);
     QLabel* ipAddressLabel = new QLabel("Ip Address", this);
     ipAddressLineEdit_ = new QLineEdit("localhost", this);
     QLabel* portSpinLabel = new QLabel("Port Spin", this);
@@ -34,7 +35,10 @@ void InternetWindow::setupUi()
     routingKeyLineEdit_ = new QLineEdit("", this);
     connectionStatusLabel_ = new QLabel("Not connected", this);
     sendAllButton_ = new QPushButton("Send All", this);
+    disconnectButton_->setEnabled(false);
+    sendAllButton_->setEnabled(false);
     layout->addRow(connectButton_);
+    layout->addRow(disconnectButton_);
     layout->addRow(ipAddressLabel);
     layout->addRow(ipAddressLineEdit_);
     layout->addRow(portSpinLabel);
@@ -51,6 +55,11 @@ void InternetWindow::setupUi()
 QPushButton& InternetWindow::getConnectButton()
 {
     return *connectButton_;
+}
+
+QPushButton& InternetWindow::getDisconnectButton()
+{
+    return *disconnectButton_;
 }
 
 QSpinBox& InternetWindow::getPortSpinBox()

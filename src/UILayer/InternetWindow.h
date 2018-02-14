@@ -16,6 +16,7 @@ public:
 
 public:
     QPushButton& getConnectButton();
+    QPushButton& getDisconnectButton();
     QLineEdit& getIpAddressLineEdit();
     QSpinBox& getPortSpinBox();
     QLineEdit& getExchangeNameLineEdit();
@@ -29,6 +30,7 @@ private:
 
 private:
     QPushButton* connectButton_;
+    QPushButton* disconnectButton_;
     QLineEdit* ipAddressLineEdit_;
     QSpinBox* portSpinBox_;
     QLineEdit* exchangeNameLineEdit_;

@@ -11,8 +11,8 @@ DESTDIR = ../../build/.lib
 
 HEADERS += \
     $$PWD/InternetView.h \
-    $$PWD/SerialView.h
+    $$PWD/SerialView.h \
 
 SOURCES += \
     $$PWD/InternetView.cpp \
-    $$PWD/SerialView.cpp
+    $$PWD/SerialView.cpp \
