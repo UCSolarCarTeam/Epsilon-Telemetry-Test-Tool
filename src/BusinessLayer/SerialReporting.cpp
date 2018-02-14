@@ -23,7 +23,7 @@ namespace
     const int DRIVER_CONTROLS_LENGTH = 9;
     const int MOTOR_FAULTS_LENGTH = 9;
     const int BATTERY_FAULTS_LENGTH = 6;
-    const int BATTERY_LENGTH = 51;
+    const int BATTERY_LENGTH = 54;
     const int MPPT_LENGTH = 10;
     const int LIGHTS_LENGTH = 3;
 }
@@ -312,6 +312,12 @@ void SerialReporting::sendBattery()
     packetPayload[49] = batteryData_.auxVoltage;
     bool auxBmsAliveArray[] = {batteryData_.auxBmsAlive};
     writeBoolsIntoArray(packetPayload, 50, auxBmsAliveArray, 1);
+    bool strobeBmsLightArray[] = {batteryData_.strobeBmsLight};
+    writeBoolsIntoArray(packetPayload, 51, strobeBmsLightArray, 1);
+    bool allowChargeArray[] = {batteryData_.allowCharge};
+    writeBoolsIntoArray(packetPayload, 52, allowChargeArray, 1);
+    bool contactorErrorArray[] = {batteryData_.contactorError};
+    writeBoolsIntoArray(packetPayload, 53, contactorErrorArray, 1);
     addChecksum(packetPayload, BATTERY_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
