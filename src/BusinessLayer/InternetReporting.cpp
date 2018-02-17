@@ -274,6 +274,9 @@ QJsonObject InternetReporting::makeBattery()
     battery.insert("PrechargeState", batteryData_.prechargeStateJSON);
     battery.insert("AuxVoltage", batteryData_.auxVoltage);
     battery.insert("AuxBmsAlive", batteryData_.auxBmsAlive);
+    battery.insert("StrobeBmsLight", batteryData_.strobeBmsLight);
+    battery.insert("AllowCharge", batteryData_.allowCharge);
+    battery.insert("ContactorError", batteryData_.contactorError);
     return battery;
 }
 
