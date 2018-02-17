@@ -1,4 +1,4 @@
-#ifndef PACKETWINDOW_H
+#pragma once
 #define PACKETWINDOW_H
 
 #include <QAbstractItemModel>
@@ -26,4 +26,3 @@ public:
 private:
 };
 
-#endif // PACKETWINDOW_H
