@@ -11,13 +11,14 @@ HEADERS += \
     $$PWD/Window.h \
     $$PWD/InternetWindow.h \
     $$PWD/SerialWindow.h \
-    PacketWindow.h
+    $$PWD/PacketWindow.h \
+    $$PWD/I_PacketWindow.h \
 
 SOURCES += \
     $$PWD/Window.cpp \
     $$PWD/InternetWindow.cpp \
     $$PWD/SerialWindow.cpp \
-    PacketWindow.cpp
+    $$PWD/PacketWindow.cpp \
 
 FORMS += \
-    packetwindow.ui
+    $$PWD/PacketWindow.ui \

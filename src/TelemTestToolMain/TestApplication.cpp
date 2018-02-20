@@ -13,11 +13,13 @@ TestApplication::TestApplication(int& argc, char** argv)
     , lightsData_(new LightsData())
     , internetWindow_(new InternetWindow())
     , serialWindow_(new SerialWindow())
+    , packetWindow_(new PacketWindow())
     , internetView_(new InternetView(internetWindow_.data()))
     , serialView_(new SerialView(serialWindow_.data()))
+//    , packetView_(new PacketView(packetWindow_.data()))
     , window_(new Window(QList<QWidget*>
 {
-    serialWindow_.data(), internetWindow_.data()
+    serialWindow_.data(), internetWindow_.data(), packetWindow_.data()
 }))
 , communicationService_(new CommunicationService(*serialView_, *internetView_))
 , serialReporting_(new SerialReporting(*communicationService_,
