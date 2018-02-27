@@ -48,7 +48,7 @@ namespace
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS = 13;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 13;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 10;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 55;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 58;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 7;
 }
@@ -555,6 +555,12 @@ TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build
     data[49] = (unsigned char)batteryData_->auxVoltage;
     bool auxBmsAliveArray[] = {batteryData_->auxBmsAlive};
     Util::writeBoolsIntoArray(data, 50, auxBmsAliveArray, 1);
+    bool strobeBmsLightArray[] = {batteryData_->strobeBmsLight};
+    Util::writeBoolsIntoArray(data, 51, strobeBmsLightArray, 1);
+    bool allowChargeArray[] = {batteryData_->strobeBmsLight};
+    Util::writeBoolsIntoArray(data, 52, allowChargeArray, 1);
+    bool contactorErrorArray[] = {batteryData_->allowCharge};
+    Util::writeBoolsIntoArray(data, 53, contactorErrorArray, 1);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x07)); // packet id

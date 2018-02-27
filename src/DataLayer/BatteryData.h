@@ -37,6 +37,9 @@ struct BatteryData
         , prechargeStateJSON("Enable Pack")
         , auxVoltage(13)
         , auxBmsAlive(true)
+        , strobeBmsLight(true)
+        , allowCharge(true)
+        , contactorError(true)
     {}
 
     enum PrechargeState
@@ -82,4 +85,7 @@ struct BatteryData
     const char* prechargeStateJSON;
     unsigned char auxVoltage;
     bool auxBmsAlive;
+    bool strobeBmsLight;
+    bool allowCharge;
+    bool contactorError;
 };
