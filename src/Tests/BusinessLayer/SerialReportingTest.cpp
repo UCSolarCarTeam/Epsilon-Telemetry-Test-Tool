@@ -557,9 +557,9 @@ TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build
     Util::writeBoolsIntoArray(data, 50, auxBmsAliveArray, 1);
     bool strobeBmsLightArray[] = {batteryData_->strobeBmsLight};
     Util::writeBoolsIntoArray(data, 51, strobeBmsLightArray, 1);
-    bool allowChargeArray[] = {batteryData_->strobeBmsLight};
+    bool allowChargeArray[] = {batteryData_->allowCharge};
     Util::writeBoolsIntoArray(data, 52, allowChargeArray, 1);
-    bool contactorErrorArray[] = {batteryData_->allowCharge};
+    bool contactorErrorArray[] = {batteryData_->contactorError};
     Util::writeBoolsIntoArray(data, 53, contactorErrorArray, 1);
     appendChecksum(data, payloadLength);
     // do some additional data checks
