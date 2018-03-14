@@ -9,6 +9,9 @@ namespace
 SerialPortPeripheral::SerialPortPeripheral()
 {
     serialPort_.setBaudRate(BAUDRATE);
+    serialPort_.setParity(QSerialPort::NoParity);
+    serialPort_.setDataBits(QSerialPort::Data8);
+    serialPort_.setStopBits(QSerialPort::OneStop);
 }
 
 void SerialPortPeripheral::sendSerialData(const unsigned char* data, int length)
