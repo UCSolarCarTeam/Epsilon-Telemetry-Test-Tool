@@ -55,7 +55,7 @@ public:
     QCheckBox& auxBMSAliveCheck();
     QCheckBox& bmuAliveCheck();
     QCheckBox& strobeBmsLightCheck();
-    QCheckBox& contractorErrorCheck();
+    QCheckBox& contactorErrorCheck();
     QCheckBox& alwaysOnCheck();
     QCheckBox& chargeRelayCheck();
     QCheckBox& chargerSafetyCheck();

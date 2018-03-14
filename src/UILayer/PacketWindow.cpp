@@ -200,9 +200,9 @@ QCheckBox& PacketWindow::strobeBmsLightCheck()
     return *ui_->strobeBmsLightCheck;
 }
 
-QCheckBox& PacketWindow::contractorErrorCheck()
+QCheckBox& PacketWindow::contactorErrorCheck()
 {
-    return *ui_->contractorErrorCheck;
+    return *ui_->contactorErrorCheck;
 }
 
 QCheckBox& PacketWindow::alwaysOnCheck()

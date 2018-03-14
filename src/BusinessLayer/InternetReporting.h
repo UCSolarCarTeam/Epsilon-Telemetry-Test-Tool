@@ -29,7 +29,6 @@ public:
                       const LightsData& lightsData_,
                       InternetView& view);
 
-
 private slots:
     void sendAll();
 

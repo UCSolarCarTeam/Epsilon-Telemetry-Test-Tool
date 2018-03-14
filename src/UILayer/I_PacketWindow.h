@@ -50,7 +50,7 @@ public:
     virtual QCheckBox& auxBMSAliveCheck() = 0;
     virtual QCheckBox& bmuAliveCheck() = 0;
     virtual QCheckBox& strobeBmsLightCheck() = 0;
-    virtual QCheckBox& contractorErrorCheck() = 0;
+    virtual QCheckBox& contactorErrorCheck() = 0;
     virtual QCheckBox& alwaysOnCheck() = 0;
     virtual QCheckBox& chargeRelayCheck() = 0;
     virtual QCheckBox& chargerSafetyCheck() = 0;
