@@ -255,6 +255,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="maximum">
+     <number>255</number>
+    </property>
    </widget>
    <widget class="QSpinBox" name="canRxErrorCount">
     <property name="geometry">
@@ -264,6 +267,9 @@
       <width>71</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="maximum">
+     <number>255</number>
     </property>
    </widget>
    <widget class="QLabel" name="canRxErrorCountLabel">

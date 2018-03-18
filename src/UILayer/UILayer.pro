@@ -19,7 +19,6 @@ HEADERS += \
     $$PWD/Packet/BatteryFaultsTab.h \
     $$PWD/Packet/LightsTab.h \
     $$PWD/Packet/MpptTab.h \
-    $$PWD/Packet/I_BatteryFaultsTab.h
 
 SOURCES += \
     $$PWD/Window.cpp \

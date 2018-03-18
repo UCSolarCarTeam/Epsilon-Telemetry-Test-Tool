@@ -71,6 +71,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="maximum">
+    <number>255</number>
+   </property>
   </widget>
   <widget class="QLabel" name="label_10">
    <property name="geometry">
@@ -93,6 +96,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="maximum">
+    <number>255</number>
    </property>
   </widget>
   <widget class="QGroupBox" name="bmsRelayStatus">
@@ -221,6 +227,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="maximum">
+    <number>4</number>
+   </property>
   </widget>
   <widget class="QSpinBox" name="averageCellVoltage">
    <property name="geometry">
@@ -230,6 +239,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="maximum">
+    <number>65535</number>
    </property>
   </widget>
   <widget class="QLabel" name="label_11">
@@ -290,6 +302,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="maximum">
+    <number>65535</number>
+   </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
@@ -338,6 +353,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="maximum">
+    <number>255</number>
    </property>
   </widget>
   <widget class="QDoubleSpinBox" name="packAmphours">
@@ -411,6 +429,9 @@
      <height>26</height>
     </size>
    </property>
+   <property name="maximum">
+    <number>255</number>
+   </property>
   </widget>
   <widget class="QLabel" name="label_9">
    <property name="geometry">
@@ -434,6 +455,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="maximum">
+    <number>255</number>
+   </property>
   </widget>
   <widget class="QSpinBox" name="requestedFanSpeed">
    <property name="geometry">
@@ -444,6 +468,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="maximum">
+    <number>255</number>
+   </property>
   </widget>
   <widget class="QSpinBox" name="highCellVoltageId">
    <property name="geometry">
@@ -453,6 +480,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="maximum">
+    <number>255</number>
    </property>
   </widget>
   <widget class="QCheckBox" name="strobeBmsLight">
@@ -490,6 +520,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="maximum">
+    <number>255</number>
+   </property>
   </widget>
   <widget class="QLabel" name="label_15">
    <property name="geometry">
@@ -526,6 +559,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="maximum">
+    <number>255</number>
+   </property>
   </widget>
   <widget class="QSpinBox" name="lowCellVoltage">
    <property name="geometry">
@@ -535,6 +571,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="maximum">
+    <number>65535</number>
    </property>
   </widget>
   <widget class="QSpinBox" name="lowTemp">
@@ -546,6 +585,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="maximum">
+    <number>255</number>
+   </property>
   </widget>
   <widget class="QSpinBox" name="lowThermistorId">
    <property name="geometry">
@@ -555,6 +597,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="maximum">
+    <number>255</number>
    </property>
   </widget>
   <widget class="QCheckBox" name="contactorError">
@@ -728,6 +773,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="maximum">
+    <number>255</number>
    </property>
   </widget>
  </widget>

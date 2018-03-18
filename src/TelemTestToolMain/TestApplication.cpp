@@ -13,7 +13,20 @@ TestApplication::TestApplication(int& argc, char** argv)
     , lightsData_(new LightsData())
     , internetWindow_(new InternetWindow())
     , serialWindow_(new SerialWindow())
-    , packetWindow_(new PacketWindow())
+    , batteryTab_(new BatteryTab())
+    , batteryFaultsTab_(new BatteryFaultsTab())
+    , driverControlsTab_(new DriverControlsTab())
+    , lightsTab_(new LightsTab())
+    , motor0Tab_(new MotorTab())
+    , motor1Tab_(new MotorTab())
+    , mpptTab_(new MpptTab())
+    , packetWindow_(new PacketWindow(*batteryTab_,
+                                     *batteryFaultsTab_,
+                                     *driverControlsTab_,
+                                     *lightsTab_,
+                                     *motor0Tab_,
+                                     *motor1Tab_,
+                                     *mpptTab_))
     , internetView_(new InternetView(internetWindow_.data()))
     , serialView_(new SerialView(serialWindow_.data()))
 //    , packetView_(new PacketView(packetWindow_.data()))
