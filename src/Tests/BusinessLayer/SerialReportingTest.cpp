@@ -82,7 +82,7 @@ protected:
         driverControlsData_.reset(new DriverControlsData());
         motorFaultsData_.reset(new MotorFaultsData());
         batteryFaultsData_.reset(new BatteryFaultsData());
-        //batteryData_.reset(new BatteryData());
+        batteryData_.reset(new BatteryData());
         mpptData_.reset(new MpptData());
         lightsData_.reset(new LightsData());
         view.reset(new SerialView(new SerialWindow()));
@@ -557,15 +557,9 @@ TEST_F(SerialReportingTest, sendBatteryFaultsTest) // TODO create function which
     Util::writeBoolsIntoArray(data, 50, auxBmsAliveArray, 1);
     bool strobeBmsLightArray[] = {batteryData_->strobeBmsLight()};
     Util::writeBoolsIntoArray(data, 51, strobeBmsLightArray, 1);
-<<<<<<< HEAD
     bool allowChargeArray[] = {batteryData_->allowCharge()};
     Util::writeBoolsIntoArray(data, 52, allowChargeArray, 1);
     bool contactorErrorArray[] = {batteryData_->contactorError()};
-=======
-    bool allowChargeArray[] = {batteryData_->allowCharge};
-    Util::writeBoolsIntoArray(data, 52, allowChargeArray, 1);
-    bool contactorErrorArray[] = {batteryData_->contactorError};
->>>>>>> 5e1986c78919ab5f857bf2c495f7442d7d459e76
     Util::writeBoolsIntoArray(data, 53, contactorErrorArray, 1);
     appendChecksum(data, payloadLength);
     // do some additional data checks
