@@ -12,7 +12,6 @@ HEADERS += \
     $$PWD/InternetWindow.h \
     $$PWD/SerialWindow.h \
     $$PWD/PacketWindow.h \
-    $$PWD/I_PacketWindow.h \
     $$PWD/Packet/DriverControlsTab.h \
     $$PWD/Packet/MotorTab.h \
     $$PWD/Packet/BatteryTab.h \
@@ -33,7 +32,6 @@ SOURCES += \
     $$PWD/Packet/MpptTab.cpp \
 
 FORMS += \
-    $$PWD/PacketWindow.ui \
     $$PWD/Packet/DriverControlsTab.ui \
     $$PWD/Packet/MotorTab.ui  \
     $$PWD/Packet/BatteryTab.ui \

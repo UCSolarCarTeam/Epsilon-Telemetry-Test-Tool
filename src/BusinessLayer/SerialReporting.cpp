@@ -37,7 +37,7 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
                                  const DriverControlsData& driverControlsData,
                                  const MotorFaultsData& motorFaultsData,
                                  const BatteryFaultsData& batteryFaultsData,
-                                 const BatteryData& batteryData,
+                                 BatteryData& batteryData,
                                  const MpptData& mpptData,
                                  const LightsData& lightsData,
                                  SerialView& view)
@@ -270,59 +270,59 @@ void SerialReporting::sendBatteryFaults()
     communicationService_.sendSerialData(packet, packetLength);
 }
 
-void SerialReporting::sendBattery()
-{
-    const unsigned int unframedPacketLength = BATTERY_LENGTH + CHECKSUM_LENGTH;
-    unsigned char packetPayload[unframedPacketLength];
-    packetPayload[0] = CcsDefines::BATTERY_PKG_ID;
-    bool aliveArray[] = {batteryData_.alive};
-    writeBoolsIntoArray(packetPayload, 1, aliveArray, 1);
-    bool bmsRelayStatusArray[] = {batteryData_.dischargeRelayEnabled,
-                                  batteryData_.chargeRelayEnabled,
-                                  batteryData_.chargerSafetyEnabled,
-                                  batteryData_.malfunctionIndicatorActive,
-                                  batteryData_.multiPurposeInputSignalStatus,
-                                  batteryData_.alwaysOnSignalStatus,
-                                  batteryData_.isReadySignalStatus,
-                                  batteryData_.isChargingSignalStatus
-                                 };
-    writeBoolsIntoArray(packetPayload, 2, bmsRelayStatusArray, 8);
-    packetPayload[3] = batteryData_.populatedCells;
-    writeFloatIntoArray(packetPayload, 4, batteryData_.inputVoltage12V);
-    writeFloatIntoArray(packetPayload, 8, batteryData_.fanVoltage);
-    writeFloatIntoArray(packetPayload, 12, batteryData_.packCurrent);
-    writeFloatIntoArray(packetPayload, 16, batteryData_.packVoltage);
-    writeFloatIntoArray(packetPayload, 20, batteryData_.packStateOfCharge);
-    writeFloatIntoArray(packetPayload, 24, batteryData_.packAmpHours);
-    writeFloatIntoArray(packetPayload, 28, batteryData_.packDepthOfDischarge);
-    packetPayload[32] = batteryData_.highTemperature;
-    packetPayload[33] = batteryData_.highThermistorId;
-    packetPayload[34] = batteryData_.lowTemperature;
-    packetPayload[35] = batteryData_.lowThermistorId;
-    packetPayload[36] = batteryData_.averageTemperature;
-    packetPayload[37] = batteryData_.internalTemperature;
-    packetPayload[38] = batteryData_.fanSpeed;
-    packetPayload[39] = batteryData_.requestedFanSpeed;
-    writeUShortIntoArray(packetPayload, 40, batteryData_.lowCellVoltage);
-    packetPayload[42] = batteryData_.lowCellVoltageId;
-    writeUShortIntoArray(packetPayload, 43, batteryData_.highCellVoltage);
-    packetPayload[45] = batteryData_.highCellVoltageId;
-    writeUShortIntoArray(packetPayload, 46, batteryData_.averageCellVoltage);
-    packetPayload[48] = (unsigned char)batteryData_.prechargeState;
-    packetPayload[49] = batteryData_.auxVoltage;
-    bool auxBmsAliveArray[] = {batteryData_.auxBmsAlive};
-    writeBoolsIntoArray(packetPayload, 50, auxBmsAliveArray, 1);
-    bool strobeBmsLightArray[] = {batteryData_.strobeBmsLight};
-    writeBoolsIntoArray(packetPayload, 51, strobeBmsLightArray, 1);
-    bool allowChargeArray[] = {batteryData_.allowCharge};
-    writeBoolsIntoArray(packetPayload, 52, allowChargeArray, 1);
-    bool contactorErrorArray[] = {batteryData_.contactorError};
-    writeBoolsIntoArray(packetPayload, 53, contactorErrorArray, 1);
-    addChecksum(packetPayload, BATTERY_LENGTH);
-    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
-    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
-    communicationService_.sendSerialData(packet, packetLength);
-}
+//void SerialReporting::sendBattery()
+//{
+//    const unsigned int unframedPacketLength = BATTERY_LENGTH + CHECKSUM_LENGTH;
+//    unsigned char packetPayload[unframedPacketLength];
+//    packetPayload[0] = CcsDefines::BATTERY_PKG_ID;
+//    bool aliveArray[] = {batteryData_.alive()};
+//    writeBoolsIntoArray(packetPayload, 1, aliveArray, 1);
+//    bool bmsRelayStatusArray[] = {batteryData_.dischargeRelayEnabled(),
+//                                  batteryData_.chargeRelayEnabled(),
+//                                  batteryData_.chargerSafetyEnabled(),
+//                                  batteryData_.malfunctionIndicatorActive(),
+//                                  batteryData_.multiPurposeInputSignalStatus(),
+//                                  batteryData_.alwaysOnSignalStatus(),
+//                                  batteryData_.isReadySignalStatus(),
+//                                  batteryData_.isChargingSignalStatus()
+//                                 };
+//    writeBoolsIntoArray(packetPayload, 2, bmsRelayStatusArray, 8);
+//    packetPayload[3] = batteryData_.populatedCells();
+//    writeFloatIntoArray(packetPayload, 4, batteryData_.inputVoltage12V());
+//    writeFloatIntoArray(packetPayload, 8, batteryData_.fanVoltage());
+//    writeFloatIntoArray(packetPayload, 12, batteryData_.packCurrent());
+//    writeFloatIntoArray(packetPayload, 16, batteryData_.packVoltage());
+//    writeFloatIntoArray(packetPayload, 20, batteryData_.packStateOfCharge());
+//    writeFloatIntoArray(packetPayload, 24, batteryData_.packAmpHours());
+//    writeFloatIntoArray(packetPayload, 28, batteryData_.packDepthOfDischarge());
+//    packetPayload[32] = batteryData_.highTemperature();
+//    packetPayload[33] = batteryData_.highThermistorId();
+//    packetPayload[34] = batteryData_.lowTemperature();
+//    packetPayload[35] = batteryData_.lowThermistorId();
+//    packetPayload[36] = batteryData_.averageTemperature();
+//    packetPayload[37] = batteryData_.internalTemperature();
+//    packetPayload[38] = batteryData_.fanSpeed();
+//    packetPayload[39] = batteryData_.requestedFanSpeed();
+//    writeUShortIntoArray(packetPayload, 40, batteryData_.lowCellVoltage());
+//    packetPayload[42] = batteryData_.lowCellVoltageId();
+//    writeUShortIntoArray(packetPayload, 43, batteryData_.highCellVoltage());
+//    packetPayload[45] = batteryData_.highCellVoltageId();
+//    writeUShortIntoArray(packetPayload, 46, batteryData_.averageCellVoltage());
+//    packetPayload[48] = (unsigned char)batteryData_.prechargeState();
+//    packetPayload[49] = batteryData_.auxVoltage();
+//    bool auxBmsAliveArray[] = {batteryData_.auxBmsAlive()};
+//    writeBoolsIntoArray(packetPayload, 50, auxBmsAliveArray, 1);
+//    bool strobeBmsLightArray[] = {batteryData_.strobeBmsLight()};
+//    writeBoolsIntoArray(packetPayload, 51, strobeBmsLightArray, 1);
+//    bool allowChargeArray[] = {batteryData_.allowCharge()};
+//    writeBoolsIntoArray(packetPayload, 52, allowChargeArray, 1);
+//    bool contactorErrorArray[] = {batteryData_.contactorError()};
+//    writeBoolsIntoArray(packetPayload, 53, contactorErrorArray, 1);
+//    addChecksum(packetPayload, BATTERY_LENGTH);
+//    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
+//    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
+//    communicationService_.sendSerialData(packet, packetLength);
+//}
 
 void SerialReporting::sendMppt()
 {
@@ -382,7 +382,7 @@ void SerialReporting::sendAll()
     sendDriverControls();
     sendMotorFaults();
     sendBatteryFaults();
-    sendBattery();
+    //sendBattery();
     sendMppt();
     sendLights();
 }

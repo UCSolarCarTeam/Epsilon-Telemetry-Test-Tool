@@ -2,8 +2,8 @@ TEMPLATE = subdirs
 CONFIG += ordered static c++11
 
 SUBDIRS = \
-    BusinessLayer \
     DataLayer \
+    BusinessLayer \
     ViewLayer \
     UILayer \
     Peripherals \
