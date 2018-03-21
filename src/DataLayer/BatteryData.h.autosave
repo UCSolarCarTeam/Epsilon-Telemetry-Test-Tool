@@ -98,15 +98,9 @@ class BatteryData : public QObject
 {
     Q_OBJECT
 
-<<<<<<< HEAD
-//public:
-//    BatteryData();
-//    virtual ~BatteryData();
-=======
 public:
      BatteryData();
      virtual ~BatteryData();
->>>>>>> 8e0ea5c17ffa797a398e0ae9b1eeb57dfc13b1d5
 
     bool alive() const;
     bool dischargeRelayEnabled() const;
