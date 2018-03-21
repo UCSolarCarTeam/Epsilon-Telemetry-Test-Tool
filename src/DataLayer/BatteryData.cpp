@@ -1,5 +1,5 @@
 //#include "BatteryData.h"
-
+//#include <QDebug>
 //BatteryData::BatteryData()
 //{
 //}

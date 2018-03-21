@@ -38,3 +38,32 @@ struct MotorDetailsData
     float odometer;
     float slipSpeed;
 };
+
+//#pragma once
+
+//#include <QObject>
+
+//class MotorDetailsData : public QObject
+//{
+//    Q_OBJECT
+
+//public:
+//    MotorDetailsData();
+//    virtual ~MotorDetailsData();
+
+//    float phaseCCurrent;
+//    float phaseBCurrent;
+//    float MotorVoltageReal;
+//    float MotorVoltageImaginary;
+//    float MotorCurrentReal;
+//    float MotorCurrentImaginary;
+//    float BackEmf;
+//    float RailSupply15V;
+//    float RailSupply3V;
+//    float RailSupply1V;
+//    float heatSinkTemperature;
+//    float motorTemperature;
+//    float dspBoardTemperature;
+//    float dcBusAmpHours;
+//    float odometer;
+//    float slipSpeed;
