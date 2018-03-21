@@ -51,7 +51,7 @@ QJsonArray InternetReporting::makeKeyMotor()
     keyMotor0.insert("Alive", keyMotorData_.motor0Alive);
     keyMotor0.insert("SetCurrent", keyMotorData_.motor0SetCurrent);
     keyMotor0.insert("SetVelocity", keyMotorData_.motor0SetVelocity);
-    keyMotor0.insert("BusCurrent", keyMotorData_.motor0BusVoltage);
+    keyMotor0.insert("BusCurrent", keyMotorData_.motor0BusCurrent);
     keyMotor0.insert("BusVoltage", keyMotorData_.motor0BusVoltage);
     keyMotor0.insert("VehicleVelocity", keyMotorData_.motor0VehicleVelocity);
     keyMotor.push_back(keyMotor0);
@@ -59,7 +59,7 @@ QJsonArray InternetReporting::makeKeyMotor()
     keyMotor1.insert("Alive", keyMotorData_.motor1Alive);
     keyMotor1.insert("SetCurrent", keyMotorData_.motor1SetCurrent);
     keyMotor1.insert("SetVelocity", keyMotorData_.motor1SetVelocity);
-    keyMotor1.insert("BusCurrent", keyMotorData_.motor1BusVoltage);
+    keyMotor1.insert("BusCurrent", keyMotorData_.motor1BusCurrent);
     keyMotor1.insert("BusVoltage", keyMotorData_.motor1BusVoltage);
     keyMotor1.insert("VehicleVelocity", keyMotorData_.motor1VehicleVelocity);
     keyMotor.push_back(keyMotor1);
