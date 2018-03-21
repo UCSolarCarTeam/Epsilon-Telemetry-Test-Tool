@@ -100,7 +100,7 @@ struct BatteryData
 
 //public:
 //    BatteryData();
-//      ~BatteryData();
+//    virtual ~BatteryData();
 
 //    bool alive() const;
 //    bool dischargeRelayEnabled() const;

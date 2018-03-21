@@ -20,4 +20,5 @@ HEADERS += \
     $$PWD/MpptData.h
 
 SOURCES += \
-    BatteryData.cpp
+    BatteryData.cpp \
+    BatteryFaults.cpp
