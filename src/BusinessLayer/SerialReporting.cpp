@@ -66,7 +66,7 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
     connect(&view_, SIGNAL(sendBattery()), this, SLOT(sendBattery()));
     connect(&view_, SIGNAL(sendMppt()), this, SLOT(sendMppt()));
     connect(&view_, SIGNAL(sendLights()), this, SLOT(sendLights()));
-    connect(&view_, SIGNAL(sendAuxBms()), this, SLOT(sendMppt()));
+    connect(&view_, SIGNAL(sendAuxBms()), this, SLOT(sendAuxBms()));
     connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
 }
 
