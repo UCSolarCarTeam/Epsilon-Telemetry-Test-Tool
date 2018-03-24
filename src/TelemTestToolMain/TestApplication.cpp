@@ -29,7 +29,6 @@ TestApplication::TestApplication(int& argc, char** argv)
                                      *mpptTab_))
     , internetView_(new InternetView(internetWindow_.data()))
     , serialView_(new SerialView(serialWindow_.data()))
-    //, packetView_(new PacketView(packetWindow_.data()))
     , window_(new Window(QList<QWidget*>{serialWindow_.data(),
                                          internetWindow_.data(),
                                          packetWindow_.data()}))
