@@ -1,6 +1,22 @@
 #include "MotorDetailsData.h"
 
 MotorDetailsData::MotorDetailsData()
+    : phaseCCurrent_(11.11f)
+    , phaseBCurrent_(12.21f)
+    , MotorVoltageReal_(13.31f)
+    , MotorVoltageImaginary_(14.41f)
+    , MotorCurrentReal_(13.13f)
+    , MotorCurrentImaginary_(14.14f)
+    , BackEmf_(15.51f)
+    , RailSupply15V_(17.71f)
+    , RailSupply3V_(18.81f)
+    , RailSupply1V_(19.91f)
+    , heatSinkTemperature_(20.02f)
+    , motorTemperature_(21.12f)
+    , dspBoardTemperature_(22.22f)
+    , dcBusAmpHours_(23.32f)
+    , odometer_(24.42f)
+    , slipSpeed_(25.52f)
 {
 }
 

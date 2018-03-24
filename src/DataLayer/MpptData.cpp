@@ -1,6 +1,12 @@
 #include "MpptData.h"
 
 MpptData::MpptData()
+    : mpptNumber_(0)
+    , alive_(true)
+    , arrayVoltage_(71)
+    , arrayCurrent_(72)
+    , batteryVoltage_(73)
+    , temperature_(74)
 {
 }
 

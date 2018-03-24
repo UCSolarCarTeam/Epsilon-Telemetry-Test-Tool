@@ -1,6 +1,13 @@
 #include "LightsData.h"
 
 LightsData::LightsData()
+    : alive_(true)
+    , lowBeams_(true)
+    , highBeams_(false)
+    , brakes_(true)
+    , leftSignal_(false)
+    , rightSignal_(true)
+    , bmsStrobeLight_(false)
 {
 }
 

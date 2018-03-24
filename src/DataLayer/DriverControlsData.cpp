@@ -1,6 +1,27 @@
 #include "DriverControlsData.h"
 
 DriverControlsData::DriverControlsData()
+    : alive_(true)
+    , headlightsOff_(false)
+    , headlightsLow_(true)
+    , headlightsHigh_(false)
+    , signalLeft_(true)
+    , signalRight_(false)
+    , hazardLights_(true)
+    , interiorLights_(false)
+    , volumeUp_(false)
+    , volumeDown_(true)
+    , nextSong_(false)
+    , prevSong_(true)
+    , brakes_(false)
+    , forward_(true)
+    , reverse_(false)
+    , pushToTalk_(true)
+    , horn_(false)
+    , reset_(true)
+    , aux_(true)
+    , acceleration_(26)
+    , regenBraking_(27)
 {
 }
 
