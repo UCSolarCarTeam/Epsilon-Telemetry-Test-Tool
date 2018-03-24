@@ -16,6 +16,10 @@ HEADERS += \
     $$PWD/I_CommunicationService.h \
     $$PWD/CommunicationService.h \
     $$PWD/Util.h \
+    Packet/MpptReporting.h \
+    PacketReporting.h \
+    Packet/BatteryReporting.h \
+    Packet/BatteryFaultsReporting.h
 
 SOURCES += \
     $$PWD/CrcCalculator.cpp \
@@ -23,3 +27,7 @@ SOURCES += \
     $$PWD/InternetReporting.cpp \
     $$PWD/CommunicationService.cpp \
     $$PWD/Util.cpp \
+    Packet/MpptReporting.cpp \
+    PacketReporting.cpp \
+    Packet/BatteryReporting.cpp \
+    Packet/BatteryFaultsReporting.cpp

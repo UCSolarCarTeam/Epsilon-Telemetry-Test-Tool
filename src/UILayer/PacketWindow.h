@@ -24,6 +24,13 @@ public:
                           MpptTab& mpptTab);
     ~PacketWindow();
     QTabWidget* tabs_;
+    BatteryTab& batteryTab();
+    BatteryFaultsTab& batteryFaultsTab();
+    DriverControlsTab& driverControlsTab();
+    LightsTab& lightsTab();
+    MotorTab& motor0Tab();
+    MotorTab& motor1Tab();
+    MpptTab& mpptTab();
 
 private:
     BatteryTab& batteryTab_;

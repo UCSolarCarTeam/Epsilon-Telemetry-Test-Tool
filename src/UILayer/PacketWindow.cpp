@@ -42,3 +42,38 @@ PacketWindow::PacketWindow(BatteryTab& batteryTab,
 PacketWindow::~PacketWindow()
 {
 }
+
+BatteryTab& PacketWindow::batteryTab()
+{
+    return batteryTab_;
+}
+
+BatteryFaultsTab& PacketWindow::batteryFaultsTab()
+{
+    return batteryFaultsTab_;
+}
+
+DriverControlsTab& PacketWindow::driverControlsTab()
+{
+    return driverControlsTab_;
+}
+
+LightsTab& PacketWindow::lightsTab()
+{
+    return lightsTab_;
+}
+
+MotorTab& PacketWindow::motor0Tab()
+{
+    return motor0Tab_;
+}
+
+MotorTab& PacketWindow::motor1Tab()
+{
+    return motor1Tab_;
+}
+
+MpptTab& PacketWindow::mpptTab()
+{
+    return mpptTab_;
+}

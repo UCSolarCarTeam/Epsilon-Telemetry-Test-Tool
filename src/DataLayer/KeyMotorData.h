@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QObject>
 
 class KeyMotorData : public QObject
