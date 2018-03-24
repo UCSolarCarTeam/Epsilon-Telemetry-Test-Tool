@@ -6,3 +6,4 @@ release
 *.pro.user
 *.save
 build*
+*.autosave

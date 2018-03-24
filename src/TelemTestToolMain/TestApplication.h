@@ -18,6 +18,13 @@
 #include "SerialView.h"
 #include "InternetWindow.h"
 #include "SerialWindow.h"
+#include "../UILayer/Packet/BatteryTab.h"
+#include "../UILayer/Packet/BatteryFaultsTab.h"
+#include "../UILayer/Packet/DriverControlsTab.h"
+#include "../UILayer/Packet/LightsTab.h"
+#include "../UILayer/Packet/MotorTab.h"
+#include "../UILayer/Packet/MpptTab.h"
+#include "PacketWindow.h"
 #include "Window.h"
 
 class TestApplication : public QApplication
@@ -40,6 +47,14 @@ private:
     QScopedPointer<AuxBmsData> auxBmsData_;
     QScopedPointer<InternetWindow> internetWindow_;
     QScopedPointer<SerialWindow> serialWindow_;
+    QScopedPointer<BatteryTab> batteryTab_;
+    QScopedPointer<BatteryFaultsTab> batteryFaultsTab_;
+    QScopedPointer<DriverControlsTab> driverControlsTab_;
+    QScopedPointer<LightsTab> lightsTab_;
+    QScopedPointer<MotorTab> motor0Tab_;
+    QScopedPointer<MotorTab> motor1Tab_;
+    QScopedPointer<MpptTab> mpptTab_;
+    QScopedPointer<PacketWindow> packetWindow_;
     QScopedPointer<InternetView> internetView_;
     QScopedPointer<SerialView> serialView_;
     QScopedPointer<Window> window_;
