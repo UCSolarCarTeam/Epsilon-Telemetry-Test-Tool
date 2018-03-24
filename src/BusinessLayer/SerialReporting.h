@@ -24,7 +24,7 @@ public:
                     const DriverControlsData& driverControlsData_,
                     const MotorFaultsData& motorFaultsData_,
                     const BatteryFaultsData& batteryFaultsData_,
-                    BatteryData& batteryData_,
+                    const BatteryData& batteryData_,
                     const MpptData& mpptData_,
                     const LightsData& lightsData_,
                     SerialView& view);
@@ -48,7 +48,7 @@ private:
     const DriverControlsData& driverControlsData_;
     const MotorFaultsData& motorFaultsData_;
     const BatteryFaultsData& batteryFaultsData_;
-    BatteryData& batteryData_;
+    const BatteryData& batteryData_;
     const MpptData& mpptData_;
     const LightsData& lightsData_;
     SerialView& view_;

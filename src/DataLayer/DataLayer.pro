@@ -21,4 +21,10 @@ HEADERS += \
 
 SOURCES += \
     BatteryData.cpp \
-    BatteryFaults.cpp
+    BatteryFaultsData.cpp \
+    DriverControlsData.cpp \
+    KeyMotorData.cpp \
+    LightsData.cpp \
+    MotorDetailsData.cpp \
+    MotorFaultsData.cpp \
+    MpptData.cpp

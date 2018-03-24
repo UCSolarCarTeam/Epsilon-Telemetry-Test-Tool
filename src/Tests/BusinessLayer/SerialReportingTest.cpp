@@ -109,18 +109,18 @@ protected:
     void fillMpptData(unsigned char* data) const
     {
         data[0] = CcsDefines::MPPT_PKG_ID;
-        unsigned char numberAndAlive = mpptData_->mpptNumber & 0x3;
+        unsigned char numberAndAlive = mpptData_->mpptNumber() & 0x3;
 
-        if (mpptData_->alive)
+        if (mpptData_->alive())
         {
             numberAndAlive |= 0x80;
         }
 
         data[1] = numberAndAlive;
-        Util::writeUShortIntoArray(data, 2, mpptData_->arrayVoltage);
-        Util::writeUShortIntoArray(data, 4, mpptData_->arrayCurrent);
-        Util::writeUShortIntoArray(data, 6, mpptData_->batteryVoltage);
-        Util::writeUShortIntoArray(data, 8, mpptData_->temperature);
+        Util::writeUShortIntoArray(data, 2, mpptData_->arrayVoltage());
+        Util::writeUShortIntoArray(data, 4, mpptData_->arrayCurrent());
+        Util::writeUShortIntoArray(data, 6, mpptData_->batteryVoltage());
+        Util::writeUShortIntoArray(data, 8, mpptData_->temperature());
     }
 
     class PackageIdMatcher : public MatcherInterface<std::tuple<const unsigned char*, int>>
@@ -203,25 +203,25 @@ TEST_F(SerialReportingTest, sendKeyMotorTest) // TODO create function which buil
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
     unsigned char data[payloadLength];
     data[0] = CcsDefines::KEY_MOTOR_PKG_ID;
-    bool motor0Alive[] = {keyMotorData_->motor0Alive};
+    bool motor0Alive[] = {keyMotorData_->motor0Alive()};
     Util::writeBoolsIntoArray(data, 1, motor0Alive, 1);
-    Util::writeFloatIntoArray(data, 2, keyMotorData_->motor0SetCurrent);
-    Util::writeFloatIntoArray(data, 6, keyMotorData_->motor0SetVelocity);
-    Util::writeFloatIntoArray(data, 10, keyMotorData_->motor0BusCurrent);
-    Util::writeFloatIntoArray(data, 14, keyMotorData_->motor0BusVoltage);
-    Util::writeFloatIntoArray(data, 18, keyMotorData_->motor0VehicleVelocity);
-    bool motor1Alive[] = {keyMotorData_->motor1Alive};
+    Util::writeFloatIntoArray(data, 2, keyMotorData_->motor0SetCurrent());
+    Util::writeFloatIntoArray(data, 6, keyMotorData_->motor0SetVelocity());
+    Util::writeFloatIntoArray(data, 10, keyMotorData_->motor0BusCurrent());
+    Util::writeFloatIntoArray(data, 14, keyMotorData_->motor0BusVoltage());
+    Util::writeFloatIntoArray(data, 18, keyMotorData_->motor0VehicleVelocity());
+    bool motor1Alive[] = {keyMotorData_->motor1Alive()};
     Util::writeBoolsIntoArray(data, 22, motor1Alive, 1);
-    Util::writeFloatIntoArray(data, 23, keyMotorData_->motor1SetCurrent);
-    Util::writeFloatIntoArray(data, 27, keyMotorData_->motor1SetVelocity);
-    Util::writeFloatIntoArray(data, 31, keyMotorData_->motor1BusCurrent);
-    Util::writeFloatIntoArray(data, 35, keyMotorData_->motor1BusVoltage);
-    Util::writeFloatIntoArray(data, 39, keyMotorData_->motor1VehicleVelocity);
+    Util::writeFloatIntoArray(data, 23, keyMotorData_->motor1SetCurrent());
+    Util::writeFloatIntoArray(data, 27, keyMotorData_->motor1SetVelocity());
+    Util::writeFloatIntoArray(data, 31, keyMotorData_->motor1BusCurrent());
+    Util::writeFloatIntoArray(data, 35, keyMotorData_->motor1BusVoltage());
+    Util::writeFloatIntoArray(data, 39, keyMotorData_->motor1VehicleVelocity());
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x01)); // packet id
-    const unsigned char aliveBitMotor0Enconding = keyMotorData_->motor0Alive ? 0x01 : 0x00;
-    const unsigned char aliveBitMotor1Enconding = keyMotorData_->motor1Alive ? 0x01 : 0x00;
+    const unsigned char aliveBitMotor0Enconding = keyMotorData_->motor0Alive() ? 0x01 : 0x00;
+    const unsigned char aliveBitMotor1Enconding = keyMotorData_->motor1Alive() ? 0x01 : 0x00;
     ASSERT_THAT(data[1], Eq(aliveBitMotor0Enconding));
     ASSERT_THAT(data[22], Eq(aliveBitMotor1Enconding));
 
@@ -249,22 +249,22 @@ TEST_F(SerialReportingTest, sendMotorDetailsTest) // TODO create function which 
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
     unsigned char data[payloadLength];
     data[0] = CcsDefines::MOTOR_DETAILS_0_PKG_ID;
-    Util::writeFloatIntoArray(data, 1, motor0DetailsData_->phaseCCurrent);
-    Util::writeFloatIntoArray(data, 5, motor0DetailsData_->phaseBCurrent);
-    Util::writeFloatIntoArray(data, 9, motor0DetailsData_->MotorVoltageReal);
-    Util::writeFloatIntoArray(data, 13, motor0DetailsData_->MotorVoltageImaginary);
-    Util::writeFloatIntoArray(data, 17, motor0DetailsData_->MotorCurrentReal);
-    Util::writeFloatIntoArray(data, 21, motor0DetailsData_->MotorCurrentImaginary);
-    Util::writeFloatIntoArray(data, 25, motor0DetailsData_->BackEmf);
-    Util::writeFloatIntoArray(data, 29, motor0DetailsData_->RailSupply15V);
-    Util::writeFloatIntoArray(data, 33, motor0DetailsData_->RailSupply3V);
-    Util::writeFloatIntoArray(data, 37, motor0DetailsData_->RailSupply1V);
-    Util::writeFloatIntoArray(data, 41, motor0DetailsData_->heatSinkTemperature);
-    Util::writeFloatIntoArray(data, 45, motor0DetailsData_->motorTemperature);
-    Util::writeFloatIntoArray(data, 49, motor0DetailsData_->dspBoardTemperature);
-    Util::writeFloatIntoArray(data, 53, motor0DetailsData_->dcBusAmpHours);
-    Util::writeFloatIntoArray(data, 57, motor0DetailsData_->odometer);
-    Util::writeFloatIntoArray(data, 61, motor0DetailsData_->slipSpeed);
+    Util::writeFloatIntoArray(data, 1, motor0DetailsData_->phaseCCurrent());
+    Util::writeFloatIntoArray(data, 5, motor0DetailsData_->phaseBCurrent());
+    Util::writeFloatIntoArray(data, 9, motor0DetailsData_->MotorVoltageReal());
+    Util::writeFloatIntoArray(data, 13, motor0DetailsData_->MotorVoltageImaginary());
+    Util::writeFloatIntoArray(data, 17, motor0DetailsData_->MotorCurrentReal());
+    Util::writeFloatIntoArray(data, 21, motor0DetailsData_->MotorCurrentImaginary());
+    Util::writeFloatIntoArray(data, 25, motor0DetailsData_->BackEmf());
+    Util::writeFloatIntoArray(data, 29, motor0DetailsData_->RailSupply15V());
+    Util::writeFloatIntoArray(data, 33, motor0DetailsData_->RailSupply3V());
+    Util::writeFloatIntoArray(data, 37, motor0DetailsData_->RailSupply1V());
+    Util::writeFloatIntoArray(data, 41, motor0DetailsData_->heatSinkTemperature());
+    Util::writeFloatIntoArray(data, 45, motor0DetailsData_->motorTemperature());
+    Util::writeFloatIntoArray(data, 49, motor0DetailsData_->dspBoardTemperature());
+    Util::writeFloatIntoArray(data, 53, motor0DetailsData_->dcBusAmpHours());
+    Util::writeFloatIntoArray(data, 57, motor0DetailsData_->odometer());
+    Util::writeFloatIntoArray(data, 61, motor0DetailsData_->slipSpeed());
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x02)); // packet id
@@ -279,22 +279,22 @@ TEST_F(SerialReportingTest, sendMotorDetailsTest) // TODO create function which 
 
     // create payload for motor 1 details
     data[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
-    Util::writeFloatIntoArray(data, 1, motor1DetailsData_->phaseCCurrent);
-    Util::writeFloatIntoArray(data, 5, motor1DetailsData_->phaseBCurrent);
-    Util::writeFloatIntoArray(data, 9, motor1DetailsData_->MotorVoltageReal);
-    Util::writeFloatIntoArray(data, 13, motor1DetailsData_->MotorVoltageImaginary);
-    Util::writeFloatIntoArray(data, 17, motor1DetailsData_->MotorCurrentReal);
-    Util::writeFloatIntoArray(data, 21, motor1DetailsData_->MotorCurrentImaginary);
-    Util::writeFloatIntoArray(data, 25, motor1DetailsData_->BackEmf);
-    Util::writeFloatIntoArray(data, 29, motor1DetailsData_->RailSupply15V);
-    Util::writeFloatIntoArray(data, 33, motor1DetailsData_->RailSupply3V);
-    Util::writeFloatIntoArray(data, 37, motor1DetailsData_->RailSupply1V);
-    Util::writeFloatIntoArray(data, 41, motor1DetailsData_->heatSinkTemperature);
-    Util::writeFloatIntoArray(data, 45, motor1DetailsData_->motorTemperature);
-    Util::writeFloatIntoArray(data, 49, motor1DetailsData_->dspBoardTemperature);
-    Util::writeFloatIntoArray(data, 53, motor1DetailsData_->dcBusAmpHours);
-    Util::writeFloatIntoArray(data, 57, motor1DetailsData_->odometer);
-    Util::writeFloatIntoArray(data, 61, motor1DetailsData_->slipSpeed);
+    Util::writeFloatIntoArray(data, 1, motor1DetailsData_->phaseCCurrent());
+    Util::writeFloatIntoArray(data, 5, motor1DetailsData_->phaseBCurrent());
+    Util::writeFloatIntoArray(data, 9, motor1DetailsData_->MotorVoltageReal());
+    Util::writeFloatIntoArray(data, 13, motor1DetailsData_->MotorVoltageImaginary());
+    Util::writeFloatIntoArray(data, 17, motor1DetailsData_->MotorCurrentReal());
+    Util::writeFloatIntoArray(data, 21, motor1DetailsData_->MotorCurrentImaginary());
+    Util::writeFloatIntoArray(data, 25, motor1DetailsData_->BackEmf());
+    Util::writeFloatIntoArray(data, 29, motor1DetailsData_->RailSupply15V());
+    Util::writeFloatIntoArray(data, 33, motor1DetailsData_->RailSupply3V());
+    Util::writeFloatIntoArray(data, 37, motor1DetailsData_->RailSupply1V());
+    Util::writeFloatIntoArray(data, 41, motor1DetailsData_->heatSinkTemperature());
+    Util::writeFloatIntoArray(data, 45, motor1DetailsData_->motorTemperature());
+    Util::writeFloatIntoArray(data, 49, motor1DetailsData_->dspBoardTemperature());
+    Util::writeFloatIntoArray(data, 53, motor1DetailsData_->dcBusAmpHours());
+    Util::writeFloatIntoArray(data, 57, motor1DetailsData_->odometer());
+    Util::writeFloatIntoArray(data, 61, motor1DetailsData_->slipSpeed());
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x03)); // packet id
@@ -321,32 +321,32 @@ TEST_F(SerialReportingTest, sendDriverControlsTest) // TODO create function whic
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
     unsigned char data[payloadLength];
     data[0] = CcsDefines::DRIVER_CONTROLS_PKG_ID;
-    bool driverControlBoardsAlive[] = {driverControlsData_->alive};
+    bool driverControlBoardsAlive[] = {driverControlsData_->alive()};
     Util::writeBoolsIntoArray(data, 1, driverControlBoardsAlive, 1);
-    bool lightsInputs[] = { driverControlsData_->headlightsOff,
-                            driverControlsData_->headlightsLow,
-                            driverControlsData_->headlightsHigh,
-                            driverControlsData_->signalRight,
-                            driverControlsData_->signalLeft,
-                            driverControlsData_->hazardLights,
-                            driverControlsData_->interiorLights
+    bool lightsInputs[] = { driverControlsData_->headlightsOff(),
+                            driverControlsData_->headlightsLow(),
+                            driverControlsData_->headlightsHigh(),
+                            driverControlsData_->signalRight(),
+                            driverControlsData_->signalLeft(),
+                            driverControlsData_->hazardLights(),
+                            driverControlsData_->interiorLights()
                           };
     Util::writeBoolsIntoArray(data, 2, lightsInputs, 7);
-    bool musicInputs[] = { driverControlsData_->volumeUp,
-                           driverControlsData_->volumeDown,
-                           driverControlsData_->nextSong,
-                           driverControlsData_->prevSong
+    bool musicInputs[] = { driverControlsData_->volumeUp(),
+                           driverControlsData_->volumeDown(),
+                           driverControlsData_->nextSong(),
+                           driverControlsData_->prevSong()
                          };
     Util::writeBoolsIntoArray(data, 3, musicInputs, 4);
-    Util::writeUShortIntoArray(data, 4, driverControlsData_->acceleration);
-    Util::writeUShortIntoArray(data, 6, driverControlsData_->regenBraking);
-    bool driverInputs[] = { driverControlsData_->brakes,
-                            driverControlsData_->forward,
-                            driverControlsData_->reverse,
-                            driverControlsData_->pushToTalk,
-                            driverControlsData_->horn,
-                            driverControlsData_->reset,
-                            driverControlsData_->aux
+    Util::writeUShortIntoArray(data, 4, driverControlsData_->acceleration());
+    Util::writeUShortIntoArray(data, 6, driverControlsData_->regenBraking());
+    bool driverInputs[] = { driverControlsData_->brakes(),
+                            driverControlsData_->forward(),
+                            driverControlsData_->reverse(),
+                            driverControlsData_->pushToTalk(),
+                            driverControlsData_->horn(),
+                            driverControlsData_->reset(),
+                            driverControlsData_->aux()
                           };
     Util::writeBoolsIntoArray(data, 8, driverInputs, 7);
     appendChecksum(data, payloadLength);
@@ -376,48 +376,48 @@ TEST_F(SerialReportingTest, sendMotorFaultsTest) // TODO create function which b
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
     unsigned char data[payloadLength];
     data[0] = CcsDefines::MOTOR_FAULTS_PKG_ID;
-    bool motor0ErrorFlags[] = { motorFaultsData_->motor0OverSpeed,
-                                motorFaultsData_->motor0SoftwareOverCurrent,
-                                motorFaultsData_->motor0DcBusOverVoltage,
-                                motorFaultsData_->motor0BadMotorPositionHallSequence,
-                                motorFaultsData_->motor0WatchdogCausedLastReset,
-                                motorFaultsData_->motor0ConfigReadError,
-                                motorFaultsData_->motor0Rail15VUnderVoltageLockOut,
-                                motorFaultsData_->motor0DesaturationFault
+    bool motor0ErrorFlags[] = { motorFaultsData_->motor0OverSpeed(),
+                                motorFaultsData_->motor0SoftwareOverCurrent(),
+                                motorFaultsData_->motor0DcBusOverVoltage(),
+                                motorFaultsData_->motor0BadMotorPositionHallSequence(),
+                                motorFaultsData_->motor0WatchdogCausedLastReset(),
+                                motorFaultsData_->motor0ConfigReadError(),
+                                motorFaultsData_->motor0Rail15VUnderVoltageLockOut(),
+                                motorFaultsData_->motor0DesaturationFault()
                               };
     Util::writeBoolsIntoArray(data, 1, motor0ErrorFlags, 8);
-    bool motor1ErrorFlags[] = { motorFaultsData_->motor1OverSpeed,
-                                motorFaultsData_->motor1SoftwareOverCurrent,
-                                motorFaultsData_->motor1DcBusOverVoltage,
-                                motorFaultsData_->motor1BadMotorPositionHallSequence,
-                                motorFaultsData_->motor1WatchdogCausedLastReset,
-                                motorFaultsData_->motor1ConfigReadError,
-                                motorFaultsData_->motor1Rail15VUnderVoltageLockOut,
-                                motorFaultsData_->motor1DesaturationFault
+    bool motor1ErrorFlags[] = { motorFaultsData_->motor1OverSpeed(),
+                                motorFaultsData_->motor1SoftwareOverCurrent(),
+                                motorFaultsData_->motor1DcBusOverVoltage(),
+                                motorFaultsData_->motor1BadMotorPositionHallSequence(),
+                                motorFaultsData_->motor1WatchdogCausedLastReset(),
+                                motorFaultsData_->motor1ConfigReadError(),
+                                motorFaultsData_->motor1Rail15VUnderVoltageLockOut(),
+                                motorFaultsData_->motor1DesaturationFault()
                               };
     Util::writeBoolsIntoArray(data, 2, motor1ErrorFlags, 8);
-    bool motor0LimitFlags[] = { motorFaultsData_->motor0OutputVoltagePwmLimit,
-                                motorFaultsData_->motor0MotorCurrentLimit,
-                                motorFaultsData_->motor0VelocityLimit,
-                                motorFaultsData_->motor0BusCurrentLimit,
-                                motorFaultsData_->motor0BusVoltageUpperLimit,
-                                motorFaultsData_->motor0BusVoltageLowerLimit,
-                                motorFaultsData_->motor0IpmOrMotorTemperatureLimit
+    bool motor0LimitFlags[] = { motorFaultsData_->motor0OutputVoltagePwmLimit(),
+                                motorFaultsData_->motor0MotorCurrentLimit(),
+                                motorFaultsData_->motor0VelocityLimit(),
+                                motorFaultsData_->motor0BusCurrentLimit(),
+                                motorFaultsData_->motor0BusVoltageUpperLimit(),
+                                motorFaultsData_->motor0BusVoltageLowerLimit(),
+                                motorFaultsData_->motor0IpmOrMotorTemperatureLimit()
                               };
     Util::writeBoolsIntoArray(data, 3, motor0LimitFlags, 7);
-    bool motor1LimitFlags[] = { motorFaultsData_->motor1OutputVoltagePwmLimit,
-                                motorFaultsData_->motor1MotorCurrentLimit,
-                                motorFaultsData_->motor1VelocityLimit,
-                                motorFaultsData_->motor1BusCurrentLimit,
-                                motorFaultsData_->motor1BusVoltageUpperLimit,
-                                motorFaultsData_->motor1BusVoltageLowerLimit,
-                                motorFaultsData_->motor1IpmOrMotorTemperatureLimit
+    bool motor1LimitFlags[] = { motorFaultsData_->motor1OutputVoltagePwmLimit(),
+                                motorFaultsData_->motor1MotorCurrentLimit(),
+                                motorFaultsData_->motor1VelocityLimit(),
+                                motorFaultsData_->motor1BusCurrentLimit(),
+                                motorFaultsData_->motor1BusVoltageUpperLimit(),
+                                motorFaultsData_->motor1BusVoltageLowerLimit(),
+                                motorFaultsData_->motor1IpmOrMotorTemperatureLimit()
                               };
     Util::writeBoolsIntoArray(data, 4, motor1LimitFlags, 7);
-    data[5] = motorFaultsData_->motor0RxErrorCount;
-    data[6] = motorFaultsData_->motor0TxErrorCount;
-    data[7] = motorFaultsData_->motor1RxErrorCount;
-    data[8] = motorFaultsData_->motor1TxErrorCount;
+    data[5] = motorFaultsData_->motor0RxErrorCount();
+    data[6] = motorFaultsData_->motor0TxErrorCount();
+    data[7] = motorFaultsData_->motor1RxErrorCount();
+    data[8] = motorFaultsData_->motor1TxErrorCount();
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x05)); // packet id
@@ -445,55 +445,55 @@ TEST_F(SerialReportingTest, sendBatteryFaultsTest) // TODO create function which
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
     unsigned char data[payloadLength];
     data[0] = CcsDefines::BATTERY_FAULTS_PKG_ID;
-    bool errorFlagsArray[] = {batteryFaultsData_ ->internalCommFault,
-                              batteryFaultsData_ ->internalConversionFault,
-                              batteryFaultsData_->weakCellFault,
-                              batteryFaultsData_->lowCellVoltageFault,
-                              batteryFaultsData_->openWiringFault,
-                              batteryFaultsData_->currentSensorFault,
-                              batteryFaultsData_->packVoltageSensorFault,
-                              batteryFaultsData_->weakPackFault,
-                              batteryFaultsData_->voltageRedundancyFault,
-                              batteryFaultsData_->fanMonitorFault,
-                              batteryFaultsData_->thermistorFault,
-                              batteryFaultsData_->canbusCommsFault,
-                              batteryFaultsData_->alwaysOnSupplyFault,
-                              batteryFaultsData_->highVoltageIsolationFault,
-                              batteryFaultsData_->powerSupplyFault,
-                              batteryFaultsData_->chargeLimitFault,
-                              batteryFaultsData_->dischargeLimitFault,
-                              batteryFaultsData_->chargerSafetyRelayFault,
-                              batteryFaultsData_->internalMemFault,
-                              batteryFaultsData_->internalThermistorFault,
-                              batteryFaultsData_->internalLogicFault
+    bool errorFlagsArray[] = {batteryFaultsData_ ->internalCommFault(),
+                              batteryFaultsData_ ->internalConversionFault(),
+                              batteryFaultsData_->weakCellFault(),
+                              batteryFaultsData_->lowCellVoltageFault(),
+                              batteryFaultsData_->openWiringFault(),
+                              batteryFaultsData_->currentSensorFault(),
+                              batteryFaultsData_->packVoltageSensorFault(),
+                              batteryFaultsData_->weakPackFault(),
+                              batteryFaultsData_->voltageRedundancyFault(),
+                              batteryFaultsData_->fanMonitorFault(),
+                              batteryFaultsData_->thermistorFault(),
+                              batteryFaultsData_->canbusCommsFault(),
+                              batteryFaultsData_->alwaysOnSupplyFault(),
+                              batteryFaultsData_->highVoltageIsolationFault(),
+                              batteryFaultsData_->powerSupplyFault(),
+                              batteryFaultsData_->chargeLimitFault(),
+                              batteryFaultsData_->dischargeLimitFault(),
+                              batteryFaultsData_->chargerSafetyRelayFault(),
+                              batteryFaultsData_->internalMemFault(),
+                              batteryFaultsData_->internalThermistorFault(),
+                              batteryFaultsData_->internalLogicFault()
                              };
     Util::writeBoolsIntoArray(data, 1, errorFlagsArray, 21);
-    bool limitFlagsArray[] = {batteryFaultsData_->dclReducedLowSoc,
-                              batteryFaultsData_->dclReducedHighCellResist,
-                              batteryFaultsData_->dclReducedDueToTemp,
-                              batteryFaultsData_->dclReducedLowCellVoltage,
-                              batteryFaultsData_->dclReducedLowPackVoltage,
+    bool limitFlagsArray[] = {batteryFaultsData_->dclReducedLowSoc(),
+                              batteryFaultsData_->dclReducedHighCellResist(),
+                              batteryFaultsData_->dclReducedDueToTemp(),
+                              batteryFaultsData_->dclReducedLowCellVoltage(),
+                              batteryFaultsData_->dclReducedLowPackVoltage(),
                               CcsDefines::NO_DATA,
-                              batteryFaultsData_->dclCclReducedVoltageFailsafe,
-                              batteryFaultsData_->dclCclReducedCommsFailsafe,
+                              batteryFaultsData_->dclCclReducedVoltageFailsafe(),
+                              batteryFaultsData_->dclCclReducedCommsFailsafe(),
                               CcsDefines::NO_DATA,
-                              batteryFaultsData_->cclReducedHighSoc,
-                              batteryFaultsData_->cclReducedHighCellResist,
-                              batteryFaultsData_->cclReducedDueToTemp,
-                              batteryFaultsData_->cclReducedHighCellVoltage,
-                              batteryFaultsData_->cclReducedHighPackVoltage,
-                              batteryFaultsData_->cclReducedChargerLatch,
-                              batteryFaultsData_->cclReducedACLimit
+                              batteryFaultsData_->cclReducedHighSoc(),
+                              batteryFaultsData_->cclReducedHighCellResist(),
+                              batteryFaultsData_->cclReducedDueToTemp(),
+                              batteryFaultsData_->cclReducedHighCellVoltage(),
+                              batteryFaultsData_->cclReducedHighPackVoltage(),
+                              batteryFaultsData_->cclReducedChargerLatch(),
+                              batteryFaultsData_->cclReducedACLimit()
                              };
     Util::writeBoolsIntoArray(data, 4, limitFlagsArray, 16);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     // checking that the data members before and after the NO_DATA is correct
     ASSERT_THAT(data[0], Eq(0x06)); // packet id
-    ASSERT_THAT(((data[4] & 0x10) == 0x10), batteryFaultsData_->dclReducedLowPackVoltage);
-    ASSERT_THAT(((data[4] & 0x40) == 0x40), batteryFaultsData_->dclCclReducedVoltageFailsafe);
-    ASSERT_THAT(((data[4] & 0x80) == 0x80), batteryFaultsData_->dclCclReducedCommsFailsafe);
-    ASSERT_THAT(((data[5] & 0x02) == 0x02), batteryFaultsData_->cclReducedHighSoc);
+    ASSERT_THAT(((data[4] & 0x10) == 0x10), batteryFaultsData_->dclReducedLowPackVoltage());
+    ASSERT_THAT(((data[4] & 0x40) == 0x40), batteryFaultsData_->dclCclReducedVoltageFailsafe());
+    ASSERT_THAT(((data[4] & 0x80) == 0x80), batteryFaultsData_->dclCclReducedCommsFailsafe());
+    ASSERT_THAT(((data[5] & 0x02) == 0x02), batteryFaultsData_->cclReducedHighSoc());
     unsigned char expectedPacket[expectedPackageLength];
     Util::frameData(data, payloadLength, expectedPacket);
     // check call
@@ -511,7 +511,7 @@ TEST_F(SerialReportingTest, sendBatteryFaultsTest) // TODO create function which
  * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
  * separately.
  */
-/*TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build the actual package to create more test cases in a easy way ...
+TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build the actual package to create more test cases in a easy way ...
 {
     // prepare payload
     const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_BATTERY;
@@ -572,7 +572,7 @@ TEST_F(SerialReportingTest, sendBatteryFaultsTest) // TODO create function which
 
     // actually call the method under test through qt's signal/slot mechanism
     view->sendBattery();
-}*/
+}
 
 /*
  * This test tests for the correct structure of the sendMppt package as defined in
@@ -590,19 +590,19 @@ TEST_F(SerialReportingTest, sendMpptTest)
     for (unsigned char testCount = 0; testCount < 2; testCount++)
     {
         unsigned char expectedPacket[CcsDefines::MPPT_COUNT][expectedPackageLength];
-        mpptData_->alive = testCount % 2 == 0; // set all mppts to non alive in all odd test runs
+        mpptData_->setAlive(testCount % 2 == 0); // set all mppts to non alive in all odd test runs
 
         for (unsigned char i = 0; i < CcsDefines::MPPT_COUNT; i++)
         {
             unsigned char data[payloadLength];
-            mpptData_->mpptNumber = i;
+            mpptData_->setMpptNumber(i);
             // build actual package
             fillMpptData(data);
             appendChecksum(data, payloadLength);
             // do some additional data checks
             ASSERT_THAT(data[0], Eq(0x09)); // packet id
 
-            if (mpptData_->alive)
+            if (mpptData_->alive())
             {
                 ASSERT_THAT(data[1], Eq((i | 0x80))); // mppt number including alive bit
             }
@@ -635,26 +635,26 @@ TEST_F(SerialReportingTest, sendLightsTest) // TODO create function which build 
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
     unsigned char data[payloadLength];
     data[0] = CcsDefines::LIGHTS_PKG_ID;
-    bool lightsAliveArray[] = {lightsData_->alive};
+    bool lightsAliveArray[] = {lightsData_->alive()};
     Util::writeBoolsIntoArray(data, 1, lightsAliveArray, 1);
-    bool lightsStatus[] = {lightsData_->lowBeams,
-                           lightsData_->highBeams,
-                           lightsData_->brakes,
-                           lightsData_->leftSignal,
-                           lightsData_->rightSignal,
-                           lightsData_->bmsStrobeLight
+    bool lightsStatus[] = {lightsData_->lowBeams(),
+                           lightsData_->highBeams(),
+                           lightsData_->brakes(),
+                           lightsData_->leftSignal(),
+                           lightsData_->rightSignal(),
+                           lightsData_->bmsStrobeLight()
                           };
     Util::writeBoolsIntoArray(data, 2, lightsStatus, 6);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x0A)); // packet id
-    ASSERT_THAT(((data[1] & 0x01) == 0x01), lightsData_->alive);
-    ASSERT_THAT(((data[2] & 0x01) == 0x01), lightsData_->lowBeams);
-    ASSERT_THAT(((data[2] & 0x02) == 0x02), lightsData_->highBeams);
-    ASSERT_THAT(((data[2] & 0x04) == 0x04), lightsData_->brakes);
-    ASSERT_THAT(((data[2] & 0x08) == 0x08), lightsData_->leftSignal);
-    ASSERT_THAT(((data[2] & 0x10) == 0x10), lightsData_->rightSignal);
-    ASSERT_THAT(((data[2] & 0x20) == 0x20), lightsData_->bmsStrobeLight);
+    ASSERT_THAT(((data[1] & 0x01) == 0x01), lightsData_->alive());
+    ASSERT_THAT(((data[2] & 0x01) == 0x01), lightsData_->lowBeams());
+    ASSERT_THAT(((data[2] & 0x02) == 0x02), lightsData_->highBeams());
+    ASSERT_THAT(((data[2] & 0x04) == 0x04), lightsData_->brakes());
+    ASSERT_THAT(((data[2] & 0x08) == 0x08), lightsData_->leftSignal());
+    ASSERT_THAT(((data[2] & 0x10) == 0x10), lightsData_->rightSignal());
+    ASSERT_THAT(((data[2] & 0x20) == 0x20), lightsData_->bmsStrobeLight());
     unsigned char expectedPacket[expectedPackageLength];
     Util::frameData(data, payloadLength, expectedPacket);
     //check call

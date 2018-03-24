@@ -19,43 +19,43 @@ TestApplication::TestApplication(int& argc, char** argv)
     , lightsTab_(new LightsTab())
     , motor0Tab_(new MotorTab())
     , motor1Tab_(new MotorTab())
-//    , mpptTab_(new MpptTab())
-//    , packetWindow_(new PacketWindow(*batteryTab_,
-//                                     *batteryFaultsTab_,
-//                                     *driverControlsTab_,
-//                                     *lightsTab_,
-//                                     *motor0Tab_,
-//                                     *motor1Tab_,
-//                                     *mpptTab_))
-//    , internetView_(new InternetView(internetWindow_.data()))
-//    , serialView_(new SerialView(serialWindow_.data()))
-//    , packetView_(new PacketView(packetWindow_.data()))
-//    , window_(new Window(QList<QWidget*>{serialWindow_.data(),
-//                                         internetWindow_.data(),
-//                                         packetWindow_.data()}))
-//, communicationService_(new CommunicationService(*serialView_, *internetView_))
-//, serialReporting_(new SerialReporting(*communicationService_,
-//                                       *keyMotorData_,
-//                                       *motor0DetailsData_,
-//                                       *motor1DetailsData_,
-//                                       *driverControlsData_,
-//                                       *motorFaultsData_,
-//                                       *batteryFaultsData_,
-//                                       *batteryData_,
-//                                       *mpptData_,
-//                                       *lightsData_,
-//                                       *serialView_))
-//, internetReporting_(new InternetReporting(*communicationService_,
-//                     *keyMotorData_,
-//                     *motor0DetailsData_,
-//                     *motor1DetailsData_,
-//                     *driverControlsData_,
-//                     *motorFaultsData_,
-//                     *batteryFaultsData_,
-//                     *batteryData_,
-//                     *mpptData_,
-//                     *lightsData_,
-//                     *internetView_))
+    , mpptTab_(new MpptTab())
+    , packetWindow_(new PacketWindow(*batteryTab_,
+                                     *batteryFaultsTab_,
+                                     *driverControlsTab_,
+                                     *lightsTab_,
+                                     *motor0Tab_,
+                                     *motor1Tab_,
+                                     *mpptTab_))
+    , internetView_(new InternetView(internetWindow_.data()))
+    , serialView_(new SerialView(serialWindow_.data()))
+    //, packetView_(new PacketView(packetWindow_.data()))
+    , window_(new Window(QList<QWidget*>{serialWindow_.data(),
+                                         internetWindow_.data(),
+                                         packetWindow_.data()}))
+, communicationService_(new CommunicationService(*serialView_, *internetView_))
+, serialReporting_(new SerialReporting(*communicationService_,
+                                       *keyMotorData_,
+                                       *motor0DetailsData_,
+                                       *motor1DetailsData_,
+                                       *driverControlsData_,
+                                       *motorFaultsData_,
+                                       *batteryFaultsData_,
+                                       *batteryData_,
+                                       *mpptData_,
+                                       *lightsData_,
+                                       *serialView_))
+, internetReporting_(new InternetReporting(*communicationService_,
+                     *keyMotorData_,
+                     *motor0DetailsData_,
+                     *motor1DetailsData_,
+                     *driverControlsData_,
+                     *motorFaultsData_,
+                     *batteryFaultsData_,
+                     *batteryData_,
+                     *mpptData_,
+                     *lightsData_,
+                     *internetView_))
 {
 }
 
