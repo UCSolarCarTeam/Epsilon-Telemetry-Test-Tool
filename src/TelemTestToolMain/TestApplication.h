@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QScopedPointer>
+#include "AuxBmsData.h"
 #include "BatteryData.h"
 #include "BatteryFaultsData.h"
 #include "CommunicationService.h"
@@ -36,6 +37,7 @@ private:
     QScopedPointer<BatteryData> batteryData_;
     QScopedPointer<MpptData> mpptData_;
     QScopedPointer<LightsData> lightsData_;
+    QScopedPointer<AuxBmsData> auxBmsData_;
     QScopedPointer<InternetWindow> internetWindow_;
     QScopedPointer<SerialWindow> serialWindow_;
     QScopedPointer<InternetView> internetView_;

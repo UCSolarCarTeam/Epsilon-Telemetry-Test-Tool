@@ -17,4 +17,5 @@ HEADERS += \
     $$PWD/LightsData.h \
     $$PWD/MotorDetailsData.h \
     $$PWD/MotorFaultsData.h \
-    $$PWD/MpptData.h
+    $$PWD/MpptData.h \
+    AuxBmsData.h
