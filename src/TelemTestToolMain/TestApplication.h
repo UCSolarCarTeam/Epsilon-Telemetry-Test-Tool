@@ -15,7 +15,6 @@
 #include "SerialReporting.h"
 #include "InternetView.h"
 #include "SerialView.h"
-#include "PacketView.h"
 #include "InternetWindow.h"
 #include "SerialWindow.h"
 #include "../UILayer/Packet/BatteryTab.h"
@@ -53,7 +52,6 @@ private:
     QScopedPointer<MotorTab> motor0Tab_;
     QScopedPointer<MotorTab> motor1Tab_;
     QScopedPointer<MpptTab> mpptTab_;
-    QScopedPointer<PacketView> packetView_;
     QScopedPointer<PacketWindow> packetWindow_;
     QScopedPointer<InternetView> internetView_;
     QScopedPointer<SerialView> serialView_;
