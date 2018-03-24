@@ -556,16 +556,6 @@ TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build
     Util::writeUShortIntoArray(data, 43, batteryData_->highCellVoltage);
     data[45] = batteryData_->highCellVoltageId;
     Util::writeUShortIntoArray(data, 46, batteryData_->averageCellVoltage);
-    data[48] = batteryData_->prechargeState;
-    data[49] = (unsigned char)batteryData_->auxVoltage;
-    bool auxBmsAliveArray[] = {batteryData_->auxBmsAlive};
-    Util::writeBoolsIntoArray(data, 50, auxBmsAliveArray, 1);
-    bool strobeBmsLightArray[] = {batteryData_->strobeBmsLight};
-    Util::writeBoolsIntoArray(data, 51, strobeBmsLightArray, 1);
-    bool allowChargeArray[] = {batteryData_->allowCharge};
-    Util::writeBoolsIntoArray(data, 52, allowChargeArray, 1);
-    bool contactorErrorArray[] = {batteryData_->contactorError};
-    Util::writeBoolsIntoArray(data, 53, contactorErrorArray, 1);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x07)); // packet id
@@ -721,7 +711,7 @@ TEST_F(SerialReportingTest, sendAllTest)
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS)).With(Args<0, 1>(packageIdIs(4))).Times(1);
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS)).With(Args<0, 1>(packageIdIs(5))).Times(1);
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS)).With(Args<0, 1>(packageIdIs(6))).Times(1);
-    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_BATTERY)).With(Args<0, 1>(packageIdIs(7))).Times(1);    
+    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_BATTERY)).With(Args<0, 1>(packageIdIs(7))).Times(1);
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_MPPT)).With(Args<0, 1>(packageIdIs(9))).Times(CcsDefines::MPPT_COUNT);
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS)).With(Args<0, 1>(packageIdIs(10))).Times(1);
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_AUX_BMS)).With(Args<0, 1>(packageIdIs(12))).Times(1);
