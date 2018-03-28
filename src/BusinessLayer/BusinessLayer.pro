@@ -19,7 +19,12 @@ HEADERS += \
     Packet/MpptReporting.h \
     PacketReporting.h \
     Packet/BatteryReporting.h \
-    Packet/BatteryFaultsReporting.h
+    Packet/BatteryFaultsReporting.h \
+    Packet/DriverControlsReporting.h \
+    Packet/LightsReporting.h \
+    Packet/KeyMotorReporting.h \
+    Packet/MotorDetailsReporting.h \
+    Packet/MotorFaultsReporting.h
 
 SOURCES += \
     $$PWD/CrcCalculator.cpp \
@@ -30,4 +35,9 @@ SOURCES += \
     Packet/MpptReporting.cpp \
     PacketReporting.cpp \
     Packet/BatteryReporting.cpp \
-    Packet/BatteryFaultsReporting.cpp
+    Packet/BatteryFaultsReporting.cpp \
+    Packet/DriverControlsReporting.cpp \
+    Packet/LightsReporting.cpp \
+    Packet/KeyMotorReporting.cpp \
+    Packet/MotorDetailsReporting.cpp \
+    Packet/MotorFaultsReporting.cpp

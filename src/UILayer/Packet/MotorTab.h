@@ -16,7 +16,7 @@ public:
     explicit MotorTab();
     ~MotorTab();
 
-    QCheckBox& Alive();
+    QCheckBox& alive();
     QDoubleSpinBox& busCurrentKey();
     QDoubleSpinBox& busVoltage();
     QDoubleSpinBox& setCurrent();
@@ -51,12 +51,12 @@ public:
     QCheckBox& railUnderVoltageLockOut();
     QCheckBox& watchDogCausedLastReset();
     QCheckBox& busCurrentLimit();
-    QCheckBox& busVoltageLower();
-    QCheckBox& busVoltageUpper();
-    QCheckBox& ipmOrMotorTemp();
-    QCheckBox& motorCurrent();
-    QCheckBox& outputVoltagePwm();
-    QCheckBox& velocity();
+    QCheckBox& busVoltageLowerLimit();
+    QCheckBox& busVoltageUpperLimit();
+    QCheckBox& ipmOrMotorTempLimit();
+    QCheckBox& motorCurrentLimit();
+    QCheckBox& outputVoltagePwmLimit();
+    QCheckBox& velocityLimit();
 
 private:
     Ui::MotorTab* ui_;

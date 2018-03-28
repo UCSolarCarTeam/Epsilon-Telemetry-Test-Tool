@@ -13,7 +13,7 @@ MotorTab::~MotorTab()
 }
 
 
-QCheckBox& MotorTab::Alive()
+QCheckBox& MotorTab::alive()
 {
     return *ui_->alive;
 }
@@ -178,32 +178,32 @@ QCheckBox& MotorTab::busCurrentLimit()
     return *ui_->busCurrentLimit;
 }
 
-QCheckBox& MotorTab::busVoltageLower()
+QCheckBox& MotorTab::busVoltageLowerLimit()
 {
-    return *ui_->busVoltageLower;
+    return *ui_->busVoltageLowerLimit;
 }
 
-QCheckBox& MotorTab::busVoltageUpper()
+QCheckBox& MotorTab::busVoltageUpperLimit()
 {
-    return *ui_->busVoltageUpper;
+    return *ui_->busVoltageUpperLimit;
 }
 
-QCheckBox& MotorTab::ipmOrMotorTemp()
+QCheckBox& MotorTab::ipmOrMotorTempLimit()
 {
-    return *ui_->ipmOrMotorTemp;
+    return *ui_->ipmOrMotorTempLimit;
 }
 
-QCheckBox& MotorTab::motorCurrent()
+QCheckBox& MotorTab::motorCurrentLimit()
 {
-    return *ui_->motorCurrent;
+    return *ui_->motorCurrentLimit;
 }
 
-QCheckBox& MotorTab::outputVoltagePwm()
+QCheckBox& MotorTab::outputVoltagePwmLimit()
 {
-    return *ui_->outputVoltagePwm;
+    return *ui_->outputVoltagePwmLimit;
 }
 
-QCheckBox& MotorTab::velocity()
+QCheckBox& MotorTab::velocityLimit()
 {
-    return *ui_->velocity;
+    return *ui_->velocityLimit;
 }
