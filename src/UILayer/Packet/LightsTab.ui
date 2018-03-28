@@ -78,7 +78,7 @@
     <string>Right Signal</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="lightsAlive">
+  <widget class="QCheckBox" name="alive">
    <property name="geometry">
     <rect>
      <x>10</x>

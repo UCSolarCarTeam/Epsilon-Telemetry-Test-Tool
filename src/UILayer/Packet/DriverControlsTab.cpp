@@ -22,9 +22,9 @@ QSpinBox& DriverControlsTab::regenBraking()
     return *ui_->regenBraking;
 }
 
-QCheckBox& DriverControlsTab::driverControlsAlive()
+QCheckBox& DriverControlsTab::alive()
 {
-    return *ui_->driverControlsAlive;
+    return *ui_->alive;
 }
 
 QCheckBox& DriverControlsTab::aux()

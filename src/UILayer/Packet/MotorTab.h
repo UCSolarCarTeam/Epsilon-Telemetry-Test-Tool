@@ -16,7 +16,7 @@ public:
     explicit MotorTab();
     ~MotorTab();
 
-    QCheckBox& Alive();
+    QCheckBox& alive();
     QDoubleSpinBox& busCurrentKey();
     QDoubleSpinBox& busVoltage();
     QDoubleSpinBox& setCurrent();

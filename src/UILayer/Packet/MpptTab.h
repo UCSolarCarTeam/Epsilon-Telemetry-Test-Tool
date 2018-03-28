@@ -15,7 +15,7 @@ public:
     explicit MpptTab();
     ~MpptTab();
 
-    QCheckBox& mpptAlive();
+    QCheckBox& alive();
     QSpinBox& arrayCurrent();
     QSpinBox& arrayVoltage();
     QSpinBox& batteryVoltage();

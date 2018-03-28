@@ -13,7 +13,7 @@ MotorTab::~MotorTab()
 }
 
 
-QCheckBox& MotorTab::Alive()
+QCheckBox& MotorTab::alive()
 {
     return *ui_->alive;
 }

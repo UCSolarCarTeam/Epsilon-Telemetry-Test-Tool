@@ -13,9 +13,9 @@ MpptTab::~MpptTab()
 }
 
 
-QCheckBox& MpptTab::mpptAlive()
+QCheckBox& MpptTab::alive()
 {
-    return *ui_->mpptAlive;
+    return *ui_->alive;
 }
 
 QSpinBox& MpptTab::arrayCurrent()

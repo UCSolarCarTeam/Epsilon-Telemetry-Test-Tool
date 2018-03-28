@@ -19,7 +19,7 @@ public:
     QCheckBox& brakeLights();
     QCheckBox& highBeams();
     QCheckBox& leftSignal();
-    QCheckBox& lightsAlive();
+    QCheckBox& alive();
     QCheckBox& lowBeams();
     QCheckBox& rightSignal();
 
