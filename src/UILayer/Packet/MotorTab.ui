@@ -154,7 +154,7 @@
     <property name="title">
      <string>Limit Flags</string>
     </property>
-    <widget class="QCheckBox" name="velocity">
+    <widget class="QCheckBox" name="velocityLimit">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -180,7 +180,7 @@
       <string>Bus Current</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="motorCurrent">
+    <widget class="QCheckBox" name="motorCurrentLimit">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -193,7 +193,7 @@
       <string>Motor Current</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="ipmOrMotorTemp">
+    <widget class="QCheckBox" name="ipmOrMotorTempLimit">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -206,7 +206,7 @@
       <string>IPM or Motor Temperature</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="outputVoltagePwm">
+    <widget class="QCheckBox" name="outputVoltagePwmLimit">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -219,7 +219,7 @@
       <string>Output Voltage PWM</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="busVoltageUpper">
+    <widget class="QCheckBox" name="busVoltageUpperLimit">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -232,7 +232,7 @@
       <string>Bus Voltage Upper</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="busVoltageLower">
+    <widget class="QCheckBox" name="busVoltageLowerLimit">
      <property name="geometry">
       <rect>
        <x>10</x>

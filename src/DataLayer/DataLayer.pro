@@ -20,11 +20,11 @@ HEADERS += \
     $$PWD/MpptData.h
 
 SOURCES += \
-    BatteryData.cpp \
-    BatteryFaultsData.cpp \
-    DriverControlsData.cpp \
-    KeyMotorData.cpp \
-    LightsData.cpp \
-    MotorDetailsData.cpp \
-    MotorFaultsData.cpp \
-    MpptData.cpp
+    $$PWD/BatteryData.cpp \
+    $$PWD/BatteryFaultsData.cpp \
+    $$PWD/DriverControlsData.cpp \
+    $$PWD/KeyMotorData.cpp \
+    $$PWD/LightsData.cpp \
+    $$PWD/MotorDetailsData.cpp \
+    $$PWD/MotorFaultsData.cpp \
+    $$PWD/MpptData.cpp

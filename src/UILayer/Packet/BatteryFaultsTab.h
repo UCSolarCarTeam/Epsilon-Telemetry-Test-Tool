@@ -24,6 +24,7 @@ public:
     QCheckBox& fanMonitorFault();
     QCheckBox& highVoltageIsolationFault();
     QCheckBox& internalCommFault();
+    QCheckBox& internalConversionFault();
     QCheckBox& internalLogicFault();
     QCheckBox& internalMemoryFault();
     QCheckBox& internalThermistorFault();
