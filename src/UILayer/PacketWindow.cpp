@@ -1,4 +1,5 @@
 #include <QVBoxLayout>
+#include <QPushButton>
 #include "PacketWindow.h"
 #include "../UILayer/Packet/BatteryFaultsTab.h"
 #include "../UILayer/Packet/BatteryTab.h"
@@ -33,6 +34,8 @@ PacketWindow::PacketWindow(BatteryTab& batteryTab,
     tabs_->addTab(&mpptTab_, tr("MPPT"));
 
     QVBoxLayout* tabsLayout = new QVBoxLayout;
+    setButton_ = new QPushButton("Set Data", this);
+    tabsLayout->addWidget(setButton_);
     tabsLayout->addWidget(tabs_);
     setMinimumSize(900, 800);
     setLayout(tabsLayout);
@@ -76,4 +79,9 @@ MotorTab& PacketWindow::motor1Tab()
 MpptTab& PacketWindow::mpptTab()
 {
     return mpptTab_;
+}
+
+QPushButton& PacketWindow::setButton()
+{
+    return *setButton_;
 }

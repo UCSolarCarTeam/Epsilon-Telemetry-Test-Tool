@@ -2,6 +2,7 @@
 
 #include <QWidget>
 #include <QTabWidget>
+#include <QPushButton>
 
 class BatteryFaultsTab;
 class BatteryTab;
@@ -31,6 +32,7 @@ public:
     MotorTab& motor0Tab();
     MotorTab& motor1Tab();
     MpptTab& mpptTab();
+    QPushButton& setButton();
 
 private:
     BatteryTab& batteryTab_;
@@ -40,5 +42,6 @@ private:
     MotorTab& motor0Tab_;
     MotorTab& motor1Tab_;
     MpptTab& mpptTab_;
+    QPushButton* setButton_;
 };
 

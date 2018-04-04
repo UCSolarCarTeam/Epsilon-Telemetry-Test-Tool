@@ -9,7 +9,7 @@ MpptReporting::MpptReporting(MpptData& mpptData,
 {
 }
 
-void MpptReporting::setMpptData()
+void MpptReporting::setData()
 {
     mpptData_.setAlive(mpptTab_.mpptAlive().isChecked());
     mpptData_.setMpptNumber(mpptTab_.mpptNumber().value());

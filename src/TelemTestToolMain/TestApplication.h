@@ -25,6 +25,7 @@
 #include "../UILayer/Packet/MpptTab.h"
 #include "PacketWindow.h"
 #include "Window.h"
+#include "PacketReporting.h"
 
 class TestApplication : public QApplication
 {
@@ -59,4 +60,5 @@ private:
     QScopedPointer<CommunicationService> communicationService_;
     QScopedPointer<SerialReporting> serialReporting_;
     QScopedPointer<InternetReporting> internetReporting_;
+    QScopedPointer<PacketReporting> packetReporting_;
 };

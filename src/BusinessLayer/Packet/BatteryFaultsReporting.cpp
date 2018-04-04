@@ -9,7 +9,7 @@ BatteryFaultsReporting::BatteryFaultsReporting(BatteryFaultsData& batteryFaultsD
 {
 }
 
-void BatteryFaultsReporting::setBatteryFaultsData()
+void BatteryFaultsReporting::setData()
 {
     batteryFaultsData_.setInternalCommFault(batteryFaultsTab_.internalCommFault().isChecked());
     batteryFaultsData_.setInternalConversionFault(batteryFaultsTab_.internalConversionFault().isChecked());

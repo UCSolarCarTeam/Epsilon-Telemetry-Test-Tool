@@ -12,7 +12,7 @@ class MpptReporting : public QObject
 public:
     MpptReporting(MpptData& mpptData,
                   MpptTab& mpptTab);
-    void setMpptData();
+    void setData();
 
 private:
     MpptData& mpptData_;

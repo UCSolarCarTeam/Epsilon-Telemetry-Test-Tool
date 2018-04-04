@@ -30,7 +30,7 @@ void InternetWindow::setupUi()
     portSpinBox_->setRange(0, 65535);
     portSpinBox_->setValue(5672);
     QLabel* exchangeNameLabel = new QLabel("Exchange Name", this);
-    exchangeNameLineEdit_ = new QLineEdit("", this);
+    exchangeNameLineEdit_ = new QLineEdit("hermesExchange", this);
     QLabel* routingKeyLabel = new QLabel("Routing Key", this);
     routingKeyLineEdit_ = new QLineEdit("", this);
     connectionStatusLabel_ = new QLabel("Not connected", this);

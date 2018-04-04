@@ -13,7 +13,7 @@ public:
     MotorFaultsReporting(MotorFaultsData& motorFaultsData,
                       MotorTab& motor0Tab,
                       MotorTab& motor1Tab);
-    void setMotorFaultsData();
+    void setData();
 
 private:
     MotorFaultsData& motorFaultsData_;

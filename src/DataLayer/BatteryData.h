@@ -8,7 +8,7 @@ enum PrechargeState
     Precharge = 1,
     Measure = 2,
     EnablePack = 3,
-    Run = 4,
+    Run = 4
 };
 
 class BatteryData : public QObject

@@ -11,7 +11,7 @@ MotorFaultsReporting::MotorFaultsReporting(MotorFaultsData& motorFaultsData,
 {
 }
 
-void MotorFaultsReporting::setMotorFaultsData()
+void MotorFaultsReporting::setData()
 {
     motorFaultsData_.setMotor0OverSpeed(motor0Tab_.overSpeed().isChecked());
     motorFaultsData_.setMotor0SoftwareOverCurrent(motor0Tab_.overCurrent().isChecked());

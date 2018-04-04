@@ -9,7 +9,7 @@ MotorDetailsReporting::MotorDetailsReporting(MotorDetailsData& motorDetailsData,
 {
 }
 
-void MotorDetailsReporting::setMotorDetailsData()
+void MotorDetailsReporting::setData()
 {
     motorDetailsData_.setPhaseCCurrent(motorTab_.phaseCCurrent().value());
     motorDetailsData_.setPhaseBCurrent(motorTab_.phaseBCurrent().value());

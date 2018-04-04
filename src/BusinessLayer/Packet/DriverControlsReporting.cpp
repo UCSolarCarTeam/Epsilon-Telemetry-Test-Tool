@@ -9,7 +9,7 @@ DriverControlsReporting::DriverControlsReporting(DriverControlsData& driverContr
 {
 }
 
-void DriverControlsReporting::setDriverControlsData()
+void DriverControlsReporting::setData()
 {
     driverControlsData_.setAlive(driverControlsTab_.driverControlsAlive().isChecked());
     driverControlsData_.setHeadlightsOff(driverControlsTab_.headlightsOff().isChecked());

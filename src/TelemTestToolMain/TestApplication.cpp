@@ -32,29 +32,39 @@ TestApplication::TestApplication(int& argc, char** argv)
     , window_(new Window(QList<QWidget*>{serialWindow_.data(),
                                          internetWindow_.data(),
                                          packetWindow_.data()}))
-, communicationService_(new CommunicationService(*serialView_, *internetView_))
-, serialReporting_(new SerialReporting(*communicationService_,
-                                       *keyMotorData_,
-                                       *motor0DetailsData_,
-                                       *motor1DetailsData_,
-                                       *driverControlsData_,
-                                       *motorFaultsData_,
-                                       *batteryFaultsData_,
-                                       *batteryData_,
-                                       *mpptData_,
-                                       *lightsData_,
-                                       *serialView_))
-, internetReporting_(new InternetReporting(*communicationService_,
-                     *keyMotorData_,
-                     *motor0DetailsData_,
-                     *motor1DetailsData_,
-                     *driverControlsData_,
-                     *motorFaultsData_,
-                     *batteryFaultsData_,
-                     *batteryData_,
-                     *mpptData_,
-                     *lightsData_,
-                     *internetView_))
+    , communicationService_(new CommunicationService(*serialView_, *internetView_))
+    , serialReporting_(new SerialReporting(*communicationService_,
+                                           *keyMotorData_,
+                                           *motor0DetailsData_,
+                                           *motor1DetailsData_,
+                                           *driverControlsData_,
+                                           *motorFaultsData_,
+                                           *batteryFaultsData_,
+                                           *batteryData_,
+                                           *mpptData_,
+                                           *lightsData_,
+                                           *serialView_))
+    , internetReporting_(new InternetReporting(*communicationService_,
+                                               *keyMotorData_,
+                                               *motor0DetailsData_,
+                                               *motor1DetailsData_,
+                                               *driverControlsData_,
+                                               *motorFaultsData_,
+                                               *batteryFaultsData_,
+                                               *batteryData_,
+                                               *mpptData_,
+                                               *lightsData_,
+                                               *internetView_))
+    , packetReporting_(new PacketReporting(*keyMotorData_,
+                                           *motor0DetailsData_,
+                                           *motor1DetailsData_,
+                                           *driverControlsData_,
+                                           *motorFaultsData_,
+                                           *batteryFaultsData_,
+                                           *batteryData_,
+                                           *mpptData_,
+                                           *lightsData_,
+                                           *packetWindow_))
 {
 }
 

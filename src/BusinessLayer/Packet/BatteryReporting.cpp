@@ -9,7 +9,7 @@ BatteryReporting::BatteryReporting(BatteryData& batteryData,
 {
 }
 
-void BatteryReporting::setBatteryData()
+void BatteryReporting::setData()
 {
     batteryData_.setAlive(batteryTab_.bmuAlive().isChecked());
     batteryData_.setDischargeRelayEnabled(batteryTab_.dischargeRelay().isChecked());
