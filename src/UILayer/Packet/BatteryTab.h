@@ -47,7 +47,7 @@ public:
     QDoubleSpinBox& packAmphours();
     QDoubleSpinBox& packCurrent();
     QDoubleSpinBox& packDepthOfDischarge();
-    QDoubleSpinBox& packDepthOfCharge();
+    QDoubleSpinBox& packStateOfCharge();
     QDoubleSpinBox& packVoltage();
     QSpinBox& populatedCells();
     QSpinBox& prechargeState();

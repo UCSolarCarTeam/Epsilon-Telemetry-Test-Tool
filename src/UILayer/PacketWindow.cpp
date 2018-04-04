@@ -34,7 +34,7 @@ PacketWindow::PacketWindow(BatteryTab& batteryTab,
 
     QVBoxLayout* tabsLayout = new QVBoxLayout;
     tabsLayout->addWidget(tabs_);
-    setMinimumSize(900, 700);
+    setMinimumSize(900, 800);
     setLayout(tabsLayout);
     setWindowTitle(tr("Data"));
 }

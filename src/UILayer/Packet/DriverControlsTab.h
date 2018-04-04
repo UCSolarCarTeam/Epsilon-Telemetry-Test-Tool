@@ -17,7 +17,7 @@ public:
 
     QSpinBox& acceleration();
     QSpinBox& regenBraking();
-    QCheckBox& driverControlsAlive();
+    QCheckBox& alive();
     QCheckBox& aux();
     QCheckBox& brakes();
     QCheckBox& forward();

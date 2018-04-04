@@ -6,7 +6,7 @@ TARGET = runTestSuite
 
 # If google test is installed locally using a package manager it might be necessary to add -lgtest -lgtest_main -lgmock (use configuration 2)
 # Configuration 1: manually compiled in the same folder (travis build config)
-LIBS += -L../../build/.lib -lBusinessLayer -lViewLayer -lUILayer -lgmock
+LIBS += -L../../build/.lib -lBusinessLayer -lViewLayer -lUILayer -lDataLayer -lgmock
 # Configuration 2: locally installed google test and google mock
 #LIBS += -L../../build/.lib -lBusinessLayer -lViewLayer -lUILayer -lgmock -lgtest -lgtest_main
 

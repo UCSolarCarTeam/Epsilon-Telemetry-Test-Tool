@@ -167,9 +167,9 @@ QDoubleSpinBox& BatteryTab::packDepthOfDischarge()
     return *ui_->packDepthOfDischarge;
 }
 
-QDoubleSpinBox& BatteryTab::packDepthOfCharge()
+QDoubleSpinBox& BatteryTab::packStateOfCharge()
 {
-    return *ui_->packDepthOfDischarge;
+    return *ui_->packStateOfCharge;
 }
 
 QDoubleSpinBox& BatteryTab::packVoltage()

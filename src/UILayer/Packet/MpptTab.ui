@@ -26,7 +26,7 @@
     <string>Temperature</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="mpptAlive">
+  <widget class="QCheckBox" name="alive">
    <property name="geometry">
     <rect>
      <x>10</x>

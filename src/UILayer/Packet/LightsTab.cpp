@@ -32,9 +32,9 @@ QCheckBox& LightsTab::leftSignal()
     return *ui_->leftSignal;
 }
 
-QCheckBox& LightsTab::lightsAlive()
+QCheckBox& LightsTab::alive()
 {
-    return *ui_->lightsAlive;
+    return *ui_->alive;
 }
 
 QCheckBox& LightsTab::lowBeams()

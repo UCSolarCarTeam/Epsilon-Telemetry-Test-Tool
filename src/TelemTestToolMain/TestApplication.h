@@ -2,7 +2,7 @@
 
 #include <QApplication>
 #include <QScopedPointer>
-#include "BatteryData.h"
+#include "../DataLayer/BatteryData.h"
 #include "BatteryFaultsData.h"
 #include "CommunicationService.h"
 #include "DriverControlsData.h"
