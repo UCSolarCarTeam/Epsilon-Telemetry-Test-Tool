@@ -27,7 +27,7 @@ namespace
     const int BATTERY_LENGTH = 48;
     const int MPPT_LENGTH = 10;
     const int LIGHTS_LENGTH = 3;
-    const int AUX_BMS_LENGTH = 6;
+    const int AUX_BMS_LENGTH = 7;
 }
 
 using namespace Util;
