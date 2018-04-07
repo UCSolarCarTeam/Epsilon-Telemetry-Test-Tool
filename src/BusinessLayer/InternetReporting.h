@@ -2,6 +2,7 @@
 
 #include <QObject>
 
+class AuxBmsData;
 class BatteryData;
 class BatteryFaultsData;
 class DriverControlsData;
@@ -27,6 +28,7 @@ public:
                       const BatteryData& batteryData_,
                       const MpptData& mpptData_,
                       const LightsData& lightsData_,
+                      const AuxBmsData& auxBmsData_,
                       InternetView& view);
 
 private slots:
@@ -41,6 +43,7 @@ private:
     QJsonObject makeBattery();
     QJsonArray makeMppt();
     QJsonObject makeLights();
+    QJsonObject makeAuxBms();
 
 private:
     I_CommunicationService& communicationService_;
@@ -53,5 +56,6 @@ private:
     const BatteryData& batteryData_;
     const MpptData& mpptData_;
     const LightsData& lightsData_;
+    const AuxBmsData& auxBmsData_;
     InternetView& view_;
 };

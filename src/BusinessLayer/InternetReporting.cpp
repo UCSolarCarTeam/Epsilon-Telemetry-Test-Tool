@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QString>
 
+#include "AuxBmsData.h"
 #include "BatteryData.h"
 #include "BatteryFaultsData.h"
 #include "CcsDefines.h"
@@ -27,6 +28,7 @@ InternetReporting::InternetReporting(I_CommunicationService& commService,
                                      const BatteryData& batteryData,
                                      const MpptData& mpptData,
                                      const LightsData& lightsData,
+                                     const AuxBmsData& auxBmsData,
                                      InternetView& view)
 
     : communicationService_(commService)
@@ -39,6 +41,7 @@ InternetReporting::InternetReporting(I_CommunicationService& commService,
     , batteryData_(batteryData)
     , mpptData_(mpptData)
     , lightsData_(lightsData)
+    , auxBmsData_(auxBmsData)
     , view_(view)
 {
     connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
@@ -250,33 +253,27 @@ QJsonObject InternetReporting::makeBattery()
     bmsRelayStatusFlags.insert("IsReadySignalStatus", batteryData_.isReadySignalStatus());
     bmsRelayStatusFlags.insert("IsChargingSignalStatus", batteryData_.isChargingSignalStatus());
     battery.insert("BMSRelayStatusFlags", bmsRelayStatusFlags);
-    battery.insert("PopulatedCells", batteryData_.populatedCells());
-    battery.insert("12vInputVoltage", batteryData_.inputVoltage12V());
-    battery.insert("FanVoltage", batteryData_.fanVoltage());
-    battery.insert("PackCurrent", batteryData_.packCurrent());
-    battery.insert("PackVoltage", batteryData_.packVoltage());
-    battery.insert("PackStateOfCharge", batteryData_.packStateOfCharge());
-    battery.insert("PackAmphours", batteryData_.packAmpHours());
-    battery.insert("PackDepthOfDischarge", batteryData_.packDepthOfDischarge());
-    battery.insert("HighTemperature", batteryData_.highTemperature());
-    battery.insert("HighThermistorId", batteryData_.highThermistorId());
-    battery.insert("LowTemperature", batteryData_.lowTemperature());
-    battery.insert("LowThermistorId", batteryData_.lowThermistorId());
-    battery.insert("AverageTemperature", batteryData_.averageTemperature());
-    battery.insert("InternalTemperature", batteryData_.internalTemperature());
-    battery.insert("FanSpeed", batteryData_.fanSpeed());
-    battery.insert("RequestedFanSpeed", batteryData_.requestedFanSpeed());
-    battery.insert("LowCellVoltage", batteryData_.lowCellVoltage());
-    battery.insert("LowCellVoltageId", batteryData_.lowCellVoltageId());
-    battery.insert("HighCellVoltage", batteryData_.highCellVoltage());
-    battery.insert("HighCellVoltageId", batteryData_.highCellVoltageId());
-    battery.insert("AverageCellVoltage", batteryData_.averageCellVoltage());
-    battery.insert("PrechargeState", batteryData_.prechargeStateJSON());
-    battery.insert("AuxVoltage", batteryData_.auxVoltage());
-    battery.insert("AuxBmsAlive", batteryData_.auxBmsAlive());
-    battery.insert("StrobeBmsLight", batteryData_.strobeBmsLight());
-    battery.insert("AllowCharge", batteryData_.allowCharge());
-    battery.insert("ContactorError", batteryData_.contactorError());
+    battery.insert("PopulatedCells", batteryData_.populatedCells);
+    battery.insert("12vInputVoltage", batteryData_.inputVoltage12V);
+    battery.insert("FanVoltage", batteryData_.fanVoltage);
+    battery.insert("PackCurrent", batteryData_.packCurrent);
+    battery.insert("PackVoltage", batteryData_.packVoltage);
+    battery.insert("PackStateOfCharge", batteryData_.packStateOfCharge);
+    battery.insert("PackAmphours", batteryData_.packAmpHours);
+    battery.insert("PackDepthOfDischarge", batteryData_.packDepthOfDischarge);
+    battery.insert("HighTemperature", batteryData_.highTemperature);
+    battery.insert("HighThermistorId", batteryData_.highThermistorId);
+    battery.insert("LowTemperature", batteryData_.lowTemperature);
+    battery.insert("LowThermistorId", batteryData_.lowThermistorId);
+    battery.insert("AverageTemperature", batteryData_.averageTemperature);
+    battery.insert("InternalTemperature", batteryData_.internalTemperature);
+    battery.insert("FanSpeed", batteryData_.fanSpeed);
+    battery.insert("RequestedFanSpeed", batteryData_.requestedFanSpeed);
+    battery.insert("LowCellVoltage", batteryData_.lowCellVoltage);
+    battery.insert("LowCellVoltageId", batteryData_.lowCellVoltageId);
+    battery.insert("HighCellVoltage", batteryData_.highCellVoltage);
+    battery.insert("HighCellVoltageId", batteryData_.highCellVoltageId);
+    battery.insert("AverageCellVoltage", batteryData_.averageCellVoltage);
     return battery;
 }
 
@@ -310,6 +307,18 @@ QJsonObject InternetReporting::makeLights()
     return lightsInfo;
 }
 
+QJsonObject InternetReporting::makeAuxBms()
+{
+    QJsonObject auxBms;
+    auxBms.insert("PrechargeState", batteryData_.prechargeStateJSON);
+    auxBms.insert("AuxVoltage", batteryData_.auxVoltage);
+    auxBms.insert("AuxBmsAlive", batteryData_.auxBmsAlive);
+    auxBms.insert("StrobeBmsLight", batteryData_.strobeBmsLight);
+    auxBms.insert("AllowCharge", batteryData_.allowCharge);
+    auxBms.insert("ContactorError", batteryData_.contactorError);
+    return auxBms;
+}
+
 void InternetReporting::sendAll()
 {
     QJsonObject obj;
@@ -328,6 +337,7 @@ void InternetReporting::sendAll()
     obj.insert("Battery", makeBattery());
     obj.insert("MPPT", makeMppt());
     obj.insert("Lights", makeLights());
+    obj.insert("AuxBms", makeAuxBms());
     QJsonDocument doc(obj);
     QByteArray data = doc.toJson(QJsonDocument::Compact);
     communicationService_.sendInternetData(data);

@@ -11,6 +11,7 @@ TestApplication::TestApplication(int& argc, char** argv)
     , batteryData_(new BatteryData())
     , mpptData_(new MpptData())
     , lightsData_(new LightsData())
+    , auxBmsData_(new AuxBmsData())
     , internetWindow_(new InternetWindow())
     , serialWindow_(new SerialWindow())
     , batteryTab_(new BatteryTab())
@@ -43,18 +44,20 @@ TestApplication::TestApplication(int& argc, char** argv)
                                            *batteryData_,
                                            *mpptData_,
                                            *lightsData_,
+                                           *auxBmsData_,
                                            *serialView_))
     , internetReporting_(new InternetReporting(*communicationService_,
-                                               *keyMotorData_,
-                                               *motor0DetailsData_,
-                                               *motor1DetailsData_,
-                                               *driverControlsData_,
-                                               *motorFaultsData_,
-                                               *batteryFaultsData_,
-                                               *batteryData_,
-                                               *mpptData_,
-                                               *lightsData_,
-                                               *internetView_))
+                         *keyMotorData_,
+                         *motor0DetailsData_,
+                         *motor1DetailsData_,
+                         *driverControlsData_,
+                         *motorFaultsData_,
+                         *batteryFaultsData_,
+                         *batteryData_,
+                         *mpptData_,
+                         *lightsData_,
+                         *auxBmsData_,
+                         *internetView_))
     , packetReporting_(new PacketReporting(*keyMotorData_,
                                            *motor0DetailsData_,
                                            *motor1DetailsData_,
@@ -64,6 +67,7 @@ TestApplication::TestApplication(int& argc, char** argv)
                                            *batteryData_,
                                            *mpptData_,
                                            *lightsData_,
+                                           *auxBmsData_,
                                            *packetWindow_))
 {
 }
