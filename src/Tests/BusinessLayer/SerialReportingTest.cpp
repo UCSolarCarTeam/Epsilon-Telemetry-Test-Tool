@@ -52,7 +52,7 @@ namespace
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 52;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 7;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_AUX_BMS = 10;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_AUX_BMS = 11;
 }
 
 
