@@ -16,6 +16,7 @@ void MotorDetailsReporting::setData()
     motorDetailsData_.setMotorVoltageReal(motorTab_.motorVoltageReal().value());
     motorDetailsData_.setMotorVoltageImaginary(motorTab_.motorVoltageImaginary().value());
     motorDetailsData_.setMotorCurrentReal(motorTab_.motorCurrentReal().value());
+    motorDetailsData_.setMotorCurrentImaginary(motorTab_.motorCurrentImaginary().value());
     motorDetailsData_.setBackEmf(motorTab_.backEMF().value());
     motorDetailsData_.setRailSupply15V(motorTab_.voltageRailSupply15V().value());
     motorDetailsData_.setRailSupply3V(motorTab_.voltageRailSupply3V().value());

@@ -40,73 +40,29 @@ PacketReporting::PacketReporting(KeyMotorData& keyMotorData,
     , lightsData_(lightsData)
     , window_(window)
 {
+    batteryReporting_ = new BatteryReporting(batteryData_, window_.batteryTab());
+    batteryFaultsReporting_ = new BatteryFaultsReporting(batteryFaultsData_, window_.batteryFaultsTab());
+    driverControlsReporting_ = new DriverControlsReporting(driverControlsData_, window_.driverControlsTab());
+    keyMotorReporting_ = new KeyMotorReporting(keyMotorData_, window_.motor0Tab(), window_.motor1Tab());
+    lightsReporting_ = new LightsReporting(lightsData_, window_.lightsTab());
+    motor0DetailsReporting_ = new MotorDetailsReporting(motor0DetailsData_, window_.motor0Tab());
+    motor1DetailsReporting_ = new MotorDetailsReporting(motor1DetailsData_, window_.motor1Tab());
+    motorFaultsReporting_ = new MotorFaultsReporting(motorFaultsData_, window_.motor0Tab(), window_.motor1Tab());
+    mpptReporting_ = new MpptReporting(mpptData_, window_.mpptTab());
+
     connect(&(window_.setButton()), SIGNAL(clicked()),
                      this, SLOT(setAll()));
 }
 
-void PacketReporting::setBattery()
-{
-    BatteryReporting batteryReporting(batteryData_, window_.batteryTab());
-    batteryReporting.setData();
-}
-
-void PacketReporting::setBatteryFaults()
-{
-    BatteryFaultsReporting batteryFaultsReporting(batteryFaultsData_, window_.batteryFaultsTab());
-    batteryFaultsReporting.setData();
-}
-
-void PacketReporting::setDriverControls()
-{
-    DriverControlsReporting driverControlsReporting(driverControlsData_, window_.driverControlsTab());
-    driverControlsReporting.setData();
-}
-
-void PacketReporting::setMotorFaults()
-{
-    MotorFaultsReporting motorFaultsReporting(motorFaultsData_, window_.motor0Tab(), window_.motor1Tab());
-    motorFaultsReporting.setData();
-}
-
-void PacketReporting::setKeyMotor()
-{
-    KeyMotorReporting keyMotorReporting(keyMotorData_, window_.motor0Tab(), window_.motor1Tab());
-    keyMotorReporting.setData();
-}
-
-void PacketReporting::setMotor0Details()
-{
-    MotorDetailsReporting motor0DetailsReporting(motor0DetailsData_, window_.motor0Tab());
-    motor0DetailsReporting.setData();
-}
-
-void PacketReporting::setMotor1Details()
-{
-    MotorDetailsReporting motor1DetailsReporting(motor1DetailsData_, window_.motor1Tab());
-    motor1DetailsReporting.setData();
-}
-
-void PacketReporting::setMppt()
-{
-    MpptReporting mpptReporting(mpptData_, window_.mpptTab());
-    mpptReporting.setData();
-}
-
-void PacketReporting::setLights()
-{
-    LightsReporting lightsReporting(lightsData_, window_.lightsTab());
-    lightsReporting.setData();
-}
-
 void PacketReporting::setAll()
 {
-    setBattery();
-    setBatteryFaults();
-    setDriverControls();
-    setMotorFaults();
-    setKeyMotor();
-    setMotor0Details();
-    setMotor1Details();
-    setMppt();
-    setLights();
+    batteryReporting_->setData();
+    batteryFaultsReporting_->setData();
+    driverControlsReporting_->setData();
+    motorFaultsReporting_->setData();
+    keyMotorReporting_->setData();
+    motor0DetailsReporting_->setData();
+    motor1DetailsReporting_->setData();
+    mpptReporting_->setData();
+    lightsReporting_->setData();
 }

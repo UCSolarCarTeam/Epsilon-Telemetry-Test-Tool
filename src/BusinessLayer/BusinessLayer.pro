@@ -16,15 +16,15 @@ HEADERS += \
     $$PWD/I_CommunicationService.h \
     $$PWD/CommunicationService.h \
     $$PWD/Util.h \
-    Packet/MpptReporting.h \
-    PacketReporting.h \
-    Packet/BatteryReporting.h \
-    Packet/BatteryFaultsReporting.h \
-    Packet/DriverControlsReporting.h \
-    Packet/LightsReporting.h \
-    Packet/KeyMotorReporting.h \
-    Packet/MotorDetailsReporting.h \
-    Packet/MotorFaultsReporting.h
+    $$PWD/Packet/MpptReporting.h \
+    $$PWD/PacketReporting.h \
+    $$PWD/Packet/BatteryReporting.h \
+    $$PWD/Packet/BatteryFaultsReporting.h \
+    $$PWD/Packet/DriverControlsReporting.h \
+    $$PWD/Packet/LightsReporting.h \
+    $$PWD/Packet/KeyMotorReporting.h \
+    $$PWD/Packet/MotorDetailsReporting.h \
+    $$PWD/Packet/MotorFaultsReporting.h
 
 SOURCES += \
     $$PWD/CrcCalculator.cpp \
@@ -32,12 +32,12 @@ SOURCES += \
     $$PWD/InternetReporting.cpp \
     $$PWD/CommunicationService.cpp \
     $$PWD/Util.cpp \
-    Packet/MpptReporting.cpp \
-    PacketReporting.cpp \
-    Packet/BatteryReporting.cpp \
-    Packet/BatteryFaultsReporting.cpp \
-    Packet/DriverControlsReporting.cpp \
-    Packet/LightsReporting.cpp \
-    Packet/KeyMotorReporting.cpp \
-    Packet/MotorDetailsReporting.cpp \
-    Packet/MotorFaultsReporting.cpp
+    $$PWD/Packet/MpptReporting.cpp \
+    $$PWD/PacketReporting.cpp \
+    $$PWD/Packet/BatteryReporting.cpp \
+    $$PWD/Packet/BatteryFaultsReporting.cpp \
+    $$PWD/Packet/DriverControlsReporting.cpp \
+    $$PWD/Packet/LightsReporting.cpp \
+    $$PWD/Packet/KeyMotorReporting.cpp \
+    $$PWD/Packet/MotorDetailsReporting.cpp \
+    $$PWD/Packet/MotorFaultsReporting.cpp

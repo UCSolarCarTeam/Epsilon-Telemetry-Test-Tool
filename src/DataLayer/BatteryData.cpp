@@ -230,7 +230,7 @@ bool BatteryData::contactorError() const
     return contactorError_;
 }
 
-void BatteryData::setAlive(const bool& alive = true)
+void BatteryData::setAlive(const bool& alive)
 {
     alive_ = alive;
 }
@@ -295,7 +295,7 @@ void BatteryData::setPackCurrent(const float& packCurrent)
     packCurrent_ = packCurrent;
 }
 
-void BatteryData::setPackVoltage(const float& packVoltage = 12.33f)
+void BatteryData::setPackVoltage(const float& packVoltage)
 {
     packVoltage_ = packVoltage;
 }

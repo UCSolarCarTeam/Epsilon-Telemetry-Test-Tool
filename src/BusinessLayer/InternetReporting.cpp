@@ -301,6 +301,7 @@ QJsonArray InternetReporting::makeMppt()
 QJsonObject InternetReporting::makeLights()
 {
     QJsonObject lightsInfo;
+    lightsInfo.insert("Alive", lightsData_.alive());
     lightsInfo.insert("LowBeams", lightsData_.lowBeams());
     lightsInfo.insert("HighBeams", lightsData_.highBeams());
     lightsInfo.insert("Brakes", lightsData_.brakes());

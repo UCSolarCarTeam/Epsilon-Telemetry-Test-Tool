@@ -11,6 +11,14 @@ class MotorDetailsData;
 class MotorFaultsData;
 class MpptData;
 class PacketWindow;
+class BatteryFaultsReporting;
+class BatteryReporting;
+class DriverControlsReporting;
+class KeyMotorReporting;
+class LightsReporting;
+class MotorDetailsReporting;
+class MotorFaultsReporting;
+class MpptReporting;
 
 class PacketReporting : public QObject
 {
@@ -31,17 +39,6 @@ private slots:
     void setAll();
 
 private:
-    void setKeyMotor();
-    void setMotor0Details();
-    void setMotor1Details();
-    void setDriverControls();
-    void setMotorFaults();
-    void setBatteryFaults();
-    void setBattery();
-    void setMppt();
-    void setLights();
-
-private:
     KeyMotorData& keyMotorData_;
     MotorDetailsData& motor0DetailsData_;
     MotorDetailsData& motor1DetailsData_;
@@ -52,4 +49,13 @@ private:
     MpptData& mpptData_;
     LightsData& lightsData_;
     PacketWindow& window_;
+    BatteryReporting* batteryReporting_;
+    BatteryFaultsReporting* batteryFaultsReporting_;
+    DriverControlsReporting* driverControlsReporting_;
+    KeyMotorReporting* keyMotorReporting_;
+    LightsReporting* lightsReporting_;
+    MotorDetailsReporting* motor0DetailsReporting_;
+    MotorDetailsReporting* motor1DetailsReporting_;
+    MotorFaultsReporting* motorFaultsReporting_;
+    MpptReporting* mpptReporting_;
 };
