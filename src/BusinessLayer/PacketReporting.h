@@ -2,6 +2,7 @@
 
 #include <QObject>
 
+class AuxBmsData;
 class BatteryData;
 class BatteryFaultsData;
 class DriverControlsData;
@@ -11,6 +12,7 @@ class MotorDetailsData;
 class MotorFaultsData;
 class MpptData;
 class PacketWindow;
+class AuxBmsReporting;
 class BatteryFaultsReporting;
 class BatteryReporting;
 class DriverControlsReporting;
@@ -33,6 +35,7 @@ public:
                     BatteryData& batteryData,
                     MpptData& mpptData,
                     LightsData& lightsData,
+                    AuxBmsData& auxBmsData,
                     PacketWindow& window);
 
     //change to private slot later
@@ -51,6 +54,7 @@ private:
     BatteryData& batteryData_;
     MpptData& mpptData_;
     LightsData& lightsData_;
+    AuxBmsData& auxBmsData_;
     PacketWindow& window_;
     BatteryReporting* batteryReporting_;
     BatteryFaultsReporting* batteryFaultsReporting_;
@@ -60,5 +64,6 @@ private:
     MotorDetailsReporting* motor0DetailsReporting_;
     MotorDetailsReporting* motor1DetailsReporting_;
     MotorFaultsReporting* motorFaultsReporting_;
+    AuxBmsReporting* auxBmsReporting_;
     MpptReporting* mpptReporting_;
 };

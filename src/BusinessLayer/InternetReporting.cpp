@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QString>
 
+#include "AuxBmsData.h"
 #include "BatteryData.h"
 #include "BatteryFaultsData.h"
 #include "CcsDefines.h"
@@ -27,6 +28,7 @@ InternetReporting::InternetReporting(I_CommunicationService& commService,
                                      const BatteryData& batteryData,
                                      const MpptData& mpptData,
                                      const LightsData& lightsData,
+                                     const AuxBmsData& auxBmsData,
                                      InternetView& view)
 
     : communicationService_(commService)
@@ -39,6 +41,7 @@ InternetReporting::InternetReporting(I_CommunicationService& commService,
     , batteryData_(batteryData)
     , mpptData_(mpptData)
     , lightsData_(lightsData)
+    , auxBmsData_(auxBmsData)
     , view_(view)
 {
     connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
@@ -271,12 +274,6 @@ QJsonObject InternetReporting::makeBattery()
     battery.insert("HighCellVoltage", batteryData_.highCellVoltage());
     battery.insert("HighCellVoltageId", batteryData_.highCellVoltageId());
     battery.insert("AverageCellVoltage", batteryData_.averageCellVoltage());
-    battery.insert("PrechargeState", batteryData_.prechargeStateJSON());
-    battery.insert("AuxVoltage", batteryData_.auxVoltage());
-    battery.insert("AuxBmsAlive", batteryData_.auxBmsAlive());
-    battery.insert("StrobeBmsLight", batteryData_.strobeBmsLight());
-    battery.insert("AllowCharge", batteryData_.allowCharge());
-    battery.insert("ContactorError", batteryData_.contactorError());
     return battery;
 }
 
@@ -311,6 +308,18 @@ QJsonObject InternetReporting::makeLights()
     return lightsInfo;
 }
 
+QJsonObject InternetReporting::makeAuxBms()
+{
+    QJsonObject auxBms;
+    auxBms.insert("PrechargeState", auxBmsData_.prechargeStateJSON());
+    auxBms.insert("AuxVoltage", auxBmsData_.auxVoltage());
+    auxBms.insert("AuxBmsAlive", auxBmsData_.auxBmsAlive());
+    auxBms.insert("StrobeBmsLight", auxBmsData_.strobeBmsLight());
+    auxBms.insert("AllowCharge", auxBmsData_.allowCharge());
+    auxBms.insert("ContactorError", auxBmsData_.contactorError());
+    return auxBms;
+}
+
 void InternetReporting::sendAll()
 {
     QJsonObject obj;
@@ -329,6 +338,7 @@ void InternetReporting::sendAll()
     obj.insert("Battery", makeBattery());
     obj.insert("MPPT", makeMppt());
     obj.insert("Lights", makeLights());
+    obj.insert("AuxBms", makeAuxBms());
     QJsonDocument doc(obj);
     QByteArray data = doc.toJson(QJsonDocument::Compact);
     communicationService_.sendInternetData(data);

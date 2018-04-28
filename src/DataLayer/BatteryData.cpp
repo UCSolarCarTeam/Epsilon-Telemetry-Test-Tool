@@ -31,13 +31,6 @@ BatteryData::BatteryData()
         , highCellVoltage_(14)
         , highCellVoltageId_(1)
         , averageCellVoltage_(12)
-        , prechargeState_(PrechargeState::EnablePack)
-        , prechargeStateJSON_("Enable Pack")
-        , auxVoltage_(13)
-        , auxBmsAlive_(true)
-        , strobeBmsLight_(true)
-        , allowCharge_(true)
-        , contactorError_(true)
 {
 }
 
@@ -195,41 +188,6 @@ unsigned short BatteryData::averageCellVoltage() const
     return averageCellVoltage_;
 }
 
-PrechargeState BatteryData::prechargeState() const
-{
-    return prechargeState_;
-}
-
-const char* BatteryData::prechargeStateJSON() const
-{
-    return prechargeStateJSON_;
-}
-
-unsigned char BatteryData::auxVoltage() const
-{
-    return auxVoltage_;
-}
-
-bool BatteryData::auxBmsAlive() const
-{
-    return auxBmsAlive_;
-}
-
-bool BatteryData::strobeBmsLight() const
-{
-    return strobeBmsLight_;
-}
-
-bool BatteryData::allowCharge() const
-{
-    return allowCharge_;
-}
-
-bool BatteryData::contactorError() const
-{
-    return contactorError_;
-}
-
 void BatteryData::setAlive(const bool& alive)
 {
     alive_ = alive;
@@ -378,40 +336,4 @@ void BatteryData::setHighCellVoltageId(const unsigned char& highCellVoltageId)
 void BatteryData::setAverageCellVoltage(const unsigned short& averageCellVoltage)
 {
     averageCellVoltage_ = averageCellVoltage;
-}
-
-void BatteryData::setPrechargeState(PrechargeState prechargeState)
-{
-    prechargeState_ = prechargeState;
-}
-
-void BatteryData::setPrechargeStateJSON(const char* prechargeStateJSON)
-{
-    prechargeStateJSON_ = prechargeStateJSON;
-}
-
-
-void BatteryData::setAuxVoltage(const unsigned char& auxVoltage)
-{
-    auxVoltage_ = auxVoltage;
-}
-
-void BatteryData::setAuxBmsAlive(const bool& auxBmsAlive)
-{
-    auxBmsAlive_ = auxBmsAlive;
-}
-
-void BatteryData::setStrobeBmsLight(const bool& strobeBmsLight)
-{
-    strobeBmsLight_ = strobeBmsLight;
-}
-
-void BatteryData::setAllowCharge(const bool& allowCharge)
-{
-    allowCharge_ = allowCharge;
-}
-
-void BatteryData::setContactorError(const bool& contactorError)
-{
-    contactorError_ = contactorError;
 }

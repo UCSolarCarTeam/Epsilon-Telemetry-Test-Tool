@@ -2,15 +2,6 @@
 
 #include <QObject>
 
-enum PrechargeState
-{
-    Idle = 0,
-    Precharge = 1,
-    Measure = 2,
-    EnablePack = 3,
-    Run = 4
-};
-
 class BatteryData : public QObject
 {
     Q_OBJECT
@@ -49,13 +40,6 @@ public:
     unsigned short highCellVoltage() const;
     unsigned char highCellVoltageId() const;
     unsigned short averageCellVoltage() const;
-    PrechargeState prechargeState() const;
-    const char* prechargeStateJSON() const;
-    unsigned char auxVoltage() const;
-    bool auxBmsAlive() const;
-    bool strobeBmsLight() const;
-    bool allowCharge() const;
-    bool contactorError() const;
 
     void setAlive(const bool& alive);
     void setDischargeRelayEnabled(const bool& dischargeRelayEnabled);
@@ -87,13 +71,6 @@ public:
     void setHighCellVoltage(const unsigned short& highCellVoltage);
     void setHighCellVoltageId(const unsigned char& highCellVoltageId);
     void setAverageCellVoltage(const unsigned short& averageCellVoltage);
-    void setPrechargeState(PrechargeState prechargeState);
-    void setPrechargeStateJSON(const char* prechargeStateJSON);
-    void setAuxVoltage(const unsigned char& auxVoltage);
-    void setAuxBmsAlive(const bool& auxBmsAlive);
-    void setStrobeBmsLight(const bool& strobeBmsLight);
-    void setAllowCharge(const bool& allowCharge);
-    void setContactorError(const bool& contactorError);
 
 private:
       bool alive_;
@@ -126,11 +103,4 @@ private:
       unsigned short highCellVoltage_;
       unsigned char highCellVoltageId_;
       unsigned short averageCellVoltage_;
-      PrechargeState prechargeState_;
-      const char* prechargeStateJSON_;
-      unsigned char auxVoltage_;
-      bool auxBmsAlive_;
-      bool strobeBmsLight_;
-      bool allowCharge_;
-      bool contactorError_;
 };

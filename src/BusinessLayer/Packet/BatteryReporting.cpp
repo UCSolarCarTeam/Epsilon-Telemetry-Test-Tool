@@ -11,7 +11,6 @@ BatteryReporting::BatteryReporting(BatteryData& batteryData,
 
 void BatteryReporting::setUiData()
 {
-    batteryData_.setAlive(batteryTab_.bmuAlive().isChecked());
     batteryData_.setDischargeRelayEnabled(batteryTab_.dischargeRelay().isChecked());
     batteryData_.setChargeRelayEnabled(batteryTab_.chargeRelay().isChecked());
     batteryData_.setChargerSafetyEnabled(batteryTab_.chargerSafety().isChecked());
@@ -40,9 +39,4 @@ void BatteryReporting::setUiData()
     batteryData_.setHighCellVoltage(batteryTab_.highCellVoltage().value());
     batteryData_.setHighCellVoltageId(batteryTab_.highCellVoltageId().value());
     batteryData_.setAverageCellVoltage(batteryTab_.averageCellVoltage().value());
-    batteryData_.setAuxBmsAlive(batteryTab_.auxBMSAlive().isChecked());
-    batteryData_.setStrobeBmsLight(batteryTab_.strobeBmsLight().isChecked());
-    batteryData_.setAllowCharge(batteryTab_.allowCharge().isChecked());
-    batteryData_.setContactorError(batteryTab_.contactorError().isChecked());
-    // precharge state and precharge state JSON
 }

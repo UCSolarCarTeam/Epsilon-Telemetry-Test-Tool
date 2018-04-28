@@ -2,7 +2,8 @@
 
 #include <QApplication>
 #include <QScopedPointer>
-#include "../DataLayer/BatteryData.h"
+#include "AuxBmsData.h"
+#include "BatteryData.h"
 #include "BatteryFaultsData.h"
 #include "CommunicationService.h"
 #include "DriverControlsData.h"
@@ -17,6 +18,7 @@
 #include "SerialView.h"
 #include "InternetWindow.h"
 #include "SerialWindow.h"
+#include "../UILayer/Packet/AuxBmsTab.h"
 #include "../UILayer/Packet/BatteryTab.h"
 #include "../UILayer/Packet/BatteryFaultsTab.h"
 #include "../UILayer/Packet/DriverControlsTab.h"
@@ -45,8 +47,10 @@ private:
     QScopedPointer<BatteryData> batteryData_;
     QScopedPointer<MpptData> mpptData_;
     QScopedPointer<LightsData> lightsData_;
+    QScopedPointer<AuxBmsData> auxBmsData_;
     QScopedPointer<InternetWindow> internetWindow_;
     QScopedPointer<SerialWindow> serialWindow_;
+    QScopedPointer<AuxBmsTab> auxBmsTab_;
     QScopedPointer<BatteryTab> batteryTab_;
     QScopedPointer<BatteryFaultsTab> batteryFaultsTab_;
     QScopedPointer<DriverControlsTab> driverControlsTab_;

@@ -11,8 +11,10 @@ TestApplication::TestApplication(int& argc, char** argv)
     , batteryData_(new BatteryData())
     , mpptData_(new MpptData())
     , lightsData_(new LightsData())
+    , auxBmsData_(new AuxBmsData())
     , internetWindow_(new InternetWindow())
     , serialWindow_(new SerialWindow())
+    , auxBmsTab_(new AuxBmsTab())
     , batteryTab_(new BatteryTab())
     , batteryFaultsTab_(new BatteryFaultsTab())
     , driverControlsTab_(new DriverControlsTab())
@@ -22,7 +24,8 @@ TestApplication::TestApplication(int& argc, char** argv)
     , motor0FaultsTab_(new MotorFaultsTab())
     , motor1FaultsTab_(new MotorFaultsTab())
     , mpptTab_(new MpptTab())
-    , packetWindow_(new PacketWindow(*batteryTab_,
+    , packetWindow_(new PacketWindow(*auxBmsTab_,
+                                     *batteryTab_,
                                      *batteryFaultsTab_,
                                      *driverControlsTab_,
                                      *lightsTab_,
@@ -47,6 +50,7 @@ TestApplication::TestApplication(int& argc, char** argv)
                                            *batteryData_,
                                            *mpptData_,
                                            *lightsData_,
+                                           *auxBmsData_,
                                            *serialView_))
     , internetReporting_(new InternetReporting(*communicationService_,
                                                *keyMotorData_,
@@ -58,6 +62,7 @@ TestApplication::TestApplication(int& argc, char** argv)
                                                *batteryData_,
                                                *mpptData_,
                                                *lightsData_,
+                                               *auxBmsData_,
                                                *internetView_))
     , packetReporting_(new PacketReporting(*keyMotorData_,
                                            *motor0DetailsData_,
@@ -68,9 +73,9 @@ TestApplication::TestApplication(int& argc, char** argv)
                                            *batteryData_,
                                            *mpptData_,
                                            *lightsData_,
+                                           *auxBmsData_,
                                            *packetWindow_))
 {
-
 }
 
 TestApplication::~TestApplication()

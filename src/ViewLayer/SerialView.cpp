@@ -40,6 +40,8 @@ SerialView::SerialView(SerialWindow* window)
                      this, SIGNAL(sendMppt()));
     window_->connect(&(window_->getSendLightsButton()), SIGNAL(clicked()),
                      this, SIGNAL(sendLights()));
+    window_->connect(&(window_->getSendAuxBmsButton()), SIGNAL(clicked()),
+                     this, SIGNAL(sendAuxBms()));
     window_->connect(&(window_->getSendAllButton()), SIGNAL(clicked()),
                      this, SIGNAL(sendAll()));
 }
@@ -63,6 +65,7 @@ void SerialView::setConnectionStatus(bool connectionStatus, bool attemptToConnec
             window_->getSendBatteryButton().setEnabled(true);
             window_->getSendMpptButton().setEnabled(true);
             window_->getSendLightsButton().setEnabled(true);
+            window_->getSendAuxBmsButton().setEnabled(true);
             window_->getSendAllButton().setEnabled(true);
         }
         else
@@ -80,6 +83,7 @@ void SerialView::setConnectionStatus(bool connectionStatus, bool attemptToConnec
             window_->getSendBatteryButton().setEnabled(false);
             window_->getSendMpptButton().setEnabled(false);
             window_->getSendLightsButton().setEnabled(false);
+            window_->getSendAuxBmsButton().setEnabled(false);
             window_->getSendAllButton().setEnabled(false);
         }
     }

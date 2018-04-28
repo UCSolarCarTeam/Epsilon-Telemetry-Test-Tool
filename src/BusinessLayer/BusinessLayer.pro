@@ -24,7 +24,8 @@ HEADERS += \
     $$PWD/Packet/LightsReporting.h \
     $$PWD/Packet/KeyMotorReporting.h \
     $$PWD/Packet/MotorDetailsReporting.h \
-    $$PWD/Packet/MotorFaultsReporting.h
+    $$PWD/Packet/MotorFaultsReporting.h \
+    $$PWD/Packet/AuxBmsReporting.h
 
 SOURCES += \
     $$PWD/CrcCalculator.cpp \
@@ -40,4 +41,5 @@ SOURCES += \
     $$PWD/Packet/LightsReporting.cpp \
     $$PWD/Packet/KeyMotorReporting.cpp \
     $$PWD/Packet/MotorDetailsReporting.cpp \
-    $$PWD/Packet/MotorFaultsReporting.cpp
+    $$PWD/Packet/MotorFaultsReporting.cpp \
+    $$PWD/Packet/AuxBmsReporting.cpp

@@ -1,3 +1,4 @@
+#include "AuxBmsData.h"
 #include "BatteryData.h"
 #include "BatteryFaultsData.h"
 #include "DriverControlsData.h"
@@ -9,6 +10,7 @@
 #include "MpptData.h"
 #include "PacketReporting.h"
 #include "../UILayer/PacketWindow.h"
+#include "../BusinessLayer/Packet/AuxBmsReporting.h"
 #include "../BusinessLayer/Packet/BatteryFaultsReporting.h"
 #include "../BusinessLayer/Packet/BatteryReporting.h"
 #include "../BusinessLayer/Packet/DriverControlsReporting.h"
@@ -28,6 +30,7 @@ PacketReporting::PacketReporting(KeyMotorData& keyMotorData,
                                  BatteryData& batteryData,
                                  MpptData& mpptData,
                                  LightsData& lightsData,
+                                 AuxBmsData& auxBmsData,
                                  PacketWindow& window)
     : keyMotorData_(keyMotorData)
     , motor0DetailsData_(motor0DetailsData)
@@ -38,8 +41,10 @@ PacketReporting::PacketReporting(KeyMotorData& keyMotorData,
     , batteryData_(batteryData)
     , mpptData_(mpptData)
     , lightsData_(lightsData)
+    , auxBmsData_(auxBmsData)
     , window_(window)
 {
+    auxBmsReporting_ = new AuxBmsReporting(auxBmsData_, window_.auxBmsTab());
     batteryReporting_ = new BatteryReporting(batteryData_, window_.batteryTab());
     batteryFaultsReporting_ = new BatteryFaultsReporting(batteryFaultsData_, window_.batteryFaultsTab());
     driverControlsReporting_ = new DriverControlsReporting(driverControlsData_, window_.driverControlsTab());
@@ -64,5 +69,6 @@ void PacketReporting::setAll()
     motor0DetailsReporting_->setUiData();
     motor1DetailsReporting_->setUiData();
     mpptReporting_->setUiData();
+    auxBmsReporting_->setUiData();
     lightsReporting_->setUiData();
 }

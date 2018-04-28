@@ -1,6 +1,7 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include "PacketWindow.h"
+#include "../UILayer/Packet/AuxBmsTab.h"
 #include "../UILayer/Packet/BatteryFaultsTab.h"
 #include "../UILayer/Packet/BatteryTab.h"
 #include "../UILayer/Packet/DriverControlsTab.h"
@@ -10,7 +11,8 @@
 #include "../UILayer/Packet/MpptTab.h"
 
 
-PacketWindow::PacketWindow(BatteryTab& batteryTab,
+PacketWindow::PacketWindow(AuxBmsTab& auxBmsTab,
+                           BatteryTab& batteryTab,
                            BatteryFaultsTab& batteryFaultsTab,
                            DriverControlsTab& driverControlsTab,
                            LightsTab& lightsTab,
@@ -19,7 +21,8 @@ PacketWindow::PacketWindow(BatteryTab& batteryTab,
                            MotorFaultsTab& motor0FaultsTab,
                            MotorFaultsTab& motor1FaultsTab,
                            MpptTab& mpptTab)
-    : batteryTab_(batteryTab)
+    : auxBmsTab_(auxBmsTab)
+    , batteryTab_(batteryTab)
     , batteryFaultsTab_(batteryFaultsTab)
     , driverControlsTab_(driverControlsTab)
     , lightsTab_(lightsTab)
@@ -30,6 +33,7 @@ PacketWindow::PacketWindow(BatteryTab& batteryTab,
     , mpptTab_(mpptTab)
 {
     tabs_ = new QTabWidget();
+    tabs_->addTab(&auxBmsTab_, tr("Aux BMS"));
     tabs_->addTab(&batteryTab_, tr("Battery"));
     tabs_->addTab(&batteryFaultsTab_, tr("Battery Faults"));
     tabs_->addTab(&driverControlsTab_, tr("Driver Controls"));
@@ -96,6 +100,11 @@ MotorFaultsTab& PacketWindow::motor1FaultsTab()
 MpptTab& PacketWindow::mpptTab()
 {
     return mpptTab_;
+}
+
+AuxBmsTab& PacketWindow::auxBmsTab()
+{
+    return auxBmsTab_;
 }
 
 QPushButton& PacketWindow::setButton()

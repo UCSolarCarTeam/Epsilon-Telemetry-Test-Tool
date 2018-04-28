@@ -4,6 +4,7 @@
 #include <QTabWidget>
 #include <QPushButton>
 
+class AuxBmsTab;
 class BatteryFaultsTab;
 class BatteryTab;
 class DriverControlsTab;
@@ -17,7 +18,8 @@ class PacketWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit PacketWindow(BatteryTab& batteryTab,
+    explicit PacketWindow(AuxBmsTab& auxBmsTab,
+                          BatteryTab& batteryTab,
                           BatteryFaultsTab& batteryFaultsTab,
                           DriverControlsTab& driverControlsTab,
                           LightsTab& lightsTab,
@@ -28,6 +30,7 @@ public:
                           MpptTab& mpptTab);
     ~PacketWindow();
     QTabWidget* tabs_;
+    AuxBmsTab& auxBmsTab();
     BatteryTab& batteryTab();
     BatteryFaultsTab& batteryFaultsTab();
     DriverControlsTab& driverControlsTab();
@@ -40,6 +43,7 @@ public:
     QPushButton& setButton();
 
 private:
+    AuxBmsTab& auxBmsTab_;
     BatteryTab& batteryTab_;
     BatteryFaultsTab& batteryFaultsTab_;
     DriverControlsTab& driverControlsTab_;

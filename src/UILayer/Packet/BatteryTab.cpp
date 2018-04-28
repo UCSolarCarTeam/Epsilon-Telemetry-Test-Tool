@@ -12,29 +12,9 @@ BatteryTab::~BatteryTab()
     delete ui_;
 }
 
-QCheckBox& BatteryTab::allowCharge()
+QCheckBox& BatteryTab::alive()
 {
-    return *ui_->allowCharge;
-}
-
-QCheckBox& BatteryTab::auxBMSAlive()
-{
-    return *ui_->auxBmsAlive;
-}
-
-QCheckBox& BatteryTab::bmuAlive()
-{
-    return *ui_->bmuAlive;
-}
-
-QCheckBox& BatteryTab::strobeBmsLight()
-{
-    return *ui_->strobeBmsLight;
-}
-
-QCheckBox& BatteryTab::contactorError()
-{
-    return *ui_->contactorError;
+    return *ui_->alive;
 }
 
 QCheckBox& BatteryTab::alwaysOn()
@@ -180,11 +160,6 @@ QDoubleSpinBox& BatteryTab::packVoltage()
 QSpinBox& BatteryTab::populatedCells()
 {
     return *ui_->populatedCells;
-}
-
-QSpinBox& BatteryTab::prechargeState()
-{
-    return *ui_->prechargeState;
 }
 
 QSpinBox& BatteryTab::requestedFanSpeed()
