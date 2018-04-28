@@ -38,9 +38,6 @@ public:
                     AuxBmsData& auxBmsData,
                     PacketWindow& window);
 
-    //change to private slot later
-    void setPacket(BatteryFaultsData& packetBatteryFaults);
-
 private slots:
     void setAll();
 
