@@ -3,7 +3,7 @@
 #include <QObject>
 
 class MotorFaultsData;
-class MotorTab;
+class MotorFaultsTab;
 
 class MotorFaultsReporting : public QObject
 {
@@ -11,12 +11,12 @@ class MotorFaultsReporting : public QObject
 
 public:
     MotorFaultsReporting(MotorFaultsData& motorFaultsData,
-                      MotorTab& motor0Tab,
-                      MotorTab& motor1Tab);
-    void setData();
+                      MotorFaultsTab& motor0FaultsTab,
+                      MotorFaultsTab& motor1FaultsTab);
+    void setUiData();
 
 private:
     MotorFaultsData& motorFaultsData_;
-    MotorTab& motor0Tab_;
-    MotorTab& motor1Tab_;
+    MotorFaultsTab& motor0FaultsTab_;
+    MotorFaultsTab& motor1FaultsTab_;
 };

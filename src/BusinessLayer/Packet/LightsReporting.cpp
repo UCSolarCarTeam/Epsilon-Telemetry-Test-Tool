@@ -9,7 +9,7 @@ LightsReporting::LightsReporting(LightsData& lightsData,
 {
 }
 
-void LightsReporting::setData()
+void LightsReporting::setUiData()
 {
     lightsData_.setAlive(lightsTab_.lightsAlive().isChecked());
     lightsData_.setLowBeams(lightsTab_.lowBeams().isChecked());

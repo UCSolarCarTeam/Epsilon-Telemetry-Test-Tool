@@ -11,7 +11,7 @@ KeyMotorReporting::KeyMotorReporting(KeyMotorData& keyMotorData,
 {
 }
 
-void KeyMotorReporting::setData()
+void KeyMotorReporting::setUiData()
 {
     keyMotorData_.setMotor0Alive(motor0Tab_.alive().isChecked());
     keyMotorData_.setMotor0SetCurrent(motor0Tab_.setCurrent().value());

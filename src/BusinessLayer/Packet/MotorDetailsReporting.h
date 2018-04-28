@@ -12,7 +12,7 @@ class MotorDetailsReporting : public QObject
 public:
     MotorDetailsReporting(MotorDetailsData& motorDetailsData,
                           MotorTab& motorTab);
-    void setData();
+    void setUiData();
 
 private:
     MotorDetailsData& motorDetailsData_;

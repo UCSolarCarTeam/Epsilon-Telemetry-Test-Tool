@@ -18,6 +18,7 @@ HEADERS += \
     $$PWD/Packet/BatteryFaultsTab.h \
     $$PWD/Packet/LightsTab.h \
     $$PWD/Packet/MpptTab.h \
+    Packet/MotorFaultsTab.h
 
 SOURCES += \
     $$PWD/Window.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
     $$PWD/Packet/BatteryFaultsTab.cpp \
     $$PWD/Packet/LightsTab.cpp \
     $$PWD/Packet/MpptTab.cpp \
+    Packet/MotorFaultsTab.cpp
 
 FORMS += \
     $$PWD/Packet/DriverControlsTab.ui \
@@ -38,3 +40,4 @@ FORMS += \
     $$PWD/Packet/BatteryFaultsTab.ui \
     $$PWD/Packet/LightsTab.ui \
     $$PWD/Packet/MpptTab.ui \
+    Packet/MotorFaultsTab.ui

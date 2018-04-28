@@ -12,7 +12,7 @@ class DriverControlsReporting : public QObject
 public:
     DriverControlsReporting(DriverControlsData& driverControlsData,
                             DriverControlsTab& driverControlsTab);
-    void setData();
+    void setUiData();
 
 private:
     DriverControlsData& driverControlsData_;

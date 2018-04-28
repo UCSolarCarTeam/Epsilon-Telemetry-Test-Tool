@@ -47,7 +47,7 @@ PacketReporting::PacketReporting(KeyMotorData& keyMotorData,
     lightsReporting_ = new LightsReporting(lightsData_, window_.lightsTab());
     motor0DetailsReporting_ = new MotorDetailsReporting(motor0DetailsData_, window_.motor0Tab());
     motor1DetailsReporting_ = new MotorDetailsReporting(motor1DetailsData_, window_.motor1Tab());
-    motorFaultsReporting_ = new MotorFaultsReporting(motorFaultsData_, window_.motor0Tab(), window_.motor1Tab());
+    motorFaultsReporting_ = new MotorFaultsReporting(motorFaultsData_, window_.motor0FaultsTab(), window_.motor1FaultsTab());
     mpptReporting_ = new MpptReporting(mpptData_, window_.mpptTab());
 
     connect(&(window_.setButton()), SIGNAL(clicked()),
@@ -56,13 +56,13 @@ PacketReporting::PacketReporting(KeyMotorData& keyMotorData,
 
 void PacketReporting::setAll()
 {
-    batteryReporting_->setData();
-    batteryFaultsReporting_->setData();
-    driverControlsReporting_->setData();
-    motorFaultsReporting_->setData();
-    keyMotorReporting_->setData();
-    motor0DetailsReporting_->setData();
-    motor1DetailsReporting_->setData();
-    mpptReporting_->setData();
-    lightsReporting_->setData();
+    batteryReporting_->setUiData();
+    batteryFaultsReporting_->setUiData();
+    driverControlsReporting_->setUiData();
+    motorFaultsReporting_->setUiData();
+    keyMotorReporting_->setUiData();
+    motor0DetailsReporting_->setUiData();
+    motor1DetailsReporting_->setUiData();
+    mpptReporting_->setUiData();
+    lightsReporting_->setUiData();
 }

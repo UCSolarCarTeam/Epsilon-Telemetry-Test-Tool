@@ -9,6 +9,7 @@ class BatteryTab;
 class DriverControlsTab;
 class LightsTab;
 class MotorTab;
+class MotorFaultsTab;
 class MpptTab;
 
 class PacketWindow : public QWidget
@@ -22,6 +23,8 @@ public:
                           LightsTab& lightsTab,
                           MotorTab& motor0Tab,
                           MotorTab& motor1Tab,
+                          MotorFaultsTab& motor0FaultsTab,
+                          MotorFaultsTab& motor1FaultsTab,
                           MpptTab& mpptTab);
     ~PacketWindow();
     QTabWidget* tabs_;
@@ -31,6 +34,8 @@ public:
     LightsTab& lightsTab();
     MotorTab& motor0Tab();
     MotorTab& motor1Tab();
+    MotorFaultsTab& motor0FaultsTab();
+    MotorFaultsTab& motor1FaultsTab();
     MpptTab& mpptTab();
     QPushButton& setButton();
 
@@ -41,6 +46,8 @@ private:
     LightsTab& lightsTab_;
     MotorTab& motor0Tab_;
     MotorTab& motor1Tab_;
+    MotorFaultsTab& motor0FaultsTab_;
+    MotorFaultsTab& motor1FaultsTab_;
     MpptTab& mpptTab_;
     QPushButton* setButton_;
 };

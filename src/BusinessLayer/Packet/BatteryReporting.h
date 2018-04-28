@@ -12,7 +12,7 @@ class BatteryReporting : public QObject
 public:
     BatteryReporting(BatteryData& batteryData,
                      BatteryTab& batteryTab);
-    void setData();
+    void setUiData();
 
 private:
     BatteryData& batteryData_;

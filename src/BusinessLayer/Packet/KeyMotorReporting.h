@@ -13,7 +13,7 @@ public:
     KeyMotorReporting(KeyMotorData& keyMotorData,
                       MotorTab& motor0Tab,
                       MotorTab& motor1Tab);
-    void setData();
+    void setUiData();
 
 private:
     KeyMotorData& keyMotorData_;

@@ -24,16 +24,19 @@ class PacketReporting : public QObject
 {
     Q_OBJECT
 public:
-PacketReporting(KeyMotorData& keyMotorData,
-                MotorDetailsData& motor0DetailsData,
-                MotorDetailsData& motor1DetailsData,
-                DriverControlsData& driverControlsData,
-                MotorFaultsData& motorFaultsData,
-                BatteryFaultsData& batteryFaultsData,
-                BatteryData& batteryData,
-                MpptData& mpptData,
-                LightsData& lightsData,
-                PacketWindow& window);
+    PacketReporting(KeyMotorData& keyMotorData,
+                    MotorDetailsData& motor0DetailsData,
+                    MotorDetailsData& motor1DetailsData,
+                    DriverControlsData& driverControlsData,
+                    MotorFaultsData& motorFaultsData,
+                    BatteryFaultsData& batteryFaultsData,
+                    BatteryData& batteryData,
+                    MpptData& mpptData,
+                    LightsData& lightsData,
+                    PacketWindow& window);
+
+    //change to private slot later
+    void setPacket(BatteryFaultsData& packetBatteryFaults);
 
 private slots:
     void setAll();

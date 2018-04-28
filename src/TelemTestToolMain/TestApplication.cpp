@@ -19,6 +19,8 @@ TestApplication::TestApplication(int& argc, char** argv)
     , lightsTab_(new LightsTab())
     , motor0Tab_(new MotorTab())
     , motor1Tab_(new MotorTab())
+    , motor0FaultsTab_(new MotorFaultsTab())
+    , motor1FaultsTab_(new MotorFaultsTab())
     , mpptTab_(new MpptTab())
     , packetWindow_(new PacketWindow(*batteryTab_,
                                      *batteryFaultsTab_,
@@ -26,6 +28,8 @@ TestApplication::TestApplication(int& argc, char** argv)
                                      *lightsTab_,
                                      *motor0Tab_,
                                      *motor1Tab_,
+                                     *motor0FaultsTab_,
+                                     *motor1FaultsTab_,
                                      *mpptTab_))
     , internetView_(new InternetView(internetWindow_.data()))
     , serialView_(new SerialView(serialWindow_.data()))
@@ -66,6 +70,7 @@ TestApplication::TestApplication(int& argc, char** argv)
                                            *lightsData_,
                                            *packetWindow_))
 {
+
 }
 
 TestApplication::~TestApplication()

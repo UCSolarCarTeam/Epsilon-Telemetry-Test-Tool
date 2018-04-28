@@ -12,7 +12,7 @@ class LightsReporting : public QObject
 public:
     LightsReporting(LightsData& lightsData,
                     LightsTab& lightsTab);
-    void setData();
+    void setUiData();
 
 private:
     LightsData& lightsData_;

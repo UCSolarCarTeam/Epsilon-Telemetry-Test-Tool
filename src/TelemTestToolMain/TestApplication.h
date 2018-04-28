@@ -22,6 +22,7 @@
 #include "../UILayer/Packet/DriverControlsTab.h"
 #include "../UILayer/Packet/LightsTab.h"
 #include "../UILayer/Packet/MotorTab.h"
+#include "../UILayer/Packet/MotorFaultsTab.h"
 #include "../UILayer/Packet/MpptTab.h"
 #include "PacketWindow.h"
 #include "Window.h"
@@ -52,6 +53,8 @@ private:
     QScopedPointer<LightsTab> lightsTab_;
     QScopedPointer<MotorTab> motor0Tab_;
     QScopedPointer<MotorTab> motor1Tab_;
+    QScopedPointer<MotorFaultsTab> motor0FaultsTab_;
+    QScopedPointer<MotorFaultsTab> motor1FaultsTab_;
     QScopedPointer<MpptTab> mpptTab_;
     QScopedPointer<PacketWindow> packetWindow_;
     QScopedPointer<InternetView> internetView_;
