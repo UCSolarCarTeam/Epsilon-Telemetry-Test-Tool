@@ -116,16 +116,16 @@ protected:
         data[0] = CcsDefines::MPPT_PKG_ID;
         unsigned char numberAndAlive = mpptData_->mpptNumber() & 0x3;
 
-        if (mpptData_->alive())
+        if (mpptData_->alive(mpptData_->mpptNumber()))
         {
             numberAndAlive |= 0x80;
         }
 
         data[1] = numberAndAlive;
-        Util::writeUShortIntoArray(data, 2, mpptData_->arrayVoltage());
-        Util::writeUShortIntoArray(data, 4, mpptData_->arrayCurrent());
-        Util::writeUShortIntoArray(data, 6, mpptData_->batteryVoltage());
-        Util::writeUShortIntoArray(data, 8, mpptData_->temperature());
+        Util::writeUShortIntoArray(data, 2, mpptData_->arrayVoltage(mpptData_->mpptNumber()));
+        Util::writeUShortIntoArray(data, 4, mpptData_->arrayCurrent(mpptData_->mpptNumber()));
+        Util::writeUShortIntoArray(data, 6, mpptData_->batteryVoltage(mpptData_->mpptNumber()));
+        Util::writeUShortIntoArray(data, 8, mpptData_->temperature(mpptData_->mpptNumber()));
     }
 
     class PackageIdMatcher : public MatcherInterface<std::tuple<const unsigned char*, int>>
@@ -597,7 +597,7 @@ TEST_F(SerialReportingTest, sendMpptTest)
             // do some additional data checks
             ASSERT_THAT(data[0], Eq(0x09)); // packet id
 
-            if (mpptData_->alive())
+            if (mpptData_->alive(i))
             {
                 ASSERT_THAT(data[1], Eq((i | 0x80))); // mppt number including alive bit
             }

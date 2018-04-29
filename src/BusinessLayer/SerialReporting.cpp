@@ -324,18 +324,18 @@ void SerialReporting::sendMppt()
     const unsigned int unframedPacketLength = MPPT_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
     packetPayload[0] = CcsDefines::MPPT_PKG_ID;
-    writeUShortIntoArray(packetPayload, 2, mpptData_.arrayVoltage());
-    writeUShortIntoArray(packetPayload, 4, mpptData_.arrayCurrent());
-    writeUShortIntoArray(packetPayload, 6, mpptData_.batteryVoltage());
-    writeUShortIntoArray(packetPayload, 8, mpptData_.temperature());
 
     for (unsigned char i = 0; i < CcsDefines::MPPT_COUNT; i++)
     {
+        writeUShortIntoArray(packetPayload, 2, mpptData_.arrayVoltage(i));
+        writeUShortIntoArray(packetPayload, 4, mpptData_.arrayCurrent(i));
+        writeUShortIntoArray(packetPayload, 6, mpptData_.batteryVoltage(i));
+        writeUShortIntoArray(packetPayload, 8, mpptData_.temperature(i));
         unsigned char mpptPacketPayload[unframedPacketLength];
         std::memcpy(mpptPacketPayload, packetPayload, unframedPacketLength);
         unsigned char numberAndAlive = i & 0x03;
 
-        if (mpptData_.alive())
+        if (mpptData_.alive(i))
         {
             numberAndAlive |= 0x80;
         }

@@ -281,14 +281,14 @@ QJsonArray InternetReporting::makeMppt()
 {
     QJsonArray mppt;
     QJsonObject mpptInfo;
-    mpptInfo.insert("Alive", mpptData_.alive());
-    mpptInfo.insert("ArrayVoltage", mpptData_.arrayVoltage());
-    mpptInfo.insert("ArrayCurrent", mpptData_.arrayCurrent());
-    mpptInfo.insert("BatteryVoltage", mpptData_.batteryVoltage());
-    mpptInfo.insert("Temperature", mpptData_.temperature());
 
     for (unsigned char i = 0; i < CcsDefines::MPPT_COUNT; i++)
     {
+        mpptInfo.insert("Alive", mpptData_.alive(i));
+        mpptInfo.insert("ArrayVoltage", mpptData_.arrayVoltage(i));
+        mpptInfo.insert("ArrayCurrent", mpptData_.arrayCurrent(i));
+        mpptInfo.insert("BatteryVoltage", mpptData_.batteryVoltage(i));
+        mpptInfo.insert("Temperature", mpptData_.temperature(i));
         mppt.push_back(mpptInfo);
     }
 
