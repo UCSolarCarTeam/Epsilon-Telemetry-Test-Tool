@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QScopedPointer>
+#include <QSignalMapper>
 #include "AuxBmsData.h"
 #include "BatteryData.h"
 #include "BatteryFaultsData.h"
@@ -38,10 +39,19 @@ public:
     virtual ~TestApplication();
 
 private slots:
-    void setPacket0();
-    void setPacket1();
-    void sendInternetPacket0();
-    void sendInternetPacket1();
+    void setPacket(int packetNumber);
+    void sendInternetAll(int packetNumber);
+    void switchSerialPacket();
+    void sendSerialKeyMotor();
+    void sendSerialMotorDetails(int motorNumber);
+    void sendSerialDriverControls();
+    void sendSerialMotorFaults();
+    void sendSerialBatteryFaults();
+    void sendSerialBattery();
+    void sendSerialMppt();
+    void sendSerialLights();
+    void sendSerialAuxBms();
+    void sendSerialAll();
 
 private:
     QScopedPointer<KeyMotorData> keyMotorData0_;
@@ -87,4 +97,8 @@ private:
     QScopedPointer<SerialReporting> serial1Reporting_;
     QScopedPointer<InternetReporting> internet1Reporting_;
     QScopedPointer<PacketReporting> packet1Reporting_;
+    QSignalMapper packetMapper;
+    QSignalMapper internetMapper;
+    QSignalMapper serialMotorMapper;
+    bool packet0_;
 };

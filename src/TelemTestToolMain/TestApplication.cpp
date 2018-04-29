@@ -120,33 +120,219 @@ TestApplication::TestApplication(int& argc, char** argv)
                                            *lightsData1_,
                                            *auxBmsData1_,
                                            *packetWindow_))
+    , packetMapper(this)
+    , internetMapper(this)
+    , serialMotorMapper(this)
+    , packet0_(true)
 {
-    connect(&(packetWindow_->setPacket0()), SIGNAL(clicked()), this, SLOT(setPacket0()));
-    connect(&(packetWindow_->setPacket1()), SIGNAL(clicked()), this, SLOT(setPacket1()));
-    connect(&(internetWindow_->getSendPacket0Button()), SIGNAL(clicked()), this, SLOT(sendInternetPacket0()));
-    connect(&(internetWindow_->getSendPacket1Button()), SIGNAL(clicked()), this, SLOT(sendInternetPacket1()));
+
+    connect(&(packetWindow_->setPacket0()), SIGNAL(clicked()),
+                     &packetMapper, SLOT(map()));
+    connect(&(packetWindow_->setPacket1()), SIGNAL(clicked()),
+                     &packetMapper, SLOT(map()));
+    packetMapper.setMapping((&packetWindow_->setPacket0()), 0);
+    packetMapper.setMapping((&packetWindow_->setPacket1()), 1);
+    connect(&packetMapper, SIGNAL(mapped(int)),
+                     this, SLOT(setPacket(int)));
+
+    connect(&(internetWindow_->getSendPacket0Button()), SIGNAL(clicked()),
+                     &internetMapper, SLOT(map()));
+    connect(&(internetWindow_->getSendPacket1Button()), SIGNAL(clicked()),
+                     &internetMapper, SLOT(map()));
+    internetMapper.setMapping((&internetWindow_->getSendPacket0Button()), 0);
+    internetMapper.setMapping((&internetWindow_->getSendPacket1Button()), 1);
+    connect(&internetMapper, SIGNAL(mapped(int)),
+                     this, SLOT(sendInternetAll(int)));
+
+
+    connect(&(serialWindow_->getSwitchPacketButton()), SIGNAL(clicked()),
+                     this, SLOT(switchSerialPacket()));
+    connect(&(serialWindow_->getSwitchPacketButton()), SIGNAL(clicked()),
+                     this, SLOT(sendSerialKeyMotor()));
+    connect(&(serialWindow_->getSendMotor0DetailsButton()), SIGNAL(clicked()),
+                     &serialMotorMapper, SLOT(map()));
+    connect(&(serialWindow_->getSendMotor1DetailsButton()), SIGNAL(clicked()),
+                     &serialMotorMapper, SLOT(map()));
+    serialMotorMapper.setMapping(&(serialWindow_->getSendMotor0DetailsButton()), 0);
+    serialMotorMapper.setMapping(&(serialWindow_->getSendMotor1DetailsButton()), 1);
+    connect(&serialMotorMapper, SIGNAL(mapped(int)),
+                     this, SLOT(sendSerialMotorDetails(int)));
+    connect(&(serialWindow_->getSendDriverControlsButton()), SIGNAL(clicked()),
+                     this, SLOT(sendSerialDriverControls()));
+    connect(&(serialWindow_->getSendMotorFaultsButton()), SIGNAL(clicked()),
+                     this, SLOT(sendSerialMotorFaults()));
+    connect(&(serialWindow_->getSendBatteryFaultsButton()), SIGNAL(clicked()),
+                     this, SLOT(sendSerialBatteryFaults()));
+    connect(&(serialWindow_->getSendBatteryButton()), SIGNAL(clicked()),
+                     this, SLOT(sendSerialBattery()));
+    connect(&(serialWindow_->getSendMpptButton()), SIGNAL(clicked()),
+                     this, SLOT(sendSerialMppt()));
+    connect(&(serialWindow_->getSendLightsButton()), SIGNAL(clicked()),
+                     this, SLOT(sendSerialLights()));
+    connect(&(serialWindow_->getSendAuxBmsButton()), SIGNAL(clicked()),
+                     this, SLOT(sendSerialAuxBms()));
+    connect(&(serialWindow_->getSendAllButton()), SIGNAL(clicked()),
+                     this, SLOT(sendSerialAll()));
 }
 
 TestApplication::~TestApplication()
 {
 }
 
-void TestApplication::setPacket0()
+void TestApplication::setPacket(int packetNumber)
 {
-        packet0Reporting_->setAll();
+    if (packetNumber == 0)
+    {
+            packet0Reporting_->setAll();
+    }
+    else
+    {
+            packet1Reporting_->setAll();
+    }
 }
 
-void TestApplication::setPacket1()
+void TestApplication::sendInternetAll(int packetNumber)
 {
-        packet1Reporting_->setAll();
-}
-
-void TestApplication::sendInternetPacket0()
-{
+    if (packetNumber == 0)
+    {
         internet0Reporting_->sendAll();
+    }
+    else
+    {
+        internet1Reporting_->sendAll();
+    }
 }
 
-void TestApplication::sendInternetPacket1()
+void TestApplication::switchSerialPacket()
 {
-        internet1Reporting_->sendAll();
+    if (packet0_ == true)
+    {
+        serialWindow_->getSwitchPacketButton().setText("Switch to Packet 1");
+        packet0_ = false;
+    }
+    else
+    {
+        serialWindow_->getSwitchPacketButton().setText("Switch to Packet 0");
+        packet0_ = true;
+    }
+}
+
+void TestApplication::sendSerialKeyMotor()
+{
+    if (packet0_ == true)
+    {
+        serial0Reporting_->sendKeyMotor();
+    }
+    else
+    {
+        serial1Reporting_->sendKeyMotor();
+    }
+}
+
+void TestApplication::sendSerialMotorDetails(int motorNumber)
+{
+    if (packet0_ == true)
+    {
+        serial0Reporting_->sendMotorDetails(motorNumber);
+    }
+    else
+    {
+        serial1Reporting_->sendMotorDetails(motorNumber);
+    }
+}
+
+void TestApplication::sendSerialDriverControls()
+{
+    if (packet0_ == true)
+    {
+        serial0Reporting_->sendDriverControls();
+    }
+    else
+    {
+        serial1Reporting_->sendDriverControls();
+    }
+}
+
+void TestApplication::sendSerialMotorFaults()
+{
+    if (packet0_ == true)
+    {
+        serial0Reporting_->sendMotorFaults();
+    }
+    else
+    {
+        serial1Reporting_->sendMotorFaults();
+    }
+}
+
+void TestApplication::sendSerialBatteryFaults()
+{
+    if (packet0_ == true)
+    {
+        serial0Reporting_->sendBatteryFaults();
+    }
+    else
+    {
+        serial1Reporting_->sendBatteryFaults();
+    }
+}
+
+void TestApplication::sendSerialBattery()
+{
+    if (packet0_ == true)
+    {
+        serial0Reporting_->sendBattery();
+    }
+    else
+    {
+        serial1Reporting_->sendBattery();
+    }
+}
+
+void TestApplication::sendSerialMppt()
+{
+    if (packet0_ == true)
+    {
+        serial0Reporting_->sendMppt();
+    }
+    else
+    {
+        serial1Reporting_->sendMppt();
+    }
+}
+
+void TestApplication::sendSerialLights()
+{
+    if (packet0_ == true)
+    {
+        serial0Reporting_->sendLights();
+    }
+    else
+    {
+        serial1Reporting_->sendLights();
+    }
+}
+
+void TestApplication::sendSerialAuxBms()
+{
+    if (packet0_ == true)
+    {
+        serial0Reporting_->sendAuxBms();
+    }
+    else
+    {
+        serial1Reporting_->sendAuxBms();
+    }
+}
+
+void TestApplication::sendSerialAll()
+{
+    if (packet0_ == true)
+    {
+        serial0Reporting_->sendAll();
+    }
+    else
+    {
+        serial1Reporting_->sendAll();
+    }
 }

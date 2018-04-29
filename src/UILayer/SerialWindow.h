@@ -18,6 +18,7 @@ public:
     QPushButton& getDisconnectButton();
     QLineEdit& getComPortLineEdit();
     QLabel& getConnectionStatusLabel();
+    QPushButton& getSwitchPacketButton();
     QPushButton& getSendKeyMotorButton();
     QPushButton& getSendMotor0DetailsButton();
     QPushButton& getSendMotor1DetailsButton();
@@ -39,6 +40,7 @@ private:
     QPushButton* disconnectButton_;
     QLineEdit* comPortLineEdit_;
     QLabel* connectionStatusLabel_;
+    QPushButton* switchPacketButton_;
     QPushButton* sendKeyMotorButton_;
     QPushButton* sendMotor0DetailsButton_;
     QPushButton* sendMotor1DetailsButton_;
