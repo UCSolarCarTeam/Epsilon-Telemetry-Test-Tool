@@ -44,7 +44,7 @@ InternetReporting::InternetReporting(I_CommunicationService& commService,
     , auxBmsData_(auxBmsData)
     , view_(view)
 {
-    connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
+//    connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
 }
 
 QJsonArray InternetReporting::makeKeyMotor()
@@ -343,5 +343,3 @@ void InternetReporting::sendAll()
     QByteArray data = doc.toJson(QJsonDocument::Compact);
     communicationService_.sendInternetData(data);
 }
-
-

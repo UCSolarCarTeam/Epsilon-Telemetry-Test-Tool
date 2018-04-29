@@ -38,7 +38,7 @@ public:
                     AuxBmsData& auxBmsData,
                     PacketWindow& window);
 
-private slots:
+public slots:
     void setAll();
 
 private:

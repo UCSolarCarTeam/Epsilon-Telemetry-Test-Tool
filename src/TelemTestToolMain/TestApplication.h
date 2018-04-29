@@ -37,17 +37,33 @@ public:
     TestApplication(int& argc, char** argv);
     virtual ~TestApplication();
 
+private slots:
+    void setPacket0();
+    void setPacket1();
+    void sendInternetPacket0();
+    void sendInternetPacket1();
+
 private:
-    QScopedPointer<KeyMotorData> keyMotorData_;
-    QScopedPointer<MotorDetailsData> motor0DetailsData_;
-    QScopedPointer<MotorDetailsData> motor1DetailsData_;
-    QScopedPointer<DriverControlsData> driverControlsData_;
-    QScopedPointer<MotorFaultsData> motorFaultsData_;
-    QScopedPointer<BatteryFaultsData> batteryFaultsData_;
-    QScopedPointer<BatteryData> batteryData_;
-    QScopedPointer<MpptData> mpptData_;
-    QScopedPointer<LightsData> lightsData_;
-    QScopedPointer<AuxBmsData> auxBmsData_;
+    QScopedPointer<KeyMotorData> keyMotorData0_;
+    QScopedPointer<MotorDetailsData> motor0DetailsData0_;
+    QScopedPointer<MotorDetailsData> motor1DetailsData0_;
+    QScopedPointer<DriverControlsData> driverControlsData0_;
+    QScopedPointer<MotorFaultsData> motorFaultsData0_;
+    QScopedPointer<BatteryFaultsData> batteryFaultsData0_;
+    QScopedPointer<BatteryData> batteryData0_;
+    QScopedPointer<MpptData> mpptData0_;
+    QScopedPointer<LightsData> lightsData0_;
+    QScopedPointer<AuxBmsData> auxBmsData0_;
+    QScopedPointer<KeyMotorData> keyMotorData1_;
+    QScopedPointer<MotorDetailsData> motor0DetailsData1_;
+    QScopedPointer<MotorDetailsData> motor1DetailsData1_;
+    QScopedPointer<DriverControlsData> driverControlsData1_;
+    QScopedPointer<MotorFaultsData> motorFaultsData1_;
+    QScopedPointer<BatteryFaultsData> batteryFaultsData1_;
+    QScopedPointer<BatteryData> batteryData1_;
+    QScopedPointer<MpptData> mpptData1_;
+    QScopedPointer<LightsData> lightsData1_;
+    QScopedPointer<AuxBmsData> auxBmsData1_;
     QScopedPointer<InternetWindow> internetWindow_;
     QScopedPointer<SerialWindow> serialWindow_;
     QScopedPointer<AuxBmsTab> auxBmsTab_;
@@ -65,7 +81,10 @@ private:
     QScopedPointer<SerialView> serialView_;
     QScopedPointer<Window> window_;
     QScopedPointer<CommunicationService> communicationService_;
-    QScopedPointer<SerialReporting> serialReporting_;
-    QScopedPointer<InternetReporting> internetReporting_;
-    QScopedPointer<PacketReporting> packetReporting_;
+    QScopedPointer<SerialReporting> serial0Reporting_;
+    QScopedPointer<InternetReporting> internet0Reporting_;
+    QScopedPointer<PacketReporting> packet0Reporting_;
+    QScopedPointer<SerialReporting> serial1Reporting_;
+    QScopedPointer<InternetReporting> internet1Reporting_;
+    QScopedPointer<PacketReporting> packet1Reporting_;
 };

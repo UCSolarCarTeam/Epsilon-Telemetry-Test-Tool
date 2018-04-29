@@ -20,8 +20,6 @@ InternetView::InternetView(InternetWindow* window)
                      this, SIGNAL(attemptConnectionSignal()));
     window_->connect(&(window_->getDisconnectButton()), SIGNAL(clicked()),
                      this, SIGNAL(attemptDisconnectionSignal()));
-    window_->connect(&(window_->getSendAllButton()), SIGNAL(clicked()),
-                     this, SIGNAL(sendAll()));
 }
 
 void InternetView::setConnectionStatus(bool connectionStatus, bool attemptToConnect)
@@ -37,7 +35,8 @@ void InternetView::setConnectionStatus(bool connectionStatus, bool attemptToConn
             window_->getPortSpinBox().setEnabled(false);
             window_->getExchangeNameLineEdit().setEnabled(false);
             window_->getRoutingKeyLineEdit().setEnabled(false);
-            window_->getSendAllButton().setEnabled(true);
+            window_->getSendPacket0Button().setEnabled(true);
+            window_->getSendPacket1Button().setEnabled(true);
         }
         else
         {
@@ -48,7 +47,8 @@ void InternetView::setConnectionStatus(bool connectionStatus, bool attemptToConn
             window_->getPortSpinBox().setEnabled(true);
             window_->getExchangeNameLineEdit().setEnabled(true);
             window_->getRoutingKeyLineEdit().setEnabled(true);
-            window_->getSendAllButton().setEnabled(false);
+            window_->getSendPacket0Button().setEnabled(false);
+            window_->getSendPacket1Button().setEnabled(false);
         }
     }
     else

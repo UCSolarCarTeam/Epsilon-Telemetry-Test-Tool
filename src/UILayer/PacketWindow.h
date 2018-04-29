@@ -40,7 +40,8 @@ public:
     MotorFaultsTab& motor0FaultsTab();
     MotorFaultsTab& motor1FaultsTab();
     MpptTab& mpptTab();
-    QPushButton& setButton();
+    QPushButton& setPacket0();
+    QPushButton& setPacket1();
 
 private:
     AuxBmsTab& auxBmsTab_;
@@ -53,6 +54,8 @@ private:
     MotorFaultsTab& motor0FaultsTab_;
     MotorFaultsTab& motor1FaultsTab_;
     MpptTab& mpptTab_;
-    QPushButton* setButton_;
+    QPushButton* setPacket0_;
+    QPushButton* setPacket1_;
+
 };
 

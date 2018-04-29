@@ -45,8 +45,10 @@ PacketWindow::PacketWindow(AuxBmsTab& auxBmsTab,
     tabs_->addTab(&mpptTab_, tr("MPPT"));
 
     QVBoxLayout* tabsLayout = new QVBoxLayout;
-    setButton_ = new QPushButton("Set Data", this);
-    tabsLayout->addWidget(setButton_);
+    setPacket0_ = new QPushButton("Set Packet 0", this);
+    setPacket1_ = new QPushButton("Set Packet 1", this);
+    tabsLayout->addWidget(setPacket0_);
+    tabsLayout->addWidget(setPacket1_);
     tabsLayout->addWidget(tabs_);
     setMinimumSize(900, 800);
     setLayout(tabsLayout);
@@ -107,7 +109,12 @@ AuxBmsTab& PacketWindow::auxBmsTab()
     return auxBmsTab_;
 }
 
-QPushButton& PacketWindow::setButton()
+QPushButton& PacketWindow::setPacket0()
 {
-    return *setButton_;
+    return *setPacket0_;
+}
+
+QPushButton& PacketWindow::setPacket1()
+{
+    return *setPacket1_;
 }

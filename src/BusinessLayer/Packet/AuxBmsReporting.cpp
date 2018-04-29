@@ -9,7 +9,7 @@ AuxBmsReporting::AuxBmsReporting(AuxBmsData& auxBmsData,
 {
 }
 
-void AuxBmsReporting::setUiData()
+void AuxBmsReporting::setData()
 {
     auxBmsData_.setAuxBmsAlive(auxBmsTab_.auxBMSAlive().isChecked());
     auxBmsData_.setStrobeBmsLight(auxBmsTab_.strobeBmsLight().isChecked());
