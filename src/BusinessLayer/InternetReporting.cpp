@@ -310,12 +310,12 @@ QJsonObject InternetReporting::makeLights()
 QJsonObject InternetReporting::makeAuxBms()
 {
     QJsonObject auxBms;
-    auxBms.insert("PrechargeState", batteryData_.prechargeStateJSON);
-    auxBms.insert("AuxVoltage", batteryData_.auxVoltage);
-    auxBms.insert("AuxBmsAlive", batteryData_.auxBmsAlive);
-    auxBms.insert("StrobeBmsLight", batteryData_.strobeBmsLight);
-    auxBms.insert("AllowCharge", batteryData_.allowCharge);
-    auxBms.insert("ContactorError", batteryData_.contactorError);
+    auxBms.insert("PrechargeState", auxBmsData_.prechargeStateJSON);
+    auxBms.insert("AuxVoltage", auxBmsData_.auxVoltage);
+    auxBms.insert("AuxBmsAlive", auxBmsData_.auxBmsAlive);
+    auxBms.insert("StrobeBmsLight", auxBmsData_.strobeBmsLight);
+    auxBms.insert("AllowCharge", auxBmsData_.allowCharge);
+    auxBms.insert("ContactorError", auxBmsData_.contactorError);
     return auxBms;
 }
 

@@ -673,7 +673,7 @@ TEST_F(SerialReportingTest, sendAuxBmsTest)
     const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_AUX_BMS;
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
     unsigned char data[payloadLength];
-    data[0] = 0x0C;
+    data[0] = 0x0B;
     data[1] = auxBmsData_->prechargeState;
     data[2] = (unsigned char)auxBmsData_->auxVoltage;
     bool auxBmsAliveArray[] = {auxBmsData_->auxBmsAlive};
@@ -686,7 +686,7 @@ TEST_F(SerialReportingTest, sendAuxBmsTest)
     Util::writeBoolsIntoArray(data, 6, contactorErrorArray, 1);
     appendChecksum(data, payloadLength);
     // do some additional data checks
-    ASSERT_THAT(data[0], Eq(0x0C)); // packet id
+    ASSERT_THAT(data[0], Eq(0x0B)); // packet id
     unsigned char expectedPacket[expectedPackageLength];
     Util::frameData(data, payloadLength, expectedPacket);
     // check call
@@ -714,7 +714,7 @@ TEST_F(SerialReportingTest, sendAllTest)
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_BATTERY)).With(Args<0, 1>(packageIdIs(7))).Times(1);
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_MPPT)).With(Args<0, 1>(packageIdIs(9))).Times(CcsDefines::MPPT_COUNT);
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS)).With(Args<0, 1>(packageIdIs(10))).Times(1);
-    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_AUX_BMS)).With(Args<0, 1>(packageIdIs(12))).Times(1);
+    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_AUX_BMS)).With(Args<0, 1>(packageIdIs(11))).Times(1);
     // actually call the method under test through qt's signal/slot mechanism
     view->sendAll();
 }

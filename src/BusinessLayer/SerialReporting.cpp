@@ -373,7 +373,7 @@ void SerialReporting::sendAuxBms()
 {
     const unsigned int unframedPacketLength = AUX_BMS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
-    packetPayload[0] = 0x0C;
+    packetPayload[0] = 0x0B;
     packetPayload[1] = (unsigned char)auxBmsData_.prechargeState;
     packetPayload[2] = auxBmsData_.auxVoltage;
     bool auxBmsAliveArray[] = {auxBmsData_.auxBmsAlive};
