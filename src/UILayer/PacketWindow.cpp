@@ -51,6 +51,7 @@ PacketWindow::PacketWindow(AuxBmsTab& auxBmsTab,
     tabsLayout->addWidget(setPacket1_);
     tabsLayout->addWidget(tabs_);
     setMinimumSize(900, 800);
+    setMaximumSize(1920, 1080);
     setLayout(tabsLayout);
     setWindowTitle(tr("Data"));
 }
