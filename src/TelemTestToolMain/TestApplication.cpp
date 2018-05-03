@@ -125,7 +125,6 @@ TestApplication::TestApplication(int& argc, char** argv)
     , serialMotorMapper(this)
     , packet0_(true)
 {
-
     connect(&(packetWindow_->setPacket0()), SIGNAL(clicked()),
                      &packetMapper, SLOT(map()));
     connect(&(packetWindow_->setPacket1()), SIGNAL(clicked()),
@@ -143,7 +142,6 @@ TestApplication::TestApplication(int& argc, char** argv)
     internetMapper.setMapping((&internetWindow_->getSendPacket1Button()), 1);
     connect(&internetMapper, SIGNAL(mapped(int)),
                      this, SLOT(sendInternetAll(int)));
-
 
     connect(&(serialWindow_->getSwitchPacketButton()), SIGNAL(clicked()),
                      this, SLOT(switchSerialPacket()));
