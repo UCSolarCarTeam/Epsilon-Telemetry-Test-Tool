@@ -11,6 +11,7 @@ TestApplication::TestApplication(int& argc, char** argv)
     , batteryData_(new BatteryData())
     , mpptData_(new MpptData())
     , lightsData_(new LightsData())
+    , auxBmsData_(new AuxBmsData())
     , internetWindow_(new InternetWindow())
     , serialWindow_(new SerialWindow())
     , batteryTab_(new BatteryTab())
@@ -43,6 +44,7 @@ TestApplication::TestApplication(int& argc, char** argv)
                                        *batteryData_,
                                        *mpptData_,
                                        *lightsData_,
+                                       *auxBmsData_,
                                        *serialView_))
 , internetReporting_(new InternetReporting(*communicationService_,
                      *keyMotorData_,
@@ -54,6 +56,7 @@ TestApplication::TestApplication(int& argc, char** argv)
                      *batteryData_,
                      *mpptData_,
                      *lightsData_,
+                     *auxBmsData_,
                      *internetView_))
 {
 }

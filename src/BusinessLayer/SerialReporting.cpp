@@ -1,5 +1,6 @@
 #include <cstring>
 
+#include "AuxBmsData.h"
 #include "CcsDefines.h"
 #include "BatteryData.h"
 #include "BatteryFaultsData.h"
@@ -23,9 +24,10 @@ namespace
     const int DRIVER_CONTROLS_LENGTH = 9;
     const int MOTOR_FAULTS_LENGTH = 9;
     const int BATTERY_FAULTS_LENGTH = 6;
-    const int BATTERY_LENGTH = 54;
+    const int BATTERY_LENGTH = 48;
     const int MPPT_LENGTH = 10;
     const int LIGHTS_LENGTH = 3;
+    const int AUX_BMS_LENGTH = 7;
 }
 
 using namespace Util;
@@ -37,9 +39,10 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
                                  const DriverControlsData& driverControlsData,
                                  const MotorFaultsData& motorFaultsData,
                                  const BatteryFaultsData& batteryFaultsData,
-                                 const BatteryData& batteryData,
+                                 const BatteryData& batteryData,                          
                                  const MpptData& mpptData,
                                  const LightsData& lightsData,
+                                 const AuxBmsData& auxBmsData,
                                  SerialView& view)
     : communicationService_(commService)
     , keyMotorData_(keyMotorData)
@@ -51,6 +54,7 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
     , batteryData_(batteryData)
     , mpptData_(mpptData)
     , lightsData_(lightsData)
+    , auxBmsData_(auxBmsData)
     , view_(view)
 {
     //Connect slots to SerialView Signals
@@ -62,6 +66,7 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
     connect(&view_, SIGNAL(sendBattery()), this, SLOT(sendBattery()));
     connect(&view_, SIGNAL(sendMppt()), this, SLOT(sendMppt()));
     connect(&view_, SIGNAL(sendLights()), this, SLOT(sendLights()));
+    connect(&view_, SIGNAL(sendAuxBms()), this, SLOT(sendAuxBms()));
     connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
 }
 
@@ -308,16 +313,6 @@ void SerialReporting::sendBattery()
     writeUShortIntoArray(packetPayload, 43, batteryData_.highCellVoltage);
     packetPayload[45] = batteryData_.highCellVoltageId;
     writeUShortIntoArray(packetPayload, 46, batteryData_.averageCellVoltage);
-    packetPayload[48] = (unsigned char)batteryData_.prechargeState;
-    packetPayload[49] = batteryData_.auxVoltage;
-    bool auxBmsAliveArray[] = {batteryData_.auxBmsAlive};
-    writeBoolsIntoArray(packetPayload, 50, auxBmsAliveArray, 1);
-    bool strobeBmsLightArray[] = {batteryData_.strobeBmsLight};
-    writeBoolsIntoArray(packetPayload, 51, strobeBmsLightArray, 1);
-    bool allowChargeArray[] = {batteryData_.allowCharge};
-    writeBoolsIntoArray(packetPayload, 52, allowChargeArray, 1);
-    bool contactorErrorArray[] = {batteryData_.contactorError};
-    writeBoolsIntoArray(packetPayload, 53, contactorErrorArray, 1);
     addChecksum(packetPayload, BATTERY_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
@@ -374,6 +369,27 @@ void SerialReporting::sendLights()
     communicationService_.sendSerialData(packet, packetLength);
 }
 
+void SerialReporting::sendAuxBms()
+{
+    const unsigned int unframedPacketLength = AUX_BMS_LENGTH + CHECKSUM_LENGTH;
+    unsigned char packetPayload[unframedPacketLength];
+    packetPayload[0] = 0x0B;
+    packetPayload[1] = (unsigned char)auxBmsData_.prechargeState;
+    packetPayload[2] = auxBmsData_.auxVoltage;
+    bool auxBmsAliveArray[] = {auxBmsData_.auxBmsAlive};
+    writeBoolsIntoArray(packetPayload, 3, auxBmsAliveArray, 1);
+    bool strobeBmsLightArray[] = {auxBmsData_.strobeBmsLight};
+    writeBoolsIntoArray(packetPayload, 4, strobeBmsLightArray, 1);
+    bool allowChargeArray[] = {auxBmsData_.allowCharge};
+    writeBoolsIntoArray(packetPayload, 5, allowChargeArray, 1);
+    bool contactorErrorArray[] = {auxBmsData_.contactorError};
+    writeBoolsIntoArray(packetPayload, 6, contactorErrorArray, 1);
+    addChecksum(packetPayload, AUX_BMS_LENGTH);
+    unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
+    unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
+    communicationService_.sendSerialData(packet, packetLength);
+}
+
 void SerialReporting::sendAll()
 {
     sendKeyMotor();
@@ -385,4 +401,5 @@ void SerialReporting::sendAll()
     sendBattery();
     sendMppt();
     sendLights();
+    sendAuxBms();
 }

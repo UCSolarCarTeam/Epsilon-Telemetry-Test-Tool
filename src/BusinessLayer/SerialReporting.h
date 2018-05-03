@@ -2,6 +2,7 @@
 
 #include <QObject>
 
+class AuxBmsData;
 class BatteryData;
 class BatteryFaultsData;
 class DriverControlsData;
@@ -27,6 +28,7 @@ public:
                     const BatteryData& batteryData_,
                     const MpptData& mpptData_,
                     const LightsData& lightsData_,
+                    const AuxBmsData& auxBmsData_,
                     SerialView& view);
 
 private slots:
@@ -38,6 +40,7 @@ private slots:
     void sendBattery();
     void sendMppt();
     void sendLights();
+    void sendAuxBms();
     void sendAll();
 
 private:
@@ -51,5 +54,6 @@ private:
     const BatteryData& batteryData_;
     const MpptData& mpptData_;
     const LightsData& lightsData_;
+    const AuxBmsData& auxBmsData_;
     SerialView& view_;
 };

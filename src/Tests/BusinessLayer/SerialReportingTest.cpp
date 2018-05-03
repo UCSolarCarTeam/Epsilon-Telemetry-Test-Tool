@@ -5,6 +5,7 @@
 #include <vector>
 #include <tuple>
 
+#include "AuxBmsData.h"
 #include "BatteryFaultsData.h"
 #include "BatteryData.h"
 #include "DriverControlsData.h"
@@ -48,9 +49,10 @@ namespace
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_DRIVER_CONTROLS = 13;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MOTOR_FAULTS = 13;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY_FAULTS = 10;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 58;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 52;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 7;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_AUX_BMS = 11;
 }
 
 
@@ -69,6 +71,7 @@ protected:
     QScopedPointer<BatteryData> batteryData_;
     QScopedPointer<MpptData> mpptData_;
     QScopedPointer<LightsData> lightsData_;
+    QScopedPointer<AuxBmsData> auxBmsData_;
     QScopedPointer<SerialView> view;
 
     QScopedPointer<SerialReporting> telemetryReporting_;
@@ -85,6 +88,7 @@ protected:
         batteryData_.reset(new BatteryData());
         mpptData_.reset(new MpptData());
         lightsData_.reset(new LightsData());
+        auxBmsData_.reset(new AuxBmsData());
         view.reset(new SerialView(new SerialWindow()));
         telemetryReporting_.reset(new SerialReporting(*communicationService_,
                                   *keyMotorData_,
@@ -96,6 +100,7 @@ protected:
                                   *batteryData_,
                                   *mpptData_,
                                   *lightsData_,
+                                  *auxBmsData_,
                                   *view
                                                      ));
     }
@@ -551,16 +556,6 @@ TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build
     Util::writeUShortIntoArray(data, 43, batteryData_->highCellVoltage);
     data[45] = batteryData_->highCellVoltageId;
     Util::writeUShortIntoArray(data, 46, batteryData_->averageCellVoltage);
-    data[48] = batteryData_->prechargeState;
-    data[49] = (unsigned char)batteryData_->auxVoltage;
-    bool auxBmsAliveArray[] = {batteryData_->auxBmsAlive};
-    Util::writeBoolsIntoArray(data, 50, auxBmsAliveArray, 1);
-    bool strobeBmsLightArray[] = {batteryData_->strobeBmsLight};
-    Util::writeBoolsIntoArray(data, 51, strobeBmsLightArray, 1);
-    bool allowChargeArray[] = {batteryData_->allowCharge};
-    Util::writeBoolsIntoArray(data, 52, allowChargeArray, 1);
-    bool contactorErrorArray[] = {batteryData_->contactorError};
-    Util::writeBoolsIntoArray(data, 53, contactorErrorArray, 1);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x07)); // packet id
@@ -666,6 +661,43 @@ TEST_F(SerialReportingTest, sendLightsTest) // TODO create function which build 
 }
 
 /*
+ * This test tests for the correct structure of the sendAuxBms package as defined in
+ * https://docs.google.com/spreadsheets/d/1soVLjeD9Sl7z7Z6cYMyn1fmn-cG7tx_pfFDsvgkCqMU/edit#gid=782574835
+ *
+ * The stuffing, framing and conversion is assumed to work correctly here. These methods are tested
+ * separately.
+ */
+TEST_F(SerialReportingTest, sendAuxBmsTest)
+{
+    // prepare payload
+    const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_AUX_BMS;
+    const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
+    unsigned char data[payloadLength];
+    data[0] = 0x0B;
+    data[1] = auxBmsData_->prechargeState;
+    data[2] = (unsigned char)auxBmsData_->auxVoltage;
+    bool auxBmsAliveArray[] = {auxBmsData_->auxBmsAlive};
+    Util::writeBoolsIntoArray(data, 3, auxBmsAliveArray, 1);
+    bool strobeBmsLightArray[] = {auxBmsData_->strobeBmsLight};
+    Util::writeBoolsIntoArray(data, 4, strobeBmsLightArray, 1);
+    bool allowChargeArray[] = {auxBmsData_->allowCharge};
+    Util::writeBoolsIntoArray(data, 5, allowChargeArray, 1);
+    bool contactorErrorArray[] = {auxBmsData_->contactorError};
+    Util::writeBoolsIntoArray(data, 6, contactorErrorArray, 1);
+    appendChecksum(data, payloadLength);
+    // do some additional data checks
+    ASSERT_THAT(data[0], Eq(0x0B)); // packet id
+    unsigned char expectedPacket[expectedPackageLength];
+    Util::frameData(data, payloadLength, expectedPacket);
+    // check call
+    const auto expectedPacketAsArg = Args<0, 1>(ElementsAreArray(expectedPacket, expectedPackageLength));
+    EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
+
+    // actually call the method under test through qt's signal/slot mechanism
+    view->sendAuxBms();
+}
+
+/*
  * This test tests if during sendAll all methods which send a message are called.
  *
  * The actual methods, stuffing, framing and conversion is assumed to work correctly here. These methods are tested
@@ -682,7 +714,7 @@ TEST_F(SerialReportingTest, sendAllTest)
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_BATTERY)).With(Args<0, 1>(packageIdIs(7))).Times(1);
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_MPPT)).With(Args<0, 1>(packageIdIs(9))).Times(CcsDefines::MPPT_COUNT);
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS)).With(Args<0, 1>(packageIdIs(10))).Times(1);
-
+    EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_AUX_BMS)).With(Args<0, 1>(packageIdIs(11))).Times(1);
     // actually call the method under test through qt's signal/slot mechanism
     view->sendAll();
 }

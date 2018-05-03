@@ -25,6 +25,7 @@ signals:
     void sendBattery();
     void sendMppt();
     void sendLights();
+    void sendAuxBms();
     void sendAll();
 
 private:

@@ -33,23 +33,7 @@ struct BatteryData
         , highCellVoltage(14)
         , highCellVoltageId(1)
         , averageCellVoltage(12)
-        , prechargeState(PrechargeState::EnablePack)
-        , prechargeStateJSON("Enable Pack")
-        , auxVoltage(13)
-        , auxBmsAlive(true)
-        , strobeBmsLight(true)
-        , allowCharge(true)
-        , contactorError(true)
     {}
-
-    enum PrechargeState
-    {
-        Idle = 0,
-        Precharge = 1,
-        Measure = 2,
-        EnablePack = 3,
-        Run = 4,
-    };
 
     bool alive;
     bool dischargeRelayEnabled;
@@ -81,11 +65,4 @@ struct BatteryData
     unsigned short highCellVoltage;
     unsigned char highCellVoltageId;
     unsigned short averageCellVoltage;
-    PrechargeState prechargeState;
-    const char* prechargeStateJSON;
-    unsigned char auxVoltage;
-    bool auxBmsAlive;
-    bool strobeBmsLight;
-    bool allowCharge;
-    bool contactorError;
 };
