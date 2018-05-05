@@ -19,7 +19,7 @@ HEADERS += \
     $$PWD/MotorFaultsData.h \
     $$PWD/MpptData.h \
     $$PWD/AuxBmsData.h
-
+    
 SOURCES += \
     $$PWD/BatteryData.cpp \
     $$PWD/BatteryFaultsData.cpp \
@@ -30,3 +30,4 @@ SOURCES += \
     $$PWD/MotorFaultsData.cpp \
     $$PWD/MpptData.cpp \
     $$PWD/AuxBmsData.cpp
+    
