@@ -120,7 +120,7 @@
      <string>Set Current</string>
     </property>
    </widget>
-   <widget class="QDoubleSpinBox" name="busCurrentKey">
+   <widget class="QDoubleSpinBox" name="busCurrent">
     <property name="geometry">
      <rect>
       <x>10</x>

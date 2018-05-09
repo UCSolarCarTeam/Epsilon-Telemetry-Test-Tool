@@ -49,19 +49,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label_23">
-   <property name="geometry">
-    <rect>
-     <x>650</x>
-     <y>250</y>
-     <width>111</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Aux Voltage</string>
-   </property>
-  </widget>
   <widget class="QSpinBox" name="fanSpeed">
    <property name="geometry">
     <rect>
@@ -218,19 +205,6 @@
     </property>
    </widget>
   </widget>
-  <widget class="QSpinBox" name="prechargeState">
-   <property name="geometry">
-    <rect>
-     <x>570</x>
-     <y>220</y>
-     <width>71</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <property name="maximum">
-    <number>4</number>
-   </property>
-  </widget>
   <widget class="QSpinBox" name="averageCellVoltage">
    <property name="geometry">
     <rect>
@@ -343,19 +317,6 @@
    </property>
    <property name="text">
     <string>Pack Current</string>
-   </property>
-  </widget>
-  <widget class="QSpinBox" name="auxVoltage">
-   <property name="geometry">
-    <rect>
-     <x>570</x>
-     <y>250</y>
-     <width>71</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <property name="maximum">
-    <number>255</number>
    </property>
   </widget>
   <widget class="QDoubleSpinBox" name="packAmphours">
@@ -509,19 +470,6 @@
    </property>
    <property name="text">
     <string>Fan Speed</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_22">
-   <property name="geometry">
-    <rect>
-     <x>650</x>
-     <y>220</y>
-     <width>151</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Precharge State</string>
    </property>
   </widget>
   <widget class="QSpinBox" name="internalTemp">
