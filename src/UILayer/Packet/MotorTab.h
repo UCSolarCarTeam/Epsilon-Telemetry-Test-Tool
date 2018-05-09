@@ -17,7 +17,7 @@ public:
     ~MotorTab();
 
     QCheckBox& alive();
-    QDoubleSpinBox& busCurrentKey();
+    QDoubleSpinBox& busCurrent();
     QDoubleSpinBox& busVoltage();
     QDoubleSpinBox& setCurrent();
     QDoubleSpinBox& setVelocity();

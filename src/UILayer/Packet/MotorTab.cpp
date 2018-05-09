@@ -18,9 +18,9 @@ QCheckBox& MotorTab::alive()
     return *ui_->alive;
 }
 
-QDoubleSpinBox& MotorTab::busCurrentKey()
+QDoubleSpinBox& MotorTab::busCurrent()
 {
-    return *ui_->busCurrentKey;
+    return *ui_->busCurrent;
 }
 
 QDoubleSpinBox& MotorTab::busVoltage()

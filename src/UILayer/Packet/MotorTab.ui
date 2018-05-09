@@ -120,7 +120,7 @@
      <string>Set Current</string>
     </property>
    </widget>
-   <widget class="QDoubleSpinBox" name="busCurrentKey">
+   <widget class="QDoubleSpinBox" name="busCurrent">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -175,6 +175,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="value">
+     <double>11.109999999999999</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="motorCurrentImaginary">
     <property name="geometry">
@@ -184,6 +187,9 @@
       <width>71</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="value">
+     <double>14.140000000000001</double>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="motorVoltageImaginary">
@@ -195,6 +201,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="value">
+     <double>14.410000000000000</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="backEMF">
     <property name="geometry">
@@ -204,6 +213,9 @@
       <width>71</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="value">
+     <double>15.510000000000000</double>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="voltageRailSupply15V">
@@ -215,6 +227,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="value">
+     <double>17.710000000000001</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="motorCurrentReal">
     <property name="geometry">
@@ -224,6 +239,9 @@
       <width>71</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="value">
+     <double>13.130000000000001</double>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="motorVoltageReal">
@@ -235,6 +253,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="value">
+     <double>13.310000000000000</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="phaseBCurrent">
     <property name="geometry">
@@ -244,6 +265,9 @@
       <width>71</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="value">
+     <double>12.210000000000001</double>
     </property>
    </widget>
    <widget class="QLabel" name="label_36">
@@ -359,6 +383,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="value">
+     <double>18.809999999999999</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="heatSinkTemp">
     <property name="geometry">
@@ -368,6 +395,9 @@
       <width>71</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="value">
+     <double>20.020000000000000</double>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="voltageRailSupply1V">
@@ -379,6 +409,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="value">
+     <double>19.910000000000000</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="dspBoardTemp">
     <property name="geometry">
@@ -388,6 +421,9 @@
       <width>71</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="value">
+     <double>22.219999999999999</double>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="motorTemp">
@@ -399,6 +435,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="value">
+     <double>21.120000000000001</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="odometer">
     <property name="geometry">
@@ -408,6 +447,9 @@
       <width>71</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="value">
+     <double>24.420000000000002</double>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="dcBusAmphours">
@@ -419,6 +461,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="value">
+     <double>23.320000000000000</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="slipSpeed">
     <property name="geometry">
@@ -428,6 +473,9 @@
       <width>71</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="value">
+     <double>25.520000000000000</double>
     </property>
    </widget>
    <widget class="QLabel" name="label_44">

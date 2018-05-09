@@ -37,6 +37,9 @@
     <property name="text">
      <string>DCL Reduced Due to Low SOC</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QCheckBox" name="dclReducedHighCellResistance">
     <property name="geometry">
@@ -75,6 +78,9 @@
     </property>
     <property name="text">
      <string>DCL Reduced Due to Low Cell Voltage</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QCheckBox" name="dclReducedLowPackVoltage">
@@ -115,6 +121,9 @@
     <property name="text">
      <string>DCL and CCL Reduced due to Voltage Failsafe</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QCheckBox" name="cclReducedHighSoc">
     <property name="geometry">
@@ -127,6 +136,9 @@
     </property>
     <property name="text">
      <string>CCL Reduced Due to High SOC</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QCheckBox" name="cclReducedHighCellResistance">
@@ -154,6 +166,9 @@
     <property name="text">
      <string>CCL Reduced Due to Temperature</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QCheckBox" name="cclReducedHighCellVoltage">
     <property name="geometry">
@@ -179,6 +194,9 @@
     </property>
     <property name="text">
      <string>CCL Reduced Due to High Pack Voltage</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QCheckBox" name="cclReducedChargerLatch">
@@ -206,6 +224,9 @@
     <property name="text">
      <string>CCL Reduced Due to Alternate Current Limit [MPI]</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
   </widget>
   <widget class="QGroupBox" name="batteryErrorFlagsGroup">
@@ -232,6 +253,9 @@
     <property name="text">
      <string>Internal Communication Fault</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QCheckBox" name="weakCellFault">
     <property name="geometry">
@@ -244,6 +268,9 @@
     </property>
     <property name="text">
      <string>Weak Cell Fault</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QCheckBox" name="lowCellVoltageFault">
@@ -271,6 +298,9 @@
     <property name="text">
      <string>Open Wiring Fault</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QCheckBox" name="currentSensorFault">
     <property name="geometry">
@@ -296,6 +326,9 @@
     </property>
     <property name="text">
      <string>Pack Voltage Sensor</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QCheckBox" name="weakPackFault">
@@ -323,6 +356,9 @@
     <property name="text">
      <string>Voltage Redundancy Fault</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QCheckBox" name="fanMonitorFault">
     <property name="geometry">
@@ -349,6 +385,9 @@
     <property name="text">
      <string>Thermistor Fault</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QCheckBox" name="canbusCommsFault">
     <property name="geometry">
@@ -374,6 +413,9 @@
     </property>
     <property name="text">
      <string>Charger Safety Relay Fault</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QCheckBox" name="powerSupplyFault">
@@ -427,6 +469,9 @@
     <property name="text">
      <string>Charge Limit Enforcement Fault</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QCheckBox" name="alwaysOnSupplyFault">
     <property name="geometry">
@@ -439,6 +484,9 @@
     </property>
     <property name="text">
      <string>Always-On Supply Fault</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QCheckBox" name="internalThermistorFault">
@@ -465,6 +513,9 @@
     </property>
     <property name="text">
      <string>Internal Logic Fault</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QCheckBox" name="internalMemoryFault">

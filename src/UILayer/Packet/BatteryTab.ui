@@ -48,18 +48,8 @@
      <height>26</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QLabel" name="label_23">
-   <property name="geometry">
-    <rect>
-     <x>650</x>
-     <y>250</y>
-     <width>111</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Aux Voltage</string>
+   <property name="value">
+    <double>12.330000000000000</double>
    </property>
   </widget>
   <widget class="QSpinBox" name="fanSpeed">
@@ -73,6 +63,9 @@
    </property>
    <property name="maximum">
     <number>255</number>
+   </property>
+   <property name="value">
+    <number>43</number>
    </property>
   </widget>
   <widget class="QLabel" name="label_10">
@@ -100,6 +93,9 @@
    <property name="maximum">
     <number>255</number>
    </property>
+   <property name="value">
+    <number>52</number>
+   </property>
   </widget>
   <widget class="QGroupBox" name="bmsRelayStatus">
    <property name="geometry">
@@ -124,6 +120,9 @@
     </property>
     <property name="text">
      <string>Discharge Relay</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QCheckBox" name="chargeRelay">
@@ -151,6 +150,9 @@
     <property name="text">
      <string>Charger Safety</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QCheckBox" name="malfunctionIndicator">
     <property name="geometry">
@@ -163,6 +165,9 @@
     </property>
     <property name="text">
      <string>Malfunction Indicator</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QCheckBox" name="alwaysOn">
@@ -190,6 +195,9 @@
     <property name="text">
      <string>Multipurpose Input Signal</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QCheckBox" name="isReady">
     <property name="geometry">
@@ -202,6 +210,9 @@
     </property>
     <property name="text">
      <string>Is Ready Signal</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QCheckBox" name="isCharging">
@@ -216,20 +227,10 @@
     <property name="text">
      <string>Is Charging Signal</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
-  </widget>
-  <widget class="QSpinBox" name="prechargeState">
-   <property name="geometry">
-    <rect>
-     <x>570</x>
-     <y>220</y>
-     <width>71</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <property name="maximum">
-    <number>4</number>
-   </property>
   </widget>
   <widget class="QSpinBox" name="averageCellVoltage">
    <property name="geometry">
@@ -242,6 +243,9 @@
    </property>
    <property name="maximum">
     <number>65535</number>
+   </property>
+   <property name="value">
+    <number>12</number>
    </property>
   </widget>
   <widget class="QLabel" name="label_11">
@@ -265,6 +269,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="value">
+    <double>88.000000000000000</double>
    </property>
   </widget>
   <widget class="QLabel" name="label_19">
@@ -304,6 +311,9 @@
    </property>
    <property name="maximum">
     <number>65535</number>
+   </property>
+   <property name="value">
+    <number>14</number>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -345,19 +355,6 @@
     <string>Pack Current</string>
    </property>
   </widget>
-  <widget class="QSpinBox" name="auxVoltage">
-   <property name="geometry">
-    <rect>
-     <x>570</x>
-     <y>250</y>
-     <width>71</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <property name="maximum">
-    <number>255</number>
-   </property>
-  </widget>
   <widget class="QDoubleSpinBox" name="packAmphours">
    <property name="geometry">
     <rect>
@@ -366,6 +363,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="value">
+    <double>32.329999999999998</double>
    </property>
   </widget>
   <widget class="QDoubleSpinBox" name="packVoltage">
@@ -377,6 +377,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="value">
+    <double>12.330000000000000</double>
+   </property>
   </widget>
   <widget class="QDoubleSpinBox" name="packCurrent">
    <property name="geometry">
@@ -386,6 +389,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="value">
+    <double>33.329999999999998</double>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
@@ -418,6 +424,9 @@
    </property>
    <property name="maximum">
     <number>255</number>
+   </property>
+   <property name="value">
+    <number>2</number>
    </property>
   </widget>
   <widget class="QLabel" name="label_9">
@@ -458,6 +467,9 @@
    <property name="maximum">
     <number>255</number>
    </property>
+   <property name="value">
+    <number>45</number>
+   </property>
   </widget>
   <widget class="QSpinBox" name="highCellVoltageId">
    <property name="geometry">
@@ -497,6 +509,9 @@
    <property name="maximum">
     <number>255</number>
    </property>
+   <property name="value">
+    <number>60</number>
+   </property>
   </widget>
   <widget class="QLabel" name="label_15">
    <property name="geometry">
@@ -511,19 +526,6 @@
     <string>Fan Speed</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_22">
-   <property name="geometry">
-    <rect>
-     <x>650</x>
-     <y>220</y>
-     <width>151</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Precharge State</string>
-   </property>
-  </widget>
   <widget class="QSpinBox" name="internalTemp">
    <property name="geometry">
     <rect>
@@ -535,6 +537,9 @@
    </property>
    <property name="maximum">
     <number>255</number>
+   </property>
+   <property name="value">
+    <number>55</number>
    </property>
   </widget>
   <widget class="QSpinBox" name="lowCellVoltage">
@@ -549,6 +554,9 @@
    <property name="maximum">
     <number>65535</number>
    </property>
+   <property name="value">
+    <number>10</number>
+   </property>
   </widget>
   <widget class="QSpinBox" name="lowTemp">
    <property name="geometry">
@@ -561,6 +569,9 @@
    </property>
    <property name="maximum">
     <number>255</number>
+   </property>
+   <property name="value">
+    <number>44</number>
    </property>
   </widget>
   <widget class="QSpinBox" name="lowThermistorId">
@@ -575,6 +586,9 @@
    <property name="maximum">
     <number>255</number>
    </property>
+   <property name="value">
+    <number>2</number>
+   </property>
   </widget>
   <widget class="QDoubleSpinBox" name="inputVoltage12V">
    <property name="geometry">
@@ -584,6 +598,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="value">
+    <double>12.330000000000000</double>
    </property>
   </widget>
   <widget class="QLabel" name="label_7">
@@ -633,6 +650,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="value">
+    <double>77.000000000000000</double>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -712,6 +732,9 @@
    <property name="maximum">
     <number>255</number>
    </property>
+   <property name="value">
+    <number>1</number>
+   </property>
   </widget>
   <widget class="QCheckBox" name="alive">
    <property name="geometry">
@@ -724,6 +747,9 @@
    </property>
    <property name="text">
     <string>Alive</string>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>
