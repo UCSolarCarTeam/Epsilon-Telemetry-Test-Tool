@@ -12,7 +12,7 @@ class LightsTab : public QWidget
 {
     Q_OBJECT
 public:
-    LightsTab();
+    explicit LightsTab();
     ~LightsTab();
 
     QCheckBox& bmsStrobeLight();

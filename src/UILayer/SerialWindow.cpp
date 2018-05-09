@@ -26,6 +26,7 @@ void SerialWindow::setupUi()
     disconnectButton_ = new QPushButton("Disconnect", this);
     comPortLineEdit_ = new QLineEdit("/dev/ttyUSB0", this);
     connectionStatusLabel_ = new QLabel("Not connected", this);
+    switchPacketButton_ = new QPushButton("Switch to Packet 1", this);
     sendKeyMotorButton_ = new QPushButton("Send Key Motor", this);
     sendMotor0DetailsButton_ = new QPushButton("Send Motor 0 Details", this);
     sendMotor1DetailsButton_ = new QPushButton("Send Motor 1 Details", this);
@@ -38,6 +39,7 @@ void SerialWindow::setupUi()
     sendAuxBmsButton_= new QPushButton("Send Aux BMS", this);
     sendAllButton_ = new QPushButton("Send All", this);
     disconnectButton_->setEnabled(false);
+    switchPacketButton_->setEnabled(false);
     sendKeyMotorButton_->setEnabled(false);
     sendMotor0DetailsButton_->setEnabled(false);
     sendMotor1DetailsButton_->setEnabled(false);
@@ -53,6 +55,7 @@ void SerialWindow::setupUi()
     layout->addRow(disconnectButton_);
     layout->addRow(comPortLineEdit_);
     layout->addRow(connectionStatusLabel_);
+    layout->addRow(switchPacketButton_);
     layout->addRow(sendKeyMotorButton_);
     layout->addRow(sendMotor0DetailsButton_);
     layout->addRow(sendMotor1DetailsButton_);
@@ -85,6 +88,11 @@ QLineEdit& SerialWindow::getComPortLineEdit()
 QLabel& SerialWindow::getConnectionStatusLabel()
 {
     return *connectionStatusLabel_;
+}
+
+QPushButton& SerialWindow::getSwitchPacketButton()
+{
+    return *switchPacketButton_;
 }
 
 QPushButton& SerialWindow::getSendKeyMotorButton()

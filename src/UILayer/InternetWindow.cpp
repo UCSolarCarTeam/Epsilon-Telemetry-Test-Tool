@@ -30,13 +30,15 @@ void InternetWindow::setupUi()
     portSpinBox_->setRange(0, 65535);
     portSpinBox_->setValue(5672);
     QLabel* exchangeNameLabel = new QLabel("Exchange Name", this);
-    exchangeNameLineEdit_ = new QLineEdit("", this);
+    exchangeNameLineEdit_ = new QLineEdit("hermesExchange", this);
     QLabel* routingKeyLabel = new QLabel("Routing Key", this);
     routingKeyLineEdit_ = new QLineEdit("", this);
     connectionStatusLabel_ = new QLabel("Not connected", this);
-    sendAllButton_ = new QPushButton("Send All", this);
+    sendPacket0Button_ = new QPushButton("Send Packet 0", this);
+    sendPacket1Button_ = new QPushButton("Send Packet 1", this);
     disconnectButton_->setEnabled(false);
-    sendAllButton_->setEnabled(false);
+    sendPacket0Button_->setEnabled(false);
+    sendPacket1Button_->setEnabled(false);
     layout->addRow(connectButton_);
     layout->addRow(disconnectButton_);
     layout->addRow(ipAddressLabel);
@@ -48,7 +50,8 @@ void InternetWindow::setupUi()
     layout->addRow(routingKeyLabel);
     layout->addRow(routingKeyLineEdit_);
     layout->addRow(connectionStatusLabel_);
-    layout->addRow(sendAllButton_);
+    layout->addRow(sendPacket0Button_);
+    layout->addRow(sendPacket1Button_);
     setLayout(layout);
 }
 
@@ -87,7 +90,12 @@ QLabel& InternetWindow::getConnectionStatusLabel()
     return *connectionStatusLabel_;
 }
 
-QPushButton& InternetWindow::getSendAllButton()
+QPushButton& InternetWindow::getSendPacket0Button()
 {
-    return *sendAllButton_;
+    return *sendPacket0Button_;
+}
+
+QPushButton& InternetWindow::getSendPacket1Button()
+{
+    return *sendPacket1Button_;
 }

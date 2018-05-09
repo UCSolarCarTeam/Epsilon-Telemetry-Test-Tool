@@ -16,11 +16,7 @@ public:
     explicit BatteryTab();
     ~BatteryTab();
 
-    QCheckBox& allowCharge();
-    QCheckBox& auxBMSAlive();
-    QCheckBox& bmuAlive();
-    QCheckBox& strobeBmsLight();
-    QCheckBox& contactorError();
+    QCheckBox& alive();
     QCheckBox& alwaysOn();
     QCheckBox& chargeRelay();
     QCheckBox& chargerSafety();
@@ -47,10 +43,9 @@ public:
     QDoubleSpinBox& packAmphours();
     QDoubleSpinBox& packCurrent();
     QDoubleSpinBox& packDepthOfDischarge();
-    QDoubleSpinBox& packDepthOfCharge();
+    QDoubleSpinBox& packStateOfCharge();
     QDoubleSpinBox& packVoltage();
     QSpinBox& populatedCells();
-    QSpinBox& prechargeState();
     QSpinBox& requestedFanSpeed();
 
 private:

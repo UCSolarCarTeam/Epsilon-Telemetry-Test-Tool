@@ -13,14 +13,14 @@ MotorTab::~MotorTab()
 }
 
 
-QCheckBox& MotorTab::Alive()
+QCheckBox& MotorTab::alive()
 {
     return *ui_->alive;
 }
 
-QDoubleSpinBox& MotorTab::busCurrentKey()
+QDoubleSpinBox& MotorTab::busCurrent()
 {
-    return *ui_->busCurrentKey;
+    return *ui_->busCurrent;
 }
 
 QDoubleSpinBox& MotorTab::busVoltage()
@@ -121,89 +121,4 @@ QDoubleSpinBox& MotorTab::voltageRailSupply1V()
 QDoubleSpinBox& MotorTab::voltageRailSupply3V()
 {
     return *ui_->voltageRailSupply3V;
-}
-
-QSpinBox& MotorTab::canRxErrorCount()
-{
-    return *ui_->canTxErrorCount;
-}
-
-QSpinBox& MotorTab::canTxErrorCount()
-{
-    return *ui_->canTxErrorCount;
-}
-
-QCheckBox& MotorTab::badMotorPositionHallSequence()
-{
-    return *ui_->badMotorPositionHallSequence;
-}
-
-QCheckBox& MotorTab::configReadError()
-{
-    return *ui_->configReadError;
-}
-
-QCheckBox& MotorTab::dcBusOverVoltage()
-{
-    return *ui_->dcBusOverVoltage;
-}
-
-QCheckBox& MotorTab::overCurrent()
-{
-    return *ui_->overCurrent;
-}
-
-QCheckBox& MotorTab::desaturationFault()
-{
-    return *ui_->desaturationFault;
-}
-
-QCheckBox& MotorTab::overSpeed()
-{
-    return *ui_->overSpeed;
-}
-
-QCheckBox& MotorTab::railUnderVoltageLockOut()
-{
-    return *ui_->railUnderVoltageLockOut;
-}
-
-QCheckBox& MotorTab::watchDogCausedLastReset()
-{
-    return *ui_->watchdogCausedLastReset;
-}
-
-QCheckBox& MotorTab::busCurrentLimit()
-{
-    return *ui_->busCurrentLimit;
-}
-
-QCheckBox& MotorTab::busVoltageLower()
-{
-    return *ui_->busVoltageLower;
-}
-
-QCheckBox& MotorTab::busVoltageUpper()
-{
-    return *ui_->busVoltageUpper;
-}
-
-QCheckBox& MotorTab::ipmOrMotorTemp()
-{
-    return *ui_->ipmOrMotorTemp;
-}
-
-QCheckBox& MotorTab::motorCurrent()
-{
-    return *ui_->motorCurrent;
-}
-
-QCheckBox& MotorTab::outputVoltagePwm()
-{
-    return *ui_->outputVoltagePwm;
-}
-
-QCheckBox& MotorTab::velocity()
-{
-    return *ui_->velocity;
 }

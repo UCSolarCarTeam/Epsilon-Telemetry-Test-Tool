@@ -1,32 +1,46 @@
 #pragma once
 
-struct AuxBmsData
+#include <QObject>
+
+enum PrechargeState
 {
-    AuxBmsData()
-        : prechargeState(PrechargeState::DISCHARGE_ENGAGED)
-        , prechargeStateJSON("Enable Pack")
-        , auxVoltage(13)
-        , auxBmsAlive(true)
-        , strobeBmsLight(true)
-        , allowCharge(true)
-        , contactorError(true)
-    {}
+    OFF = 0,
+    COMMON_ENGAGED = 1,
+    CHARGE_ENGAGED = 2,
+    DISCHARGE_ENGAGED = 3,
+    ALL_ENGAGED = 4
+};
 
-    enum PrechargeState
-    {
-        OFF = 0,
-        COMMON_ENGAGED = 1,
-        CHARGE_ENGAGED = 2,
-        DISCHARGE_ENGAGED = 3,
-        ALL_ENGAGED = 4,
-        INVALID_STATE = 5,
-    };
+class AuxBmsData : public QObject
+{
+    Q_OBJECT
 
-    PrechargeState prechargeState;
-    const char* prechargeStateJSON;
-    unsigned char auxVoltage;
-    bool auxBmsAlive;
-    bool strobeBmsLight;
-    bool allowCharge;
-    bool contactorError;
+public:
+     AuxBmsData();
+     virtual ~AuxBmsData();
+
+    PrechargeState prechargeState() const;
+    QString prechargeStateJSON() const;
+    unsigned char auxVoltage() const;
+    bool auxBmsAlive() const;
+    bool strobeBmsLight() const;
+    bool allowCharge() const;
+    bool contactorError() const;
+
+    void setPrechargeState(PrechargeState prechargeState);
+    void setPrechargeStateJSON(QString prechargeStateJSON);
+    void setAuxVoltage(const unsigned char& auxVoltage);
+    void setAuxBmsAlive(const bool& auxBmsAlive);
+    void setStrobeBmsLight(const bool& strobeBmsLight);
+    void setAllowCharge(const bool& allowCharge);
+    void setContactorError(const bool& contactorError);
+
+private:
+      PrechargeState prechargeState_;
+      QString prechargeStateJSON_;
+      unsigned char auxVoltage_;
+      bool auxBmsAlive_;
+      bool strobeBmsLight_;
+      bool allowCharge_;
+      bool contactorError_;
 };

@@ -31,7 +31,7 @@ public:
                       const AuxBmsData& auxBmsData_,
                       InternetView& view);
 
-private slots:
+public slots:
     void sendAll();
 
 private:

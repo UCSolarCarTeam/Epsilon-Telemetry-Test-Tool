@@ -55,6 +55,11 @@ QCheckBox& BatteryFaultsTab::internalCommFault()
     return *ui_->internalCommFault;
 }
 
+QCheckBox& BatteryFaultsTab::internalConversionFault()
+{
+    return *ui_->internalConversionFault;
+}
+
 QCheckBox& BatteryFaultsTab::internalLogicFault()
 {
     return *ui_->internalLogicFault;

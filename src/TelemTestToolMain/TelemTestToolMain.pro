@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-LIBS += -L../../build/.lib -lBusinessLayer -lViewLayer -lUILayer -lPeripherals
+LIBS += -L../../build/.lib -lBusinessLayer -lViewLayer -lUILayer -lDataLayer -lPeripherals
 
 ! include( ../common.pri ) {
     error( "Couldn't find the common.pri file!" )
