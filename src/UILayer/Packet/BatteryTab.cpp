@@ -57,11 +57,6 @@ QCheckBox& BatteryTab::multipurposeInput()
     return *ui_->multipurposeInput;
 }
 
-QSpinBox& BatteryTab::auxVoltage()
-{
-    return *ui_->auxVoltage;
-}
-
 QSpinBox& BatteryTab::averageCellVoltage()
 {
     return *ui_->averageCellVoltage;
