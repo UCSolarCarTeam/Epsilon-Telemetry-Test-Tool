@@ -14,7 +14,7 @@ MotorFaultsTab::~MotorFaultsTab()
 
 QSpinBox& MotorFaultsTab::canRxErrorCount()
 {
-    return *ui_->canTxErrorCount;
+    return *ui_->canRxErrorCount;
 }
 
 QSpinBox& MotorFaultsTab::canTxErrorCount()
