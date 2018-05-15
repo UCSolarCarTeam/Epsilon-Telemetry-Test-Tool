@@ -56,8 +56,7 @@ namespace
 
     const int ONES_TO_MILLI = 1000;
     const int ONES_TO_CENTI = 100;
-    const int ONES_TO_DECI = 10;
-    const int PERCENTAGE = 2;
+
 }
 
 
@@ -541,13 +540,13 @@ TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build
                                  };
     Util::writeBoolsIntoArray(data, 2, bmsRelayStatusArray, 8);
     data[3] = batteryData_->populatedCells();
-    Util::writeFloatIntoArray(data, 4, batteryData_->inputVoltage12V() * ONES_TO_DECI);
-    Util::writeFloatIntoArray(data, 8, batteryData_->fanVoltage() * ONES_TO_CENTI);
-    Util::writeFloatIntoArray(data, 12, batteryData_->packCurrent() * ONES_TO_DECI);
-    Util::writeFloatIntoArray(data, 16, batteryData_->packVoltage() * ONES_TO_DECI);
-    Util::writeFloatIntoArray(data, 20, batteryData_->packStateOfCharge() * PERCENTAGE);
-    Util::writeFloatIntoArray(data, 24, batteryData_->packAmpHours() * ONES_TO_DECI);
-    Util::writeFloatIntoArray(data, 28, batteryData_->packDepthOfDischarge() * PERCENTAGE);
+    Util::writeFloatIntoArray(data, 4, batteryData_->inputVoltage12V());
+    Util::writeFloatIntoArray(data, 8, batteryData_->fanVoltage());
+    Util::writeFloatIntoArray(data, 12, batteryData_->packCurrent());
+    Util::writeFloatIntoArray(data, 16, batteryData_->packVoltage());
+    Util::writeFloatIntoArray(data, 20, batteryData_->packStateOfCharge());
+    Util::writeFloatIntoArray(data, 24, batteryData_->packAmpHours());
+    Util::writeFloatIntoArray(data, 28, batteryData_->packDepthOfDischarge());
     data[32] = batteryData_->highTemperature();
     data[33] = batteryData_->highThermistorId();
     data[34] = batteryData_->lowTemperature();
@@ -556,11 +555,11 @@ TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build
     data[37] = batteryData_->internalTemperature();
     data[38] = batteryData_->fanSpeed();
     data[39] = batteryData_->requestedFanSpeed();
-    Util::writeUShortIntoArray(data, 40, batteryData_->lowCellVoltage() * ONES_TO_DECI);
+    Util::writeUShortIntoArray(data, 40, batteryData_->lowCellVoltage());
     data[42] = batteryData_->lowCellVoltageId();
-    Util::writeUShortIntoArray(data, 43, batteryData_->highCellVoltage() * ONES_TO_DECI);
+    Util::writeUShortIntoArray(data, 43, batteryData_->highCellVoltage());
     data[45] = batteryData_->highCellVoltageId();
-    Util::writeUShortIntoArray(data, 46, batteryData_->averageCellVoltage() * ONES_TO_DECI);
+    Util::writeUShortIntoArray(data, 46, batteryData_->averageCellVoltage());
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x07)); // packet id

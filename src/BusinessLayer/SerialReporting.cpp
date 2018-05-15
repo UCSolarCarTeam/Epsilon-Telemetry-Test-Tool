@@ -31,8 +31,7 @@ namespace
 
     const int ONES_TO_MILLI = 1000;
     const int ONES_TO_CENTI = 100;
-    const int ONES_TO_DECI = 10;
-    const int PERCENTAGE = 2;
+
 }
 
 using namespace Util;
@@ -298,13 +297,13 @@ void SerialReporting::sendBattery()
                                  };
     writeBoolsIntoArray(packetPayload, 2, bmsRelayStatusArray, 8);
     packetPayload[3] = batteryData_.populatedCells();
-    writeFloatIntoArray(packetPayload, 4, batteryData_.inputVoltage12V() * ONES_TO_DECI);
-    writeFloatIntoArray(packetPayload, 8, batteryData_.fanVoltage() * ONES_TO_CENTI);
-    writeFloatIntoArray(packetPayload, 12, batteryData_.packCurrent() * ONES_TO_DECI);
-    writeFloatIntoArray(packetPayload, 16, batteryData_.packVoltage() * ONES_TO_DECI);
-    writeFloatIntoArray(packetPayload, 20, batteryData_.packStateOfCharge() * PERCENTAGE);
-    writeFloatIntoArray(packetPayload, 24, batteryData_.packAmpHours() * ONES_TO_DECI);
-    writeFloatIntoArray(packetPayload, 28, batteryData_.packDepthOfDischarge() * PERCENTAGE);
+    writeFloatIntoArray(packetPayload, 4, batteryData_.inputVoltage12V());
+    writeFloatIntoArray(packetPayload, 8, batteryData_.fanVoltage());
+    writeFloatIntoArray(packetPayload, 12, batteryData_.packCurrent());
+    writeFloatIntoArray(packetPayload, 16, batteryData_.packVoltage());
+    writeFloatIntoArray(packetPayload, 20, batteryData_.packStateOfCharge());
+    writeFloatIntoArray(packetPayload, 24, batteryData_.packAmpHours());
+    writeFloatIntoArray(packetPayload, 28, batteryData_.packDepthOfDischarge());
     packetPayload[32] = batteryData_.highTemperature();
     packetPayload[33] = batteryData_.highThermistorId();
     packetPayload[34] = batteryData_.lowTemperature();
@@ -313,11 +312,11 @@ void SerialReporting::sendBattery()
     packetPayload[37] = batteryData_.internalTemperature();
     packetPayload[38] = batteryData_.fanSpeed();
     packetPayload[39] = batteryData_.requestedFanSpeed();
-    writeUShortIntoArray(packetPayload, 40, batteryData_.lowCellVoltage() * ONES_TO_DECI);
+    writeUShortIntoArray(packetPayload, 40, batteryData_.lowCellVoltage());
     packetPayload[42] = batteryData_.lowCellVoltageId();
-    writeUShortIntoArray(packetPayload, 43, batteryData_.highCellVoltage() * ONES_TO_DECI);
+    writeUShortIntoArray(packetPayload, 43, batteryData_.highCellVoltage());
     packetPayload[45] = batteryData_.highCellVoltageId();
-    writeUShortIntoArray(packetPayload, 46, batteryData_.averageCellVoltage() * ONES_TO_DECI);
+    writeUShortIntoArray(packetPayload, 46, batteryData_.averageCellVoltage());
     addChecksum(packetPayload, BATTERY_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
