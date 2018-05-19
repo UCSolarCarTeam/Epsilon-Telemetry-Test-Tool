@@ -126,10 +126,10 @@ protected:
         }
 
         data[1] = numberAndAlive;
-        Util::writeUShortIntoArray(data, 2, mpptData_->arrayVoltage(mpptData_->mpptNumber()));
-        Util::writeUShortIntoArray(data, 4, mpptData_->arrayCurrent(mpptData_->mpptNumber()));
-        Util::writeUShortIntoArray(data, 6, mpptData_->batteryVoltage(mpptData_->mpptNumber()));
-        Util::writeUShortIntoArray(data, 8, mpptData_->temperature(mpptData_->mpptNumber()));
+        Util::writeUShortIntoArray(data, 2, mpptData_->arrayVoltage(mpptData_->mpptNumber()) * ONES_TO_CENTI);
+        Util::writeUShortIntoArray(data, 4, mpptData_->arrayCurrent(mpptData_->mpptNumber()) * ONES_TO_MILLI);
+        Util::writeUShortIntoArray(data, 6, mpptData_->batteryVoltage(mpptData_->mpptNumber()) * ONES_TO_CENTI);
+        Util::writeUShortIntoArray(data, 8, mpptData_->temperature(mpptData_->mpptNumber()) * ONES_TO_CENTI);
     }
 
     class PackageIdMatcher : public MatcherInterface<std::tuple<const unsigned char*, int>>

@@ -167,7 +167,7 @@ QCheckBox& BatteryFaultsTab::dclReducedHighCellResistance()
 
 QCheckBox& BatteryFaultsTab::dclReducedLowCellVoltage()
 {
-    return *ui_->dclReducedHighCellResistance;
+    return *ui_->dclReducedLowCellVoltage;
 }
 
 QCheckBox& BatteryFaultsTab::dclReducedLowPackVoltage()
