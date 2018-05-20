@@ -11,6 +11,7 @@ BatteryReporting::BatteryReporting(BatteryData& batteryData,
 
 void BatteryReporting::setData()
 {
+    batteryData_.setAlive(batteryTab_.alive().isChecked());
     batteryData_.setDischargeRelayEnabled(batteryTab_.dischargeRelay().isChecked());
     batteryData_.setChargeRelayEnabled(batteryTab_.chargeRelay().isChecked());
     batteryData_.setChargerSafetyEnabled(batteryTab_.chargerSafety().isChecked());
@@ -25,6 +26,7 @@ void BatteryReporting::setData()
     batteryData_.setPackCurrent(batteryTab_.packCurrent().value());
     batteryData_.setPackVoltage(batteryTab_.packVoltage().value());
     batteryData_.setPackStateOfCharge(batteryTab_.packStateOfCharge().value());
+    batteryData_.setPackAmpHours(batteryTab_.packAmphours().value());
     batteryData_.setPackDepthOfDischarge(batteryTab_.packDepthOfDischarge().value());
     batteryData_.setHighTemperature(batteryTab_.highTemp().value());
     batteryData_.setHighThermistorId(batteryTab_.highThermistorId().value());
