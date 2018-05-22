@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MotorFaultsTab</class>
+ <widget class="QWidget" name="MotorFaultsTab">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>919</width>
+    <height>435</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QGroupBox" name="Faults">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>871</width>
+     <height>311</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Motor Faults</string>
+   </property>
+   <widget class="QGroupBox" name="errorFlags">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>271</width>
+      <height>271</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Error Flags</string>
+    </property>
+    <widget class="QCheckBox" name="dcBusOverVoltage">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>171</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>DC Bus Over Voltage</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="desaturationFault">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>240</y>
+       <width>221</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Desaturation Fault</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="badMotorPositionHallSequence">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>261</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Bad Motor Position Hall Sequence</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="overCurrent">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>181</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Software Over Current</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="railUnderVoltageLockOut">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>210</y>
+       <width>221</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Rail Under Voltage Lock Out</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="overSpeed">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>151</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Motor Over Speed</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="watchdogCausedLastReset">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>150</y>
+       <width>231</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Watchdog Caused Last Reset</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="configReadError">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>180</y>
+       <width>221</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Config Read Error</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="LimitFlags">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>30</y>
+      <width>231</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Limit Flags</string>
+    </property>
+    <widget class="QCheckBox" name="velocityLimit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>171</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Velocity</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="busCurrentLimit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>261</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Bus Current</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="motorCurrentLimit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>181</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Motor Current</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="ipmOrMotorTempLimit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>210</y>
+       <width>221</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>IPM or Motor Temperature</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="outputVoltagePwmLimit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>211</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Output Voltage PWM</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="busVoltageUpperLimit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>150</y>
+       <width>231</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Bus Voltage Upper</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="busVoltageLowerLimit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>180</y>
+       <width>221</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Bus Voltage Lower</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QSpinBox" name="canTxErrorCount">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>80</y>
+      <width>71</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>255</number>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="canRxErrorCount">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>50</y>
+      <width>71</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>255</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="canRxErrorCountLabel">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>50</y>
+      <width>161</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>CAN RX Error Count</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="canTxErrorCountLabel">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>80</y>
+      <width>161</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>CAN TX Error Count</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

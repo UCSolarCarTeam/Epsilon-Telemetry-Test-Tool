@@ -22,7 +22,8 @@ public:
     QLineEdit& getExchangeNameLineEdit();
     QLineEdit& getRoutingKeyLineEdit();
     QLabel& getConnectionStatusLabel();
-    QPushButton& getSendAllButton();
+    QPushButton& getSendPacket0Button();
+    QPushButton& getSendPacket1Button();
     void setConnectionStatusText(QString);
 
 private:
@@ -36,5 +37,6 @@ private:
     QLineEdit* exchangeNameLineEdit_;
     QLineEdit* routingKeyLineEdit_;
     QLabel* connectionStatusLabel_;
-    QPushButton* sendAllButton_;
+    QPushButton* sendPacket0Button_;
+    QPushButton* sendPacket1Button_;
 };

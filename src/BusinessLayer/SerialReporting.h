@@ -31,7 +31,7 @@ public:
                     const AuxBmsData& auxBmsData_,
                     SerialView& view);
 
-private slots:
+public slots:
     void sendKeyMotor();
     void sendMotorDetails(int n);
     void sendDriverControls();

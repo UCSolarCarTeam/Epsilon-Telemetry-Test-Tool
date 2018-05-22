@@ -55,6 +55,11 @@ QCheckBox& BatteryFaultsTab::internalCommFault()
     return *ui_->internalCommFault;
 }
 
+QCheckBox& BatteryFaultsTab::internalConversionFault()
+{
+    return *ui_->internalConversionFault;
+}
+
 QCheckBox& BatteryFaultsTab::internalLogicFault()
 {
     return *ui_->internalLogicFault;
@@ -162,7 +167,7 @@ QCheckBox& BatteryFaultsTab::dclReducedHighCellResistance()
 
 QCheckBox& BatteryFaultsTab::dclReducedLowCellVoltage()
 {
-    return *ui_->dclReducedHighCellResistance;
+    return *ui_->dclReducedLowCellVoltage;
 }
 
 QCheckBox& BatteryFaultsTab::dclReducedLowPackVoltage()
