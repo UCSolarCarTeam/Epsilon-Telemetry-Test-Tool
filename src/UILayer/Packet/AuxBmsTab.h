@@ -21,6 +21,7 @@ public:
     QCheckBox& auxBMSAlive();
     QCheckBox& strobeBmsLight();
     QCheckBox& contactorError();
+    QCheckBox& highVoltageEnable();
     QComboBox& prechargeState();
     QSpinBox& auxVoltage();
 

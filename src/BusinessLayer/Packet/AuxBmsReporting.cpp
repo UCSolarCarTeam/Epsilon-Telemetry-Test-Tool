@@ -15,6 +15,7 @@ void AuxBmsReporting::setData()
     auxBmsData_.setStrobeBmsLight(auxBmsTab_.strobeBmsLight().isChecked());
     auxBmsData_.setAllowCharge(auxBmsTab_.allowCharge().isChecked());
     auxBmsData_.setContactorError(auxBmsTab_.contactorError().isChecked());
+    auxBmsData_.setHighVoltageEnable(auxBmsTab_.highVoltageEnable().isChecked());
     auxBmsData_.setAuxVoltage(auxBmsTab_.auxVoltage().value());
     auxBmsData_.setPrechargeStateJSON(auxBmsTab_.prechargeState().currentText());
     if (auxBmsTab_.prechargeState().currentText() == "OFF")
