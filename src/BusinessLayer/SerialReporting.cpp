@@ -27,7 +27,7 @@ namespace
     const int BATTERY_LENGTH = 48;
     const int MPPT_LENGTH = 10;
     const int LIGHTS_LENGTH = 3;
-    const int AUX_BMS_LENGTH = 7;
+    const int AUX_BMS_LENGTH = 8;
 
     const int ONES_TO_MILLI = 1000;
     const int ONES_TO_CENTI = 100;
@@ -377,7 +377,7 @@ void SerialReporting::sendAuxBms()
 {
     const unsigned int unframedPacketLength = AUX_BMS_LENGTH + CHECKSUM_LENGTH;
     unsigned char packetPayload[unframedPacketLength];
-    packetPayload[0] = 0x0B;
+    packetPayload[0] = CcsDefines::AUX_BMS_PKG_ID;
     packetPayload[1] = (unsigned char)auxBmsData_.prechargeState();
     packetPayload[2] = auxBmsData_.auxVoltage();
     bool auxBmsAliveArray[] = {auxBmsData_.auxBmsAlive()};
@@ -388,6 +388,8 @@ void SerialReporting::sendAuxBms()
     writeBoolsIntoArray(packetPayload, 5, allowChargeArray, 1);
     bool contactorErrorArray[] = {auxBmsData_.contactorError()};
     writeBoolsIntoArray(packetPayload, 6, contactorErrorArray, 1);
+    bool highVoltageEnableArray[] = {auxBmsData_.highVoltageEnable()};
+    writeBoolsIntoArray(packetPayload, 7, highVoltageEnableArray, 1);
     addChecksum(packetPayload, AUX_BMS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);

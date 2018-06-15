@@ -317,6 +317,7 @@ QJsonObject InternetReporting::makeAuxBms()
     auxBms.insert("StrobeBmsLight", auxBmsData_.strobeBmsLight());
     auxBms.insert("AllowCharge", auxBmsData_.allowCharge());
     auxBms.insert("ContactorError", auxBmsData_.contactorError());
+    auxBms.insert("HighVoltageEnable", auxBmsData_.highVoltageEnable());
     return auxBms;
 }
 

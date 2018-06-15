@@ -32,6 +32,11 @@ QCheckBox& AuxBmsTab::contactorError()
     return *ui_->contactorError;
 }
 
+QCheckBox& AuxBmsTab::highVoltageEnable()
+{
+    return *ui_->highVoltageEnable;
+}
+
 QComboBox& AuxBmsTab::prechargeState()
 {
     return *ui_->prechargeState;

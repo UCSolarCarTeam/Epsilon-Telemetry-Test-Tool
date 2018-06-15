@@ -52,7 +52,7 @@ namespace
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 52;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 7;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_AUX_BMS = 11;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_AUX_BMS = 12;
 
     const int ONES_TO_MILLI = 1000;
     const int ONES_TO_CENTI = 100;
@@ -688,6 +688,8 @@ TEST_F(SerialReportingTest, sendAuxBmsTest)
     Util::writeBoolsIntoArray(data, 5, allowChargeArray, 1);
     bool contactorErrorArray[] = {auxBmsData_->contactorError()};
     Util::writeBoolsIntoArray(data, 6, contactorErrorArray, 1);
+    bool highVoltageEnableArray[] = {auxBmsData_->highVoltageEnable()};
+    Util::writeBoolsIntoArray(data, 7, highVoltageEnableArray, 1);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x0B)); // packet id
