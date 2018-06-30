@@ -13,7 +13,7 @@ namespace CcsDefines
     const unsigned char MPPT_PKG_ID = 9;
     const unsigned char LIGHTS_PKG_ID = 10;
     const unsigned char AUX_BMS_PKG_ID = 11;
-    const int MPPT_COUNT = 3;
+    const int MPPT_COUNT = 4;
 
     // Control parameters
     // Wavesculptor 22 requires velocity in RPM
