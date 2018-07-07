@@ -2,11 +2,11 @@
 
 MpptData::MpptData()
     : mpptNumber_(0)
-    , alive_{true, true, true}
-    , arrayVoltage_{71, 71, 71}
-    , arrayCurrent_{72, 72, 72}
-    , batteryVoltage_{73, 73, 73}
-    , temperature_{74, 74, 74}
+    , alive_{true, true, true, true}
+    , arrayVoltage_{71, 71, 71, 71}
+    , arrayCurrent_{72, 72, 72, 72}
+    , batteryVoltage_{73, 73, 73, 73}
+    , temperature_{74, 74, 74, 4}
 {
 }
 
