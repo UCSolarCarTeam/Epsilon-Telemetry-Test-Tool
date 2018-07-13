@@ -88,7 +88,7 @@
     </rect>
    </property>
    <property name="maximum">
-    <number>2</number>
+    <number>3</number>
    </property>
   </widget>
   <widget class="QSpinBox" name="arrayCurrent">

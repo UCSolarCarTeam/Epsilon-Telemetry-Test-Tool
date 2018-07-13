@@ -26,9 +26,9 @@ public:
 
 private:
     unsigned char mpptNumber_;
-    bool alive_ [3];
-    unsigned short arrayVoltage_ [3];
-    unsigned short arrayCurrent_ [3];
-    unsigned short batteryVoltage_ [3];
-    unsigned short temperature_ [3];
+    bool alive_ [4];
+    unsigned short arrayVoltage_ [4];
+    unsigned short arrayCurrent_ [4];
+    unsigned short batteryVoltage_ [4];
+    unsigned short temperature_ [4];
 };
