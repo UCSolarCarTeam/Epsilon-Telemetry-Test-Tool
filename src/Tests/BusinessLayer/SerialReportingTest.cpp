@@ -86,22 +86,21 @@ protected:
     {
         communicationService_.reset(new MockCommunicationService());
         dataContainer_.reset(new DataContainer());
-        keyMotorData_.reset(new KeyMotorData());
-        motor0DetailsData_.reset(new MotorDetailsData());
-        motor1DetailsData_.reset(new MotorDetailsData());
-        driverControlsData_.reset(new DriverControlsData());
-        motorFaultsData_.reset(new MotorFaultsData());
-        batteryFaultsData_.reset(new BatteryFaultsData());
-        batteryData_.reset(new BatteryData());
-        mpptData_.reset(new MpptData());
-        lightsData_.reset(new LightsData());
-        auxBmsData_.reset(new AuxBmsData());
+        keyMotorData_.reset(&dataContainer_->getKeyMotorData());
+        motor0DetailsData_.reset(&dataContainer_->getMotor0DetailsData());
+        motor1DetailsData_.reset(&dataContainer_->getMotor1DetailsData());
+        driverControlsData_.reset(&dataContainer_->getDriverControlsData());
+        motorFaultsData_.reset(&dataContainer_->getMotorFaultsData());
+        batteryFaultsData_.reset(&dataContainer_->getBatteryFaultsData());
+        batteryData_.reset(&dataContainer_->getBatteryData());
+        mpptData_.reset(&dataContainer_->getMpptData());
+        lightsData_.reset(&dataContainer_->getLightsData());
+        auxBmsData_.reset(&dataContainer_->getAuxBmsData());
         view.reset(new SerialView(new SerialWindow()));
         telemetryReporting_.reset(new SerialReporting(*communicationService_,
-                                  *dataContainer_,
-                                  *dataContainer_,
-                                  *view
-                                                     ));
+                                                      *dataContainer_,
+                                                      *dataContainer_,
+                                                      *view));
     }
 
     inline unsigned char fitTwoSingleUChar(unsigned char bit0To3, unsigned char bit4To7) const
