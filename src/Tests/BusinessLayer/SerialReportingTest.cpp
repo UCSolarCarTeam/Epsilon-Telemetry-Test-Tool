@@ -5,6 +5,7 @@
 #include <vector>
 #include <tuple>
 
+#include "DataContainer.h"
 #include "AuxBmsData.h"
 #include "BatteryFaultsData.h"
 #include "BatteryData.h"
@@ -66,6 +67,7 @@ class SerialReportingTest : public ::testing::Test
 protected:
 
     QScopedPointer<MockCommunicationService> communicationService_;
+    QScopedPointer<DataContainer> dataContainer_;
     QScopedPointer<KeyMotorData> keyMotorData_;
     QScopedPointer<MotorDetailsData> motor0DetailsData_;
     QScopedPointer<MotorDetailsData> motor1DetailsData_;
@@ -83,6 +85,7 @@ protected:
     virtual void SetUp()
     {
         communicationService_.reset(new MockCommunicationService());
+        dataContainer_.reset(new DataContainer());
         keyMotorData_.reset(new KeyMotorData());
         motor0DetailsData_.reset(new MotorDetailsData());
         motor1DetailsData_.reset(new MotorDetailsData());
@@ -95,16 +98,8 @@ protected:
         auxBmsData_.reset(new AuxBmsData());
         view.reset(new SerialView(new SerialWindow()));
         telemetryReporting_.reset(new SerialReporting(*communicationService_,
-                                  *keyMotorData_,
-                                  *motor0DetailsData_,
-                                  *motor1DetailsData_,
-                                  *driverControlsData_,
-                                  *motorFaultsData_,
-                                  *batteryFaultsData_,
-                                  *batteryData_,
-                                  *mpptData_,
-                                  *lightsData_,
-                                  *auxBmsData_,
+                                  *dataContainer_,
+                                  *dataContainer_,
                                   *view
                                                      ));
     }
