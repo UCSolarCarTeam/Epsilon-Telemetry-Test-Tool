@@ -12,6 +12,7 @@ class SerialView : public QObject
 public:
     SerialView(SerialWindow* window);
     void setConnectionStatus(bool connectionStatus, bool attemptToConnect);
+    void setPacketText(bool packet0);
     QString getCommunicationPort();
 
 signals:
@@ -27,6 +28,7 @@ signals:
     void sendLights();
     void sendAuxBms();
     void sendAll();
+    void switchPacket();
 
 private:
     QSignalMapper signalMapper;

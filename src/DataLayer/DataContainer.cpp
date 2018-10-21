@@ -23,52 +23,52 @@ DataContainer::DataContainer()
 {
 }
 
-AuxBmsData* DataContainer::getAuxBmsData()
+AuxBmsData& DataContainer::getAuxBmsData()
 {
-    return auxBmsData_.data();
+    return *auxBmsData_.data();
 }
 
-BatteryData* DataContainer::getBatteryData()
+BatteryData& DataContainer::getBatteryData()
 {
-    return batteryData_.data();
+    return *batteryData_.data();
 }
 
-BatteryFaultsData* DataContainer::getBatteryFaultsData()
+BatteryFaultsData& DataContainer::getBatteryFaultsData()
 {
-    return batteryFaultsData_.data();
+    return *batteryFaultsData_.data();
 }
 
-DriverControlsData* DataContainer::getDriverControlsData()
+DriverControlsData& DataContainer::getDriverControlsData()
 {
-    return driverControlsData_.data();
+    return *driverControlsData_.data();
 }
 
-KeyMotorData* DataContainer::getKeyMotorData()
+KeyMotorData& DataContainer::getKeyMotorData()
 {
-    return keyMotorData_.data();
+    return *keyMotorData_.data();
 }
 
-LightsData* DataContainer::getLightsData()
+LightsData& DataContainer::getLightsData()
 {
-    return lightsData_.data();
+    return *lightsData_.data();
 }
 
-MotorDetailsData* DataContainer::getMotor0DetailsData()
+MotorDetailsData& DataContainer::getMotor0DetailsData()
 {
-    return motor0DetailsData_.data();
+    return *motor0DetailsData_.data();
 }
 
-MotorDetailsData* DataContainer::getMotor1DetailsData()
+MotorDetailsData& DataContainer::getMotor1DetailsData()
 {
-    return motor1DetailsData_.data();
+    return *motor1DetailsData_.data();
 }
 
-MotorFaultsData* DataContainer::getMotorFaultsData()
+MotorFaultsData& DataContainer::getMotorFaultsData()
 {
-    return motorFaultsData_.data();
+    return *motorFaultsData_.data();
 }
 
-MpptData* DataContainer::getMpptData()
+MpptData& DataContainer::getMpptData()
 {
-    return mpptData_.data();
+    return *mpptData_.data();
 }

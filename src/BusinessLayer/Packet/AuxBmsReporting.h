@@ -10,11 +10,13 @@ class AuxBmsReporting : public QObject
     Q_OBJECT
 
 public:
-    AuxBmsReporting(AuxBmsData& auxBmsData,
+    AuxBmsReporting(AuxBmsData& auxBmsPacket0,
+                    AuxBmsData& auxBmsPacket1,
                     AuxBmsTab& auxBmsTab);
-    void setData();
+    void setData(int packetNum);
 
 private:
-    AuxBmsData& auxBmsData_;
+    AuxBmsData& auxBmsPacket0_;
+    AuxBmsData& auxBmsPacket1_;
     AuxBmsTab& auxBmsTab_;
 };

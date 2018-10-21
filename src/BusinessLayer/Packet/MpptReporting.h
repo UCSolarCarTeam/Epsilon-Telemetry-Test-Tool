@@ -10,11 +10,13 @@ class MpptReporting : public QObject
     Q_OBJECT
 
 public:
-    MpptReporting(MpptData& mpptData,
+    MpptReporting(MpptData& mpptPacket0,
+                  MpptData& mpptPacket1,
                   MpptTab& mpptTab);
-    void setData();
+    void setData(int packetNum);
 
 private:
-    MpptData& mpptData_;
+    MpptData& mpptPacket0_;
+    MpptData& mpptPacket1_;
     MpptTab& mpptTab_;
 };

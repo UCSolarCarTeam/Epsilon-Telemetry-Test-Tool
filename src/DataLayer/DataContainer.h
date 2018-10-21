@@ -17,16 +17,16 @@ class DataContainer
 {
 public:
     DataContainer();
-    KeyMotorData* getKeyMotorData();
-    MotorDetailsData* getMotor0DetailsData();
-    MotorDetailsData* getMotor1DetailsData();
-    DriverControlsData* getDriverControlsData();
-    MotorFaultsData* getMotorFaultsData();
-    BatteryFaultsData* getBatteryFaultsData();
-    BatteryData* getBatteryData();
-    MpptData* getMpptData();
-    LightsData* getLightsData();
-    AuxBmsData* getAuxBmsData();
+    KeyMotorData& getKeyMotorData();
+    MotorDetailsData& getMotor0DetailsData();
+    MotorDetailsData& getMotor1DetailsData();
+    DriverControlsData& getDriverControlsData();
+    MotorFaultsData& getMotorFaultsData();
+    BatteryFaultsData& getBatteryFaultsData();
+    BatteryData& getBatteryData();
+    MpptData& getMpptData();
+    LightsData& getLightsData();
+    AuxBmsData& getAuxBmsData();
 
 private:
     QScopedPointer<KeyMotorData> keyMotorData_;

@@ -8,8 +8,9 @@
 #include "MotorDetailsData.h"
 #include "MotorFaultsData.h"
 #include "MpptData.h"
+#include "DataContainer.h"
 #include "PacketReporting.h"
-#include "../UILayer/PacketWindow.h"
+#include "PacketView.h"
 #include "../BusinessLayer/Packet/AuxBmsReporting.h"
 #include "../BusinessLayer/Packet/BatteryFaultsReporting.h"
 #include "../BusinessLayer/Packet/BatteryReporting.h"
@@ -21,51 +22,62 @@
 #include "../BusinessLayer/Packet/MpptReporting.h"
 #include <QPushButton>
 
-PacketReporting::PacketReporting(KeyMotorData& keyMotorData,
-                                 MotorDetailsData& motor0DetailsData,
-                                 MotorDetailsData& motor1DetailsData,
-                                 DriverControlsData& driverControlsData,
-                                 MotorFaultsData& motorFaultsData,
-                                 BatteryFaultsData& batteryFaultsData,
-                                 BatteryData& batteryData,
-                                 MpptData& mpptData,
-                                 LightsData& lightsData,
-                                 AuxBmsData& auxBmsData,
-                                 PacketWindow& window)
-    : keyMotorData_(keyMotorData)
-    , motor0DetailsData_(motor0DetailsData)
-    , motor1DetailsData_(motor1DetailsData)
-    , driverControlsData_(driverControlsData)
-    , motorFaultsData_(motorFaultsData)
-    , batteryFaultsData_(batteryFaultsData)
-    , batteryData_(batteryData)
-    , mpptData_(mpptData)
-    , lightsData_(lightsData)
-    , auxBmsData_(auxBmsData)
-    , window_(window)
+PacketReporting::PacketReporting(DataContainer& dataContainer0,
+                                 DataContainer& dataContainer1,
+                                 PacketView& view)
+    : keyMotorData0_(dataContainer0.getKeyMotorData())
+    , motor0DetailsData0_(dataContainer0.getMotor0DetailsData())
+    , motor1DetailsData0_(dataContainer0.getMotor1DetailsData())
+    , driverControlsData0_(dataContainer0.getDriverControlsData())
+    , motorFaultsData0_(dataContainer0.getMotorFaultsData())
+    , batteryFaultsData0_(dataContainer0.getBatteryFaultsData())
+    , batteryData0_(dataContainer0.getBatteryData())
+    , mpptData0_(dataContainer0.getMpptData())
+    , lightsData0_(dataContainer0.getLightsData())
+    , auxBmsData0_(dataContainer0.getAuxBmsData())
+    , keyMotorData1_(dataContainer0.getKeyMotorData())
+    , motor0DetailsData1_(dataContainer1.getMotor0DetailsData())
+    , motor1DetailsData1_(dataContainer1.getMotor1DetailsData())
+    , driverControlsData1_(dataContainer1.getDriverControlsData())
+    , motorFaultsData1_(dataContainer1.getMotorFaultsData())
+    , batteryFaultsData1_(dataContainer1.getBatteryFaultsData())
+    , batteryData1_(dataContainer1.getBatteryData())
+    , mpptData1_(dataContainer1.getMpptData())
+    , lightsData1_(dataContainer1.getLightsData())
+    , auxBmsData1_(dataContainer0.getAuxBmsData())
+    , view_(view)
 {
-    auxBmsReporting_ = new AuxBmsReporting(auxBmsData_, window_.auxBmsTab());
-    batteryReporting_ = new BatteryReporting(batteryData_, window_.batteryTab());
-    batteryFaultsReporting_ = new BatteryFaultsReporting(batteryFaultsData_, window_.batteryFaultsTab());
-    driverControlsReporting_ = new DriverControlsReporting(driverControlsData_, window_.driverControlsTab());
-    keyMotorReporting_ = new KeyMotorReporting(keyMotorData_, window_.motor0Tab(), window_.motor1Tab());
-    lightsReporting_ = new LightsReporting(lightsData_, window_.lightsTab());
-    motor0DetailsReporting_ = new MotorDetailsReporting(motor0DetailsData_, window_.motor0Tab());
-    motor1DetailsReporting_ = new MotorDetailsReporting(motor1DetailsData_, window_.motor1Tab());
-    motorFaultsReporting_ = new MotorFaultsReporting(motorFaultsData_, window_.motor0FaultsTab(), window_.motor1FaultsTab());
-    mpptReporting_ = new MpptReporting(mpptData_, window_.mpptTab());
+    auxBmsReporting_ = new AuxBmsReporting(auxBmsData0_, auxBmsData1_, view_.getAuxBmsTab());
+    batteryReporting_ = new BatteryReporting(batteryData0_, batteryData1_, view_.getBatteryTab());
+    batteryFaultsReporting_ = new BatteryFaultsReporting(batteryFaultsData0_, batteryFaultsData1_,
+                                                         view_.getBatteryFaultsTab());
+    driverControlsReporting_ = new DriverControlsReporting(driverControlsData0_, driverControlsData1_,
+                                                           view_.getDriverControlsTab());
+    keyMotorReporting_ = new KeyMotorReporting(keyMotorData0_, keyMotorData1_,
+                                               view_.getMotor0Tab(), view_.getMotor1Tab());
+    lightsReporting_ = new LightsReporting(lightsData0_, lightsData1_,
+                                           view_.getLightsTab());
+    motor0DetailsReporting_ = new MotorDetailsReporting(motor0DetailsData0_, motor0DetailsData1_,
+                                                        view_.getMotor0Tab());
+    motor1DetailsReporting_ = new MotorDetailsReporting(motor1DetailsData0_, motor0DetailsData1_,
+                                                        view_.getMotor1Tab());
+    motorFaultsReporting_ = new MotorFaultsReporting(motorFaultsData0_, motorFaultsData1_,
+                                                     view_.getMotor0FaultsTab(), view_.getMotor1FaultsTab());
+    mpptReporting_ = new MpptReporting(mpptData0_, mpptData1_,
+                                       view_.getMpptTab());
+    connect(&view_, SIGNAL(setAll(int)), this, SLOT(setAll(int)));
 }
 
-void PacketReporting::setAll()
+void PacketReporting::setAll(int packetNum)
 {
-    batteryReporting_->setData();
-    batteryFaultsReporting_->setData();
-    driverControlsReporting_->setData();
-    motorFaultsReporting_->setData();
-    keyMotorReporting_->setData();
-    motor0DetailsReporting_->setData();
-    motor1DetailsReporting_->setData();
-    mpptReporting_->setData();
-    auxBmsReporting_->setData();
-    lightsReporting_->setData();
+    batteryReporting_->setData(packetNum);
+    batteryFaultsReporting_->setData(packetNum);
+    driverControlsReporting_->setData(packetNum);
+    motorFaultsReporting_->setData(packetNum);
+    keyMotorReporting_->setData(packetNum);
+    motor0DetailsReporting_->setData(packetNum);
+    motor1DetailsReporting_->setData(packetNum);
+    mpptReporting_->setData(packetNum);
+    auxBmsReporting_->setData(packetNum);
+    lightsReporting_->setData(packetNum);
 }

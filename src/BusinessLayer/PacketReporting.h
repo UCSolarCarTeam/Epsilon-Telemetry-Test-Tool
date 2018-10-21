@@ -11,7 +11,8 @@ class LightsData;
 class MotorDetailsData;
 class MotorFaultsData;
 class MpptData;
-class PacketWindow;
+class DataContainer;
+class PacketView;
 class AuxBmsReporting;
 class BatteryFaultsReporting;
 class BatteryReporting;
@@ -26,33 +27,35 @@ class PacketReporting : public QObject
 {
     Q_OBJECT
 public:
-    PacketReporting(KeyMotorData& keyMotorData,
-                    MotorDetailsData& motor0DetailsData,
-                    MotorDetailsData& motor1DetailsData,
-                    DriverControlsData& driverControlsData,
-                    MotorFaultsData& motorFaultsData,
-                    BatteryFaultsData& batteryFaultsData,
-                    BatteryData& batteryData,
-                    MpptData& mpptData,
-                    LightsData& lightsData,
-                    AuxBmsData& auxBmsData,
-                    PacketWindow& window);
+    PacketReporting(DataContainer& dataContainer0,
+                    DataContainer& dataContainer1,
+                    PacketView& view);
 
 public slots:
-    void setAll();
+    void setAll(int packetNum);
 
 private:
-    KeyMotorData& keyMotorData_;
-    MotorDetailsData& motor0DetailsData_;
-    MotorDetailsData& motor1DetailsData_;
-    DriverControlsData& driverControlsData_;
-    MotorFaultsData& motorFaultsData_;
-    BatteryFaultsData& batteryFaultsData_;
-    BatteryData& batteryData_;
-    MpptData& mpptData_;
-    LightsData& lightsData_;
-    AuxBmsData& auxBmsData_;
-    PacketWindow& window_;
+    KeyMotorData& keyMotorData0_;
+    MotorDetailsData& motor0DetailsData0_;
+    MotorDetailsData& motor1DetailsData0_;
+    DriverControlsData& driverControlsData0_;
+    MotorFaultsData& motorFaultsData0_;
+    BatteryFaultsData& batteryFaultsData0_;
+    BatteryData& batteryData0_;
+    MpptData& mpptData0_;
+    LightsData& lightsData0_;
+    AuxBmsData& auxBmsData0_;
+    KeyMotorData& keyMotorData1_;
+    MotorDetailsData& motor0DetailsData1_;
+    MotorDetailsData& motor1DetailsData1_;
+    DriverControlsData& driverControlsData1_;
+    MotorFaultsData& motorFaultsData1_;
+    BatteryFaultsData& batteryFaultsData1_;
+    BatteryData& batteryData1_;
+    MpptData& mpptData1_;
+    LightsData& lightsData1_;
+    AuxBmsData& auxBmsData1_;
+    PacketView& view_;
     BatteryReporting* batteryReporting_;
     BatteryFaultsReporting* batteryFaultsReporting_;
     DriverControlsReporting* driverControlsReporting_;

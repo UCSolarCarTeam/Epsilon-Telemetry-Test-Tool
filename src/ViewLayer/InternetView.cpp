@@ -13,13 +13,19 @@ namespace
 }
 
 InternetView::InternetView(InternetWindow* window)
-    : window_(window)
+    : signalMapper(this)
+    , window_(window)
 {
     //Connect slots to UI
     window_->connect(&(window_->getConnectButton()), SIGNAL(clicked()),
                      this, SIGNAL(attemptConnectionSignal()));
     window_->connect(&(window_->getDisconnectButton()), SIGNAL(clicked()),
                      this, SIGNAL(attemptDisconnectionSignal()));
+    connect(&(window_->getSendPacket0Button()), SIGNAL(clicked()), &signalMapper, SLOT(map()));
+    connect(&(window_->getSendPacket1Button()), SIGNAL(clicked()), &signalMapper, SLOT(map()));
+    signalMapper.setMapping(&(window_->getSendPacket0Button()), 0);
+    signalMapper.setMapping(&(window_->getSendPacket1Button()), 1);
+    connect(&signalMapper, SIGNAL(mapped(int)), this, SIGNAL(sendAll(int)));
 }
 
 void InternetView::setConnectionStatus(bool connectionStatus, bool attemptToConnect)

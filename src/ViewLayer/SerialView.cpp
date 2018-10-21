@@ -42,6 +42,8 @@ SerialView::SerialView(SerialWindow* window)
                      this, SIGNAL(sendAuxBms()));
     window_->connect(&(window_->getSendAllButton()), SIGNAL(clicked()),
                      this, SIGNAL(sendAll()));
+    window_->connect(&(window->getSwitchPacketButton()), SIGNAL(clicked()),
+                     this, SIGNAL(switchPacket()));
 }
 
 void SerialView::setConnectionStatus(bool connectionStatus, bool attemptToConnect)
@@ -97,6 +99,18 @@ void SerialView::setConnectionStatus(bool connectionStatus, bool attemptToConnec
         {
             window_->getConnectionStatusLabel().setText("Disconnection Failed.");
         }
+    }
+}
+
+void SerialView::setPacketText(bool packet0)
+{
+    if (packet0)
+    {
+        window_->getSwitchPacketButton().setText("Switch to Packet 1");
+    }
+    else
+    {
+        window_->getSwitchPacketButton().setText("Switch to Packet 0");
     }
 }
 
