@@ -35,26 +35,8 @@ public slots:
     void setAll(int packetNum);
 
 private:
-    KeyMotorData& keyMotorData0_;
-    MotorDetailsData& motor0DetailsData0_;
-    MotorDetailsData& motor1DetailsData0_;
-    DriverControlsData& driverControlsData0_;
-    MotorFaultsData& motorFaultsData0_;
-    BatteryFaultsData& batteryFaultsData0_;
-    BatteryData& batteryData0_;
-    MpptData& mpptData0_;
-    LightsData& lightsData0_;
-    AuxBmsData& auxBmsData0_;
-    KeyMotorData& keyMotorData1_;
-    MotorDetailsData& motor0DetailsData1_;
-    MotorDetailsData& motor1DetailsData1_;
-    DriverControlsData& driverControlsData1_;
-    MotorFaultsData& motorFaultsData1_;
-    BatteryFaultsData& batteryFaultsData1_;
-    BatteryData& batteryData1_;
-    MpptData& mpptData1_;
-    LightsData& lightsData1_;
-    AuxBmsData& auxBmsData1_;
+    DataContainer& dataContainer0_;
+    DataContainer& dataContainer1_;
     PacketView& view_;
     BatteryReporting* batteryReporting_;
     BatteryFaultsReporting* batteryFaultsReporting_;

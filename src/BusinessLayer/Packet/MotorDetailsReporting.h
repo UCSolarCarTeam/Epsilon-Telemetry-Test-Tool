@@ -10,13 +10,9 @@ class MotorDetailsReporting : public QObject
     Q_OBJECT
 
 public:
-    MotorDetailsReporting(MotorDetailsData& motorDetailsPacket0,
-                          MotorDetailsData& motorDetailsPacket1,
-                          MotorTab& motorTab);
-    void setData(int packetNum);
+    MotorDetailsReporting(MotorTab& motorTab);
+    void setData(MotorDetailsData& motorDetailsData);
 
 private:
-    MotorDetailsData& motorDetailsPacket0_;
-    MotorDetailsData& motorDetailsPacket1_;
     MotorTab& motorTab_;
 };

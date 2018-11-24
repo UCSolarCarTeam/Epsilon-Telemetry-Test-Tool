@@ -2,29 +2,16 @@
 #include "MotorFaultsData.h"
 #include "../UILayer/Packet/MotorFaultsTab.h"
 
-MotorFaultsReporting::MotorFaultsReporting(MotorFaultsData& motorFaultsPacket0,
-                                           MotorFaultsData& motorFaultsPacket1,
-                                           MotorFaultsTab& motor0FaultsTab,
+MotorFaultsReporting::MotorFaultsReporting(MotorFaultsTab& motor0FaultsTab,
                                            MotorFaultsTab& motor1FaultsTab)
-    : motorFaultsPacket0_(motorFaultsPacket0)
-    , motorFaultsPacket1_(motorFaultsPacket1)
-    , motor0FaultsTab_(motor0FaultsTab)
+    : motor0FaultsTab_(motor0FaultsTab)
     , motor1FaultsTab_(motor1FaultsTab)
 {
 }
 
-void MotorFaultsReporting::setData(int packetNum)
+void MotorFaultsReporting::setData(MotorFaultsData& motorFaultsData)
 {
-    MotorFaultsData* motorFaultsData_;
-    if (packetNum == 0)
-    {
-        motorFaultsData_ = &motorFaultsPacket0_;
-    }
-    else
-    {
-        motorFaultsData_ = &motorFaultsPacket1_;
-    }
-
+    MotorFaultsData* motorFaultsData_ = &motorFaultsData;
     motorFaultsData_->setMotor0OverSpeed(motor0FaultsTab_.overSpeed().isChecked());
     motorFaultsData_->setMotor0SoftwareOverCurrent(motor0FaultsTab_.overCurrent().isChecked());
     motorFaultsData_->setMotor0DcBusOverVoltage(motor0FaultsTab_.dcBusOverVoltage().isChecked());

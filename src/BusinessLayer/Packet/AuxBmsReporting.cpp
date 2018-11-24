@@ -2,26 +2,14 @@
 #include "AuxBmsData.h"
 #include "../UILayer/Packet/AuxBmsTab.h"
 
-AuxBmsReporting::AuxBmsReporting(AuxBmsData& auxBmsPacket0,
-                                 AuxBmsData& auxBmsPacket1,
-                                 AuxBmsTab& auxBmsTab)
-    : auxBmsPacket0_(auxBmsPacket0)
-    , auxBmsPacket1_(auxBmsPacket1)
-    , auxBmsTab_(auxBmsTab)
+AuxBmsReporting::AuxBmsReporting(AuxBmsTab& auxBmsTab)
+    : auxBmsTab_(auxBmsTab)
 {
 }
 
-void AuxBmsReporting::setData(int packetNum)
+void AuxBmsReporting::setData(AuxBmsData& auxBmsData)
 {
-    AuxBmsData* auxBmsData_;
-    if (packetNum == 0)
-    {
-        auxBmsData_ = &auxBmsPacket0_;
-    }
-    else
-    {
-        auxBmsData_ = &auxBmsPacket1_;
-    }
+    AuxBmsData* auxBmsData_ = &auxBmsData;
     auxBmsData_->setAuxBmsAlive(auxBmsTab_.auxBMSAlive().isChecked());
     auxBmsData_->setStrobeBmsLight(auxBmsTab_.strobeBmsLight().isChecked());
     auxBmsData_->setAllowCharge(auxBmsTab_.allowCharge().isChecked());

@@ -2,29 +2,16 @@
 #include "KeyMotorData.h"
 #include "../UILayer/Packet/MotorTab.h"
 
-KeyMotorReporting::KeyMotorReporting(KeyMotorData& keyMotorPacket0,
-                                     KeyMotorData& keyMotorPacket1,
-                                     MotorTab& motor0Tab,
+KeyMotorReporting::KeyMotorReporting(MotorTab& motor0Tab,
                                      MotorTab& motor1Tab)
-    : keyMotorPacket0_(keyMotorPacket0)
-    , keyMotorPacket1_(keyMotorPacket1)
-    , motor0Tab_(motor0Tab)
+    : motor0Tab_(motor0Tab)
     , motor1Tab_(motor1Tab)
 {
 }
 
-void KeyMotorReporting::setData(int packetNum)
+void KeyMotorReporting::setData(KeyMotorData& keyMotorData)
 {
-    KeyMotorData* keyMotorData_;
-    if (packetNum == 0)
-    {
-        keyMotorData_ = &keyMotorPacket0_;
-    }
-    else
-    {
-        keyMotorData_ = &keyMotorPacket1_;
-    }
-
+    KeyMotorData* keyMotorData_ = &keyMotorData;
     keyMotorData_->setMotor0Alive(motor0Tab_.alive().isChecked());
     keyMotorData_->setMotor0SetCurrent(motor0Tab_.setCurrent().value());
     keyMotorData_->setMotor0SetVelocity(motor0Tab_.setVelocity().value());

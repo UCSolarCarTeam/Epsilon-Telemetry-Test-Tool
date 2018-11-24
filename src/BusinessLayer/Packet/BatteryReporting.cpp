@@ -2,27 +2,14 @@
 #include "BatteryData.h"
 #include "../UILayer/Packet/BatteryTab.h"
 
-BatteryReporting::BatteryReporting(BatteryData& batteryPacket0,
-                                   BatteryData& batteryPacket1,
-                                   BatteryTab& batteryTab)
-    : batteryPacket0_(batteryPacket0)
-    , batteryPacket1_(batteryPacket1)
-    , batteryTab_(batteryTab)
+BatteryReporting::BatteryReporting(BatteryTab& batteryTab)
+    : batteryTab_(batteryTab)
 {
 }
 
-void BatteryReporting::setData(int packetNum)
+void BatteryReporting::setData(BatteryData& batteryData)
 {
-    BatteryData* batteryData_;
-    if (packetNum == 0)
-    {
-        batteryData_ = &batteryPacket0_;
-    }
-    else
-    {
-        batteryData_ = &batteryPacket1_;
-    }
-
+    BatteryData* batteryData_ = &batteryData;
     batteryData_->setAlive(batteryTab_.alive().isChecked());
     batteryData_->setDischargeRelayEnabled(batteryTab_.dischargeRelay().isChecked());
     batteryData_->setChargeRelayEnabled(batteryTab_.chargeRelay().isChecked());

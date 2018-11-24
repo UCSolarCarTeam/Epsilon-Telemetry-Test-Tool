@@ -2,27 +2,14 @@
 #include "DriverControlsData.h"
 #include "../UILayer/Packet/DriverControlsTab.h"
 
-DriverControlsReporting::DriverControlsReporting(DriverControlsData& driverControlsPacket0,
-                                                 DriverControlsData& driverControlsPacket1,
-                                                 DriverControlsTab& driverControlsTab)
-    : driverControlsPacket0_(driverControlsPacket0)
-    , driverControlsPacket1_(driverControlsPacket1)
-    , driverControlsTab_(driverControlsTab)
+DriverControlsReporting::DriverControlsReporting(DriverControlsTab& driverControlsTab)
+    : driverControlsTab_(driverControlsTab)
 {
 }
 
-void DriverControlsReporting::setData(int packetNum)
+void DriverControlsReporting::setData(DriverControlsData& driverControlsData)
 {
-    DriverControlsData* driverControlsData_;
-    if (packetNum == 0)
-    {
-        driverControlsData_ = &driverControlsPacket0_;
-    }
-    else
-    {
-        driverControlsData_ = &driverControlsPacket1_;
-    }
-
+    DriverControlsData* driverControlsData_ = &driverControlsData;
     driverControlsData_->setAlive(driverControlsTab_.driverControlsAlive().isChecked());
     driverControlsData_->setHeadlightsOff(driverControlsTab_.headlightsOff().isChecked());
     driverControlsData_->setHeadlightsLow(driverControlsTab_.headlightsLow().isChecked());

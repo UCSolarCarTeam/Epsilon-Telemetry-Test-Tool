@@ -2,27 +2,14 @@
 #include "LightsData.h"
 #include "../UILayer/Packet/LightsTab.h"
 
-LightsReporting::LightsReporting(LightsData& lightsPacket0,
-                                 LightsData& lightsPacket1,
-                                 LightsTab& lightsTab)
-    : lightsPacket0_(lightsPacket0)
-    , lightsPacket1_(lightsPacket1)
-    , lightsTab_(lightsTab)
+LightsReporting::LightsReporting(LightsTab& lightsTab)
+    : lightsTab_(lightsTab)
 {
 }
 
-void LightsReporting::setData(int packetNum)
+void LightsReporting::setData(LightsData& lightsData)
 {
-    LightsData* lightsData_;
-    if (packetNum == 0)
-    {
-        lightsData_ = &lightsPacket0_;
-    }
-    else
-    {
-        lightsData_ = &lightsPacket1_;
-    }
-
+    LightsData* lightsData_ = &lightsData;
     lightsData_->setAlive(lightsTab_.lightsAlive().isChecked());
     lightsData_->setLowBeams(lightsTab_.lowBeams().isChecked());
     lightsData_->setHighBeams(lightsTab_.highBeams().isChecked());

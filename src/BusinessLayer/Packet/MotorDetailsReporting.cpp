@@ -2,27 +2,14 @@
 #include "MotorDetailsData.h"
 #include "../UILayer/Packet/MotorTab.h"
 
-MotorDetailsReporting::MotorDetailsReporting(MotorDetailsData& motorDetailsPacket0,
-                                             MotorDetailsData& motorDetailsPacket1,
-                                             MotorTab& motorTab)
-    : motorDetailsPacket0_(motorDetailsPacket0)
-    , motorDetailsPacket1_(motorDetailsPacket1)
-    , motorTab_(motorTab)
+MotorDetailsReporting::MotorDetailsReporting(MotorTab& motorTab)
+    : motorTab_(motorTab)
 {
 }
 
-void MotorDetailsReporting::setData(int packetNum)
+void MotorDetailsReporting::setData(MotorDetailsData& motorDetailsData)
 {
-    MotorDetailsData* motorDetailsData_;
-    if (packetNum == 0)
-    {
-        motorDetailsData_ = &motorDetailsPacket0_;
-    }
-    else
-    {
-        motorDetailsData_ = &motorDetailsPacket1_;
-    }
-
+    MotorDetailsData* motorDetailsData_ = &motorDetailsData;
     motorDetailsData_->setPhaseCCurrent(motorTab_.phaseCCurrent().value());
     motorDetailsData_->setPhaseBCurrent(motorTab_.phaseBCurrent().value());
     motorDetailsData_->setMotorVoltageReal(motorTab_.motorVoltageReal().value());

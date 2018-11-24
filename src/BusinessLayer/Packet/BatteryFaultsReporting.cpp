@@ -2,27 +2,14 @@
 #include "BatteryFaultsData.h"
 #include "../UILayer/Packet/BatteryFaultsTab.h"
 
-BatteryFaultsReporting::BatteryFaultsReporting(BatteryFaultsData& batteryFaultsPacket0,
-                                               BatteryFaultsData& batteryFaultsPacket1,
-                                               BatteryFaultsTab& batteryFaultsTab)
-    : batteryFaultsPacket0_(batteryFaultsPacket0)
-    , batteryFaultsPacket1_(batteryFaultsPacket1)
-    , batteryFaultsTab_(batteryFaultsTab)
+BatteryFaultsReporting::BatteryFaultsReporting(BatteryFaultsTab& batteryFaultsTab)
+    : batteryFaultsTab_(batteryFaultsTab)
 {
 }
 
-void BatteryFaultsReporting::setData(int packetNum)
+void BatteryFaultsReporting::setData(BatteryFaultsData& batteryFaultsData)
 {
-    BatteryFaultsData* batteryFaultsData_;
-    if (packetNum == 0)
-    {
-        batteryFaultsData_ = &batteryFaultsPacket0_;
-    }
-    else
-    {
-        batteryFaultsData_ = &batteryFaultsPacket1_;
-    }
-
+    BatteryFaultsData* batteryFaultsData_ = &batteryFaultsData;
     batteryFaultsData_->setInternalCommFault(batteryFaultsTab_.internalCommFault().isChecked());
     batteryFaultsData_->setInternalConversionFault(batteryFaultsTab_.internalConversionFault().isChecked());
     batteryFaultsData_->setWeakCellFault(batteryFaultsTab_.weakCellFault().isChecked());
