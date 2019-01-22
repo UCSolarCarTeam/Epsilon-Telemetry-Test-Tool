@@ -10,11 +10,9 @@ class LightsReporting : public QObject
     Q_OBJECT
 
 public:
-    LightsReporting(LightsData& lightsData,
-                    LightsTab& lightsTab);
-    void setData();
+    LightsReporting(LightsTab& lightsTab);
+    void setData(LightsData& lightsData);
 
 private:
-    LightsData& lightsData_;
     LightsTab& lightsTab_;
 };

@@ -37,7 +37,7 @@ SOURCES += \
 
 FORMS += \
     $$PWD/Packet/DriverControlsTab.ui \
-    $$PWD/Packet/MotorTab.ui  \
+    $$PWD/Packet/MotorTab.ui \
     $$PWD/Packet/BatteryTab.ui \
     $$PWD/Packet/BatteryFaultsTab.ui \
     $$PWD/Packet/LightsTab.ui \

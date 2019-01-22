@@ -10,11 +10,9 @@ class MpptReporting : public QObject
     Q_OBJECT
 
 public:
-    MpptReporting(MpptData& mpptData,
-                  MpptTab& mpptTab);
-    void setData();
+    MpptReporting(MpptTab& mpptTab);
+    void setData(MpptData& mpptData);
 
 private:
-    MpptData& mpptData_;
     MpptTab& mpptTab_;
 };

@@ -19,8 +19,9 @@ public:
 signals:
     void attemptConnectionSignal();
     void attemptDisconnectionSignal();
-    void sendAll();
+    void sendAll(int packetNum);
 
 private:
+    QSignalMapper signalMapper;
     InternetWindow* window_;
 };

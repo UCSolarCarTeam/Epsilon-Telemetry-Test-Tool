@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <vector>
 
 class AuxBmsData;
 class BatteryData;
@@ -13,22 +14,15 @@ class MotorFaultsData;
 class MpptData;
 class I_CommunicationService;
 class SerialView;
+class DataContainer;
 
 class SerialReporting : public QObject
 {
     Q_OBJECT
 public:
     SerialReporting(I_CommunicationService& commService,
-                    const KeyMotorData& keyMotorData_,
-                    const MotorDetailsData& motor0DetailsData_,
-                    const MotorDetailsData& motor1DetailsData_,
-                    const DriverControlsData& driverControlsData_,
-                    const MotorFaultsData& motorFaultsData_,
-                    const BatteryFaultsData& batteryFaultsData_,
-                    const BatteryData& batteryData_,
-                    const MpptData& mpptData_,
-                    const LightsData& lightsData_,
-                    const AuxBmsData& auxBmsData_,
+                    DataContainer& dataContainer0_,
+                    DataContainer& dataContainer1_,
                     SerialView& view);
 
 public slots:
@@ -42,18 +36,11 @@ public slots:
     void sendLights();
     void sendAuxBms();
     void sendAll();
+    void switchPacket();
 
 private:
     I_CommunicationService& communicationService_;
-    const KeyMotorData& keyMotorData_;
-    const MotorDetailsData& motor0DetailsData_;
-    const MotorDetailsData& motor1DetailsData_;
-    const DriverControlsData& driverControlsData_;
-    const MotorFaultsData& motorFaultsData_;
-    const BatteryFaultsData& batteryFaultsData_;
-    const BatteryData& batteryData_;
-    const MpptData& mpptData_;
-    const LightsData& lightsData_;
-    const AuxBmsData& auxBmsData_;
+    std::vector<DataContainer*> dataContainerList;
     SerialView& view_;
+    int packetNum;
 };

@@ -10,13 +10,11 @@ class MotorFaultsReporting : public QObject
     Q_OBJECT
 
 public:
-    MotorFaultsReporting(MotorFaultsData& motorFaultsData,
-                      MotorFaultsTab& motor0FaultsTab,
-                      MotorFaultsTab& motor1FaultsTab);
-    void setData();
+    MotorFaultsReporting(MotorFaultsTab& motor0FaultsTab,
+                         MotorFaultsTab& motor1FaultsTab);
+    void setData(MotorFaultsData& motorFaultsData);
 
 private:
-    MotorFaultsData& motorFaultsData_;
     MotorFaultsTab& motor0FaultsTab_;
     MotorFaultsTab& motor1FaultsTab_;
 };

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QObject>
+#include <QSignalMapper>
+#include <vector>
 
 class AuxBmsData;
 class BatteryData;
@@ -13,26 +15,19 @@ class MotorFaultsData;
 class MpptData;
 class I_CommunicationService;
 class InternetView;
+class DataContainer;
 
 class InternetReporting : public QObject
 {
     Q_OBJECT
 public:
     InternetReporting(I_CommunicationService& commService,
-                      const KeyMotorData& keyMotorData_,
-                      const MotorDetailsData& motor0DetailsData_,
-                      const MotorDetailsData& motor1DetailsData_,
-                      const DriverControlsData& driverControlsData_,
-                      const MotorFaultsData& motorFaultsData_,
-                      const BatteryFaultsData& batteryFaultsData_,
-                      const BatteryData& batteryData_,
-                      const MpptData& mpptData_,
-                      const LightsData& lightsData_,
-                      const AuxBmsData& auxBmsData_,
+                      DataContainer& dataContainer0,
+                      DataContainer& dataContainer1,
                       InternetView& view);
 
 public slots:
-    void sendAll();
+    void sendAll(int packetNum);
 
 private:
     QJsonArray makeKeyMotor();
@@ -47,15 +42,7 @@ private:
 
 private:
     I_CommunicationService& communicationService_;
-    const KeyMotorData& keyMotorData_;
-    const MotorDetailsData& motor0DetailsData_;
-    const MotorDetailsData& motor1DetailsData_;
-    const DriverControlsData& driverControlsData_;
-    const MotorFaultsData& motorFaultsData_;
-    const BatteryFaultsData& batteryFaultsData_;
-    const BatteryData& batteryData_;
-    const MpptData& mpptData_;
-    const LightsData& lightsData_;
-    const AuxBmsData& auxBmsData_;
+    std::vector<DataContainer*> dataContainerList;
     InternetView& view_;
+    int packetNum;
 };
