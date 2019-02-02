@@ -11,38 +11,29 @@
 #include "../UILayer/Packet/MpptTab.h"
 
 
-PacketWindow::PacketWindow(AuxBmsTab& auxBmsTab,
-                           BatteryTab& batteryTab,
-                           BatteryFaultsTab& batteryFaultsTab,
-                           DriverControlsTab& driverControlsTab,
-                           LightsTab& lightsTab,
-                           MotorTab& motor0Tab,
-                           MotorTab& motor1Tab,
-                           MotorFaultsTab& motor0FaultsTab,
-                           MotorFaultsTab& motor1FaultsTab,
-                           MpptTab& mpptTab)
-    : auxBmsTab_(auxBmsTab)
-    , batteryTab_(batteryTab)
-    , batteryFaultsTab_(batteryFaultsTab)
-    , driverControlsTab_(driverControlsTab)
-    , lightsTab_(lightsTab)
-    , motor0Tab_(motor0Tab)
-    , motor1Tab_(motor1Tab)
-    , motor0FaultsTab_(motor0FaultsTab)
-    , motor1FaultsTab_(motor1FaultsTab)
-    , mpptTab_(mpptTab)
+PacketWindow::PacketWindow()
+    : auxBmsTab_(new AuxBmsTab())
+    , batteryTab_(new BatteryTab())
+    , batteryFaultsTab_(new BatteryFaultsTab())
+    , driverControlsTab_(new DriverControlsTab())
+    , lightsTab_(new LightsTab())
+    , motor0Tab_(new MotorTab())
+    , motor1Tab_(new MotorTab())
+    , motor0FaultsTab_(new MotorFaultsTab())
+    , motor1FaultsTab_(new MotorFaultsTab())
+    , mpptTab_(new MpptTab())
 {
     tabs_ = new QTabWidget();
-    tabs_->addTab(&auxBmsTab_, tr("Aux BMS"));
-    tabs_->addTab(&batteryTab_, tr("Battery"));
-    tabs_->addTab(&batteryFaultsTab_, tr("Battery Faults"));
-    tabs_->addTab(&driverControlsTab_, tr("Driver Controls"));
-    tabs_->addTab(&lightsTab_, tr("Lights"));
-    tabs_->addTab(&motor0Tab_, tr("Motor 0"));
-    tabs_->addTab(&motor1Tab_, tr("Motor 1"));
-    tabs_->addTab(&motor0FaultsTab_, tr("Motor 0 Faults"));
-    tabs_->addTab(&motor1FaultsTab_, tr("Motor 1 Faults"));
-    tabs_->addTab(&mpptTab_, tr("MPPT"));
+    tabs_->addTab(auxBmsTab_.data(), tr("Aux BMS"));
+    tabs_->addTab(batteryTab_.data(), tr("Battery"));
+    tabs_->addTab(batteryFaultsTab_.data(), tr("Battery Faults"));
+    tabs_->addTab(driverControlsTab_.data(), tr("Driver Controls"));
+    tabs_->addTab(lightsTab_.data(), tr("Lights"));
+    tabs_->addTab(motor0Tab_.data(), tr("Motor 0"));
+    tabs_->addTab(motor1Tab_.data(), tr("Motor 1"));
+    tabs_->addTab(motor0FaultsTab_.data(), tr("Motor 0 Faults"));
+    tabs_->addTab(motor1FaultsTab_.data(), tr("Motor 1 Faults"));
+    tabs_->addTab(mpptTab_.data(), tr("MPPT"));
 
     QVBoxLayout* tabsLayout = new QVBoxLayout;
     setPacket0_ = new QPushButton("Set Packet 0", this);
@@ -60,52 +51,52 @@ PacketWindow::~PacketWindow()
 
 BatteryTab& PacketWindow::batteryTab()
 {
-    return batteryTab_;
+    return *batteryTab_.data();
 }
 
 BatteryFaultsTab& PacketWindow::batteryFaultsTab()
 {
-    return batteryFaultsTab_;
+    return *batteryFaultsTab_.data();
 }
 
 DriverControlsTab& PacketWindow::driverControlsTab()
 {
-    return driverControlsTab_;
+    return *driverControlsTab_.data();
 }
 
 LightsTab& PacketWindow::lightsTab()
 {
-    return lightsTab_;
+    return *lightsTab_.data();
 }
 
 MotorTab& PacketWindow::motor0Tab()
 {
-    return motor0Tab_;
+    return *motor0Tab_.data();
 }
 
 MotorTab& PacketWindow::motor1Tab()
 {
-    return motor1Tab_;
+    return *motor1Tab_.data();
 }
 
 MotorFaultsTab& PacketWindow::motor0FaultsTab()
 {
-    return motor0FaultsTab_;
+    return *motor0FaultsTab_.data();
 }
 
 MotorFaultsTab& PacketWindow::motor1FaultsTab()
 {
-    return motor1FaultsTab_;
+    return *motor1FaultsTab_.data();
 }
 
 MpptTab& PacketWindow::mpptTab()
 {
-    return mpptTab_;
+    return *mpptTab_.data();
 }
 
 AuxBmsTab& PacketWindow::auxBmsTab()
 {
-    return auxBmsTab_;
+    return *auxBmsTab_.data();
 }
 
 QPushButton& PacketWindow::setPacket0()

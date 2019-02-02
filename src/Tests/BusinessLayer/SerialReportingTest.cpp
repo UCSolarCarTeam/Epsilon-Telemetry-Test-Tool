@@ -5,6 +5,7 @@
 #include <vector>
 #include <tuple>
 
+#include "DataContainer.h"
 #include "AuxBmsData.h"
 #include "BatteryFaultsData.h"
 #include "BatteryData.h"
@@ -66,6 +67,7 @@ class SerialReportingTest : public ::testing::Test
 protected:
 
     QScopedPointer<MockCommunicationService> communicationService_;
+    QScopedPointer<DataContainer> dataContainer_;
     QScopedPointer<KeyMotorData> keyMotorData_;
     QScopedPointer<MotorDetailsData> motor0DetailsData_;
     QScopedPointer<MotorDetailsData> motor1DetailsData_;
@@ -83,30 +85,22 @@ protected:
     virtual void SetUp()
     {
         communicationService_.reset(new MockCommunicationService());
+        dataContainer_.reset(new DataContainer());
         keyMotorData_.reset(new KeyMotorData());
         motor0DetailsData_.reset(new MotorDetailsData());
         motor1DetailsData_.reset(new MotorDetailsData());
         driverControlsData_.reset(new DriverControlsData());
         motorFaultsData_.reset(new MotorFaultsData());
-        batteryFaultsData_.reset(new BatteryFaultsData());
+        batteryFaultsData_.reset(new BatteryFaultsData);
         batteryData_.reset(new BatteryData());
         mpptData_.reset(new MpptData());
         lightsData_.reset(new LightsData());
         auxBmsData_.reset(new AuxBmsData());
         view.reset(new SerialView(new SerialWindow()));
         telemetryReporting_.reset(new SerialReporting(*communicationService_,
-                                  *keyMotorData_,
-                                  *motor0DetailsData_,
-                                  *motor1DetailsData_,
-                                  *driverControlsData_,
-                                  *motorFaultsData_,
-                                  *batteryFaultsData_,
-                                  *batteryData_,
-                                  *mpptData_,
-                                  *lightsData_,
-                                  *auxBmsData_,
-                                  *view
-                                                     ));
+                                                      *dataContainer_,
+                                                      *dataContainer_,
+                                                      *view));
     }
 
     inline unsigned char fitTwoSingleUChar(unsigned char bit0To3, unsigned char bit4To7) const
@@ -116,21 +110,21 @@ protected:
     }
 
     void fillMpptData(unsigned char* data) const
-    {
-        data[0] = CcsDefines::MPPT_PKG_ID;
-        unsigned char numberAndAlive = mpptData_->mpptNumber() & 0x3;
+       {
+           data[0] = CcsDefines::MPPT_PKG_ID;
+           unsigned char numberAndAlive = mpptData_->mpptNumber() & 0x3;
 
-        if (mpptData_->alive(mpptData_->mpptNumber()))
-        {
-            numberAndAlive |= 0x80;
-        }
+           if (mpptData_->alive(mpptData_->mpptNumber()))
+           {
+               numberAndAlive |= 0x80;
+           }
 
-        data[1] = numberAndAlive;
-        Util::writeUShortIntoArray(data, 2, mpptData_->arrayVoltage(mpptData_->mpptNumber()) * ONES_TO_CENTI);
-        Util::writeUShortIntoArray(data, 4, mpptData_->arrayCurrent(mpptData_->mpptNumber()) * ONES_TO_MILLI);
-        Util::writeUShortIntoArray(data, 6, mpptData_->batteryVoltage(mpptData_->mpptNumber()) * ONES_TO_CENTI);
-        Util::writeUShortIntoArray(data, 8, mpptData_->temperature(mpptData_->mpptNumber()) * ONES_TO_CENTI);
-    }
+           data[1] = numberAndAlive;
+           Util::writeUShortIntoArray(data, 2, mpptData_->arrayVoltage(mpptData_->mpptNumber()) * ONES_TO_CENTI);
+           Util::writeUShortIntoArray(data, 4, mpptData_->arrayCurrent(mpptData_->mpptNumber()) * ONES_TO_MILLI);
+           Util::writeUShortIntoArray(data, 6, mpptData_->batteryVoltage(mpptData_->mpptNumber()) * ONES_TO_CENTI);
+           Util::writeUShortIntoArray(data, 8, mpptData_->temperature(mpptData_->mpptNumber()) * ONES_TO_CENTI);
+   }
 
     class PackageIdMatcher : public MatcherInterface<std::tuple<const unsigned char*, int>>
     {
@@ -586,7 +580,7 @@ TEST_F(SerialReportingTest, sendMpptTest)
     const unsigned int expectedPackageLength = EXPECTED_PACKAGE_LENGTH_SEND_MPPT;
     const unsigned int payloadLength = expectedPackageLength - COBS_ADDITIONAL_FRAME_DATA_SIZE;
 
-    for (unsigned char testCount = 0; testCount < 2; testCount++)
+    for (unsigned char testCount = 0; testCount < 1; testCount++)
     {
         unsigned char expectedPacket[CcsDefines::MPPT_COUNT][expectedPackageLength];
         mpptData_->setAlive(testCount % 2 == 0); // set all mppts to non alive in all odd test runs

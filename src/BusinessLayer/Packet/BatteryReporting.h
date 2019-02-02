@@ -10,11 +10,9 @@ class BatteryReporting : public QObject
     Q_OBJECT
 
 public:
-    BatteryReporting(BatteryData& batteryData,
-                     BatteryTab& batteryTab);
-    void setData();
+    BatteryReporting(BatteryTab& batteryTab);
+    void setData(BatteryData& batteryData);
 
 private:
-    BatteryData& batteryData_;
     BatteryTab& batteryTab_;
 };

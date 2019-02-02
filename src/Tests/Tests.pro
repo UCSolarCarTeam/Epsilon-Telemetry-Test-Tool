@@ -32,7 +32,6 @@ SOURCES += \
 
 
 !win32 {
-    QMAKE_CXXFLAGS += -Werror
 }
 
 DESTDIR = ../../build/tests

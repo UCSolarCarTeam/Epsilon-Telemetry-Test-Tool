@@ -10,11 +10,9 @@ class DriverControlsReporting : public QObject
     Q_OBJECT
 
 public:
-    DriverControlsReporting(DriverControlsData& driverControlsData,
-                            DriverControlsTab& driverControlsTab);
-    void setData();
+    DriverControlsReporting(DriverControlsTab& driverControlsTab);
+    void setData(DriverControlsData& driverControlsData);
 
 private:
-    DriverControlsData& driverControlsData_;
     DriverControlsTab& driverControlsTab_;
 };
