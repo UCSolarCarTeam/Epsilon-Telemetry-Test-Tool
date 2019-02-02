@@ -10,8 +10,8 @@ MpptReporting::MpptReporting(MpptTab& mpptTab)
 void MpptReporting::setData(MpptData& mpptData)
 {
     MpptData* mpptData_ = &mpptData;
-    mpptData_->setAlive(mpptTab_.mpptAlive().isChecked());
     mpptData_->setMpptNumber(mpptTab_.mpptNumber().value());
+    mpptData_->setAlive(mpptTab_.mpptAlive().isChecked());
     mpptData_->setArrayVoltage(mpptTab_.arrayVoltage().value());
     mpptData_->setArrayCurrent(mpptTab_.arrayCurrent().value());
     mpptData_->setBatteryVoltage(mpptTab_.batteryVoltage().value());
