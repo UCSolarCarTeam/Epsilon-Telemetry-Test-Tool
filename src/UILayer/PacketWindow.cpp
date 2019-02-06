@@ -24,6 +24,11 @@ PacketWindow::PacketWindow()
     , mpptTab_(new MpptTab())
 {
     tabs_ = new QTabWidget();
+
+    scroll_ = new QScrollArea();
+    scroll_->setWidget(tabs_);
+    scroll_->setWidgetResizable(true);
+
     tabs_->addTab(auxBmsTab_.data(), tr("Aux BMS"));
     tabs_->addTab(batteryTab_.data(), tr("Battery"));
     tabs_->addTab(batteryFaultsTab_.data(), tr("Battery Faults"));
@@ -40,7 +45,7 @@ PacketWindow::PacketWindow()
     setPacket1_ = new QPushButton("Set Packet 1", this);
     tabsLayout->addWidget(setPacket0_);
     tabsLayout->addWidget(setPacket1_);
-    tabsLayout->addWidget(tabs_);
+    tabsLayout->addWidget(scroll_);
     setLayout(tabsLayout);
     setWindowTitle(tr("Data"));
 }
