@@ -1,0 +1,4 @@
+#ifndef SENDINGSTATES_H
+#define SENDINGSTATES_H
+
+#endif // SENDINGSTATES_H
