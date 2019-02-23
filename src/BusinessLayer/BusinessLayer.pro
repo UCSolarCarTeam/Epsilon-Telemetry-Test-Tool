@@ -25,7 +25,8 @@ HEADERS += \
     $$PWD/Packet/KeyMotorReporting.h \
     $$PWD/Packet/MotorDetailsReporting.h \
     $$PWD/Packet/MotorFaultsReporting.h \
-    $$PWD/Packet/AuxBmsReporting.h
+    $$PWD/Packet/AuxBmsReporting.h \
+    MessageStates.h
 
 SOURCES += \
     $$PWD/CrcCalculator.cpp \

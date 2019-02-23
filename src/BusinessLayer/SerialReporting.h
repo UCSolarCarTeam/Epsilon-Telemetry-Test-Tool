@@ -1,7 +1,12 @@
 #pragma once
 
+#include "MessageStates.h"
+
 #include <QObject>
 #include <vector>
+
+#include <QTimer>
+#include <QDebug>
 
 class AuxBmsData;
 class BatteryData;
@@ -26,6 +31,22 @@ public:
                     SerialView& view);
 
 public slots:
+
+    void sendData();
+    void setKeyMotor();
+    void setMotorDetails(int n);
+    void setDriverControls();
+    void setMotorFaults();
+    void setBatteryFaults();
+    void setBattery();
+    void setMppt();
+    void setLights();
+    void setAuxBms();
+    void setAll();
+
+private:
+
+    void startSendingData();
     void sendKeyMotor();
     void sendMotorDetails(int n);
     void sendDriverControls();
@@ -38,9 +59,13 @@ public slots:
     void sendAll();
     void switchPacket();
 
-private:
     I_CommunicationService& communicationService_;
     std::vector<DataContainer*> dataContainerList;
     SerialView& view_;
     int packetNum;
+
+    MessageStates::MESSAGE_SENDING messageState_;
+
+    QScopedPointer<QTimer> readTimer_;
+    int forwardPeriod_;
 };

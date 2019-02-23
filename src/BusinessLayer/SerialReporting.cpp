@@ -33,7 +33,6 @@ namespace
 
     const int ONES_TO_MILLI = 1000;
     const int ONES_TO_CENTI = 100;
-
 }
 
 using namespace Util;
@@ -45,20 +44,206 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
     : communicationService_(commService)
     , view_(view)
     , packetNum(0)
+    , messageState_(MessageStates::DONT_SEND)
+    , readTimer_(new QTimer())
+    , forwardPeriod_(1000)
 {
     dataContainerList.push_back(&dataContainer0);
     dataContainerList.push_back(&dataContainer1);
     //Connect slots to SerialView Signals
-    connect(&view_, SIGNAL(sendKeyMotor()), this, SLOT(sendKeyMotor()));
-    connect(&view_, SIGNAL(sendMotorDetails(int)), this, SLOT(sendMotorDetails(int)));
-    connect(&view_, SIGNAL(sendDriverControls()), this, SLOT(sendDriverControls()));
-    connect(&view_, SIGNAL(sendMotorFaults()), this, SLOT(sendMotorFaults()));
-    connect(&view_, SIGNAL(sendBatteryFaults()), this, SLOT(sendBatteryFaults()));
-    connect(&view_, SIGNAL(sendBattery()), this, SLOT(sendBattery()));
-    connect(&view_, SIGNAL(sendMppt()), this, SLOT(sendMppt()));
-    connect(&view_, SIGNAL(sendLights()), this, SLOT(sendLights()));
-    connect(&view_, SIGNAL(sendAuxBms()), this, SLOT(sendAuxBms()));
-    connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
+    connect(&view_, SIGNAL(sendKeyMotor()), this, SLOT(setKeyMotor()));
+    connect(&view_, SIGNAL(sendMotorDetails(int)), this, SLOT(setMotorDetails(int)));
+    connect(&view_, SIGNAL(sendDriverControls()), this, SLOT(setDriverControls()));
+    connect(&view_, SIGNAL(sendMotorFaults()), this, SLOT(setMotorFaults()));
+    connect(&view_, SIGNAL(sendBatteryFaults()), this, SLOT(setBatteryFaults()));
+    connect(&view_, SIGNAL(sendBattery()), this, SLOT(setBattery()));
+    connect(&view_, SIGNAL(sendMppt()), this, SLOT(setMppt()));
+    connect(&view_, SIGNAL(sendLights()), this, SLOT(setLights()));
+    connect(&view_, SIGNAL(sendAuxBms()), this, SLOT(setAuxBms()));
+    connect(&view_, SIGNAL(sendAll()), this, SLOT(setAll()));
+    connect(readTimer_.data(), SIGNAL(timeout()), this, SLOT(sendData()));
+    startSendingData();
+}
+
+void SerialReporting::startSendingData()
+{
+    readTimer_->setInterval(forwardPeriod_);
+    readTimer_->start();
+}
+
+void SerialReporting::sendData()
+{
+    using MessageStates::MESSAGE_SENDING;
+    switch(messageState_)
+    {
+        case MESSAGE_SENDING::DONT_SEND:
+            qDebug("DONT_SEND");
+            break;
+        case MESSAGE_SENDING::KEY_MOTOR:
+            qDebug("KEY_MOTOR");
+            sendKeyMotor();
+            break;
+        case MESSAGE_SENDING::MOTOR_0_DETAILS:
+            qDebug("MOTOR_0_DETAILS");
+            sendMotorDetails(0);
+            break;
+        case MESSAGE_SENDING::MOTOR_1_DETAILS:
+            qDebug("MOTOR_1_DETAILS");
+            sendMotorDetails(1);
+            break;
+        case MESSAGE_SENDING::DRIVER_CONTROLS:
+            qDebug("DRIVER_CONTROLS");
+            sendDriverControls();
+            break;
+        case MESSAGE_SENDING::MOTOR_FAULTS:
+            qDebug("MOTOR_FAULTS");
+            sendMotorFaults();
+            break;
+        case MESSAGE_SENDING::BATTERY_FAULTS:
+            qDebug("BATTERY_FAULTS");
+            sendBatteryFaults();
+            break;
+        case MESSAGE_SENDING::BATTERY:
+            qDebug("BATTERY");
+            sendBattery();
+            break;
+        case MESSAGE_SENDING::MPPTS:
+            qDebug("MPPTS");
+            sendMppt();
+            break;
+        case MESSAGE_SENDING::LIGHTS:
+            qDebug("LIGHTS");
+            sendLights();
+            break;
+        case MESSAGE_SENDING::AUX_BMS:
+            qDebug("AUX_BMS");
+            sendAuxBms();
+            break;
+        case MESSAGE_SENDING::ALL:
+            qDebug("All");
+            sendAll();
+            break;
+    }
+}
+
+void SerialReporting::setKeyMotor()
+{
+    if(messageState_ == MessageStates::MESSAGE_SENDING::KEY_MOTOR)
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::DONT_SEND;
+    }
+    else
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::KEY_MOTOR;
+    }
+}
+void SerialReporting::setMotorDetails(int n)
+{
+    if(messageState_ == MessageStates::MESSAGE_SENDING::MOTOR_0_DETAILS ||
+            messageState_ == MessageStates::MESSAGE_SENDING::MOTOR_1_DETAILS)
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::DONT_SEND;
+    }
+    else
+    {
+        if(n ==0 )
+        {
+            messageState_ = MessageStates::MESSAGE_SENDING::MOTOR_0_DETAILS;
+        }
+        else
+        {
+            messageState_ = MessageStates::MESSAGE_SENDING::MOTOR_1_DETAILS;
+        }
+
+    }
+}
+void SerialReporting::setDriverControls()
+{
+    if(messageState_ == MessageStates::MESSAGE_SENDING::DRIVER_CONTROLS)
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::DONT_SEND;
+    }
+    else
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::DRIVER_CONTROLS;
+    }
+}
+void SerialReporting::setMotorFaults()
+{
+    if(messageState_ == MessageStates::MESSAGE_SENDING::MOTOR_FAULTS)
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::DONT_SEND;
+    }
+    else
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::MOTOR_FAULTS;
+    }
+}
+void SerialReporting::setBatteryFaults()
+{
+    if(messageState_ == MessageStates::MESSAGE_SENDING::BATTERY_FAULTS)
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::DONT_SEND;
+    }
+    else
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::BATTERY_FAULTS;
+    }
+}
+void SerialReporting::setBattery()
+{
+    if(messageState_ == MessageStates::MESSAGE_SENDING::BATTERY)
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::DONT_SEND;
+    }
+    else
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::BATTERY;
+    }
+}
+void SerialReporting::setMppt()
+{
+    if(messageState_ == MessageStates::MESSAGE_SENDING::MPPTS)
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::DONT_SEND;
+    }
+    else
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::MPPTS;
+    }
+}
+void SerialReporting::setLights()
+{
+    if(messageState_ == MessageStates::MESSAGE_SENDING::LIGHTS)
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::DONT_SEND;
+    }
+    else
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::LIGHTS;
+    }
+}
+void SerialReporting::setAuxBms()
+{
+    if(messageState_ == MessageStates::MESSAGE_SENDING::AUX_BMS)
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::DONT_SEND;
+    }
+    else
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::AUX_BMS;
+    }
+}
+void SerialReporting::setAll()
+{
+    if(messageState_ == MessageStates::MESSAGE_SENDING::ALL)
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::DONT_SEND;
+    }
+    else
+    {
+        messageState_ = MessageStates::MESSAGE_SENDING::ALL;
+    }
 }
 
 void SerialReporting::sendKeyMotor()
