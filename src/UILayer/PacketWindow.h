@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QTabWidget>
 #include <QPushButton>
+#include <QScrollArea>
 #include <QScopedPointer>
 
 class AuxBmsTab;
@@ -48,6 +49,6 @@ private:
     QScopedPointer<MpptTab> mpptTab_;
     QPushButton* setPacket0_;
     QPushButton* setPacket1_;
-
+    QScrollArea* scroll_;
 };
 
