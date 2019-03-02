@@ -109,10 +109,10 @@ protected:
         return ret;
     }
 
-    void fillMpptData(unsigned char* data) const
+    void fillMpptData(unsigned char mpptNumber, unsigned char* data) const
     {
            data[0] = CcsDefines::MPPT_PKG_ID;
-           unsigned char numberAndAlive = 0 & 0x3;
+           unsigned char numberAndAlive = mpptNumber & 0x3;
 
            if (mpptData_->alive())
            {
@@ -589,7 +589,7 @@ TEST_F(SerialReportingTest, sendMpptTest)
         {
             unsigned char data[payloadLength];
             // build actual package
-            fillMpptData(data);
+            fillMpptData(i, data);
             appendChecksum(data, payloadLength);
             // do some additional data checks
             ASSERT_THAT(data[0], Eq(0x09)); // packet id
