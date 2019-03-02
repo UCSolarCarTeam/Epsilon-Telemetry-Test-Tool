@@ -33,11 +33,6 @@ QSpinBox& MpptTab::batteryVoltage()
     return *ui_->batteryVoltage;
 }
 
-QSpinBox& MpptTab::mpptNumber()
-{
-    return *ui_->mpptNumber;
-}
-
 QSpinBox& MpptTab::temperature()
 {
     return *ui_->temperature;
