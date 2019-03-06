@@ -9,7 +9,7 @@ You can test socat to create Virtual Serial Port doing the following procedure:
 Open a terminal (let's call it Terminal 0) and execute:
 
 ```
-socat -d -d pty,raw,echo=0 pty,raw,echo=0`
+socat -d -d pty,raw,echo=0 pty,raw,echo=0
 ```
 
 The code above returns:
