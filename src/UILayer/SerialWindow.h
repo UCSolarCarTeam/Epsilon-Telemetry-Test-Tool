@@ -19,16 +19,6 @@ public:
     QLineEdit& getComPortLineEdit();
     QLabel& getConnectionStatusLabel();
     QPushButton& getSwitchPacketButton();
-    QPushButton& getSendKeyMotorButton();
-    QPushButton& getSendMotor0DetailsButton();
-    QPushButton& getSendMotor1DetailsButton();
-    QPushButton& getSendDriverControlsButton();
-    QPushButton& getSendMotorFaultsButton();
-    QPushButton& getSendBatteryFaultsButton();
-    QPushButton& getSendBatteryButton();
-    QPushButton& getSendMpptButton();
-    QPushButton& getSendLightsButton();
-    QPushButton& getSendAuxBmsButton();
     QPushButton& getSendAllButton();
     void setConnectionStatusText(QString);
 
@@ -41,15 +31,5 @@ private:
     QLineEdit* comPortLineEdit_;
     QLabel* connectionStatusLabel_;
     QPushButton* switchPacketButton_;
-    QPushButton* sendKeyMotorButton_;
-    QPushButton* sendMotor0DetailsButton_;
-    QPushButton* sendMotor1DetailsButton_;
-    QPushButton* sendDriverControlsButton_;
-    QPushButton* sendMotorFaultsButton_;
-    QPushButton* sendBatteryFaultsButton_;
-    QPushButton* sendBatteryButton_;
-    QPushButton* sendMpptButton_;
-    QPushButton* sendLightsButton_;
-    QPushButton* sendAuxBmsButton_;
     QPushButton* sendAllButton_;
 };

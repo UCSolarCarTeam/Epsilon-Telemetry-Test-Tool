@@ -18,15 +18,6 @@ public:
 signals:
     void attemptConnectionSignal();
     void attemptDisconnectionSignal();
-    void sendKeyMotor();
-    void sendMotorDetails(int n);
-    void sendDriverControls();
-    void sendMotorFaults();
-    void sendBatteryFaults();
-    void sendBattery();
-    void sendMppt();
-    void sendLights();
-    void sendAuxBms();
     void sendAll();
     void switchPacket();
 
