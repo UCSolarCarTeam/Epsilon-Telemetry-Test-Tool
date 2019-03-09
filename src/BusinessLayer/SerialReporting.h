@@ -42,5 +42,5 @@ private:
     I_CommunicationService& communicationService_;
     std::vector<DataContainer*> dataContainerList;
     SerialView& view_;
-    int packetNum;
+    int packetNum_;
 };
