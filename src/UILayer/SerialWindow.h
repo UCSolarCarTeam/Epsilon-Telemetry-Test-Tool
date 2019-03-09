@@ -29,6 +29,7 @@ public:
     QPushButton& getSendMpptButton();
     QPushButton& getSendLightsButton();
     QPushButton& getSendAuxBmsButton();
+    QPushButton& getSendContinuouslyButton();
     QPushButton& getSendAllButton();
     void setConnectionStatusText(QString);
 
@@ -51,5 +52,6 @@ private:
     QPushButton* sendMpptButton_;
     QPushButton* sendLightsButton_;
     QPushButton* sendAuxBmsButton_;
+    QPushButton* sendContinuouslyButton_;
     QPushButton* sendAllButton_;
 };

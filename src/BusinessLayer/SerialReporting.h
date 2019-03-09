@@ -3,7 +3,6 @@
 #include <QObject>
 #include <vector>
 #include <QTimer>
-#include <QDebug>
 
 class AuxBmsData;
 class BatteryData;
@@ -28,6 +27,7 @@ public:
                     SerialView& view);
 
 public slots:
+    void toggleSendContinuously();
     void sendData();
     void sendKeyMotor();
     void sendMotorDetails(int n);
@@ -42,12 +42,11 @@ public slots:
     void switchPacket();
 
 private:
-    void startSendingData();
-    void stopSendingData();
     I_CommunicationService& communicationService_;
     std::vector<DataContainer*> dataContainerList;
     SerialView& view_;
     int packetNum;
     QScopedPointer<QTimer> readTimer_;
     int forwardPeriod_;
+    bool sendContinuously_;
 };

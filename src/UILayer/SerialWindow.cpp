@@ -37,6 +37,7 @@ void SerialWindow::setupUi()
     sendMpptButton_ = new QPushButton("Send MPPTs", this);
     sendLightsButton_ = new QPushButton("Send Lights", this);
     sendAuxBmsButton_= new QPushButton("Send Aux BMS", this);
+    sendContinuouslyButton_ = new QPushButton("Send Continuously", this);
     sendAllButton_ = new QPushButton("Send All", this);
     disconnectButton_->setEnabled(false);
     switchPacketButton_->setEnabled(false);
@@ -50,6 +51,7 @@ void SerialWindow::setupUi()
     sendMpptButton_->setEnabled(false);
     sendLightsButton_->setEnabled(false);
     sendAuxBmsButton_->setEnabled(false);
+    sendContinuouslyButton_->setEnabled(false);
     sendAllButton_->setEnabled(false);
     layout->addRow(connectButton_);
     layout->addRow(disconnectButton_);
@@ -66,6 +68,7 @@ void SerialWindow::setupUi()
     layout->addRow(sendMpptButton_);
     layout->addRow(sendLightsButton_);
     layout->addRow(sendAuxBmsButton_);
+    layout->addRow(sendContinuouslyButton_);
     layout->addRow(sendAllButton_);
     setLayout(layout);
 }
@@ -143,6 +146,11 @@ QPushButton& SerialWindow::getSendLightsButton()
 QPushButton& SerialWindow::getSendAuxBmsButton()
 {
     return *sendAuxBmsButton_;
+}
+
+QPushButton& SerialWindow::getSendContinuouslyButton()
+{
+    return *sendContinuouslyButton_;
 }
 
 QPushButton& SerialWindow::getSendAllButton()

@@ -13,6 +13,7 @@ public:
     SerialView(SerialWindow* window);
     void setConnectionStatus(bool connectionStatus, bool attemptToConnect);
     void setPacketText(bool packet0);
+    void setSendContinuouslyText(bool sendContinuously);
     QString getCommunicationPort();
 
 signals:
@@ -27,6 +28,7 @@ signals:
     void sendMppt();
     void sendLights();
     void sendAuxBms();
+    void toggleSendContinuously();
     void sendAll();
     void switchPacket();
 

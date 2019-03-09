@@ -47,6 +47,7 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
     , packetNum(0)
     , readTimer_(new QTimer())
     , forwardPeriod_(500)
+    , sendContinuously_(false)
 {
     dataContainerList.push_back(&dataContainer0);
     dataContainerList.push_back(&dataContainer1);
@@ -60,24 +61,29 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
     connect(&view_, SIGNAL(sendMppt()), this, SLOT(sendMppt()));
     connect(&view_, SIGNAL(sendLights()), this, SLOT(sendLights()));
     connect(&view_, SIGNAL(sendAuxBms()), this, SLOT(sendAuxBms()));
+    connect(&view_, SIGNAL(toggleSendContinuously()), this, SLOT(toggleSendContinuously()));
     connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
     connect(readTimer_.data(), SIGNAL(timeout()), this, SLOT(sendData()));
-    startSendingData();
-}
-
-void SerialReporting::startSendingData()
-{
     readTimer_->setInterval(forwardPeriod_);
-    readTimer_->start();
 }
 
-void SerialReporting::stopSendingData()
+void SerialReporting::toggleSendContinuously()
 {
+    if(sendContinuously_)
+    {
+        sendContinuously_ = false;
+        readTimer_->stop();
+    }
+    else
+    {
+        sendContinuously_  = true;
+        readTimer_->start();
+    }
+    view_.setSendContinuouslyText(sendContinuously_);
 }
 
 void SerialReporting::sendData()
 {
-    qDebug("Send all");
     sendAll();
 }
 
