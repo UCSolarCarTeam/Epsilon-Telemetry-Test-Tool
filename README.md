@@ -6,10 +6,10 @@ To use, create a pair of virtual com ports and connect with this program and the
 ## Linux
 You can test socat to create Virtual Serial Port doing the following procedure:
 
-Open a terminal (let's call it Terminal 0) and execute:
+Open a terminal (let's call it Terminal 0) and execute the `CreateVirtualPort.sh` script:
 
 ```
-socat -d -d pty,raw,echo=0 pty,raw,echo=0
+./CreateVirtualPort.sh
 ```
 
 The code above returns:
