@@ -45,8 +45,8 @@ private:
     I_CommunicationService& communicationService_;
     std::vector<DataContainer*> dataContainerList;
     SerialView& view_;
-    int packetNum;
     QScopedPointer<QTimer> readTimer_;
     int forwardPeriod_;
     bool sendContinuously_;
+    int packetNum_;
 };
