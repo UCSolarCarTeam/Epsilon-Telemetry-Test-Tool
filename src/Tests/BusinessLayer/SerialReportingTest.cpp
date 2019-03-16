@@ -79,7 +79,7 @@ protected:
     QScopedPointer<LightsData> lightsData_;
     QScopedPointer<AuxBmsData> auxBmsData_;
     QScopedPointer<SerialView> view;
-
+    QScopedPointer<SerialReporting> serialReporting_;
     QScopedPointer<SerialReporting> telemetryReporting_;
 
     virtual void SetUp()
@@ -97,10 +97,10 @@ protected:
         lightsData_.reset(new LightsData());
         auxBmsData_.reset(new AuxBmsData());
         view.reset(new SerialView(new SerialWindow()));
-        telemetryReporting_.reset(new SerialReporting(*communicationService_,
-                                                      *dataContainer_,
-                                                      *dataContainer_,
-                                                      *view));
+        serialReporting_.reset(new SerialReporting(*communicationService_,
+                                                   *dataContainer_,
+                                                   *dataContainer_,
+                                                   *view));
     }
 
     inline unsigned char fitTwoSingleUChar(unsigned char bit0To3, unsigned char bit4To7) const
@@ -235,7 +235,7 @@ TEST_F(SerialReportingTest, sendKeyMotorTest) // TODO create function which buil
     EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
-    view->sendKeyMotor();
+    serialReporting_->sendKeyMotor();
 }
 
 /*
@@ -278,7 +278,7 @@ TEST_F(SerialReportingTest, sendMotorDetailsTest) // TODO create function which 
     EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacket0AsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
-    view->sendMotorDetails(0);
+    serialReporting_->sendMotorDetails(0);
 
     // create payload for motor 1 details
     data[0] = CcsDefines::MOTOR_DETAILS_1_PKG_ID;
@@ -307,7 +307,7 @@ TEST_F(SerialReportingTest, sendMotorDetailsTest) // TODO create function which 
     EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacket1AsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
-    view->sendMotorDetails(1);
+    serialReporting_->sendMotorDetails(1);
 }
 
 /*
@@ -362,7 +362,7 @@ TEST_F(SerialReportingTest, sendDriverControlsTest) // TODO create function whic
     EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
-    view->sendDriverControls();
+    serialReporting_->sendDriverControls();
 }
 
 /*
@@ -431,7 +431,7 @@ TEST_F(SerialReportingTest, sendMotorFaultsTest) // TODO create function which b
     EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
-    view->sendMotorFaults();
+    serialReporting_->sendMotorFaults();
 }
 
 /*
@@ -504,7 +504,7 @@ TEST_F(SerialReportingTest, sendBatteryFaultsTest) // TODO create function which
     EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
-    view->sendBatteryFaults();
+    serialReporting_->sendBatteryFaults();
 }
 
 /*
@@ -564,7 +564,7 @@ TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build
     EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
-    view->sendBattery();
+    serialReporting_->sendBattery();
 }
 
 /*
@@ -610,7 +610,7 @@ TEST_F(SerialReportingTest, sendMpptTest)
         }
 
         // actually call the method under test through qt's signal/slot mechanism
-        view->sendMppt();
+        serialReporting_->sendMppt();
     }
 }
 
@@ -655,7 +655,7 @@ TEST_F(SerialReportingTest, sendLightsTest) // TODO create function which build 
     EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
-    view->sendLights();
+    serialReporting_->sendLights();
 }
 
 /*
@@ -694,7 +694,7 @@ TEST_F(SerialReportingTest, sendAuxBmsTest)
     EXPECT_CALL(*communicationService_, sendSerialData(_, expectedPackageLength)).With(expectedPacketAsArg).Times(1);
 
     // actually call the method under test through qt's signal/slot mechanism
-    view->sendAuxBms();
+    serialReporting_->sendAuxBms();
 }
 
 /*
@@ -716,7 +716,7 @@ TEST_F(SerialReportingTest, sendAllTest)
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS)).With(Args<0, 1>(packageIdIs(10))).Times(1);
     EXPECT_CALL(*communicationService_, sendSerialData(_, EXPECTED_PACKAGE_LENGTH_SEND_AUX_BMS)).With(Args<0, 1>(packageIdIs(11))).Times(1);
     // actually call the method under test through qt's signal/slot mechanism
-    view->sendAll();
+    serialReporting_->sendAll();
 }
 
 
