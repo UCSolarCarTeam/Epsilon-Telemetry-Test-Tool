@@ -335,15 +335,15 @@ void SerialReporting::sendMppt()
 
     for (unsigned char i = 0; i < CcsDefines::MPPT_COUNT; i++)
     {
-        writeUShortIntoArray(packetPayload, 2, dataContainerList[packetNum_]->getMpptData().arrayVoltage(i) * ONES_TO_CENTI);
-        writeUShortIntoArray(packetPayload, 4, dataContainerList[packetNum_]->getMpptData().arrayCurrent(i) * ONES_TO_MILLI);
-        writeUShortIntoArray(packetPayload, 6, dataContainerList[packetNum_]->getMpptData().batteryVoltage(i) * ONES_TO_CENTI);
-        writeUShortIntoArray(packetPayload, 8, dataContainerList[packetNum_]->getMpptData().temperature(i) * ONES_TO_CENTI);
+        writeUShortIntoArray(packetPayload, 2, dataContainerList[packetNum_]->getMpptData().arrayVoltage() * ONES_TO_CENTI);
+        writeUShortIntoArray(packetPayload, 4, dataContainerList[packetNum_]->getMpptData().arrayCurrent() * ONES_TO_MILLI);
+        writeUShortIntoArray(packetPayload, 6, dataContainerList[packetNum_]->getMpptData().batteryVoltage() * ONES_TO_CENTI);
+        writeUShortIntoArray(packetPayload, 8, dataContainerList[packetNum_]->getMpptData().temperature() * ONES_TO_CENTI);
         unsigned char mpptPacketPayload[unframedPacketLength];
         std::memcpy(mpptPacketPayload, packetPayload, unframedPacketLength);
         unsigned char numberAndAlive = i & 0x03;
 
-        if (dataContainerList[packetNum_]->getMpptData().alive(i))
+        if (dataContainerList[packetNum_]->getMpptData().alive())
         {
             numberAndAlive |= 0x80;
         }
