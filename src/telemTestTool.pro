@@ -8,4 +8,5 @@ SUBDIRS = \
     UILayer \
     Peripherals \
     Tests \
-    TelemTestToolMain
+    TelemTestToolMain \
+    InfrastructureLayer
