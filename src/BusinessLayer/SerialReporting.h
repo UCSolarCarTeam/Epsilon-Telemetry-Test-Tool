@@ -28,7 +28,6 @@ public:
 
 public slots:
     void toggleSendContinuously();
-    void sendData();
     void sendKeyMotor();
     void sendMotorDetails(int n);
     void sendDriverControls();

@@ -55,28 +55,22 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
     connect(&view_, SIGNAL(toggleSendContinuously()), this, SLOT(toggleSendContinuously()));
     connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
     connect(&view_, SIGNAL(switchPacket()), this, SLOT(switchPacket()));
-    connect(readTimer_.data(), SIGNAL(timeout()), this, SLOT(sendData()));
+    connect(readTimer_.data(), SIGNAL(timeout()), this, SLOT(sendAll()));
     readTimer_->setInterval(forwardPeriod_);
 }
 
 void SerialReporting::toggleSendContinuously()
 {
+    sendContinuously_ = !sendContinuously_;
     if(sendContinuously_)
     {
-        sendContinuously_ = false;
-        readTimer_->stop();
+        readTimer_->start();
     }
     else
     {
-        sendContinuously_  = true;
-        readTimer_->start();
+        readTimer_->stop();
     }
     view_.setSendContinuouslyText(sendContinuously_);
-}
-
-void SerialReporting::sendData()
-{
-    sendAll();
 }
 
 void SerialReporting::sendKeyMotor()
