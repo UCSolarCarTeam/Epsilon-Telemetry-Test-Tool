@@ -19,6 +19,8 @@ SerialView::SerialView(SerialWindow* window)
                      this, SIGNAL(attemptConnectionSignal()));
     window_->connect(&(window_->getDisconnectButton()), SIGNAL(clicked()),
                      this, SIGNAL(attemptDisconnectionSignal()));
+    window_->connect(&(window_->getSendContinuouslyButton()), SIGNAL(clicked()),
+                     this, SIGNAL(toggleSendContinuously()));
     window_->connect(&(window_->getSendAllButton()), SIGNAL(clicked()),
                      this, SIGNAL(sendAll()));
     window_->connect(&(window->getSwitchPacketButton()), SIGNAL(clicked()),
@@ -36,6 +38,7 @@ void SerialView::setConnectionStatus(bool connectionStatus, bool attemptToConnec
             window_->getDisconnectButton().setEnabled(true);
             window_->getComPortLineEdit().setEnabled(false);
             window_->getSwitchPacketButton().setEnabled(true);
+            window_->getSendContinuouslyButton().setEnabled(true);
             window_->getSendAllButton().setEnabled(true);
         }
         else
@@ -45,6 +48,7 @@ void SerialView::setConnectionStatus(bool connectionStatus, bool attemptToConnec
             window_->getDisconnectButton().setEnabled(false);
             window_->getComPortLineEdit().setEnabled(true);
             window_->getSwitchPacketButton().setEnabled(false);
+            window_->getSendContinuouslyButton().setEnabled(false);
             window_->getSendAllButton().setEnabled(false);
         }
     }
@@ -70,6 +74,18 @@ void SerialView::setPacketText(bool packet0)
     else
     {
         window_->getSwitchPacketButton().setText("Switch to Packet 0");
+    }
+}
+
+void SerialView::setSendContinuouslyText(bool sendContinuously)
+{
+    if (sendContinuously)
+    {
+        window_->getSendContinuouslyButton().setText("Stop");
+    }
+    else
+    {
+        window_->getSendContinuouslyButton().setText("Send Continuously");
     }
 }
 

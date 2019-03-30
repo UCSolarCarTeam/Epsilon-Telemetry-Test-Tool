@@ -19,6 +19,7 @@ public:
     QLineEdit& getComPortLineEdit();
     QLabel& getConnectionStatusLabel();
     QPushButton& getSwitchPacketButton();
+    QPushButton& getSendContinuouslyButton();
     QPushButton& getSendAllButton();
     void setConnectionStatusText(QString);
 
@@ -31,5 +32,6 @@ private:
     QLineEdit* comPortLineEdit_;
     QLabel* connectionStatusLabel_;
     QPushButton* switchPacketButton_;
+    QPushButton* sendContinuouslyButton_;
     QPushButton* sendAllButton_;
 };
