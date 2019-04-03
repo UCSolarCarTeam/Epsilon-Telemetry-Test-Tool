@@ -45,6 +45,7 @@ PacketReporting::PacketReporting(DataContainer& dataContainer0,
 void PacketReporting::setAll(int packetNum)
 {
     DataContainer* dataContainer;
+
     if (packetNum == 0)
     {
         dataContainer = &dataContainer0_;
@@ -53,6 +54,7 @@ void PacketReporting::setAll(int packetNum)
     {
         dataContainer = &dataContainer1_;
     }
+
     batteryReporting_->setData(dataContainer->getBatteryData());
     batteryFaultsReporting_->setData(dataContainer->getBatteryFaultsData());
     driverControlsReporting_->setData(dataContainer->getDriverControlsData());

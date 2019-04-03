@@ -21,11 +21,13 @@ InternetView::InternetView(InternetWindow* window)
                      this, SIGNAL(attemptConnectionSignal()));
     window_->connect(&(window_->getDisconnectButton()), SIGNAL(clicked()),
                      this, SIGNAL(attemptDisconnectionSignal()));
+    window_->connect(&(window_->getSendContinuouslyButton()), SIGNAL(clicked()),
+                     this, SIGNAL(toggleSendContinuously()));
     connect(&(window_->getSendPacket0Button()), SIGNAL(clicked()), &signalMapper, SLOT(map()));
     connect(&(window_->getSendPacket1Button()), SIGNAL(clicked()), &signalMapper, SLOT(map()));
     signalMapper.setMapping(&(window_->getSendPacket0Button()), 0);
     signalMapper.setMapping(&(window_->getSendPacket1Button()), 1);
-    connect(&signalMapper, SIGNAL(mapped(int)), this, SIGNAL(sendAll(int)));
+    connect(&signalMapper, SIGNAL(mapped(int)), this, SIGNAL(setPacketNum(int)));
 }
 
 void InternetView::setConnectionStatus(bool connectionStatus, bool attemptToConnect)
@@ -41,6 +43,7 @@ void InternetView::setConnectionStatus(bool connectionStatus, bool attemptToConn
             window_->getPortSpinBox().setEnabled(false);
             window_->getExchangeNameLineEdit().setEnabled(false);
             window_->getRoutingKeyLineEdit().setEnabled(false);
+            window_->getSendContinuouslyButton().setEnabled(true);
             window_->getSendPacket0Button().setEnabled(true);
             window_->getSendPacket1Button().setEnabled(true);
         }
@@ -53,6 +56,7 @@ void InternetView::setConnectionStatus(bool connectionStatus, bool attemptToConn
             window_->getPortSpinBox().setEnabled(true);
             window_->getExchangeNameLineEdit().setEnabled(true);
             window_->getRoutingKeyLineEdit().setEnabled(true);
+            window_->getSendContinuouslyButton().setEnabled(false);
             window_->getSendPacket0Button().setEnabled(false);
             window_->getSendPacket1Button().setEnabled(false);
         }
@@ -67,6 +71,18 @@ void InternetView::setConnectionStatus(bool connectionStatus, bool attemptToConn
         {
             window_->getConnectionStatusLabel().setText("Disconnection Failed.");
         }
+    }
+}
+
+void InternetView::setSendContinuouslyText(bool sendContinuously)
+{
+    if (sendContinuously)
+    {
+        window_->getSendContinuouslyButton().setText("Stop");
+    }
+    else
+    {
+        window_->getSendContinuouslyButton().setText("Send Continuously");
     }
 }
 

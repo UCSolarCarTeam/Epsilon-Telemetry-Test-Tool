@@ -15,11 +15,13 @@ public:
     unsigned short getPort();
     QString getExchangeName();
     QString getRoutingKey();
+    void setSendContinuouslyText(bool sendContinuously);
 
 signals:
     void attemptConnectionSignal();
     void attemptDisconnectionSignal();
-    void sendAll(int packetNum);
+    void toggleSendContinuously();
+    void setPacketNum(int packetNum);
 
 private:
     QSignalMapper signalMapper;

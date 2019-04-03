@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QSignalMapper>
+#include <QTimer>
 #include <vector>
 
 class AuxBmsData;
@@ -27,7 +28,9 @@ public:
                       InternetView& view);
 
 public slots:
-    void sendAll(int packetNum);
+    void toggleSendContinuously();
+    void setPacketNum(int packetNum);
+    void sendAll();
 
 private:
     QJsonArray makeKeyMotor();
@@ -41,8 +44,13 @@ private:
     QJsonObject makeAuxBms();
 
 private:
+
     I_CommunicationService& communicationService_;
     std::vector<DataContainer*> dataContainerList;
     InternetView& view_;
-    int packetNum;
+    QSignalMapper signalMapper_;
+    int packetNum_;
+    QScopedPointer<QTimer> readTimer_;
+    int forwardPeriod_;
+    bool sendContinuously_;
 };

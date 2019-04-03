@@ -3,7 +3,7 @@
 #include "../UILayer/Packet/MotorFaultsTab.h"
 
 MotorFaultsReporting::MotorFaultsReporting(MotorFaultsTab& motor0FaultsTab,
-                                           MotorFaultsTab& motor1FaultsTab)
+        MotorFaultsTab& motor1FaultsTab)
     : motor0FaultsTab_(motor0FaultsTab)
     , motor1FaultsTab_(motor1FaultsTab)
 {

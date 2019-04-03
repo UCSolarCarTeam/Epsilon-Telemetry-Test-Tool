@@ -36,7 +36,7 @@ void SerialWindow::setupUi()
     sendBatteryButton_ = new QPushButton("Send Battery", this);
     sendMpptButton_ = new QPushButton("Send MPPTs", this);
     sendLightsButton_ = new QPushButton("Send Lights", this);
-    sendAuxBmsButton_= new QPushButton("Send Aux BMS", this);
+    sendAuxBmsButton_ = new QPushButton("Send Aux BMS", this);
     sendAllButton_ = new QPushButton("Send All", this);
     disconnectButton_->setEnabled(false);
     switchPacketButton_->setEnabled(false);
