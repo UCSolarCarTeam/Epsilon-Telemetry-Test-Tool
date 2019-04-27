@@ -2,11 +2,11 @@
 
 MpptData::MpptData()
     : mpptNumber_(0)
-    , alive_{true, true, true, true}
-    , arrayVoltage_{71, 71, 71, 71}
-    , arrayCurrent_{72, 72, 72, 72}
-    , batteryVoltage_{73, 73, 73, 73}
-    , temperature_{74, 74, 74, 4}
+    , alive_{true}
+    , arrayVoltage_{71}
+    , arrayCurrent_{72}
+    , batteryVoltage_{73}
+    , temperature_{74}
 {
 }
 
@@ -14,62 +14,52 @@ MpptData::~MpptData()
 {
 }
 
-unsigned char MpptData::mpptNumber() const
+bool MpptData::alive() const
 {
-    return mpptNumber_;
+    return alive_;
 }
 
-bool MpptData::alive(int mpptNumber) const
+unsigned short MpptData::arrayVoltage() const
 {
-    return alive_[mpptNumber];
+    return arrayVoltage_;
 }
 
-unsigned short MpptData::arrayVoltage(int mpptNumber) const
+unsigned short MpptData::arrayCurrent() const
 {
-    return arrayVoltage_[mpptNumber];
+    return arrayCurrent_;
 }
 
-unsigned short MpptData::arrayCurrent(int mpptNumber) const
+unsigned short MpptData::batteryVoltage() const
 {
-    return arrayCurrent_[mpptNumber];
+    return batteryVoltage_;
 }
 
-unsigned short MpptData::batteryVoltage(int mpptNumber) const
+unsigned short MpptData::temperature() const
 {
-    return batteryVoltage_[mpptNumber];
-}
-
-unsigned short MpptData::temperature(int mpptNumber) const
-{
-    return temperature_[mpptNumber];
-}
-
-void MpptData::setMpptNumber(const unsigned char& mpptNumber)
-{
-    mpptNumber_ = mpptNumber;
+    return temperature_;
 }
 
 void MpptData::setAlive(const bool& alive)
 {
-    alive_[mpptNumber_] = alive;
+    alive_ = alive;
 }
 
 void MpptData::setArrayVoltage(const unsigned short& arrayVoltage)
 {
-    arrayVoltage_[mpptNumber_] = arrayVoltage;
+    arrayVoltage_ = arrayVoltage;
 }
 
 void MpptData::setArrayCurrent(const unsigned short& arrayCurrent)
 {
-    arrayCurrent_[mpptNumber_] = arrayCurrent;
+    arrayCurrent_ = arrayCurrent;
 }
 
 void MpptData::setBatteryVoltage(const unsigned short& batteryVoltage)
 {
-    batteryVoltage_[mpptNumber_] = batteryVoltage;
+    batteryVoltage_ = batteryVoltage;
 }
 
 void MpptData::setTemperature(const unsigned short& temperature)
 {
-    temperature_[mpptNumber_] = temperature;
+    temperature_ = temperature;
 }

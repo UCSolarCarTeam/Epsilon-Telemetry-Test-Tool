@@ -109,21 +109,21 @@ protected:
         return ret;
     }
 
-    void fillMpptData(unsigned char* data) const
-       {
+    void fillMpptData(unsigned char mpptNumber, unsigned char* data) const
+    {
            data[0] = CcsDefines::MPPT_PKG_ID;
-           unsigned char numberAndAlive = mpptData_->mpptNumber() & 0x3;
+           unsigned char numberAndAlive = mpptNumber & 0x3;
 
-           if (mpptData_->alive(mpptData_->mpptNumber()))
+           if (mpptData_->alive())
            {
                numberAndAlive |= 0x80;
            }
 
            data[1] = numberAndAlive;
-           Util::writeUShortIntoArray(data, 2, mpptData_->arrayVoltage(mpptData_->mpptNumber()) * ONES_TO_CENTI);
-           Util::writeUShortIntoArray(data, 4, mpptData_->arrayCurrent(mpptData_->mpptNumber()) * ONES_TO_MILLI);
-           Util::writeUShortIntoArray(data, 6, mpptData_->batteryVoltage(mpptData_->mpptNumber()) * ONES_TO_CENTI);
-           Util::writeUShortIntoArray(data, 8, mpptData_->temperature(mpptData_->mpptNumber()) * ONES_TO_CENTI);
+           Util::writeUShortIntoArray(data, 2, mpptData_->arrayVoltage() * ONES_TO_CENTI);
+           Util::writeUShortIntoArray(data, 4, mpptData_->arrayCurrent() * ONES_TO_MILLI);
+           Util::writeUShortIntoArray(data, 6, mpptData_->batteryVoltage() * ONES_TO_CENTI);
+           Util::writeUShortIntoArray(data, 8, mpptData_->temperature() * ONES_TO_CENTI);
    }
 
     class PackageIdMatcher : public MatcherInterface<std::tuple<const unsigned char*, int>>
@@ -588,14 +588,13 @@ TEST_F(SerialReportingTest, sendMpptTest)
         for (unsigned char i = 0; i < CcsDefines::MPPT_COUNT; i++)
         {
             unsigned char data[payloadLength];
-            mpptData_->setMpptNumber(i);
             // build actual package
-            fillMpptData(data);
+            fillMpptData(i, data);
             appendChecksum(data, payloadLength);
             // do some additional data checks
             ASSERT_THAT(data[0], Eq(0x09)); // packet id
 
-            if (mpptData_->alive(i))
+            if (mpptData_->alive())
             {
                 ASSERT_THAT(data[1], Eq((i | 0x80))); // mppt number including alive bit
             }
