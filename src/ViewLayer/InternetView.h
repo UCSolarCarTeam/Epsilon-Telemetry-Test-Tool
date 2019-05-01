@@ -15,7 +15,9 @@ public:
     unsigned short getPort();
     QString getExchangeName();
     QString getRoutingKey();
-    void setSendContinuouslyText(bool sendContinuously);
+
+public slots:
+    void toggleSendContinuouslyText();
 
 signals:
     void attemptConnectionSignal();
@@ -26,4 +28,5 @@ signals:
 private:
     QSignalMapper signalMapper;
     InternetWindow* window_;
+    bool sendContinuously_;
 };

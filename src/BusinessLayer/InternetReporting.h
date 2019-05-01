@@ -48,9 +48,7 @@ private:
     I_CommunicationService& communicationService_;
     std::vector<DataContainer*> dataContainerList;
     InternetView& view_;
-    QSignalMapper signalMapper_;
     int packetNum_;
     QScopedPointer<QTimer> readTimer_;
-    int forwardPeriod_;
     bool sendContinuously_;
 };

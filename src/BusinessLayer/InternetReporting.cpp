@@ -20,6 +20,11 @@
 #include "MpptData.h"
 #include "DataContainer.h"
 
+namespace
+{
+    const int FORWARD_PERIOD = 500;
+}
+
 InternetReporting::InternetReporting(I_CommunicationService& commService,
                                      DataContainer& dataContainer0,
                                      DataContainer& dataContainer1,
@@ -27,10 +32,8 @@ InternetReporting::InternetReporting(I_CommunicationService& commService,
 
     : communicationService_(commService)
     , view_(view)
-    , signalMapper_(this)
     , packetNum_(0)
     , readTimer_(new QTimer())
-    , forwardPeriod_(500)
     , sendContinuously_(false)
 {
     dataContainerList.push_back(&dataContainer0);
@@ -38,7 +41,7 @@ InternetReporting::InternetReporting(I_CommunicationService& commService,
     connect(&view_, SIGNAL(toggleSendContinuously()), this, SLOT(toggleSendContinuously()));
     connect(&view_, SIGNAL(setPacketNum(int)), this, SLOT(setPacketNum(int)));
     connect(readTimer_.data(), SIGNAL(timeout()), this, SLOT(sendAll()));
-    readTimer_->setInterval(forwardPeriod_);
+    readTimer_->setInterval(FORWARD_PERIOD);
 }
 
 void InternetReporting::toggleSendContinuously()
@@ -53,8 +56,6 @@ void InternetReporting::toggleSendContinuously()
     {
         readTimer_->stop();
     }
-
-    view_.setSendContinuouslyText(sendContinuously_);
 }
 
 void InternetReporting::setPacketNum(int packetNum)

@@ -15,6 +15,7 @@ namespace
 InternetView::InternetView(InternetWindow* window)
     : signalMapper(this)
     , window_(window)
+    , sendContinuously_(false)
 {
     //Connect slots to UI
     window_->connect(&(window_->getConnectButton()), SIGNAL(clicked()),
@@ -23,6 +24,8 @@ InternetView::InternetView(InternetWindow* window)
                      this, SIGNAL(attemptDisconnectionSignal()));
     window_->connect(&(window_->getSendContinuouslyButton()), SIGNAL(clicked()),
                      this, SIGNAL(toggleSendContinuously()));
+    window_->connect(&(window_->getSendContinuouslyButton()), SIGNAL(clicked()),
+                     this, SLOT(toggleSendContinuouslyText()));
     connect(&(window_->getSendPacket0Button()), SIGNAL(clicked()), &signalMapper, SLOT(map()));
     connect(&(window_->getSendPacket1Button()), SIGNAL(clicked()), &signalMapper, SLOT(map()));
     signalMapper.setMapping(&(window_->getSendPacket0Button()), 0);
@@ -74,18 +77,6 @@ void InternetView::setConnectionStatus(bool connectionStatus, bool attemptToConn
     }
 }
 
-void InternetView::setSendContinuouslyText(bool sendContinuously)
-{
-    if (sendContinuously)
-    {
-        window_->getSendContinuouslyButton().setText("Stop");
-    }
-    else
-    {
-        window_->getSendContinuouslyButton().setText("Send Continuously");
-    }
-}
-
 QString InternetView::getIpAddress()
 {
     return window_->getIpAddressLineEdit().text();
@@ -104,4 +95,18 @@ QString InternetView::getExchangeName()
 QString InternetView::getRoutingKey()
 {
     return window_->getRoutingKeyLineEdit().text();
+}
+
+void InternetView::toggleSendContinuouslyText()
+{
+    sendContinuously_ = !sendContinuously_;
+    if (sendContinuously_)
+    {
+        window_->getSendContinuouslyButton().setText("Stop");
+    }
+    else
+    {
+        window_->getSendContinuouslyButton().setText("Send Continuously");
+    }
+    qDebug() << "toggle";
 }
