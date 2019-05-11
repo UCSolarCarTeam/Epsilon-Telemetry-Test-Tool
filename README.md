@@ -46,7 +46,7 @@ To create a `libgmock.a` file in a Linux system, follow these instructions in an
     `ar -rv libgmock.a gtest-all.o gmock-all.o`
 
 You should now have a `libgmock.a` archive file.
-Create a `build/.lib` directory using `mkdir -p Location_of_your_local_Test Tool_repository/build/.lib` and then place the `libmock.a` archive file in the new `build/.lib/` directory and you should be good to go.
+Create a `build/.lib` directory using `mkdir -p Location_of_your_local_Test Tool_repository/build/.lib` and then place the `libgmock.a` archive file in the new `build/.lib/` directory and you should be good to go.
 Use `ls -a` to show all hidden files.
 
 
