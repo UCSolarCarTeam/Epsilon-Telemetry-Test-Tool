@@ -16,12 +16,17 @@ public:
     QString getExchangeName();
     QString getRoutingKey();
 
+public slots:
+    void toggleSendContinuouslyText();
+
 signals:
     void attemptConnectionSignal();
     void attemptDisconnectionSignal();
-    void sendAll(int packetNum);
+    void toggleSendContinuously();
+    void setPacketNum(int packetNum);
 
 private:
     QSignalMapper signalMapper;
     InternetWindow* window_;
+    bool sendContinuously_;
 };

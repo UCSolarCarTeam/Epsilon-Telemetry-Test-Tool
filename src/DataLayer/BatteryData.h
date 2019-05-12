@@ -7,8 +7,8 @@ class BatteryData : public QObject
     Q_OBJECT
 
 public:
-     BatteryData();
-     virtual ~BatteryData();
+    BatteryData();
+    virtual ~BatteryData();
 
     bool alive() const;
     bool dischargeRelayEnabled() const;
@@ -73,34 +73,34 @@ public:
     void setAverageCellVoltage(const unsigned short& averageCellVoltage);
 
 private:
-      bool alive_;
-      bool dischargeRelayEnabled_;
-      bool chargeRelayEnabled_;
-      bool chargerSafetyEnabled_;
-      bool malfunctionIndicatorActive_;
-      bool multiPurposeInputSignalStatus_;
-      bool alwaysOnSignalStatus_;
-      bool isReadySignalStatus_;
-      bool isChargingSignalStatus_;
-      unsigned char populatedCells_;
-      float inputVoltage12V_;
-      float fanVoltage_;
-      float packCurrent_;
-      float packVoltage_;
-      float packStateOfCharge_;
-      float packAmpHours_;
-      float packDepthOfDischarge_;
-      unsigned char highTemperature_;
-      unsigned char highThermistorId_;
-      unsigned char lowTemperature_;
-      unsigned char lowThermistorId_;
-      unsigned char averageTemperature_;
-      unsigned char internalTemperature_;
-      unsigned char fanSpeed_;
-      unsigned char requestedFanSpeed_;
-      unsigned short lowCellVoltage_;
-      unsigned char lowCellVoltageId_;
-      unsigned short highCellVoltage_;
-      unsigned char highCellVoltageId_;
-      unsigned short averageCellVoltage_;
+    bool alive_;
+    bool dischargeRelayEnabled_;
+    bool chargeRelayEnabled_;
+    bool chargerSafetyEnabled_;
+    bool malfunctionIndicatorActive_;
+    bool multiPurposeInputSignalStatus_;
+    bool alwaysOnSignalStatus_;
+    bool isReadySignalStatus_;
+    bool isChargingSignalStatus_;
+    unsigned char populatedCells_;
+    float inputVoltage12V_;
+    float fanVoltage_;
+    float packCurrent_;
+    float packVoltage_;
+    float packStateOfCharge_;
+    float packAmpHours_;
+    float packDepthOfDischarge_;
+    unsigned char highTemperature_;
+    unsigned char highThermistorId_;
+    unsigned char lowTemperature_;
+    unsigned char lowThermistorId_;
+    unsigned char averageTemperature_;
+    unsigned char internalTemperature_;
+    unsigned char fanSpeed_;
+    unsigned char requestedFanSpeed_;
+    unsigned short lowCellVoltage_;
+    unsigned char lowCellVoltageId_;
+    unsigned short highCellVoltage_;
+    unsigned char highCellVoltageId_;
+    unsigned short averageCellVoltage_;
 };

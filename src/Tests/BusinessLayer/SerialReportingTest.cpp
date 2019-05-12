@@ -111,20 +111,20 @@ protected:
 
     void fillMpptData(unsigned char mpptNumber, unsigned char* data) const
     {
-           data[0] = CcsDefines::MPPT_PKG_ID;
-           unsigned char numberAndAlive = mpptNumber & 0x3;
+        data[0] = CcsDefines::MPPT_PKG_ID;
+        unsigned char numberAndAlive = mpptNumber & 0x3;
 
-           if (mpptData_->alive())
-           {
-               numberAndAlive |= 0x80;
-           }
+        if (mpptData_->alive())
+        {
+            numberAndAlive |= 0x80;
+        }
 
-           data[1] = numberAndAlive;
-           Util::writeUShortIntoArray(data, 2, mpptData_->arrayVoltage() * ONES_TO_CENTI);
-           Util::writeUShortIntoArray(data, 4, mpptData_->arrayCurrent() * ONES_TO_MILLI);
-           Util::writeUShortIntoArray(data, 6, mpptData_->batteryVoltage() * ONES_TO_CENTI);
-           Util::writeUShortIntoArray(data, 8, mpptData_->temperature() * ONES_TO_CENTI);
-   }
+        data[1] = numberAndAlive;
+        Util::writeUShortIntoArray(data, 2, mpptData_->arrayVoltage() * ONES_TO_CENTI);
+        Util::writeUShortIntoArray(data, 4, mpptData_->arrayCurrent() * ONES_TO_MILLI);
+        Util::writeUShortIntoArray(data, 6, mpptData_->batteryVoltage() * ONES_TO_CENTI);
+        Util::writeUShortIntoArray(data, 8, mpptData_->temperature() * ONES_TO_CENTI);
+    }
 
     class PackageIdMatcher : public MatcherInterface<std::tuple<const unsigned char*, int>>
     {

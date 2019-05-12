@@ -1,14 +1,14 @@
 #include "AuxBmsData.h"
 
 AuxBmsData::AuxBmsData()
-        : prechargeState_(PrechargeState::OFF)
-        , prechargeStateJSON_("OFF")
-        , auxVoltage_(13)
-        , auxBmsAlive_(true)
-        , strobeBmsLight_(true)
-        , allowCharge_(true)
-        , contactorError_(true)
-        , highVoltageEnable_(true)
+    : prechargeState_(PrechargeState::OFF)
+    , prechargeStateJSON_("OFF")
+    , auxVoltage_(13)
+    , auxBmsAlive_(true)
+    , strobeBmsLight_(true)
+    , allowCharge_(true)
+    , contactorError_(true)
+    , highVoltageEnable_(true)
 {
 }
 
