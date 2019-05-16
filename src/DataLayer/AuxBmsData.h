@@ -16,8 +16,8 @@ class AuxBmsData : public QObject
     Q_OBJECT
 
 public:
-     AuxBmsData();
-     virtual ~AuxBmsData();
+    AuxBmsData();
+    virtual ~AuxBmsData();
 
     PrechargeState prechargeState() const;
     QString prechargeStateJSON() const;
@@ -38,12 +38,12 @@ public:
     void setHighVoltageEnable(const bool& highVoltageEnable);
 
 private:
-      PrechargeState prechargeState_;
-      QString prechargeStateJSON_;
-      unsigned char auxVoltage_;
-      bool auxBmsAlive_;
-      bool strobeBmsLight_;
-      bool allowCharge_;
-      bool contactorError_;
-      bool highVoltageEnable_;
+    PrechargeState prechargeState_;
+    QString prechargeStateJSON_;
+    unsigned char auxVoltage_;
+    bool auxBmsAlive_;
+    bool strobeBmsLight_;
+    bool allowCharge_;
+    bool contactorError_;
+    bool highVoltageEnable_;
 };

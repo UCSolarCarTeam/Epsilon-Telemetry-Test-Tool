@@ -34,9 +34,11 @@ void InternetWindow::setupUi()
     QLabel* routingKeyLabel = new QLabel("Routing Key", this);
     routingKeyLineEdit_ = new QLineEdit("", this);
     connectionStatusLabel_ = new QLabel("Not connected", this);
+    sendContinuouslyButton_ = new QPushButton("Send Continuously", this);
     sendPacket0Button_ = new QPushButton("Send Packet 0", this);
     sendPacket1Button_ = new QPushButton("Send Packet 1", this);
     disconnectButton_->setEnabled(false);
+    sendContinuouslyButton_->setEnabled(false);
     sendPacket0Button_->setEnabled(false);
     sendPacket1Button_->setEnabled(false);
     layout->addRow(connectButton_);
@@ -50,6 +52,7 @@ void InternetWindow::setupUi()
     layout->addRow(routingKeyLabel);
     layout->addRow(routingKeyLineEdit_);
     layout->addRow(connectionStatusLabel_);
+    layout->addRow(sendContinuouslyButton_);
     layout->addRow(sendPacket0Button_);
     layout->addRow(sendPacket1Button_);
     setLayout(layout);
@@ -88,6 +91,11 @@ QLineEdit& InternetWindow::getIpAddressLineEdit()
 QLabel& InternetWindow::getConnectionStatusLabel()
 {
     return *connectionStatusLabel_;
+}
+
+QPushButton& InternetWindow::getSendContinuouslyButton()
+{
+    return *sendContinuouslyButton_;
 }
 
 QPushButton& InternetWindow::getSendPacket0Button()

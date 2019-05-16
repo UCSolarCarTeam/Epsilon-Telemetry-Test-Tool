@@ -44,22 +44,33 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
                                  SerialView& view)
     : communicationService_(commService)
     , view_(view)
+    , readTimer_(new QTimer())
+    , forwardPeriod_(500)
+    , sendContinuously_(false)
     , packetNum_(0)
 {
     dataContainerList.push_back(&dataContainer0);
     dataContainerList.push_back(&dataContainer1);
     //Connect slots to SerialView Signals
-    connect(&view_, SIGNAL(sendKeyMotor()), this, SLOT(sendKeyMotor()));
-    connect(&view_, SIGNAL(sendMotorDetails(int)), this, SLOT(sendMotorDetails(int)));
-    connect(&view_, SIGNAL(sendDriverControls()), this, SLOT(sendDriverControls()));
-    connect(&view_, SIGNAL(sendMotorFaults()), this, SLOT(sendMotorFaults()));
-    connect(&view_, SIGNAL(sendBatteryFaults()), this, SLOT(sendBatteryFaults()));
-    connect(&view_, SIGNAL(sendBattery()), this, SLOT(sendBattery()));
-    connect(&view_, SIGNAL(sendMppt()), this, SLOT(sendMppt()));
-    connect(&view_, SIGNAL(sendLights()), this, SLOT(sendLights()));
-    connect(&view_, SIGNAL(sendAuxBms()), this, SLOT(sendAuxBms()));
+    connect(&view_, SIGNAL(toggleSendContinuously()), this, SLOT(toggleSendContinuously()));
     connect(&view_, SIGNAL(sendAll()), this, SLOT(sendAll()));
     connect(&view_, SIGNAL(switchPacket()), this, SLOT(switchPacket()));
+    connect(readTimer_.data(), SIGNAL(timeout()), this, SLOT(sendAll()));
+    readTimer_->setInterval(forwardPeriod_);
+}
+
+void SerialReporting::toggleSendContinuously()
+{
+    sendContinuously_ = !sendContinuously_;
+    if(sendContinuously_)
+    {
+        readTimer_->start();
+    }
+    else
+    {
+        readTimer_->stop();
+    }
+    view_.setSendContinuouslyText(sendContinuously_);
 }
 
 void SerialReporting::sendKeyMotor()
