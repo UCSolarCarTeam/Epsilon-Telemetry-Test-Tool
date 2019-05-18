@@ -108,5 +108,4 @@ void InternetView::toggleSendContinuouslyText()
     {
         window_->getSendContinuouslyButton().setText("Send Continuously");
     }
-    qDebug() << "toggle";
 }
