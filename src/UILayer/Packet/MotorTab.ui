@@ -139,6 +139,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="minimum">
+     <double>-99.989999999999995</double>
+    </property>
    </widget>
    <widget class="QLabel" name="setVelocityLabel">
     <property name="geometry">
