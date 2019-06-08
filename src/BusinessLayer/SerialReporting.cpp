@@ -23,7 +23,7 @@ namespace
 // These lengths only include the data. Not the checksum
     const int KEY_MOTOR_LENGTH = 43;
     const int MOTOR_DETAILS_LENGTH = 65;
-    const int DRIVER_CONTROLS_LENGTH = 10;
+    const int DRIVER_CONTROLS_LENGTH = 9;
     const int MOTOR_FAULTS_LENGTH = 9;
     const int BATTERY_FAULTS_LENGTH = 6;
     const int BATTERY_LENGTH = 48;
@@ -183,7 +183,7 @@ void SerialReporting::sendDriverControls()
                             dataContainerList[packetNum_]->getDriverControlsData().aux(),
                             dataContainerList[packetNum_]->getDriverControlsData().lapButton()
                            };
-    writeBoolsIntoArray(packetPayload, 8, controlsArray, 7);
+    writeBoolsIntoArray(packetPayload, 8, controlsArray, 8);
     addChecksum(packetPayload, DRIVER_CONTROLS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
