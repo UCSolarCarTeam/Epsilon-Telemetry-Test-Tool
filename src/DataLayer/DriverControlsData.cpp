@@ -219,6 +219,11 @@ void DriverControlsData::setHorn(const bool& horn)
     horn_ = horn;
 }
 
+void DriverControlsData::setLap(const bool& lap)
+{
+    lap_ = lap;
+}
+
 void DriverControlsData::setReset(const bool& reset)
 {
     reset_ = reset;

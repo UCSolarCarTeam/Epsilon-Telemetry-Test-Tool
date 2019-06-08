@@ -27,6 +27,7 @@ public:
     bool reverse() const;
     bool pushToTalk() const;
     bool horn() const;
+    bool lap() const;
     bool reset() const;
     bool aux() const;
     unsigned short acceleration() const;
@@ -49,6 +50,7 @@ public:
     void setReverse(const bool& reverse);
     void setPushToTalk(const bool& pushToTalk);
     void setHorn(const bool& horn);
+    void setLap(const bool& lap);
     void setReset(const bool& reset);
     void setAux(const bool& aux);
     void setAcceleration(const unsigned short& acceleration);
@@ -72,6 +74,7 @@ private:
     bool reverse_;
     bool pushToTalk_;
     bool horn_;
+    bool lap_;
     bool reset_;
     bool aux_;
     unsigned short acceleration_;

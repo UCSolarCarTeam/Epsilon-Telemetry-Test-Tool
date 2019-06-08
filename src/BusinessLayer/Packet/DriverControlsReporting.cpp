@@ -27,6 +27,7 @@ void DriverControlsReporting::setData(DriverControlsData& driverControlsData)
     driverControlsData_->setReverse(driverControlsTab_.reverse().isChecked());
     driverControlsData_->setPushToTalk(driverControlsTab_.pushToTalk().isChecked());
     driverControlsData_->setHorn(driverControlsTab_.horn().isChecked());
+    driverControlsData_->setLap(driverControlsTab_.lap().isChecked());
     driverControlsData_->setReset(driverControlsTab_.reset().isChecked());
     driverControlsData_->setAux(driverControlsTab_.aux().isChecked());
     driverControlsData_->setAcceleration(driverControlsTab_.acceleration().value());
