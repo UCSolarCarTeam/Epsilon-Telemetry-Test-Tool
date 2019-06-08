@@ -349,7 +349,8 @@ TEST_F(SerialReportingTest, sendDriverControlsTest) // TODO create function whic
                             driverControlsData_->pushToTalk(),
                             driverControlsData_->horn(),
                             driverControlsData_->reset(),
-                            driverControlsData_->aux()
+                            driverControlsData_->aux(),
+                            driverControlsData_->lapButton()
                           };
     Util::writeBoolsIntoArray(data, 8, driverInputs, 7);
     appendChecksum(data, payloadLength);

@@ -47,6 +47,11 @@ QCheckBox& DriverControlsTab::horn()
     return *ui_->horn;
 }
 
+QCheckBox& DriverControlsTab::lapButton()
+{
+    return *ui_->lapButton;
+}
+
 QCheckBox& DriverControlsTab::pushToTalk()
 {
     return *ui_->pushToTalk;

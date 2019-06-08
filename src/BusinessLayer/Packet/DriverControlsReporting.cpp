@@ -29,6 +29,7 @@ void DriverControlsReporting::setData(DriverControlsData& driverControlsData)
     driverControlsData_->setHorn(driverControlsTab_.horn().isChecked());
     driverControlsData_->setReset(driverControlsTab_.reset().isChecked());
     driverControlsData_->setAux(driverControlsTab_.aux().isChecked());
+    driverControlsData_->setLapButton(driverControlsTab_.lapButton().isChecked());
     driverControlsData_->setAcceleration(driverControlsTab_.acceleration().value());
     driverControlsData_->setRegenBraking(driverControlsTab_.regenBraking().value());
 }
