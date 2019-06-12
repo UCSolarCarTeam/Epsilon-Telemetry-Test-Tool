@@ -22,7 +22,7 @@ public:
     QCheckBox& brakes();
     QCheckBox& forward();
     QCheckBox& horn();
-    QCheckBox& lapButton();
+    QCheckBox& lap();
     QCheckBox& pushToTalk();
     QCheckBox& reset();
     QCheckBox& reverse();

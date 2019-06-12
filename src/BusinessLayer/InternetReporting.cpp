@@ -191,7 +191,7 @@ QJsonObject InternetReporting::makeDriverControls()
     driverControls.insert("Horn", dataContainerList[packetNum_]->getDriverControlsData().horn());
     driverControls.insert("Reset", dataContainerList[packetNum_]->getDriverControlsData().reset());
     driverControls.insert("Aux", dataContainerList[packetNum_]->getDriverControlsData().aux());
-    driverControls.insert("LapButton", dataContainerList[packetNum_]->getDriverControlsData().lapButton());
+    driverControls.insert("Lap", dataContainerList[packetNum_]->getDriverControlsData().lap());
     return driverControls;
 }
 

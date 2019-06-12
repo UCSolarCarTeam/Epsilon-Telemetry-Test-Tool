@@ -129,7 +129,7 @@
      <string>Aux</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="lapButton">
+   <widget class="QCheckBox" name="lap">
     <property name="geometry">
      <rect>
       <x>10</x>

@@ -181,7 +181,7 @@ void SerialReporting::sendDriverControls()
                             dataContainerList[packetNum_]->getDriverControlsData().horn(),
                             dataContainerList[packetNum_]->getDriverControlsData().reset(),
                             dataContainerList[packetNum_]->getDriverControlsData().aux(),
-                            dataContainerList[packetNum_]->getDriverControlsData().lapButton()
+                            dataContainerList[packetNum_]->getDriverControlsData().lap()
                            };
     writeBoolsIntoArray(packetPayload, 8, controlsArray, 8);
     addChecksum(packetPayload, DRIVER_CONTROLS_LENGTH);
