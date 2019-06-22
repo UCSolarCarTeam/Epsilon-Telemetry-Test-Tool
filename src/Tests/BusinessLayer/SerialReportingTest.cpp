@@ -352,7 +352,7 @@ TEST_F(SerialReportingTest, sendDriverControlsTest) // TODO create function whic
                             driverControlsData_->aux(),
                             driverControlsData_->lap()
                           };
-    Util::writeBoolsIntoArray(data, 8, driverInputs, 7);
+    Util::writeBoolsIntoArray(data, 8, driverInputs, 8);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x04)); // packet id
