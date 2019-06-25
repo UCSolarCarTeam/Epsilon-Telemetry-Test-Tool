@@ -47,6 +47,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="minimum">
+     <double>0.000000000000000</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="busVoltage">
     <property name="geometry">
@@ -129,6 +132,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="minimum">
+     <double>-99.989999999999995</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="vehicleVelocity">
     <property name="geometry">
@@ -178,6 +184,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="minimum">
+     <double>-99.989999999999995</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="motorCurrentImaginary">
     <property name="geometry">
@@ -187,6 +196,9 @@
       <width>71</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="minimum">
+     <double>-99.989999999999995</double>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="motorVoltageImaginary">
@@ -228,6 +240,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="minimum">
+     <double>-99.989999999999995</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="motorVoltageReal">
     <property name="geometry">
@@ -238,6 +253,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="minimum">
+     <double>0.000000000000000</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="phaseBCurrent">
     <property name="geometry">
@@ -247,6 +265,9 @@
       <width>71</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="minimum">
+     <double>-99.989999999999995</double>
     </property>
    </widget>
    <widget class="QLabel" name="label_36">
