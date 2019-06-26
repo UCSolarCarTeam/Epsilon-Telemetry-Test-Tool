@@ -180,9 +180,10 @@ void SerialReporting::sendDriverControls()
                             dataContainerList[packetNum_]->getDriverControlsData().pushToTalk(),
                             dataContainerList[packetNum_]->getDriverControlsData().horn(),
                             dataContainerList[packetNum_]->getDriverControlsData().reset(),
-                            dataContainerList[packetNum_]->getDriverControlsData().aux()
+                            dataContainerList[packetNum_]->getDriverControlsData().aux(),
+                            dataContainerList[packetNum_]->getDriverControlsData().lap()
                            };
-    writeBoolsIntoArray(packetPayload, 8, controlsArray, 7);
+    writeBoolsIntoArray(packetPayload, 8, controlsArray, 8);
     addChecksum(packetPayload, DRIVER_CONTROLS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);

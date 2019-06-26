@@ -29,6 +29,7 @@ public:
     bool horn() const;
     bool reset() const;
     bool aux() const;
+    bool lap() const;
     unsigned short acceleration() const;
     unsigned short regenBraking() const;
 
@@ -51,6 +52,7 @@ public:
     void setHorn(const bool& horn);
     void setReset(const bool& reset);
     void setAux(const bool& aux);
+    void setLap(const bool& lap);
     void setAcceleration(const unsigned short& acceleration);
     void setRegenBraking(const unsigned short& regenBraking);
 
@@ -74,6 +76,7 @@ private:
     bool horn_;
     bool reset_;
     bool aux_;
+    bool lap_;
     unsigned short acceleration_;
     unsigned short regenBraking_;
 };

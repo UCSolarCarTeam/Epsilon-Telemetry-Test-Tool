@@ -129,6 +129,19 @@
      <string>Aux</string>
     </property>
    </widget>
+   <widget class="QCheckBox" name="lap">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>240</y>
+      <width>81</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Lap</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QLabel" name="label_85">
    <property name="geometry">

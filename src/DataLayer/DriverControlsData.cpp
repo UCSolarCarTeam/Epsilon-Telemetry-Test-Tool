@@ -20,6 +20,7 @@ DriverControlsData::DriverControlsData()
     , horn_(false)
     , reset_(true)
     , aux_(true)
+    , lap_(false)
     , acceleration_(26)
     , regenBraking_(27)
 {
@@ -122,6 +123,11 @@ bool DriverControlsData::reset() const
 bool DriverControlsData::aux() const
 {
     return aux_;
+}
+
+bool DriverControlsData::lap() const
+{
+    return lap_;
 }
 
 unsigned short DriverControlsData::acceleration() const
@@ -227,6 +233,11 @@ void DriverControlsData::setReset(const bool& reset)
 void DriverControlsData::setAux(const bool& aux)
 {
     aux_ = aux;
+}
+
+void DriverControlsData::setLap(const bool& lap)
+{
+    lap_ = lap;
 }
 
 void DriverControlsData::setAcceleration(const unsigned short& acceleration)
