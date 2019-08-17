@@ -62,7 +62,8 @@ SerialReporting::SerialReporting(I_CommunicationService& commService,
 void SerialReporting::toggleSendContinuously()
 {
     sendContinuously_ = !sendContinuously_;
-    if(sendContinuously_)
+
+    if (sendContinuously_)
     {
         readTimer_->start();
     }
@@ -70,6 +71,7 @@ void SerialReporting::toggleSendContinuously()
     {
         readTimer_->stop();
     }
+
     view_.setSendContinuouslyText(sendContinuously_);
 }
 
