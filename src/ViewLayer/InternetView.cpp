@@ -100,6 +100,7 @@ QString InternetView::getRoutingKey()
 void InternetView::toggleSendContinuouslyText()
 {
     sendContinuously_ = !sendContinuously_;
+
     if (sendContinuously_)
     {
         window_->getSendContinuouslyButton().setText("Stop");

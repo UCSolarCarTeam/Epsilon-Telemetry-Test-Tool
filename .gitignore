@@ -8,3 +8,4 @@ release
 build*
 *.autosave
 **/.qmake.stash
+src/Tests/target_wrapper.sh

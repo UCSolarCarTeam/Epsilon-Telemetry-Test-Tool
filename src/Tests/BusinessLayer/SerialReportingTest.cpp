@@ -98,9 +98,9 @@ protected:
         auxBmsData_.reset(new AuxBmsData());
         view.reset(new SerialView(new SerialWindow()));
         serialReporting_.reset(new SerialReporting(*communicationService_,
-                                                   *dataContainer_,
-                                                   *dataContainer_,
-                                                   *view));
+                               *dataContainer_,
+                               *dataContainer_,
+                               *view));
     }
 
     inline unsigned char fitTwoSingleUChar(unsigned char bit0To3, unsigned char bit4To7) const
