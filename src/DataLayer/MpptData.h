@@ -11,22 +11,22 @@ public:
     virtual ~MpptData();
 
     bool alive() const;
-    unsigned short arrayVoltage() const;
-    unsigned short arrayCurrent() const;
-    unsigned short batteryVoltage() const;
+    double arrayVoltage() const;
+    double arrayCurrent() const;
+    double batteryVoltage() const;
     unsigned short temperature() const;
 
     void setAlive(const bool& alive);
-    void setArrayVoltage(const unsigned short& arrayVoltage);
-    void setArrayCurrent(const unsigned short& arrayCurrent);
-    void setBatteryVoltage(const unsigned short& batteryVoltage);
+    void setArrayVoltage(const double& arrayVoltage);
+    void setArrayCurrent(const double& arrayCurrent);
+    void setBatteryVoltage(const double& batteryVoltage);
     void setTemperature(const unsigned short& temperature);
 
 private:
     unsigned char mpptNumber_;
     bool alive_;
-    unsigned short arrayVoltage_;
-    unsigned short arrayCurrent_;
-    unsigned short batteryVoltage_;
+    double arrayVoltage_;
+    double arrayCurrent_;
+    double batteryVoltage_;
     unsigned short temperature_;
 };

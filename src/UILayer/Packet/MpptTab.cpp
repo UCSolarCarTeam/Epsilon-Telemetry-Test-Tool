@@ -18,17 +18,17 @@ QCheckBox& MpptTab::mpptAlive()
     return *ui_->mpptAlive;
 }
 
-QSpinBox& MpptTab::arrayCurrent()
+QDoubleSpinBox& MpptTab::arrayCurrent()
 {
     return *ui_->arrayCurrent;
 }
 
-QSpinBox& MpptTab::arrayVoltage()
+QDoubleSpinBox& MpptTab::arrayVoltage()
 {
     return *ui_->arrayVoltage;
 }
 
-QSpinBox& MpptTab::batteryVoltage()
+QDoubleSpinBox& MpptTab::batteryVoltage()
 {
     return *ui_->batteryVoltage;
 }
