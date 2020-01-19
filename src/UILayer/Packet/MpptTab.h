@@ -2,6 +2,7 @@
 
 #include <QCheckBox>
 #include <QSpinBox>
+#include <QDoubleSpinBox>
 
 namespace Ui
 {
@@ -16,9 +17,9 @@ public:
     ~MpptTab();
 
     QCheckBox& mpptAlive();
-    QSpinBox& arrayCurrent();
-    QSpinBox& arrayVoltage();
-    QSpinBox& batteryVoltage();
+    QDoubleSpinBox& arrayCurrent();
+    QDoubleSpinBox& arrayVoltage();
+    QDoubleSpinBox& batteryVoltage();
     QSpinBox& mpptNumber();
     QSpinBox& temperature();
 
