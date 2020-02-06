@@ -39,10 +39,10 @@ PacketWindow::PacketWindow()
     tabs_->addTab(motor0FaultsTab_.data(), tr("Motor 0 Faults"));
     tabs_->addTab(motor1FaultsTab_.data(), tr("Motor 1 Faults"));
     tabs_->addTab(mpptTab_.data(), tr("MPPT"));
-    auxBmsTab_->setToolTip("Set test data for the BMS (Battery Management System) for the auxiliary battery (low voltage).");
+    auxBmsTab_->setToolTip("Set test data for the BMS (Battery Management System) for the auxiliary batter (low voltage).");
     batteryTab_->setToolTip("Set test data for the main battery.");
     batteryFaultsTab_->setToolTip("Set emulated battery faults.");
-    driverControlsTab_->setToolTip("Set test data for driver controls");
+    driverControlsTab_->setToolTip("Set test data for drive controls");
     lightsTab_->setToolTip("Set test data for lights.");
     mpptTab_->setToolTip("Set test data for MPPT (Maximum power point tracking, Solar Cell power extraction/charging).");
     QVBoxLayout* tabsLayout = new QVBoxLayout;

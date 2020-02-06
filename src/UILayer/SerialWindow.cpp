@@ -36,7 +36,7 @@ void SerialWindow::setupUi()
     connectButton_->setToolTip("Connect through the serial port indicated below.");
     disconnectButton_->setToolTip("Disconnect from current connection.");
     switchPacketButton_->setToolTip("Switching the current data packet.");
-    sendContinuouslyButton_->setToolTip("Continuously send data through the serial port.");
+    sendContinuouslyButton_->setToolTip("Continuosly send data through serial port.");
     sendAllButton_->setToolTip("Send all data of the current packet.");
     layout->addRow(connectButton_);
     layout->addRow(disconnectButton_);
