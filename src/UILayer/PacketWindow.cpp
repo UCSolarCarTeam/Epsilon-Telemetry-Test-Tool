@@ -42,8 +42,6 @@ PacketWindow::PacketWindow()
     QVBoxLayout* tabsLayout = new QVBoxLayout;
     setPacket0_ = new QPushButton("Set Packet 0", this);
     setPacket1_ = new QPushButton("Set Packet 1", this);
-    setPacket0_->setToolTip("Set the informations for data packet 0.");
-    setPacket1_->setToolTip("Set the informations for data packet 1.");
     tabsLayout->addWidget(setPacket0_);
     tabsLayout->addWidget(setPacket1_);
     tabsLayout->addWidget(scroll_);
