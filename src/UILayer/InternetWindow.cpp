@@ -41,11 +41,6 @@ void InternetWindow::setupUi()
     sendContinuouslyButton_->setEnabled(false);
     sendPacket0Button_->setEnabled(false);
     sendPacket1Button_->setEnabled(false);
-    connectButton_->setToolTip("Connect to RabbitMQ server with properties indicated below.");
-    disconnectButton_->setToolTip("Disconnect from the RabbitMQ server.");
-    sendContinuouslyButton_->setToolTip("Continuously send data packet 1 through RabbitMQ.");
-    sendPacket0Button_->setToolTip("Send data packet 0 through RabbitMQ.");
-    sendPacket1Button_->setToolTip("Send data packet 1 through RabbitMQ.");
     layout->addRow(connectButton_);
     layout->addRow(disconnectButton_);
     layout->addRow(ipAddressLabel);
