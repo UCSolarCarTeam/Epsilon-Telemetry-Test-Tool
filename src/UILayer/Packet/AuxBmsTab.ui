@@ -48,8 +48,11 @@
      <height>23</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="text">
-    <string>Aux BMS Alive</string>
+    <string>Aux BMS Alive </string>
    </property>
   </widget>
   <widget class="QCheckBox" name="strobeBmsLight">
@@ -74,6 +77,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Max: 14.5 V; Lowest 10.8 V&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -96,6 +102,9 @@
      <width>131</width>
      <height>17</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Max: 14.5 V; Lowest 10.8 V&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Aux Voltage</string>
