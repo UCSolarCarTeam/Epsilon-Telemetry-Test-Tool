@@ -52,7 +52,7 @@
     <string/>
    </property>
    <property name="text">
-    <string>Aux BMS Alive </string>
+    <string>Aux BMS Alive</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="strobeBmsLight">
