@@ -19,17 +19,17 @@ bool MpptData::alive() const
     return alive_;
 }
 
-unsigned short MpptData::arrayVoltage() const
+double MpptData::arrayVoltage() const
 {
     return arrayVoltage_;
 }
 
-unsigned short MpptData::arrayCurrent() const
+double MpptData::arrayCurrent() const
 {
     return arrayCurrent_;
 }
 
-unsigned short MpptData::batteryVoltage() const
+double MpptData::batteryVoltage() const
 {
     return batteryVoltage_;
 }
@@ -44,17 +44,17 @@ void MpptData::setAlive(const bool& alive)
     alive_ = alive;
 }
 
-void MpptData::setArrayVoltage(const unsigned short& arrayVoltage)
+void MpptData::setArrayVoltage(const double& arrayVoltage)
 {
     arrayVoltage_ = arrayVoltage;
 }
 
-void MpptData::setArrayCurrent(const unsigned short& arrayCurrent)
+void MpptData::setArrayCurrent(const double& arrayCurrent)
 {
     arrayCurrent_ = arrayCurrent;
 }
 
-void MpptData::setBatteryVoltage(const unsigned short& batteryVoltage)
+void MpptData::setBatteryVoltage(const double& batteryVoltage)
 {
     batteryVoltage_ = batteryVoltage;
 }

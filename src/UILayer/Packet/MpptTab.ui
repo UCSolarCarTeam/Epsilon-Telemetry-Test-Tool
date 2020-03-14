@@ -58,7 +58,7 @@
     <string>Array Voltage</string>
    </property>
   </widget>
-  <widget class="QSpinBox" name="batteryVoltage">
+  <widget class="QDoubleSpinBox" name="batteryVoltage">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -72,9 +72,9 @@
    </property>
    <property name="maximum">
     <number>65535</number>
-   </property>
+    </property>
   </widget>
-  <widget class="QSpinBox" name="arrayCurrent">
+  <widget class="QDoubleSpinBox" name="arrayCurrent">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -106,7 +106,7 @@
     <number>65535</number>
    </property>
   </widget>
-  <widget class="QSpinBox" name="arrayVoltage">
+  <widget class="QDoubleSpinBox" name="arrayVoltage">
    <property name="geometry">
     <rect>
      <x>10</x>

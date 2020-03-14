@@ -349,9 +349,16 @@ void SerialReporting::sendMppt()
 
     for (unsigned char i = 0; i < CcsDefines::MPPT_COUNT; i++)
     {
-        writeUShortIntoArray(packetPayload, 2, dataContainerList[packetNum_]->getMpptData().arrayVoltage() * ONES_TO_CENTI);
-        writeUShortIntoArray(packetPayload, 4, dataContainerList[packetNum_]->getMpptData().arrayCurrent() * ONES_TO_MILLI);
-        writeUShortIntoArray(packetPayload, 6, dataContainerList[packetNum_]->getMpptData().batteryVoltage() * ONES_TO_CENTI);
+
+        unsigned short arrayVoltage = (unsigned short)(dataContainerList[packetNum_]->getMpptData().arrayVoltage() * ONES_TO_CENTI);
+        writeUShortIntoArray(packetPayload, 2, arrayVoltage);
+
+        unsigned short arrayCurrent = (unsigned short)(dataContainerList[packetNum_]->getMpptData().arrayCurrent() * ONES_TO_MILLI);
+        writeUShortIntoArray(packetPayload, 4, arrayCurrent);
+
+        unsigned short batteryVoltage = (unsigned short)(dataContainerList[packetNum_]->getMpptData().batteryVoltage() * ONES_TO_CENTI);
+        writeUShortIntoArray(packetPayload, 6, batteryVoltage);
+
         writeUShortIntoArray(packetPayload, 8, dataContainerList[packetNum_]->getMpptData().temperature() * ONES_TO_CENTI);
         unsigned char mpptPacketPayload[unframedPacketLength];
         std::memcpy(mpptPacketPayload, packetPayload, unframedPacketLength);
