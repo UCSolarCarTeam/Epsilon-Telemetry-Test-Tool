@@ -22,6 +22,9 @@
      <height>17</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Should be around room/ambient temperature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="text">
     <string>Temperature</string>
    </property>
@@ -48,6 +51,9 @@
      <height>17</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum 42 V&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="text">
     <string>Array Voltage</string>
    </property>
@@ -61,6 +67,12 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum 126 V&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="maximum">
+    <number>65535</number>
+    </property>
   </widget>
   <widget class="QDoubleSpinBox" name="arrayCurrent">
    <property name="geometry">
@@ -71,6 +83,12 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum 48 A&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="maximum">
+    <number>65535</number>
+   </property>
   </widget>
   <widget class="QSpinBox" name="temperature">
    <property name="geometry">
@@ -80,6 +98,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Should be around room/ambient temperature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="maximum">
     <number>65535</number>
@@ -94,6 +115,12 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum 42 V&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="maximum">
+    <number>65535</number>
+   </property>
   </widget>
   <widget class="QLabel" name="label_32">
    <property name="geometry">
@@ -103,6 +130,9 @@
      <width>111</width>
      <height>17</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum 126 V&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Battery Voltage</string>
@@ -116,6 +146,9 @@
      <width>101</width>
      <height>17</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum 48 A&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Array Current</string>

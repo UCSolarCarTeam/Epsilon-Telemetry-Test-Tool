@@ -71,6 +71,9 @@
      <height>17</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;0 ~ 62&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="text">
     <string>High Thermistor ID</string>
    </property>
@@ -83,6 +86,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;-20 C ~ 60 C&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="maximum">
     <number>255</number>
@@ -227,6 +233,9 @@
      <height>17</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum 10 C for charging and -20 C for discharging.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="text">
     <string>Low Temperature</string>
    </property>
@@ -239,6 +248,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;0% ~ 95%&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_19">
@@ -289,6 +301,9 @@
      <height>17</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Around 12 V with 3 V deviant&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="text">
     <string>12v Input Voltage</string>
    </property>
@@ -315,6 +330,9 @@
      <height>17</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Around 230 A&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="text">
     <string>Pack Current</string>
    </property>
@@ -328,6 +346,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Roughly 165.6 Ah&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
   </widget>
   <widget class="QDoubleSpinBox" name="packVoltage">
    <property name="geometry">
@@ -338,6 +359,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Max: 126 V&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
   </widget>
   <widget class="QDoubleSpinBox" name="packCurrent">
    <property name="geometry">
@@ -347,6 +371,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Around 230 A&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="minimum">
     <double>-99.989999999999995</double>
@@ -360,6 +387,9 @@
      <width>121</width>
      <height>17</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Max: 126 V&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Pack Voltage</string>
@@ -380,6 +410,9 @@
      <height>26</height>
     </size>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Should Always be 30&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="maximum">
     <number>255</number>
    </property>
@@ -392,6 +425,9 @@
      <width>151</width>
      <height>17</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum 44 C for charging and 60 C for discharging.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>High Temperature</string>
@@ -458,6 +494,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum 44 C for charging and 60 C for discharging.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="maximum">
     <number>255</number>
    </property>
@@ -510,6 +549,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum 10 C for charging and -20 C for discharging.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="maximum">
     <number>255</number>
    </property>
@@ -522,6 +564,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;0 ~ 62&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="maximum">
     <number>255</number>
@@ -536,6 +581,9 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Around 12 V with 3 V deviant&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
   </widget>
   <widget class="QLabel" name="label_7">
    <property name="geometry">
@@ -545,6 +593,9 @@
      <width>131</width>
      <height>17</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Roughly 165.6 Ah&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Pack Amphours</string>
@@ -595,6 +646,9 @@
      <height>17</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;0% ~ 95%&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="text">
     <string>Pack State of Charge</string>
    </property>
@@ -621,6 +675,9 @@
      <height>17</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Should Always be 30&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="text">
     <string>Populated Cells</string>
    </property>
@@ -633,6 +690,9 @@
      <width>131</width>
      <height>17</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;0 ~ 62&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Low Thermistor ID</string>
@@ -647,6 +707,9 @@
      <height>17</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;-20 C ~ 60 C&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="text">
     <string>Average Temperature</string>
    </property>
@@ -659,6 +722,9 @@
      <width>71</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;0 ~ 62&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="maximum">
     <number>255</number>
