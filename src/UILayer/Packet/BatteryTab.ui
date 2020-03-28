@@ -71,7 +71,7 @@
     </rect>
    </property>
    <property name="suffix">
-    <string> #</string>
+    <string> </string>
    </property>
    <property name="maximum">
     <number>255</number>
@@ -450,7 +450,7 @@
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Should Always be 30&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="suffix">
-    <string> #</string>
+    <string/>
    </property>
    <property name="maximum">
     <number>255</number>
@@ -482,7 +482,7 @@
     </rect>
    </property>
    <property name="suffix">
-    <string> #</string>
+    <string> </string>
    </property>
    <property name="maximum">
     <number>255</number>
@@ -498,7 +498,7 @@
     </rect>
    </property>
    <property name="suffix">
-    <string> #</string>
+    <string> </string>
    </property>
    <property name="maximum">
     <number>255</number>
@@ -514,7 +514,7 @@
     </rect>
    </property>
    <property name="suffix">
-    <string> #</string>
+    <string> </string>
    </property>
    <property name="maximum">
     <number>255</number>
@@ -629,7 +629,7 @@
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;0 ~ 62&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="suffix">
-    <string> #</string>
+    <string> </string>
    </property>
    <property name="maximum">
     <number>255</number>
@@ -796,7 +796,7 @@
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;0 ~ 62&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="suffix">
-    <string> #</string>
+    <string> </string>
    </property>
    <property name="maximum">
     <number>255</number>
