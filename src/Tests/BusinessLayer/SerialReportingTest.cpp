@@ -57,6 +57,7 @@ namespace
 
     const int ONES_TO_MILLI = 1000;
     const int ONES_TO_CENTI = 100;
+    const int DECI_TO_ONES = 10;
 
 }
 
@@ -550,11 +551,11 @@ TEST_F(SerialReportingTest, sendBatteryTest) // TODO create function which build
     data[37] = batteryData_->internalTemperature();
     data[38] = batteryData_->fanSpeed();
     data[39] = batteryData_->requestedFanSpeed();
-    Util::writeUShortIntoArray(data, 40, batteryData_->lowCellVoltage());
+    Util::writeUShortIntoArray(data, 40, batteryData_->lowCellVoltage() * DECI_TO_ONES);
     data[42] = batteryData_->lowCellVoltageId();
-    Util::writeUShortIntoArray(data, 43, batteryData_->highCellVoltage());
+    Util::writeUShortIntoArray(data, 43, batteryData_->highCellVoltage() * DECI_TO_ONES);
     data[45] = batteryData_->highCellVoltageId();
-    Util::writeUShortIntoArray(data, 46, batteryData_->averageCellVoltage());
+    Util::writeUShortIntoArray(data, 46, batteryData_->averageCellVoltage() * DECI_TO_ONES);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x07)); // packet id
