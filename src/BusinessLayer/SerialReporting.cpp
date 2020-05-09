@@ -29,7 +29,7 @@ namespace
     const int BATTERY_LENGTH = 48;
     const int MPPT_LENGTH = 10;
     const int LIGHTS_LENGTH = 3;
-    const int AUX_BMS_LENGTH = 8;
+    const int AUX_BMS_LENGTH = 11;
 
     const int ONES_TO_MILLI = 1000;
     const int ONES_TO_CENTI = 100;
@@ -418,10 +418,30 @@ void SerialReporting::sendAuxBms()
     writeBoolsIntoArray(packetPayload, 4, strobeBmsLightArray, 1);
     bool allowChargeArray[] = {dataContainerList[packetNum_]->getAuxBmsData().allowCharge()};
     writeBoolsIntoArray(packetPayload, 5, allowChargeArray, 1);
-    bool contactorErrorArray[] = {dataContainerList[packetNum_]->getAuxBmsData().contactorError()};
-    writeBoolsIntoArray(packetPayload, 6, contactorErrorArray, 1);
-    bool highVoltageEnableArray[] = {dataContainerList[packetNum_]->getAuxBmsData().highVoltageEnable()};
-    writeBoolsIntoArray(packetPayload, 7, highVoltageEnableArray, 1);
+    bool highVoltageEnableStateArray[] = {dataContainerList[packetNum_]->getAuxBmsData().highVoltageEnableState()};
+    writeBoolsIntoArray(packetPayload, 6, highVoltageEnableStateArray, 1);
+    bool allowDischargeArray[] = {dataContainerList[packetNum_]->getAuxBmsData().allowDischarge()};
+    writeBoolsIntoArray(packetPayload, 7, allowDischargeArray, 1);
+    bool orionCanReceivedRecentlyArray[] = {dataContainerList[packetNum_]->getAuxBmsData().orionCanReceivedRecently()};
+    writeBoolsIntoArray(packetPayload, 8, orionCanReceivedRecentlyArray, 1);
+    bool auxContactorArray[] = {dataContainerList[packetNum_]->getAuxBmsData().chargeContactorError(),
+                                dataContainerList[packetNum_]->getAuxBmsData().dischargeContactorError(),
+                                dataContainerList[packetNum_]->getAuxBmsData().commonContactorError(),
+                                dataContainerList[packetNum_]->getAuxBmsData().dischargeShouldTrip(),
+                                dataContainerList[packetNum_]->getAuxBmsData().chargeShouldTrip(),
+                                dataContainerList[packetNum_]->getAuxBmsData().chargeOpenButShouldBeClosed(),
+                                dataContainerList[packetNum_]->getAuxBmsData().dischargeOpenButShouldBeClosed()
+                               };
+    writeBoolsIntoArray(packetPayload, 9, auxContactorArray, 7);
+    bool auxTripArray[] = {dataContainerList[packetNum_]->getAuxBmsData().chargeTripDueToHighCellVoltage(),
+                           dataContainerList[packetNum_]->getAuxBmsData().chargeTripDueToHighTemperatureAndCurrent(),
+                           dataContainerList[packetNum_]->getAuxBmsData().chargeTripDueToPackCurrent(),
+                           dataContainerList[packetNum_]->getAuxBmsData().dischargeTripDueToLowCellVoltage(),
+                           dataContainerList[packetNum_]->getAuxBmsData().dischargeTripDueToHighTemperatureAndCurrent(),
+                           dataContainerList[packetNum_]->getAuxBmsData().dischargeTripDueToPackCurrent(),
+                           dataContainerList[packetNum_]->getAuxBmsData().protectionTrip()
+                          };
+    writeBoolsIntoArray(packetPayload, 10, auxTripArray, 7);
     addChecksum(packetPayload, AUX_BMS_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);

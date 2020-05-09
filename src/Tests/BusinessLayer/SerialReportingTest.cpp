@@ -53,7 +53,7 @@ namespace
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_BATTERY = 52;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_MPPT = 14;
     const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_LIGHTS = 7;
-    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_AUX_BMS = 12;
+    const unsigned int EXPECTED_PACKAGE_LENGTH_SEND_AUX_BMS = 15;
 
     const int ONES_TO_MILLI = 1000;
     const int ONES_TO_CENTI = 100;
@@ -681,10 +681,30 @@ TEST_F(SerialReportingTest, sendAuxBmsTest)
     Util::writeBoolsIntoArray(data, 4, strobeBmsLightArray, 1);
     bool allowChargeArray[] = {auxBmsData_->allowCharge()};
     Util::writeBoolsIntoArray(data, 5, allowChargeArray, 1);
-    bool contactorErrorArray[] = {auxBmsData_->contactorError()};
-    Util::writeBoolsIntoArray(data, 6, contactorErrorArray, 1);
-    bool highVoltageEnableArray[] = {auxBmsData_->highVoltageEnable()};
-    Util::writeBoolsIntoArray(data, 7, highVoltageEnableArray, 1);
+    bool highVoltageEnableStateArray[] = {auxBmsData_->highVoltageEnableState()};
+    Util::writeBoolsIntoArray(data, 6, highVoltageEnableStateArray, 1);
+    bool allowDischargeArray[] = {auxBmsData_->allowDischarge()};
+    Util::writeBoolsIntoArray(data, 7, allowDischargeArray, 1);
+    bool orionCANReceivedRecentlyArray[] = {auxBmsData_->orionCanReceivedRecently()};
+    Util::writeBoolsIntoArray(data, 8, orionCANReceivedRecentlyArray, 1);
+    bool auxContactorDebugInfoArray [] = {auxBmsData_->chargeContactorError(),
+                                          auxBmsData_->dischargeContactorError(),
+                                          auxBmsData_->commonContactorError(),
+                                          auxBmsData_->dischargeShouldTrip(),
+                                          auxBmsData_->chargeShouldTrip(),
+                                          auxBmsData_->chargeOpenButShouldBeClosed(),
+                                          auxBmsData_->dischargeOpenButShouldBeClosed()
+                                         };
+    Util::writeBoolsIntoArray(data, 9, auxContactorDebugInfoArray, 7);
+    bool auxTripArray[] = {auxBmsData_->chargeTripDueToHighCellVoltage(),
+                           auxBmsData_->chargeTripDueToHighTemperatureAndCurrent(),
+                           auxBmsData_->chargeTripDueToPackCurrent(),
+                           auxBmsData_->dischargeTripDueToLowCellVoltage(),
+                           auxBmsData_->dischargeTripDueToHighTemperatureAndCurrent(),
+                           auxBmsData_->dischargeTripDueToPackCurrent(),
+                           auxBmsData_->protectionTrip()
+                          };
+    Util::writeBoolsIntoArray(data, 10, auxTripArray, 7);
     appendChecksum(data, payloadLength);
     // do some additional data checks
     ASSERT_THAT(data[0], Eq(0x0B)); // packet id
@@ -719,6 +739,3 @@ TEST_F(SerialReportingTest, sendAllTest)
     // actually call the method under test through qt's signal/slot mechanism
     serialReporting_->sendAll();
 }
-
-
-

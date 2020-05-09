@@ -17,11 +17,26 @@ public:
     explicit AuxBmsTab();
     ~AuxBmsTab();
 
+    QCheckBox& highVoltageEnableState();
+    QCheckBox& allowDischarge();
+    QCheckBox& orionCanReceivedRecently();
+    QCheckBox& chargeContactorError();
+    QCheckBox& dischargeContactorError();
+    QCheckBox& commonContactorError();
+    QCheckBox& dischargeShouldTrip();
+    QCheckBox& chargeShouldTrip();
+    QCheckBox& chargeOpenButShouldBeClosed();
+    QCheckBox& dischargeOpenButShouldBeClosed();
+    QCheckBox& chargeTripDueToHighCellVoltage();
+    QCheckBox& chargeTripDueToHighTemperatureAndCurrent();
+    QCheckBox& dischargeTripDueToHighTemperatureAndCurrent();
+    QCheckBox& chargeTripDueToPackCurrent();
+    QCheckBox& dischargeTripDueToLowCellVoltage();
+    QCheckBox& dischargeTripDueToPackCurrent();
+    QCheckBox& protectionTrip();
     QCheckBox& allowCharge();
     QCheckBox& auxBMSAlive();
     QCheckBox& strobeBmsLight();
-    QCheckBox& contactorError();
-    QCheckBox& highVoltageEnable();
     QComboBox& prechargeState();
     QSpinBox& auxVoltage();
 
