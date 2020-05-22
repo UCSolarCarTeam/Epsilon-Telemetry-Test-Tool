@@ -33,7 +33,7 @@ namespace
 
     const int ONES_TO_MILLI = 1000;
     const int ONES_TO_CENTI = 100;
-
+    const int DECI_TO_ONES = 10;
 }
 
 using namespace Util;
@@ -330,11 +330,18 @@ void SerialReporting::sendBattery()
     packetPayload[37] = dataContainerList[packetNum_]->getBatteryData().internalTemperature();
     packetPayload[38] = dataContainerList[packetNum_]->getBatteryData().fanSpeed();
     packetPayload[39] = dataContainerList[packetNum_]->getBatteryData().requestedFanSpeed();
-    writeUShortIntoArray(packetPayload, 40, dataContainerList[packetNum_]->getBatteryData().lowCellVoltage());
+
+    unsigned short lowCellVoltage = dataContainerList[packetNum_]->getBatteryData().lowCellVoltage() * DECI_TO_ONES;
+    writeUShortIntoArray(packetPayload, 40, lowCellVoltage);
     packetPayload[42] = dataContainerList[packetNum_]->getBatteryData().lowCellVoltageId();
-    writeUShortIntoArray(packetPayload, 43, dataContainerList[packetNum_]->getBatteryData().highCellVoltage());
+
+    unsigned short highCellVoltage = dataContainerList[packetNum_]->getBatteryData().highCellVoltage() * DECI_TO_ONES;
+    writeUShortIntoArray(packetPayload, 43, highCellVoltage);
     packetPayload[45] = dataContainerList[packetNum_]->getBatteryData().highCellVoltageId();
-    writeUShortIntoArray(packetPayload, 46, dataContainerList[packetNum_]->getBatteryData().averageCellVoltage());
+
+    unsigned short averageCellVoltage = dataContainerList[packetNum_]->getBatteryData().averageCellVoltage() * DECI_TO_ONES;
+    writeUShortIntoArray(packetPayload, 46, averageCellVoltage);
+
     addChecksum(packetPayload, BATTERY_LENGTH);
     unsigned char packet[unframedPacketLength + FRAMING_LENGTH_INCREASE];
     unsigned int packetLength = frameData(packetPayload, unframedPacketLength, packet);
