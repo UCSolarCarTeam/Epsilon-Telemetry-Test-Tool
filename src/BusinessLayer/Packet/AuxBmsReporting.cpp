@@ -13,10 +13,25 @@ void AuxBmsReporting::setData(AuxBmsData& auxBmsData)
     auxBmsData_->setAuxBmsAlive(auxBmsTab_.auxBMSAlive().isChecked());
     auxBmsData_->setStrobeBmsLight(auxBmsTab_.strobeBmsLight().isChecked());
     auxBmsData_->setAllowCharge(auxBmsTab_.allowCharge().isChecked());
-    auxBmsData_->setContactorError(auxBmsTab_.contactorError().isChecked());
-    auxBmsData_->setHighVoltageEnable(auxBmsTab_.highVoltageEnable().isChecked());
     auxBmsData_->setAuxVoltage(auxBmsTab_.auxVoltage().value());
     auxBmsData_->setPrechargeStateJSON(auxBmsTab_.prechargeState().currentText());
+    auxBmsData_->setHighVoltageEnableState(auxBmsTab_.highVoltageEnableState().isChecked());
+    auxBmsData_->setAllowDischarge(auxBmsTab_.allowDischarge().isChecked());
+    auxBmsData_->setOrionCanReceivedRecently(auxBmsTab_.orionCanReceivedRecently().isChecked());
+    auxBmsData_->setChargeContactorError(auxBmsTab_.chargeContactorError().isChecked());
+    auxBmsData_->setDischargeContactorError(auxBmsTab_.dischargeContactorError().isChecked());
+    auxBmsData_->setCommonContactorError(auxBmsTab_.commonContactorError().isChecked());
+    auxBmsData_->setDischargeShouldTrip(auxBmsTab_.dischargeShouldTrip().isChecked());
+    auxBmsData_->setChargeShouldTrip(auxBmsTab_.chargeShouldTrip().isChecked());
+    auxBmsData_->setChargeOpenButShouldBeClosed(auxBmsTab_.chargeOpenButShouldBeClosed().isChecked());
+    auxBmsData_->setDischargeOpenButShouldBeClosed(auxBmsTab_.dischargeOpenButShouldBeClosed().isChecked());
+    auxBmsData_->setChargeTripDueToHighCellVoltage(auxBmsTab_.chargeTripDueToHighCellVoltage().isChecked());
+    auxBmsData_->setChargeTripDueToHighTemperatureAndCurrent(auxBmsTab_.chargeTripDueToHighTemperatureAndCurrent().isChecked());
+    auxBmsData_->setDischargeTripDueToHighTemperatureAndCurrent(auxBmsTab_.dischargeTripDueToHighTemperatureAndCurrent().isChecked());
+    auxBmsData_->setChargeTripDueToPackCurrent(auxBmsTab_.chargeTripDueToPackCurrent().isChecked());
+    auxBmsData_->setDischargeTripDueToLowCellVoltage(auxBmsTab_.dischargeTripDueToLowCellVoltage().isChecked());
+    auxBmsData_->setDischargeTripDueToPackCurrent(auxBmsTab_.dischargeTripDueToPackCurrent().isChecked());
+    auxBmsData_->setProtectionTrip(auxBmsTab_.protectionTrip().isChecked());
 
     if (auxBmsTab_.prechargeState().currentText() == "OFF")
     {

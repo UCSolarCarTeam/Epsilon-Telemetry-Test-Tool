@@ -369,7 +369,22 @@ QJsonObject InternetReporting::makeAuxBms()
     auxBms.insert("AuxBmsAlive", dataContainerList[packetNum_]->getAuxBmsData().auxBmsAlive());
     auxBms.insert("StrobeBmsLight", dataContainerList[packetNum_]->getAuxBmsData().strobeBmsLight());
     auxBms.insert("AllowCharge", dataContainerList[packetNum_]->getAuxBmsData().allowCharge());
-    auxBms.insert("ContactorError", dataContainerList[packetNum_]->getAuxBmsData().contactorError());
-    auxBms.insert("HighVoltageEnable", dataContainerList[packetNum_]->getAuxBmsData().highVoltageEnable());
+    auxBms.insert("HighVoltageEnableState", dataContainerList[packetNum_]->getAuxBmsData().highVoltageEnableState());
+    auxBms.insert("AllowDischarge", dataContainerList[packetNum_]->getAuxBmsData().allowDischarge());
+    auxBms.insert("OrionCANReceivedRecently", dataContainerList[packetNum_]->getAuxBmsData().orionCanReceivedRecently());
+    auxBms.insert("ChargeContactorError", dataContainerList[packetNum_]->getAuxBmsData().chargeContactorError());
+    auxBms.insert("DischargeContactorError", dataContainerList[packetNum_]->getAuxBmsData().dischargeContactorError());
+    auxBms.insert("CommonContactorError", dataContainerList[packetNum_]->getAuxBmsData().commonContactorError());
+    auxBms.insert("DischargeShouldTrip", dataContainerList[packetNum_]->getAuxBmsData().dischargeShouldTrip());
+    auxBms.insert("ChargeShouldTrip", dataContainerList[packetNum_]->getAuxBmsData().chargeShouldTrip());
+    auxBms.insert("ChargeOpenButShouldBeClosed", dataContainerList[packetNum_]->getAuxBmsData().chargeOpenButShouldBeClosed());
+    auxBms.insert("DischargeOpenButShouldBeClosed", dataContainerList[packetNum_]->getAuxBmsData().dischargeOpenButShouldBeClosed());
+    auxBms.insert("ChargeTripDueToHighCellVoltage", dataContainerList[packetNum_]->getAuxBmsData().chargeTripDueToHighCellVoltage());
+    auxBms.insert("ChargeTripDueToHighTemperatureAndCurrent", dataContainerList[packetNum_]->getAuxBmsData().chargeTripDueToHighTemperatureAndCurrent());
+    auxBms.insert("DischargeTripDueToHighTemperatureAndCurrent", dataContainerList[packetNum_]->getAuxBmsData().dischargeTripDueToHighTemperatureAndCurrent());
+    auxBms.insert("ChargeTripDueToPackCurrent", dataContainerList[packetNum_]->getAuxBmsData().chargeTripDueToPackCurrent());
+    auxBms.insert("DischargeTripDueToLowCellVoltage", dataContainerList[packetNum_]->getAuxBmsData().dischargeTripDueToLowCellVoltage());
+    auxBms.insert("DischargeTripDueToPackCurrent", dataContainerList[packetNum_]->getAuxBmsData().dischargeTripDueToPackCurrent());
+    auxBms.insert("ProtectionTrip", dataContainerList[packetNum_]->getAuxBmsData().protectionTrip());
     return auxBms;
 }
