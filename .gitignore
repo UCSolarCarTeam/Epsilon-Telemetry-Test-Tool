@@ -3,9 +3,9 @@ moc_*
 Makefile
 .tags*
 release
-*.pro.user
+*.pro.user*
 *.save
-build*
+/build*/
 *.autosave
 **/.qmake.stash
 src/Tests/target_wrapper.sh
