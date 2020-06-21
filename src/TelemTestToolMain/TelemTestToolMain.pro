@@ -11,6 +11,8 @@ LIBS += \
     error( "Couldn't find the common.pri file!" )
 }
 
+LIBS += -ldl
+
 PRE_TARGETDEPS += \
     ../ViewLayer/.lib/* \
     ../BusinessLayer/.lib/* \

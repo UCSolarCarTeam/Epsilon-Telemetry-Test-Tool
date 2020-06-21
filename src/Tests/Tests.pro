@@ -8,8 +8,7 @@ LIBS += \
     -L../BusinessLayer/.lib -lBusinessLayer \
     -L../ViewLayer/.lib -lViewLayer \
     -L../UILayer/.lib -lUILayer \
-    -L../DataLayer/.lib -lDataLayer \
-    -L../thirdparty/googletest/.lib -lgmock
+    -L../DataLayer/.lib -lDataLayer
 
 ! include( ../common.pri ) {
     error( "Couldn't find the common.pri file!" )
