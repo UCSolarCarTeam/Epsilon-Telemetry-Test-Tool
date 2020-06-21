@@ -7,5 +7,5 @@ SUBDIRS = \
     ViewLayer \
     UILayer \
     Peripherals \
+    TelemTestToolMain \
     Tests \
-    TelemTestToolMain

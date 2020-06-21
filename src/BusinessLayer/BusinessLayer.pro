@@ -7,7 +7,7 @@ CONFIG += staticlib
 
 INCLUDEPATH += ../DataLayer/ ../ViewLayer/ ../Peripherals/
 
-DESTDIR = ../../build/.lib
+DESTDIR = .lib
 
 HEADERS += \
     $$PWD/CrcCalculator.h \
