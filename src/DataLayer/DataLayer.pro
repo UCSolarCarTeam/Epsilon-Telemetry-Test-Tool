@@ -7,7 +7,7 @@ CONFIG += staticlib
 
 INCLUDEPATH += ../UILayer/ $$PWD/
 
-DESTDIR = ../../build/.lib
+DESTDIR = .lib
 
 HEADERS += \
     $$PWD/BatteryData.h \
