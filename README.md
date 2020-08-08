@@ -90,3 +90,13 @@ rabbitmqctl stop_app
 rabbitmqctl reset
 rabbitmqctl start_app
 ```
+
+## Architecture Diagrams
+
+### Data Flow
+
+![DataFlow](ArchitectureDiagrams/DataFlow.png) "Data Flow")
+
+### Class Diagram
+
+![ClassDiagram](ArchitectureDiagrams/ClassDiagram.png) "Class Diagram")
