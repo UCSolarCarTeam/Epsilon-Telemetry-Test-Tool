@@ -95,8 +95,8 @@ rabbitmqctl start_app
 
 ### Data Flow
 
-![DataFlow](ArchitectureDiagrams/DataFlow.png) "Data Flow")
+![DataFlow](ArchitectureDiagrams/DataFlow.png "Data Flow")
 
 ### Class Diagram
 
-![ClassDiagram](ArchitectureDiagrams/ClassDiagram.png) "Class Diagram")
+![ClassDiagram](ArchitectureDiagrams/ClassDiagram.png "Class Diagram")
