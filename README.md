@@ -5,6 +5,8 @@ Test tool to mock out the serial telemetry protocol defined in https://docs.goog
 
 In this repo, there are dependencies needed for before you will be able to build or run anything.
 
+Before proceding with the installation, contact the Visual Communication leads to get your conan account set up.
+
 If you don't already have conan installed from another project, run the setup script:
 
 `./EpsilonTestToolSetup.sh`
@@ -40,7 +42,7 @@ When first setting up your project with QT creator, you must first add a custom 
 
 3. Call qmake, passing in the directory with the path to the root `EpsilonDashboard.pro` to generate the makefile:
 
-    `qmake ../src/EpsilonDashboard.pro`
+    `qmake ../src/telemTestTool.pro`
 
 - Later, if you need to re-run qmake on the project due to a new UI file or a change to a .pro, call:
 
