@@ -42,7 +42,7 @@ When first setting up your project with QT creator, you must first add a custom 
 
 3. Call qmake, passing in the directory with the path to the root `EpsilonDashboard.pro` to generate the makefile:
 
-    `qmake ../src/EpsilonDashboard.pro`
+    `qmake ../src/telemTestTool.pro`
 
 - Later, if you need to re-run qmake on the project due to a new UI file or a change to a .pro, call:
 
