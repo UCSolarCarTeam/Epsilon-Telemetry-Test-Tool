@@ -1,0 +1,32 @@
+name: C/C++ CI
+
+on: [pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+
+    - name: run EpsilonDashboardSetup
+      run: ./EpsilonTestToolSetup.sh
+    
+    - run: conan user -p solarcarAction1 -r epsilon action
+    - run: conan config set general.revisions_enabled=1
+    - name: Creating build folder
+      run: mkdir build && cd build
+    - name: install package with conan
+      run: conan install ../Epsilon-Telemetry-Test-Tool --build=missing -s compiler.libcxx="libstdc++11"
+    - name: qmake
+      run: qmake ../Epsilon-Telemetry-Test-Tool/src/
+    - run: make
+    - run: source Tests/target_wrapper.sh
+    
+    - name: Run headless test
+      uses: GabrielBB/xvfb-action@v1
+      with:
+          run: ./bin/tests/runTestSuite
